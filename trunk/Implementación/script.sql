@@ -1,16 +1,16 @@
-create database cbr;
-
 create table usuario(
 	id integer primary key,
 	nombre varchar(20) unique,
 	password varchar(20),
-	tipo char(2) check tipo in('UB','UA','A')
+	tipo char(2),
+	check (tipo in ('UB','UA','A'))
 );
 
 create table tecnica(
 	id integer primary key,
 	nombre varchar(20) unique,
-	tipo char(3) check tipo in('rec','reu','rev','ret')
+	tipo char(3),
+	check (tipo in ('rec','reu','rev','ret'))
 );
 
 create table caso(
@@ -22,35 +22,11 @@ create table caso(
 	retPorDefecto integer not null references tecnica,
 );
 
-create table caso_tecnica_rec(
+create table caso_tecnica(
 	id_caso integer references caso,
 	id_tecnica integer references tecnica,
 	primary key(id_caso, id_tecnica)
 );
-
-
-create table caso_tecnica_reu(
-	id_caso integer references caso,
-	id_tecnica integer references tecnica,
-	primary key(id_caso, id_tecnica)
-);
-
-
-create table caso_tecnica_rev(
-	id_caso integer references caso,
-	id_tecnica integer references tecnica,
-	primary key(id_caso, id_tecnica)
-);
-
-
-create table caso_tecnica_ret(
-	id_caso integer references caso,
-	id_tecnica integer references tecnica,
-	primary key(id_caso, id_tecnica)
-);
-
-
-
 
 create table caso_usuario(
 	id_caso integer references caso,
@@ -63,7 +39,7 @@ create table atributo(
 	tipo varchar(20),
 	peso decimal,
 	metrica varchar(20),
-	caso integer references caso,
+	caso integer references caso on delete cascade,
 	primary key (nombre,caso)
 );
 
