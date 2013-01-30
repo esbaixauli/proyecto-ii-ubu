@@ -8,7 +8,16 @@ public class Atributo implements Serializable {
 	private String nombre;
 	private String tipo;
 	private double peso;
+	private String metrica;
 	
+	public String getMetrica() {
+		return metrica;
+	}
+
+	public void setMetrica(String metrica) {
+		this.metrica = metrica;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
