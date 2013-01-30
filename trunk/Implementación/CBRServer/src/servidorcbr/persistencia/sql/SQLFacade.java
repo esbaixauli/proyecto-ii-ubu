@@ -95,7 +95,7 @@ public class SQLFacade {
 		return lista;
 	}
 	
-	/*Auxiliar. Añade los atributos al caso.*/
+	/*Auxiliar. Aï¿½ade los atributos al caso.*/
 private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 	HashMap<String, Atributo> atbos = new HashMap<String, Atributo> ();
 	while (rs2.next()) {
@@ -108,8 +108,8 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 	tc.setAtbos(atbos);
 }
 	
-	/*Auxiliar. Añade las tecnicas al caso.*/
-	private void addTecnicasCaso(TipoCaso tc,ResultSet rs2){
+	/*Auxiliar. Aï¿½ade las tecnicas al caso.*/
+	private void addTecnicasCaso(TipoCaso tc,ResultSet rs2) throws SQLException {
 		ArrayList<String> lRec = new ArrayList<String>();
 		ArrayList<String> lReu = new ArrayList<String>();
 		ArrayList<String> lRev = new ArrayList<String>();
@@ -156,6 +156,41 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 			throw new PersistenciaException(e);
 		}
 		return exito;
+	}
+	
+	public boolean addTipo (TipoCaso tc) throws PersistenciaException {
+		int exito = 0; 
+		
+		try { 
+			PreparedStatement psT = conn
+					.prepareStatement("INSERT INTO caso (nombre) VALUES ?");
+			psT.setString(0, tc.getNombre());
+			exito = psT.executeUpdate();
+
+			PreparedStatement pst = conn
+					.prepareStatement("SELECT id FROM caso WHERE nombre=?");
+			pst.setString(0, tc.getNombre());
+			ResultSet rs = pst.executeQuery();
+			int id = -1;
+			while (rs.next()) {
+				id = rs.getInt(0);
+			}
+
+			for (Atributo a : tc.getAtbos().values()) {
+				PreparedStatement psA = conn
+						.prepareStatement("INSERT INTO atributo VALUES ?,?,?,?,?;");
+				psA.setString(0, a.getNombre());
+				psA.setString(1, a.getTipo());
+				psA.setDouble(2, a.getPeso());
+				psA.setString(3, a.getMetrica());
+				psA.setInt(4, id);
+				exito += psA.executeUpdate();
+			}
+		} catch (SQLException ex) {
+			throw new PersistenciaException(ex);
+		}
+		
+		return (exito == tc.getAtbos().size()+1);
 	}
 	
 }
