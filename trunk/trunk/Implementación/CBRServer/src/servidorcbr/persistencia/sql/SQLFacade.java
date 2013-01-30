@@ -11,6 +11,8 @@ import java.util.List;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
+import servidorcbr.modelo.TipoUsuario;
+import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 
 public class SQLFacade {
@@ -156,6 +158,32 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 			throw new PersistenciaException(e);
 		}
 		return exito;
+	}
+	
+	public boolean addUsuario(Usuario u) throws PersistenciaException{
+		try{
+			PreparedStatement ps = conn.prepareStatement(
+					"insert into usuario (nombre,password,tipo) values ?,?,?");
+			ps.setString(0, u.getNombre());
+			ps.setString(1, u.getPassword());
+			ps.setString(2,traducirTipoUsuario(u.getTipo()));
+			return (ps.executeUpdate()==1);
+		}catch(SQLException e){
+			throw new PersistenciaException(e);
+		}
+	}
+	
+	/*Auxiliar. Traduce un tipo de usuario a la notación de la BD.*/
+	private String traducirTipoUsuario(TipoUsuario t){
+		String res;
+		if(t.equals(TipoUsuario.ADMINISTRADOR)){
+			res="A";
+		}else if(t.equals(TipoUsuario.UAVANZADO)){
+			res="UA";
+		}else{
+			res="UB";
+		}
+		return res;
 	}
 	
 	public boolean addTipo (TipoCaso tc) throws PersistenciaException {
