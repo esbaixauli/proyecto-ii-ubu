@@ -23,10 +23,11 @@ public class SQLFacade {
 	private SQLFacade () throws PersistenciaException {
 		try {
 			Class.forName("org.hsqldb.jdbcDriver");
-			conn = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/", "SA", "");
+			conn = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/xdb", "SA", "");
 		} catch (ClassNotFoundException e) {
-			
+			e.printStackTrace();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new PersistenciaException(e);
 		}
 	}
@@ -171,6 +172,39 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 		}catch(SQLException e){
 			throw new PersistenciaException(e);
 		}
+	}
+	
+	public HashMap<String, Usuario> getUsuarios() throws PersistenciaException{
+		
+		HashMap<String, Usuario> usuarios = new HashMap<String, Usuario>();
+		try{
+		PreparedStatement ps = conn.prepareStatement("SELECT * FROM usuario;");
+		ResultSet rs = ps.executeQuery();
+		Usuario u;
+		while(rs.next()){
+			u = new Usuario();
+			u.setNombre(rs.getString("nombre"));
+			u.setPassword(rs.getString("password"));
+			u.setTipo(traducirTipoUsuario(rs.getString("tipo")));
+			usuarios.put(u.getNombre(), u);
+		}
+		}catch(SQLException e){
+			throw new PersistenciaException(e);
+		}
+		return usuarios;		
+	}
+	
+	/*Auxiliar. Traduce un tipo de usuario a la notación de la aplicación.*/
+	private TipoUsuario traducirTipoUsuario(String t){
+		
+		if(t.equals("A")){
+			return TipoUsuario.ADMINISTRADOR;
+		}else if(t.equals("UA")){
+			return TipoUsuario.UAVANZADO;
+		}else{
+			return TipoUsuario.UBASICO;
+		}
+
 	}
 	
 	/*Auxiliar. Traduce un tipo de usuario a la notación de la BD.*/
