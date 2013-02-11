@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import servidorcbr.modelo.excepciones.PersistenciaException;
 /**
  * Servlet implementation class ServletTipo
  */
+@WebServlet("/ServletTipo")
 public class ServletTipo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

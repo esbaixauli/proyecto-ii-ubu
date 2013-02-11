@@ -40,6 +40,7 @@ create table atributo(
 );
 
 
-insert into tecnica values(0,'K-NN','rec');
-insert into tecnica values(1,'Umbral','rec');
+insert into tecnica(nombre, tipo) values('K-NN','rec');
+insert into tecnica(nombre, tipo) values('Umbral','rec');
 
+insert into usuario(nombre, password, tipo) values('root','root','A');
