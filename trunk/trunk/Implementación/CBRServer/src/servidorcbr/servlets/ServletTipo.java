@@ -50,10 +50,16 @@ public class ServletTipo extends HttpServlet {
 		ObjectOutputStream oos = new ObjectOutputStream(sos);
 		ObjectInputStream ois = new ObjectInputStream(sis);
 		try {
-			if (request.getAttribute("tipo").equals("getTipos")) {
+			String tipo = null;
+			try {
+				tipo = (String) ois.readObject();
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
+			}
+			if (tipo.equals("getTipos")) {
 				List<TipoCaso> l = ControladorTipos.getTipos();
 				oos.writeObject(l);
-			} else if (request.getAttribute("tipo").equals("getTiposU")) {
+			} else if (tipo.equals("getTiposU")) {
 				Usuario u = null;
 				try {
 					u = (Usuario) ois.readObject();
@@ -62,7 +68,7 @@ public class ServletTipo extends HttpServlet {
 				}
 				List<TipoCaso> l = ControladorTipos.getTipos(u);
 				oos.writeObject(l);
-			} else if (request.getAttribute("tipo").equals("newTipo")) {
+			} else if (tipo.equals("newTipo")) {
 				TipoCaso tc = null;
 				try {
 					tc = (TipoCaso) ois.readObject();
@@ -71,7 +77,7 @@ public class ServletTipo extends HttpServlet {
 				}
 				boolean exito = ControladorTipos.addTipo(tc);
 				oos.writeBoolean(exito);
-			} else if (request.getAttribute("tipo").equals("removeTipo")) {
+			} else if (tipo.equals("removeTipo")) {
 				TipoCaso tc = null;
 				try {
 					tc = (TipoCaso) ois.readObject();
