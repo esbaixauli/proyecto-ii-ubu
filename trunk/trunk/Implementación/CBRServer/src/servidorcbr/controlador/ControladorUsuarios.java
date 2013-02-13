@@ -21,7 +21,7 @@ public class ControladorUsuarios {
 		return SQLFacade.getInstance().getTipos(usuario);
 	}
 	
-	//Devuelve el usuario si se encontrÛ y la contraseÒa es correcta,
+	//Devuelve el usuario si se encontr√≥ y la contrase√±a es correcta,
 	//o null en caso contrario.
 	public static Usuario login(String nombre, String password) throws PersistenciaException{
 		Usuario resultado = null;
@@ -35,5 +35,9 @@ public class ControladorUsuarios {
 		return resultado;
 	}
 	
+	// Devuelve cierto si el usuario se elimin√≥, o falso si no.
+	public static boolean removeUsuario (Usuario u) throws PersistenciaException {
+		return SQLFacade.getInstance().removeUsuario(u);
+	}
 	
 }

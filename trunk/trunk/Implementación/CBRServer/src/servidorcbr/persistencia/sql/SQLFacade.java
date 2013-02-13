@@ -50,7 +50,7 @@ public class SQLFacade {
 		try {
 			PreparedStatement ps = conn.prepareStatement("select caso.* from caso join " +
 					"caso_usuario on id_caso=caso.id"
-					+ " join usuario on id_usuario=usuario.id where usuario.nombre=?");
+					+ " join usuario on id_usuario=usuario.id where usuario.nombre=?;");
 			ps.setString(0, usuario);
 			return getTipos(ps);
 		} catch (SQLException e) {
@@ -80,11 +80,11 @@ public class SQLFacade {
 				lista.add(tc);
 				
 				PreparedStatement ps2 = 
-						conn.prepareStatement("SELECT * FROM atributo WHERE caso="+rs.getInt("id"));
+						conn.prepareStatement("SELECT * FROM atributo WHERE caso="+rs.getInt("id")+";");
 				ResultSet rs2 = ps2.executeQuery();
 				addAtbosCaso(tc, rs2);
 				
-				ps2 = conn.prepareStatement("SELECT * FROM caso_tecnica JOIN tecnica ON caso_tecnica.id_tecnica=tecnica.id WHERE caso_tecnica.id_caso="+rs.getInt("id"));
+				ps2 = conn.prepareStatement("SELECT * FROM caso_tecnica JOIN tecnica ON caso_tecnica.id_tecnica=tecnica.id WHERE caso_tecnica.id_caso="+rs.getInt("id")+";");
 				rs2 = ps2.executeQuery();
 				addTecnicasCaso(tc,rs2);
 				
@@ -139,7 +139,7 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 	public boolean removeTipo (String nombre) throws PersistenciaException {
 		boolean exito = false;
 		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT id FROM caso WHERE nombre=?");
+			PreparedStatement ps = conn.prepareStatement("SELECT id FROM caso WHERE nombre=?;");
 			ps.setString(0, nombre);
 			ResultSet rs = ps.executeQuery();
 			
@@ -147,11 +147,11 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 			while (rs.next()) {
 				id = rs.getInt("id");
 			}
-			ps = conn.prepareStatement("DELETE FROM caso_tecnica WHERE id_caso=?");
+			ps = conn.prepareStatement("DELETE FROM caso_tecnica WHERE id_caso=?;");
 			ps.setInt(0, id);
 			ps.executeUpdate();
 			
-			ps = conn.prepareStatement("DELETE FROM caso WHERE id=?");
+			ps = conn.prepareStatement("DELETE FROM caso WHERE id=?;");
 			ps.setInt(0, id);
 			exito= (ps.executeUpdate()>0);
 			
@@ -164,7 +164,7 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 	public boolean addUsuario(Usuario u) throws PersistenciaException{
 		try{
 			PreparedStatement ps = conn.prepareStatement(
-					"insert into usuario (nombre,password,tipo) values ?,?,?");
+					"insert into usuario (nombre,password,tipo) values ?,?,?;");
 			ps.setString(0, u.getNombre());
 			ps.setString(1, u.getPassword());
 			ps.setString(2,traducirTipoUsuario(u.getTipo()));
@@ -194,7 +194,7 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 		return usuarios;		
 	}
 	
-	/*Auxiliar. Traduce un tipo de usuario a la notación de la aplicación.*/
+	/*Auxiliar. Traduce un tipo de usuario a la notaciï¿½n de la aplicaciï¿½n.*/
 	private TipoUsuario traducirTipoUsuario(String t){
 		
 		if(t.equals("A")){
@@ -207,7 +207,7 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 
 	}
 	
-	/*Auxiliar. Traduce un tipo de usuario a la notación de la BD.*/
+	/*Auxiliar. Traduce un tipo de usuario a la notaciï¿½n de la BD.*/
 	private String traducirTipoUsuario(TipoUsuario t){
 		String res;
 		if(t.equals(TipoUsuario.ADMINISTRADOR)){
@@ -225,12 +225,12 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 		
 		try { 
 			PreparedStatement psT = conn
-					.prepareStatement("INSERT INTO caso (nombre) VALUES ?");
+					.prepareStatement("INSERT INTO caso (nombre) VALUES ?;");
 			psT.setString(0, tc.getNombre());
 			exito = psT.executeUpdate();
 
 			PreparedStatement pst = conn
-					.prepareStatement("SELECT id FROM caso WHERE nombre=?");
+					.prepareStatement("SELECT id FROM caso WHERE nombre=?;");
 			pst.setString(0, tc.getNombre());
 			ResultSet rs = pst.executeQuery();
 			int id = -1;
@@ -253,6 +253,40 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 		}
 		
 		return (exito == tc.getAtbos().size()+1);
+	}
+	
+	public boolean removeUsuario (Usuario u) throws PersistenciaException {
+		int exito = 0;
+		int count = 0;
+		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT usuario WHERE nombre=?;");
+			ps.setString(0, u.getNombre());
+			ResultSet rs = ps.executeQuery();
+			
+			int id = -1;
+			while (rs.next()) {
+				id = rs.getInt(0);
+			}
+			
+			ps = conn.prepareStatement("SELECT COUNT(*) FROM caso_usuario WHERE id_usuario=?;");
+			ps.setInt(0, id);
+			while (rs.next()) {
+				count = rs.getInt(0);
+			}
+			
+			ps = conn.prepareStatement("DELETE FROM caso_usuario WHERE id_usuario=?;");
+			ps.setInt(0, id);
+			exito += ps.executeUpdate();
+			
+			ps = conn.prepareStatement("DELETE FROM usuario WHERE id=?;");
+			ps.setInt(0, id);
+			exito += ps.executeUpdate();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new PersistenciaException(ex);
+		}
+
+		return (exito == count+1);
 	}
 	
 }
