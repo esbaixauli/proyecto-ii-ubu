@@ -21,8 +21,13 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+
+import controlador.ControlConexion;
+import controlador.ControlLogin;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -42,6 +47,8 @@ public class LoginFrame extends JFrame {
 	private JTextField textFieldPass;
 	ResourceBundle bundle = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", getLocale());
+	private JTextField ipTextField;
+	private JTextField puertoTextField;
 	/**
 	 * Launch the application.
 	 */
@@ -58,16 +65,17 @@ public class LoginFrame extends JFrame {
 		});
 	}
 
+	private final LoginFrame me = this;
 	/**
 	 * Create the frame.
 	 */
 	public LoginFrame() {
 		
-		
+	
 		setResizable(false);
 		setTitle(bundle.getString("login"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 242, 204);
+		setBounds(100, 100, 243, 270);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -111,10 +119,20 @@ public class LoginFrame extends JFrame {
 		textFieldPass.setColumns(10);
 		
 		final JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Español", "English"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"EspaÃ±ol", "English"}));
 		contentPane.add(comboBox, "2, 10, 3, 1, fill, default");
 		
+		JLabel lblIp = new JLabel("IP:");
+		contentPane.add(lblIp, "2, 12, right, default");
+		
+		ipTextField = new JTextField();
+		ipTextField.setText("localhost");
+		contentPane.add(ipTextField, "4, 12, fill, default");
+		ipTextField.setColumns(10);
+		
 		JButton btnAcceso = new JButton(bundle.getString("login"));
+		
+		
 		btnAcceso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(comboBox.getSelectedIndex() == 0){
@@ -125,51 +143,47 @@ public class LoginFrame extends JFrame {
 				if(textFieldNombre.getText().isEmpty() || textFieldPass.getText().isEmpty()){
 					JOptionPane.showMessageDialog(null, 
 							bundle.getString("emptylogin"),"Error", JOptionPane.ERROR_MESSAGE);
+				}else{
+					ControlConexion.setCon(ipTextField.getText().trim(), puertoTextField.getText().trim());
+					Usuario u =enviarServlet(textFieldNombre.getText(),textFieldPass.getText());
+					if(u!=null){
+						JFrame main = new MainFrame(u);
+						main.setVisible(true);
+						me.dispose();
+					}
 				}
-				enviarServlet(textFieldNombre.getText(),textFieldPass.getText());
-			
 			}
-			
-			private URLConnection getServletCon() throws MalformedURLException,
-		      IOException {
-		    URL urlServlet = new URL("http://localhost/CBRServer/ServletLogin");
-		    URLConnection con = urlServlet.openConnection();
-		    con.setDoInput(true);
-		    con.setDoOutput(true);
-		    con.setUseCaches(false);
-		    con.setRequestProperty("Content-Type",
-		        "application/x-java-serialized-object");
-		    return con;
-		  }
-
-			
-			private void enviarServlet(String nombre, String password){
+		
+			private Usuario enviarServlet(String nombre, String password){
+				Usuario u=null;
 				try{
-					URLConnection con = getServletCon();
-					 OutputStream outputStream = con.getOutputStream();
-				     ObjectOutputStream oos = new ObjectOutputStream(outputStream);
-				     oos.writeObject(nombre);
-				     oos.writeObject(password);
-				     oos.flush();
-				     oos.close();
-				     InputStream inputStream = con.getInputStream();
-				      ObjectInputStream inputDelServlet = new ObjectInputStream(
-				          inputStream);
-				      Usuario resultado = (Usuario) inputDelServlet.readObject();
-				      System.out.println(resultado.toString());
-				      inputDelServlet.close();
-				      inputStream.close();
+					 u= ControlLogin.validarLogin(nombre, password);
+				    if(u==null){
+				    	JOptionPane.showMessageDialog(null, 
+								bundle.getString("usernotfound"),"Error", JOptionPane.ERROR_MESSAGE);
+								
+				    }
 				
 				}catch(Exception ex){
 					JOptionPane.showMessageDialog(null, 
 					bundle.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
 					ex.printStackTrace();
 				}
-				
+			    return u;
 			}
 		});
 		
-		contentPane.add(btnAcceso, "2, 12, 3, 1");
+		me.getRootPane().setDefaultButton(btnAcceso);
+		
+		JLabel lblPuerto = new JLabel(bundle.getString("port"));
+		contentPane.add(lblPuerto, "2, 14, right, default");
+		
+		puertoTextField = new JTextField();
+		puertoTextField.setText("8080");
+		contentPane.add(puertoTextField, "4, 14, left, default");
+		puertoTextField.setColumns(10);
+		
+		contentPane.add(btnAcceso, "2, 16, 3, 1");
 	}
 
 }
