@@ -197,9 +197,9 @@ private void addAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 	/*Auxiliar. Traduce un tipo de usuario a la notaci�n de la aplicaci�n.*/
 	private TipoUsuario traducirTipoUsuario(String t){
 		
-		if(t.equals("A")){
+		if(t.trim().equals("A")){
 			return TipoUsuario.ADMINISTRADOR;
-		}else if(t.equals("UA")){
+		}else if(t.trim().equals("UA")){
 			return TipoUsuario.UAVANZADO;
 		}else{
 			return TipoUsuario.UBASICO;
