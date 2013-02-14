@@ -88,6 +88,7 @@ public class ServletTipo extends HttpServlet {
 				oos.writeBoolean(exito);
 			}
 		} catch (PersistenciaException ex) {
+			ex.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
 		oos.close();
