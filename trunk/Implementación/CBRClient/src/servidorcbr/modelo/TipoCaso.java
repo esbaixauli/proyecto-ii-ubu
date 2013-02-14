@@ -1,10 +1,15 @@
 package servidorcbr.modelo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class TipoCaso {
+public class TipoCaso implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private HashMap<String, Atributo> atbos;
 	private List<String> tecnicasRecuperacion;
@@ -58,6 +63,11 @@ public class TipoCaso {
 
 	public void setTecnicasRetencion(List<String> tecnicasRetencion) {
 		this.tecnicasRetencion = tecnicasRetencion;
+	}
+	
+	@Override
+	public String toString(){
+		return nombre;
 	}
 	
 }

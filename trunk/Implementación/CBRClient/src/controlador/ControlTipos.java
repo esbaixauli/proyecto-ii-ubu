@@ -14,6 +14,19 @@ import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 
 public class ControlTipos {
+	
+	public static boolean borrarTiposCaso(TipoCaso t) throws MalformedURLException, IOException{
+		URLConnection con = ControlConexion.getServletCon("ServletTipo");
+		OutputStream outputStream = con.getOutputStream();
+	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+	    oos.writeObject("removeTipo");
+	    oos.writeObject(t);
+	    InputStream inputStream = con.getInputStream();
+	    ObjectInputStream inputDelServlet = new ObjectInputStream(
+		          inputStream);
+	    return inputDelServlet.readBoolean();
+	    
+	}
 
 	public static List<TipoCaso> obtenerTiposCaso(Usuario u) throws MalformedURLException, IOException{
 		List<TipoCaso> casos=null;

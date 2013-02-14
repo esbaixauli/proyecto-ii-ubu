@@ -27,6 +27,7 @@ import controlador.ControlLogin;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -39,6 +40,8 @@ import servidorcbr.modelo.Usuario;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class LoginFrame extends JFrame {
 
@@ -114,11 +117,12 @@ public class LoginFrame extends JFrame {
 		JLabel lblContrasea = new JLabel(bundle.getString("password"));
 		contentPane.add(lblContrasea, "2, 8, right, default");
 		
-		textFieldPass = new JTextField();
+		textFieldPass = new JPasswordField();
 		contentPane.add(textFieldPass, "4, 8, fill, default");
 		textFieldPass.setColumns(10);
 		
 		final JComboBox comboBox = new JComboBox();
+		
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Español", "English"}));
 		contentPane.add(comboBox, "2, 10, 3, 1, fill, default");
 		
