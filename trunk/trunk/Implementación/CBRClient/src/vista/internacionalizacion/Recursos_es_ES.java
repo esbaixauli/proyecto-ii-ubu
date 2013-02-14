@@ -23,6 +23,26 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"stats","Estadísticas"},
 		{"exit","Salir"},
 		{"mainmenu","Menú principal"},
+		{"nocasetypes","No hay tipos de caso disponibles."},
+		{"availablecasetypes","Tipos de caso disponibles"},
+		
+		{"newcasetype","Nuevo tipo de caso."},
+		{"delcasetype","Eliminar el tipo de caso seleccionado."},
+		
+		{"noselection","No se ha escogido ningún tipo de caso."},
+		{"delsure","¿Está seguro de que desea borrar el tipo de caso? Se perderan los casos relacionados."},
+		{"opsuccess","Operación completada con éxito."},
+		{"opunsuccess","No se pudo completar la operación."},
+		{"delunsuccesscause","Es posible que el tipo de caso haya sido borrado por otro usuario."},
+		
+		{"atname","Nombre"},
+		{"atweight","Peso"},
+		{"attype","Tipo"},
+		{"atmetric","Métrica"},
+		
+		{"integer","Número entero"},
+		{"string","Cadena de texto"},
+		{"decimal","Número decimal"},
 		
 		{"login","Acceder"}
 	};

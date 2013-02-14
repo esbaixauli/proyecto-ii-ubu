@@ -68,7 +68,7 @@ public class MainFrame extends JFrame{
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel panel_adm = new JPanel();
-		panel_adm.setBorder(new TitledBorder(null, "Administraci\u00F3n", TitledBorder.CENTER, TitledBorder.TOP, null, UIManager.getColor("Table.selectionBackground")));
+		panel_adm.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Administraci\u00F3n", TitledBorder.CENTER, TitledBorder.TOP, null, UIManager.getColor("ProgressBar.selectionBackground")));
 		panel.add(panel_adm);
 		panel_adm.setLayout(new BoxLayout(panel_adm, BoxLayout.Y_AXIS));
 		
