@@ -46,11 +46,12 @@ create table atributo(
 	tipo char(1),
 	peso decimal,
 	metrica varchar(20),
+	parammetrica decimal,
 	caso integer references caso on delete cascade,
+	problema boolean,
 	primary key (caso,nombre),
-	check (tipo in ('S', 'I', 'D'))
+	check (tipo in ('S', 'I', 'D')),
 );
-
 
 insert into tecnica(nombre, tipo) values('K-NN','rec');
 insert into tecnica(nombre, tipo) values('Umbral','rec');

@@ -9,13 +9,31 @@ public class Atributo implements Serializable {
 	private String tipo;
 	private double peso;
 	private String metrica;
+	private double paramMetrica;
+	private boolean esProblema;
 	
+	public boolean getEsProblema() {
+		return esProblema;
+	}
+
+	public void setEsProblema(boolean esProblema) {
+		this.esProblema = esProblema;
+	}
+
 	public String getMetrica() {
 		return metrica;
 	}
 
 	public void setMetrica(String metrica) {
 		this.metrica = metrica;
+	}
+
+	public double getParamMetrica() {
+		return paramMetrica;
+	}
+
+	public void setParamMetrica(double paramMetrica) {
+		this.paramMetrica = paramMetrica;
 	}
 
 	public String getNombre() {
