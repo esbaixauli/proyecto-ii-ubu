@@ -40,10 +40,20 @@ public class Recursos extends ListResourceBundle {
 		{"atweight","Weight"},
 		{"attype","Type"},
 		{"atmetric","Metric"},
+		{"atmetricparam","Metric parameter"},
 		
 		{"integer","Integer"},
 		{"string","Text string"},
 		{"decimal","Decimal number"},
+		{"incorrectformat","Incorrect format. Only letters [A-Z][a-z] and digits [0-9] are allowed."},
+		{"emptyatt","Please fill in every attribute field."},
+		
+		{"equal","Equality"},
+		{"equalignorecase","Equality (Ignora Mayusculas)"},
+		{"substring","Longest matching substring"},
+		{"interval","Interval"},
+		{"threshold","Threshold"},
+		{"enterparam","This metric requires a numeric parameter. Please indicate it below."},
 		
 		{"login","Log in"}
 	};

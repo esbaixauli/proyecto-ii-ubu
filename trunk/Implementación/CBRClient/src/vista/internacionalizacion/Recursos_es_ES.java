@@ -39,10 +39,21 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"atweight","Peso"},
 		{"attype","Tipo"},
 		{"atmetric","Métrica"},
+		{"atmetricparam","Parámetro de la métrica"},
 		
+		{"emptyatt","Por favor, rellene todos los campos de cada atributo."},
+		{"incorrectformat","Formato incorrecto. Sólo se permiten Letras [A-Z][a-z] y dígitos[0-9]"},
 		{"integer","Número entero"},
 		{"string","Cadena de texto"},
 		{"decimal","Número decimal"},
+		
+		{"equal","Igualdad"},
+		{"equalignorecase","Igualdad (Ignora Mayusculas)"},
+		{"substring","Subcadena más larga"},
+		{"interval","Intervalo"},
+		{"threshold","Umbral"},
+
+		{"enterparam","Esta métrica requiere un parámetro numérico. Por favor, indíquelo debajo."},
 		
 		{"login","Acceder"}
 	};
