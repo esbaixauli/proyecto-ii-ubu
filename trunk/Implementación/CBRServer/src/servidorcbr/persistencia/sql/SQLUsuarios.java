@@ -14,7 +14,7 @@ public class SQLUsuarios {
 
 	private Connection conn;
 	
-	protected SQLUsuarios (Connection conn) throws PersistenciaException {
+	protected SQLUsuarios (Connection conn) {
 		this.conn = conn;
 	}
 	
