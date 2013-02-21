@@ -87,7 +87,7 @@ public class GestionTiposFrame extends JFrame {
 				me.setEnabled(false);
 			}
 		});
-		btnNuevobut.setToolTipText("newcasetype");
+		btnNuevobut.setToolTipText(bundle.getString("newcasetype"));
 		toolBar.add(btnNuevobut);
 		
 		JButton btnBorrarbut = new JButton(new ImageIcon("res/delete_32.png"));
@@ -123,7 +123,7 @@ public class GestionTiposFrame extends JFrame {
 			}
 		});
 		
-		btnBorrarbut.setToolTipText("delcasetype");
+		btnBorrarbut.setToolTipText(bundle.getString("delcasetype"));
 		toolBar.add(btnBorrarbut);
 		
 		contentPane.add(toolBar);

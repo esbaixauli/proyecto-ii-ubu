@@ -35,7 +35,7 @@ public class Recursos extends ListResourceBundle {
 		{"opunsuccess","The operation couldn't be completed."},
 		{"delunsuccesscause","The case type may have already been deleted by another user."},
 		
-		
+		{"attribute","Attribute"},
 		{"atname","Name"},
 		{"atweight","Weight"},
 		{"attype","Type"},
@@ -45,7 +45,13 @@ public class Recursos extends ListResourceBundle {
 		{"integer","Integer"},
 		{"string","Text string"},
 		{"decimal","Decimal number"},
-		{"incorrectformat","Incorrect format. Only letters [A-Z][a-z] and digits [0-9] are allowed."},
+
+		{"exitnosave","Exit without saving?"},
+		{"problem","Problem attributes"},
+		{"solution","Solution attributes"},
+		{"managemethods","Manage methods"},
+		
+		{"incorrectformat","Incorrect format in case name. Only letters [A-Z][a-z] and digits [0-9] are allowed."},
 		{"emptyatt","Please fill in every attribute field."},
 		
 		{"equal","Equality"},
