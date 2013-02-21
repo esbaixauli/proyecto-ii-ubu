@@ -18,7 +18,7 @@ public class SQLTipos {
 	
 	private Connection conn;
 	
-	protected SQLTipos (Connection conn) throws PersistenciaException {
+	protected SQLTipos (Connection conn) {
 		this.conn = conn;
 	}
 	

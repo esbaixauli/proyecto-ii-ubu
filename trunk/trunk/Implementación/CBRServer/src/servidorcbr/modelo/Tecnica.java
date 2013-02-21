@@ -9,6 +9,14 @@ public class Tecnica implements Serializable {
 	private String nombre;
 	private List<Parametro> params;
 	
+	public Tecnica () {
+		
+	}
+	
+	public Tecnica (String nomb) {
+		nombre = nomb;
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}
