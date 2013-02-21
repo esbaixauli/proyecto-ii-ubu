@@ -35,17 +35,22 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"opunsuccess","No se pudo completar la operación."},
 		{"delunsuccesscause","Es posible que el tipo de caso haya sido borrado por otro usuario."},
 		
+		{"attribute","Atributo"},
 		{"atname","Nombre"},
 		{"atweight","Peso"},
 		{"attype","Tipo"},
 		{"atmetric","Métrica"},
 		{"atmetricparam","Parámetro de la métrica"},
+		{"managemethods","Gestionar técnicas"},
 		
 		{"emptyatt","Por favor, rellene todos los campos de cada atributo."},
-		{"incorrectformat","Formato incorrecto. Sólo se permiten Letras [A-Z][a-z] y dígitos[0-9]"},
+		{"incorrectformat","Formato incorrecto en el nombre. Sólo se permiten Letras [A-Z][a-z] y dígitos[0-9]"},
 		{"integer","Número entero"},
 		{"string","Cadena de texto"},
 		{"decimal","Número decimal"},
+		{"exitnosave","¿Salir sin guardar?"},
+		{"problem","Atributos del problema"},
+		{"solution","Atributos de la solución"},
 		
 		{"equal","Igualdad"},
 		{"equalignorecase","Igualdad (Ignora Mayusculas)"},
