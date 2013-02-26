@@ -1,42 +1,32 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.text.ParseException;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.MaskFormatter;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.JTable;
-import javax.swing.BoxLayout;
-import javax.swing.JScrollPane;
 import javax.swing.JButton;
-import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Component;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JToolBar;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.JSeparator;
+
+import servidorcbr.modelo.Atributo;
+import servidorcbr.modelo.TipoCaso;
+import vista.panels.PanelAtributos;
+import vista.panels.ScrollPanelAtbo;
 
 public class NuevoTipoFrame extends JFrame {
 
@@ -54,6 +44,8 @@ public class NuevoTipoFrame extends JFrame {
 	private JSeparator separator;
 	private JSeparator separator_1;
 	private JSeparator separator_2;
+	
+	private TipoCaso tc;
 
 	/**
 	 * Create the frame.
@@ -61,6 +53,7 @@ public class NuevoTipoFrame extends JFrame {
 	public NuevoTipoFrame(final JFrame padre) {
 		setTitle(b.getString("newcasetype"));
 		this.padre = padre;
+		tc = new TipoCaso();
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 767, 361);
@@ -128,6 +121,16 @@ public class NuevoTipoFrame extends JFrame {
 		
 
 		btnTecnicas = new JButton(b.getString("managemethods"));
+		btnTecnicas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (comprobarPaneles()) {
+					rellenaTC();
+					JFrame f = new GestionTecnicasFrame(tc);
+					f.setVisible(true);
+					me.setEnabled(false);
+				}
+			}
+		});
 		GridBagConstraints gbc_btnTecnicas = new GridBagConstraints();
 		gbc_btnTecnicas.anchor = GridBagConstraints.NORTH;
 		gbc_btnTecnicas.fill = GridBagConstraints.HORIZONTAL;
@@ -172,24 +175,6 @@ public class NuevoTipoFrame extends JFrame {
 								}
 								return true;
 							}
-
-							private boolean comprobarPaneles() {
-								return comprobarPanel(panelProblema) && comprobarPanel(panelSolucion);
-							}
-							
-							private boolean comprobarPanel(ScrollPanelAtbo pan ){
-								PanelAtributos p;
-								for (int i = 0; i < pan.getPanelAtbo().getComponentCount(); i++) {
-									p = (PanelAtributos) pan.getPanelAtbo().getComponent(i);
-									if (!p.comprobarLleno()) {
-										JOptionPane.showMessageDialog(null,
-												b.getString("emptyatt"), "Error",
-												JOptionPane.ERROR_MESSAGE);
-										return false;
-									}
-								}
-								return true;
-							}
 						});
 						toolBar.add(btnGuardar);
 						JButton btnSalir = new JButton(new ImageIcon("res/left_32.png"));
@@ -225,6 +210,38 @@ public class NuevoTipoFrame extends JFrame {
 				}
 			}
 		});
+	}
+	
+	private boolean comprobarPaneles() {
+		return comprobarPanel(panelProblema) && comprobarPanel(panelSolucion);
+	}
+	
+	private boolean comprobarPanel(ScrollPanelAtbo pan ){
+		PanelAtributos p;
+		for (int i = 0; i < pan.getPanelAtbo().getComponentCount(); i++) {
+			p = (PanelAtributos) pan.getPanelAtbo().getComponent(i);
+			if (!p.comprobarLleno()) {
+				JOptionPane.showMessageDialog(null,
+						b.getString("emptyatt"), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private void rellenaTC() {
+		tc.setNombre(textField.getText());
+		HashMap<String,Atributo> atbos = new HashMap<String,Atributo>();
+		for (Component c : panelProblema.getPanelAtbo().getComponents())
+			System.out.println(c.getClass());
+		for (Component c : panelProblema.getPanelAtbo().getComponents()) {
+			PanelAtributos p = (PanelAtributos) c;
+			Atributo a = p.getAtributo();
+			a.setEsProblema(false);
+			atbos.put(a.getNombre(), a);
+		}
+		tc.setAtbos(atbos);
 	}
 
 }

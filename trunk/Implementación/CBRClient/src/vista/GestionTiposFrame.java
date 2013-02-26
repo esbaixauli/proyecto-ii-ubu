@@ -16,6 +16,7 @@ import controlador.ControlTipos;
 
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
+import vista.panels.ListaCasos;
 
 import java.awt.FlowLayout;
 import java.io.IOException;

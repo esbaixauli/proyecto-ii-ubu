@@ -71,6 +71,9 @@ public class Recursos extends ListResourceBundle {
 
 		{"configuremethod","Configure method"},
 		{"default","Default"},
+
+		{"attributethresholds","Attribute thresholds"},
+		{"emptyfield","No fields can remain empty"},
 		
 		{"login","Log in"}
 	};
