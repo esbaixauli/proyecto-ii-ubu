@@ -1,9 +1,14 @@
+package servidorcbr.controlador.generadorClases;
+
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.ArrayList;
+
+import jcolibri.cbrcore.Attribute;
+import jcolibri.cbrcore.CaseComponent;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -38,7 +43,10 @@ public class GeneradorClases {
 		}
 		return descriptor;
 	}
-
+	/* Permite crear una clase-
+	/* @param at Hashmap cuya clave es el tipo de datos. p.ej: String y cuyo valor es una
+	 * lista con los nombres de atributos de ese tipo de datos.
+	 * @param nombre nombre de la clase.*/
 	public static void crearClase(HashMap<String, ArrayList<String>> at,
 			String nombre) {
 		ClassWriter cw = new ClassWriter(0);
@@ -46,7 +54,7 @@ public class GeneradorClases {
 		// Version java, modificadores de clase,
 		// paquete/nombre,genericidad,superclase,interfaces implementadas
 		cw.visit(Opcodes.V1_7, Opcodes.ACC_PUBLIC, "generadas/" + nombre, null,
-				"java/lang/Object", new String[] { "CaseComponent" });
+				"java/lang/Object", new String[] { "jcolibri/cbrcore/CaseComponent" });
 
 		// Creo un constructor vacio para la clase
 		crearConstructor(cw);
@@ -67,7 +75,7 @@ public class GeneradorClases {
 				for (String atbo : actuales) {
 					// Descriptor del tipo de atributo
 					descriptor = getDescriptor(tipo);
-					// Visitante para los métodos, permite definir su código.
+					// Visitante para los mï¿½todos, permite definir su cï¿½digo.
 					MethodVisitor mv;
 					// Modificadores de acceso, nombre, descriptor del tipo,
 					// genericidad, modificador final
@@ -95,7 +103,7 @@ public class GeneradorClases {
 		byte[] clase = cw.toByteArray();
 		// Genero el fichero
 		try {
-			FileOutputStream f = new FileOutputStream("bin/generadas/" + nombre
+			FileOutputStream f = new FileOutputStream("generadas/" + nombre
 					+ ".class");
 			System.out.println("generando...");
 			f.write(clase);
@@ -106,9 +114,9 @@ public class GeneradorClases {
 		}
 	}
 
-	// Implementa atbos y métodos para el interfaz CaseComponent
+	// Implementa atbos y mï¿½todos para el interfaz CaseComponent
 	private static void implementarCaseComponent(ClassWriter cw, String nombre) {
-		String desc = Type.getDescriptor(Object.class);
+		String desc = Type.getDescriptor(jcolibri.cbrcore.Attribute.class);
 		// Modificadores de acceso, nombre, descriptor del tipo, genericidad,
 		// modificador final
 		cw.visitField(Opcodes.ACC_PUBLIC, "id", desc, null, null);
@@ -121,7 +129,7 @@ public class GeneradorClases {
 		crearSetter(mv, nombre, "id", desc);
 	}
 
-	// Crea un constructor vacío para la clase
+	// Crea un constructor vacï¿½o para la clase
 	private static void crearConstructor(ClassWriter cw) {
 		MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V",
 				null, null);
@@ -134,7 +142,7 @@ public class GeneradorClases {
 		mv.visitEnd();
 	}
 
-	// Visitante para el método, nombre completo de la clase, nombre del atbo,
+	// Visitante para el mï¿½todo, nombre completo de la clase, nombre del atbo,
 	// tipo del atbo
 	private static void crearGetter(MethodVisitor mv, String clase,
 			String nombre, String tipo) {
@@ -156,22 +164,40 @@ public class GeneradorClases {
 		mv.visitMaxs(2, 2);
 		mv.visitEnd();
 	}
-
+	//EJEMPLO
 	public static void main(String[] args) {
+		//Contiene un Hashmap tipo:lista de parametros de ese tipo
 		HashMap<String, ArrayList<String>> h = new HashMap<String, ArrayList<String>>();
+		//lista de parametros "String"
 		ArrayList<String> cadenas = new ArrayList<String>();
 		cadenas.add("atbo1");
 		cadenas.add("atbo2");
 		h.put("String", cadenas);
+		//lista de parametros "Integer"
+		ArrayList<String> enteros = new ArrayList<String>();
+		enteros.add("miid");
+		h.put("Integer", enteros);
+		
 		String nombreClase = "Prueba";
+		//Creo la clase. Sus atbos son atbo1,atbo2 (strings) y miid (integer)
 		GeneradorClases.crearClase(h, nombreClase);
 		try {
-			URL[] url = { new URL("file:bin/generadas/") };
-
-			Class<?> clase = new URLClassLoader(url).loadClass("generadas."
+			URL[] url = { new URL("file:C:/Users/RubÃ©n/workspace/CBRServer/") };
+			URLClassLoader classLoader = new URLClassLoader(url);
+			Class<?> clase = classLoader.loadClass("generadas."
 					+ nombreClase);
 			CaseComponent c = (CaseComponent) clase.newInstance();
-			c.getIdAttribute();
+			
+			//Obtengo un Integer "miid" que declare al principio.
+			clase.getDeclaredMethod("setMiid", Integer.class).invoke(c,
+					new Integer(5));
+			//Establezco que a partir de dicho "miid" (Integer) se ha de crear un atributo
+			//de tipo Attribute que contenga dicho integer.
+			clase.getDeclaredMethod("setIdAttribute", jcolibri.cbrcore.Attribute.class).invoke(c,
+					new Attribute("miid", c.getClass()));
+			//Compruebo que el attribute es dicho "miid"
+			System.out.println("El id es de tipo "+ c.getIdAttribute().getType()+" y su nombre"
+					+" es "+ c.getIdAttribute().getName());
 
 			clase.getDeclaredMethod("setAtbo1", String.class).invoke(c,
 					"Correcto");
@@ -179,7 +205,7 @@ public class GeneradorClases {
 			Method m = clase.getDeclaredMethod("getAtbo1", null);
 			System.out.println("El resultado del get es:" + m.invoke(c, null));
 			System.out.println("La clase invocada es:" + clase.getSimpleName());
-
+			classLoader.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
