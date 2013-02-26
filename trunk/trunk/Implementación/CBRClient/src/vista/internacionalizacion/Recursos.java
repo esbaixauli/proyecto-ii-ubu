@@ -61,6 +61,17 @@ public class Recursos extends ListResourceBundle {
 		{"threshold","Threshold"},
 		{"enterparam","This metric requires a numeric parameter. Please indicate it below."},
 		
+		{"retrieval","Retrieval"},
+		{"reuse","Reuse"},
+		{"revise","Revise"},
+		{"retain","Retain"},
+		
+		{"ok","Ok"},
+		{"cancel","Cancel"},
+
+		{"configuremethod","Configure method"},
+		{"default","Default"},
+		
 		{"login","Log in"}
 	};
 }
