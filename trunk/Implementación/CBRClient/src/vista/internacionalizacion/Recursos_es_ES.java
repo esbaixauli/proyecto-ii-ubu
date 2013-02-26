@@ -60,6 +60,17 @@ public class Recursos_es_ES extends ListResourceBundle {
 
 		{"enterparam","Esta métrica requiere un parámetro numérico. Por favor, indíquelo debajo."},
 		
+		{"retrieval","Recuperación"},
+		{"reuse","Reutilización"},
+		{"revise","Revisión"},
+		{"retain","Retención"},
+		
+		{"ok","Aceptar"},
+		{"cancel","Cancelar"},
+
+		{"configuremethod","Configurar técnica"},
+		{"default","Por defecto"},
+
 		{"login","Acceder"}
 	};
 }
