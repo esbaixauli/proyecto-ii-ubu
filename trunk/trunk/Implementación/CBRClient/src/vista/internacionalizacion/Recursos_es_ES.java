@@ -70,6 +70,9 @@ public class Recursos_es_ES extends ListResourceBundle {
 
 		{"configuremethod","Configurar técnica"},
 		{"default","Por defecto"},
+		
+		{"attributethresholds","Umbrales para los atributos"},
+		{"emptyfield","No puede quedar ningún campo vacío"},
 
 		{"login","Acceder"}
 	};

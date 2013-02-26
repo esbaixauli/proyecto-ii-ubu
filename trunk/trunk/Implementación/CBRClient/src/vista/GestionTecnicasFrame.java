@@ -14,6 +14,9 @@ import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 
+import servidorcbr.modelo.TipoCaso;
+import vista.panels.PanelTecnica;
+
 public class GestionTecnicasFrame extends JFrame {
 
 	private JPanel contentPane;
@@ -23,7 +26,7 @@ public class GestionTecnicasFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GestionTecnicasFrame() {
+	public GestionTecnicasFrame(TipoCaso tc) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 524);
 		setResizable(false);
@@ -41,23 +44,19 @@ public class GestionTecnicasFrame extends JFrame {
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
 		
-		//PanelTecnica panelRec = new PanelTecnica(b.getString("retrieval"), ControlTecnicas.getTecnicasRec());
-		PanelTecnica panelRec = new PanelTecnica("retrieval", ControlTecnicas.getTecnicasRec());
+		PanelTecnica panelRec = new PanelTecnica(b.getString("retrieval"), ControlTecnicas.getTecnicasRec(), tc, this);
 		gbc_panel.gridy = 0;
 		contentPane.add(panelRec, gbc_panel);
 		
-		//PanelTecnica panelReu = new PanelTecnica(b.getString("reuse"), ControlTecnicas.getTecnicasReu());
-		PanelTecnica panelReu = new PanelTecnica("reuse", ControlTecnicas.getTecnicasReu());
+		PanelTecnica panelReu = new PanelTecnica(b.getString("reuse"), ControlTecnicas.getTecnicasReu(), tc, this);
 		gbc_panel.gridy = 1;
 		contentPane.add(panelReu, gbc_panel);
 		
-		//PanelTecnica panelRev = new PanelTecnica(b.getString("revise"), ControlTecnicas.getTecnicasRev());
-		PanelTecnica panelRev = new PanelTecnica("revise", ControlTecnicas.getTecnicasRev());
+		PanelTecnica panelRev = new PanelTecnica(b.getString("revise"), ControlTecnicas.getTecnicasRev(), tc, this);
 		gbc_panel.gridy = 2;
 		contentPane.add(panelRev, gbc_panel);
 
-		//PanelTecnica panelRet = new PanelTecnica(b.getString("retain"), ControlTecnicas.getTecnicasRet());
-		PanelTecnica panelRet = new PanelTecnica("retain", ControlTecnicas.getTecnicasRet());
+		PanelTecnica panelRet = new PanelTecnica(b.getString("retain"), ControlTecnicas.getTecnicasRet(), tc, this);
 		gbc_panel.gridy = 3;
 		contentPane.add(panelRet, gbc_panel);
 		
@@ -65,26 +64,11 @@ public class GestionTecnicasFrame extends JFrame {
 		gbc_panel.gridy = 4;
 		contentPane.add(btnsPanel, gbc_panel);
 		
-		//JButton btnAceptar = new JButton(b.getString("ok"));
-		JButton btnAceptar = new JButton("Aceptar");
+		JButton btnAceptar = new JButton(b.getString("ok"));
 		btnsPanel.add(btnAceptar);
 		
-		//JButton btnCancelar = new JButton(b.getString("cancel"));
-		JButton btnCancelar = new JButton("Cancelar");
+		JButton btnCancelar = new JButton(b.getString("cancel"));
 		btnsPanel.add(btnCancelar);
-	}
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GestionTecnicasFrame frame = new GestionTecnicasFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 
 }
