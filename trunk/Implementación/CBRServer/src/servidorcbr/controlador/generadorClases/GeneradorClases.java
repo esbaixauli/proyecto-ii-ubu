@@ -17,8 +17,9 @@ import org.objectweb.asm.Type;
 
 public class GeneradorClases {
 
+	
 	// Auxiliar, establece los tipos permitidos para un atributo de la clase
-	private static ArrayList<String> establecerTipos() {
+	public static ArrayList<String> establecerTipos() {
 		ArrayList<String> tiposAtbo = new ArrayList<String>();
 		tiposAtbo.add("String");
 		tiposAtbo.add("Integer");
@@ -47,7 +48,7 @@ public class GeneradorClases {
 	/* @param at Hashmap cuya clave es el tipo de datos. p.ej: String y cuyo valor es una
 	 * lista con los nombres de atributos de ese tipo de datos.
 	 * @param nombre nombre de la clase.*/
-	public static void crearClase(HashMap<String, ArrayList<String>> at,
+	public static boolean crearClase(HashMap<String, ArrayList<String>> at,
 			String nombre) {
 		ClassWriter cw = new ClassWriter(0);
 
@@ -111,7 +112,9 @@ public class GeneradorClases {
 			f.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 
 	// Implementa atbos y m�todos para el interfaz CaseComponent
