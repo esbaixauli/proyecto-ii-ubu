@@ -1,4 +1,4 @@
-package vista;
+package vista.panels;
 
 import java.util.List;
 import java.util.Locale;
