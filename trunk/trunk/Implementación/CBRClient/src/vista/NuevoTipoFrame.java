@@ -125,7 +125,7 @@ public class NuevoTipoFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (comprobarPaneles()) {
 					rellenaTC();
-					JFrame f = new GestionTecnicasFrame(tc);
+					JFrame f = new GestionTecnicasFrame(tc, me);
 					f.setVisible(true);
 					me.setEnabled(false);
 				}
@@ -233,9 +233,13 @@ public class NuevoTipoFrame extends JFrame {
 	private void rellenaTC() {
 		tc.setNombre(textField.getText());
 		HashMap<String,Atributo> atbos = new HashMap<String,Atributo>();
-		for (Component c : panelProblema.getPanelAtbo().getComponents())
-			System.out.println(c.getClass());
 		for (Component c : panelProblema.getPanelAtbo().getComponents()) {
+			PanelAtributos p = (PanelAtributos) c;
+			Atributo a = p.getAtributo();
+			a.setEsProblema(true);
+			atbos.put(a.getNombre(), a);
+		}
+		for (Component c : panelSolucion.getPanelAtbo().getComponents()) {
 			PanelAtributos p = (PanelAtributos) c;
 			Atributo a = p.getAtributo();
 			a.setEsProblema(false);
