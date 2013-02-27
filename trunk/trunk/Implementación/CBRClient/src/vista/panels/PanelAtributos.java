@@ -1,4 +1,4 @@
-package vista;
+package vista.panels;
 
 import java.awt.Container;
 import java.awt.event.ItemEvent;
@@ -23,6 +23,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import javax.swing.JButton;
+
+import servidorcbr.modelo.Atributo;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.GridBagLayout;
@@ -36,6 +39,7 @@ public class PanelAtributos extends JPanel {
 	private JFormattedTextField formattedTextFieldPeso;
 	private JFormattedTextField formattedTextFieldParam;
 	private JComboBox comboBoxMetricas;
+	private JComboBox comboBoxTipo;
 	private JLabel lblParmetro;
 
 	private ResourceBundle b = ResourceBundle.getBundle(
@@ -123,7 +127,7 @@ public class PanelAtributos extends JPanel {
 			lblBorrar.setVisible(false);
 		}
 		
-		JComboBox comboBoxTipo = new JComboBox();
+		comboBoxTipo = new JComboBox();
 		GridBagConstraints gbc_comboBoxTipo = new GridBagConstraints();
 		gbc_comboBoxTipo.gridwidth = 2;
 		gbc_comboBoxTipo.anchor = GridBagConstraints.NORTH;
@@ -230,5 +234,18 @@ public class PanelAtributos extends JPanel {
 				|| formattedTextFieldPeso.getText().isEmpty()
 				|| (comboBoxMetricas.getSelectedIndex() == -1) || (formattedTextFieldParam
 				.isEnabled() && formattedTextFieldParam.getText().isEmpty()));
+	}
+	
+	public Atributo getAtributo() {
+		if (!comprobarLleno())
+			return null;
+		Atributo a = new Atributo();
+		a.setNombre(textFieldNombre.getText());
+		a.setMetrica(comboBoxMetricas.getSelectedItem().toString());
+		a.setTipo(comboBoxTipo.getSelectedItem().toString());
+		a.setPeso(new Double(formattedTextFieldPeso.getText()));
+		if (!formattedTextFieldParam.getText().isEmpty())
+			a.setParamMetrica(new Double(formattedTextFieldParam.getText()).doubleValue());
+		return a;
 	}
 }

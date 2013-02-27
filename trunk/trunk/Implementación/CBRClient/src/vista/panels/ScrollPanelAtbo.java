@@ -1,4 +1,4 @@
-package vista;
+package vista.panels;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;

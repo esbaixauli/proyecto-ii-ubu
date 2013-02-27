@@ -1,4 +1,4 @@
-package vista;
+package vista.panels;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -13,10 +13,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 
 import servidorcbr.modelo.Tecnica;
+import servidorcbr.modelo.TipoCaso;
+import vista.configtecnicas.DiverseByMedianConfigFrame;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -28,7 +33,7 @@ public class PanelTecnica extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelTecnica(String tipo, List<Tecnica> tecnicas) {
+	public PanelTecnica(String tipo, List<Tecnica> tecnicas, TipoCaso tc, JFrame padre) {
 		setLayout(new BorderLayout(0, 0));
 		setBorder(BorderFactory.createTitledBorder(tipo));
 		
@@ -46,10 +51,9 @@ public class PanelTecnica extends JPanel {
 			}
 			chkbxPanel.add(jcb);
 			
-			//JButton config = new JButton(b.getString("configuremethod"));
-			JButton config = new JButton("Configurar técnica");
+			JButton config = new JButton(b.getString("configuremethod"));
 			chkbxPanel.add(config);
-			configuraBotonConfig(config, tecnica);
+			configuraBotonConfig(config, tecnica, tc, padre);
 			
 			defaultComboBox.addItem(tecnica.getNombre());
 			
@@ -85,28 +89,28 @@ public class PanelTecnica extends JPanel {
 		
 		JPanel defPanel = new JPanel();
 		add(defPanel, BorderLayout.SOUTH);
-		//JLabel def = new JLabel(b.getString("defaultmethod"));
-		JLabel def = new JLabel("Por defecto:");
+		JLabel def = new JLabel(b.getString("default")+":");
 		defPanel.add(def);
 		defPanel.add(defaultComboBox);
 
 	}
 	
-	private void configuraBotonConfig(JButton b, Tecnica t) {
+	private void configuraBotonConfig(JButton b, final Tecnica t, final TipoCaso tc, final JFrame padre) {
 		switch (t.getNombre()) {
 		case "DiverseByMedianRetrieval":
+			b.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFrame f = new DiverseByMedianConfigFrame(t, tc, padre);
+					f.setVisible(true);
+					padre.setEnabled(false);
+				}
+			});
 			break;
 		case "FilterBasedRetrieval":
 			break;
 		case "LuceneRetrieval":
 			break;
 		case "NNretrieval":
-			break;
-		case "CombineQueryAndCasesMethod":
-			break;
-		case "DirectAttributeCopyMethod":
-			break;
-		case "NumericDirectProportionMethod":
 			break;
 		default:
 			b.setEnabled(false);
