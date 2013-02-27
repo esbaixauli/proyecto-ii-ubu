@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
+import vista.configtecnicas.FilterBasedConfigFrame;
+import vista.configtecnicas.LuceneConfigFrame;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -107,8 +109,22 @@ public class PanelTecnica extends JPanel {
 			});
 			break;
 		case "FilterBasedRetrieval":
+			b.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFrame f = new FilterBasedConfigFrame(t, tc, padre);
+					f.setVisible(true);
+					padre.setEnabled(false);
+				}
+			});
 			break;
 		case "LuceneRetrieval":
+			b.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFrame f = new LuceneConfigFrame(t, tc, padre);
+					f.setVisible(true);
+					padre.setEnabled(false);
+				}
+			});
 			break;
 		case "NNretrieval":
 			break;

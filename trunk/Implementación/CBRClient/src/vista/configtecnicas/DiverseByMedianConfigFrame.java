@@ -16,6 +16,7 @@ import java.awt.GridBagConstraints;
 import javax.swing.JSeparator;
 import java.awt.Insets;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +31,8 @@ import servidorcbr.modelo.TipoCaso;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class DiverseByMedianConfigFrame extends JFrame {
 
@@ -39,13 +42,22 @@ public class DiverseByMedianConfigFrame extends JFrame {
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
 	private final JFrame me = this;
+	private final NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
 
 	/**
 	 * Create the frame.
 	 */
 	public DiverseByMedianConfigFrame(final Tecnica t, TipoCaso tc, final JFrame padre) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				padre.setEnabled(true);
+				me.dispose();
+			}
+		});
 		setBounds(100, 100, 350, 300);
+		setTitle("Diverse by median retrieval");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -75,23 +87,24 @@ public class DiverseByMedianConfigFrame extends JFrame {
 						if (textFields.get(i).getText().equals("")) {
 							throw new Exception();
 						}
-						double d = new Double(textFields.get(i).getText());
+						double d = nf.parse(textFields.get(i).getText()).doubleValue();
 						Parametro p = new Parametro();
 						p.setNombre(atbos.get(i));
 						p.setValor(d);
 						params.add(p);
 					}
+					t.setParams(params);
+					padre.setEnabled(true);
+					me.dispose();
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, 
 							b.getString("emptyfield"),"Error", JOptionPane.ERROR_MESSAGE);
-					params = null;
 				}
-				t.setParams(params);
-				padre.setEnabled(true);
-				me.dispose();
 			}
 		});
 		panel_1.add(btnOk);
+		
+		me.getRootPane().setDefaultButton(btnOk);
 		
 		JButton btnCancel = new JButton(b.getString("cancel"));
 		btnCancel.addActionListener(new ActionListener() {
@@ -106,37 +119,50 @@ public class DiverseByMedianConfigFrame extends JFrame {
 		textFields = new ArrayList<JTextField>(tc.getAtbos().values().size());
 		atbos = new ArrayList<String>(tc.getAtbos().values().size());
 		for (Atributo a : tc.getAtbos().values()) {
-			atbos.add(a.getNombre());
-			
-			JSeparator separator = new JSeparator();
-			GridBagConstraints gbc_separator = new GridBagConstraints();
-			gbc_separator.insets = new Insets(0, 0, 5, 5);
-			gbc_separator.gridx = 0;
-			gbc_separator.gridy = i;
-			panel.add(separator, gbc_separator);
-			
-			i++;
+			if (a.getEsProblema()) {
+				atbos.add(a.getNombre());
 
-			JLabel lblAtbo = new JLabel(a.getNombre());
-			GridBagConstraints gbc_lblAtbo = new GridBagConstraints();
-			gbc_lblAtbo.insets = new Insets(0, 0, 0, 5);
-			gbc_lblAtbo.anchor = GridBagConstraints.EAST;
-			gbc_lblAtbo.gridx = 1;
-			gbc_lblAtbo.gridy = i;
-			panel.add(lblAtbo, gbc_lblAtbo);
+				JSeparator separator = new JSeparator();
+				GridBagConstraints gbc_separator = new GridBagConstraints();
+				gbc_separator.insets = new Insets(0, 0, 5, 5);
+				gbc_separator.gridx = 0;
+				gbc_separator.gridy = i;
+				panel.add(separator, gbc_separator);
 
-			JFormattedTextField tff = new JFormattedTextField();
-			tff.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat())));
-			GridBagConstraints gbc_textField = new GridBagConstraints();
-			gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-			gbc_textField.gridx = 2;
-			gbc_textField.gridy = i;
-			panel.add(tff, gbc_textField);
-			tff.setColumns(10);
-			textFields.add(tff);
-			tff.setText("1");
-			
-			i++;
+				i++;
+
+				JLabel lblAtbo = new JLabel(a.getNombre()+":");
+				GridBagConstraints gbc_lblAtbo = new GridBagConstraints();
+				gbc_lblAtbo.insets = new Insets(0, 0, 0, 5);
+				gbc_lblAtbo.anchor = GridBagConstraints.EAST;
+				gbc_lblAtbo.gridx = 1;
+				gbc_lblAtbo.gridy = i;
+				panel.add(lblAtbo, gbc_lblAtbo);
+
+				JFormattedTextField tff = new JFormattedTextField();
+				tff.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat())));
+				GridBagConstraints gbc_textField = new GridBagConstraints();
+				gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+				gbc_textField.gridx = 2;
+				gbc_textField.gridy = i;
+				panel.add(tff, gbc_textField);
+				tff.setColumns(10);
+				textFields.add(tff);
+				if (t.getParams() == null) {
+					tff.setText("1");
+				} else {
+					for (Parametro p : t.getParams()) {
+						if (p.getNombre().equals((a.getNombre()))) {
+							tff.setText(nf.format(p.getValor()));
+						}
+					}
+					if (tff.getText().equals("")) {
+						tff.setText("1");
+					}
+				}
+
+				i++;
+			}
 		}
 	}
 

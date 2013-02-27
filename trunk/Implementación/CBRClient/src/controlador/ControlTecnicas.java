@@ -35,4 +35,30 @@ public class ControlTecnicas {
 		return lista;
 	}
 	
+	/**
+	 * Devuelve una lista con los posibles predicados a aplicar a un atributo mediante FilterBased.
+	 * Los predicados se codifican en la bd en un decimal de la siguiente forma:
+	 * 0: Equal
+	 * 1: NotEqual
+	 * 2: OntologyCompatible
+	 * 3: QueryLess
+	 * 4: QueryLessOrEqual
+	 * 5: QueryMore
+	 * 6: QueryMoreOrEqual
+	 * 7+: Threshold (el umbral será el valor del decimal -7)
+	 * @return Lista de predicados implementados en JColibri.
+	 */
+	public static List<String> getFilterPredicates () {
+		List<String> lista = new ArrayList<String>();
+		lista.add("Equal");
+		lista.add("NotEqual");
+		lista.add("OntologyCompatible");
+		lista.add("QueryLess");
+		lista.add("QueryLessOrEqual");
+		lista.add("QueryMore");
+		lista.add("QueryMoreOrEqual");
+		lista.add("Threshold");
+		return lista;
+	}
+	
 }
