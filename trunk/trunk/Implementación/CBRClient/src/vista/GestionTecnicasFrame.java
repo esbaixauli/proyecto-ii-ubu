@@ -9,6 +9,8 @@ import javax.swing.border.EmptyBorder;
 import controlador.ControlTecnicas;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -22,12 +24,20 @@ public class GestionTecnicasFrame extends JFrame {
 	private JPanel contentPane;
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
+	private final JFrame me = this;
 
 	/**
 	 * Create the frame.
 	 */
-	public GestionTecnicasFrame(TipoCaso tc) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public GestionTecnicasFrame(TipoCaso tc, final JFrame padre) {
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				padre.setEnabled(true);
+				me.dispose();
+			}
+		});
 		setBounds(100, 100, 550, 524);
 		setResizable(false);
 		contentPane = new JPanel();
