@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -16,6 +17,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JComboBox;
@@ -41,6 +43,7 @@ public class PanelAtributos extends JPanel {
 	private JComboBox comboBoxMetricas;
 	private JComboBox comboBoxTipo;
 	private JLabel lblParmetro;
+	private Container scroll;
 
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
@@ -48,8 +51,9 @@ public class PanelAtributos extends JPanel {
 	
 	private JLabel lblBorrar= new JLabel("");
 
-	public PanelAtributos(final int numero, final Container padre) {
+	public PanelAtributos(final int numero, final Container padre, final Container scroll) {
 		super();
+		this.scroll =scroll;
 		this.padre = padre;
 		this.numero = numero;
 		setBorder(new TitledBorder(null, b.getString("attribute") + " "
@@ -193,8 +197,11 @@ public class PanelAtributos extends JPanel {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
 						padre.remove(me);
+						
+						try{
+							((JScrollPane)scroll).getVerticalScrollBar().setValue(0);
+						}catch(Exception e){}
 						padre.repaint();
-
 					}
 				});
 				lblBorrar.setIcon(new ImageIcon("res/delete_32.png"));
@@ -205,6 +212,7 @@ public class PanelAtributos extends JPanel {
 				gbc_lblBorrar.gridx = 6;
 				gbc_lblBorrar.gridy = 2;
 				add(lblBorrar, gbc_lblBorrar);
+				rellenarMetricas(comboBoxMetricas,"");
 	}
 
 	private void rellenarTipos(JComboBox<String> comboBox) {
@@ -247,5 +255,22 @@ public class PanelAtributos extends JPanel {
 		if (!formattedTextFieldParam.getText().isEmpty())
 			a.setParamMetrica(new Double(formattedTextFieldParam.getText()).doubleValue());
 		return a;
+	}
+	
+	//rellena el panel con un atributo.
+	//@param a atributo con el que se rellena.
+	//@param desactivar permite desactivar o no las partes del panel no modificables (tipo,nombre, etc).
+	public void setAtributo(Atributo a, boolean desactivar){
+		textFieldNombre.setText(a.getNombre());
+		comboBoxTipo.setSelectedItem(a.getTipo());
+		rellenarMetricas(comboBoxMetricas, a.getTipo());
+		comboBoxMetricas.setSelectedItem(a.getMetrica());
+		formattedTextFieldPeso.setText(NumberFormat.getInstance(b.getLocale()).format(a.getPeso()));
+		formattedTextFieldParam.setText(NumberFormat.getInstance(b.getLocale()).format(a.getPeso()));
+		if(desactivar){
+			textFieldNombre.setEnabled(false);
+			comboBoxTipo.setEnabled(false);
+			lblBorrar.setEnabled(false);
+		}
 	}
 }

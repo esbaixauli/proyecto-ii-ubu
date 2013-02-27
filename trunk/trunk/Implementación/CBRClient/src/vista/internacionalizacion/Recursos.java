@@ -26,14 +26,17 @@ public class Recursos extends ListResourceBundle {
 		{"nocasetypes","No case types available."},
 		{"availablecasetypes","Available case types"},
 		
+		{"seecasetype","Examine the selected case type."},
 		{"newcasetype","New case type."},
-		{"delcasetype","Delete selected case type."},
+		{"delcasetype","Delete the selected case type."},
 
 		{"noselection","No case type has been selected."},
 		{"delsure","Are you sure you want to delete the selected case type? Case data will be discarded."},
 		{"opsuccess","Operation completed successfully."},
 		{"opunsuccess","The operation couldn't be completed."},
 		{"delunsuccesscause","The case type may have already been deleted by another user."},
+		
+		{"repeatedatt","The name of each attribute may not be repeated."},
 		
 		{"attribute","Attribute"},
 		{"atname","Name"},
