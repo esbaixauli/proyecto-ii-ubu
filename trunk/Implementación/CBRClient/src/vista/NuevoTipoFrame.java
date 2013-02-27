@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.Color;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -213,7 +214,38 @@ public class NuevoTipoFrame extends JFrame {
 	}
 	
 	private boolean comprobarPaneles() {
-		return comprobarPanel(panelProblema) && comprobarPanel(panelSolucion);
+		return comprobarPanel(panelProblema) && comprobarPanel(panelSolucion) && comprobarNombresRepetidos();
+	}
+	
+	private boolean comprobarNombresRepetidos(){
+		HashMap<String,String> h = new HashMap<String,String>();
+		PanelAtributos p;
+		for(int i=0;i< panelProblema.getPanelAtbo().getComponentCount();i++){
+			p = (PanelAtributos) panelProblema.getPanelAtbo().getComponent(i);
+			Atributo a = p.getAtributo();
+			if(a!=null && h.containsKey(a.getNombre())){
+				JOptionPane.showMessageDialog(null,
+						b.getString("repeatedatt"), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}else{
+			
+				h.put(a.getNombre(),a.getNombre());
+			}			
+		}
+		for(int i=0;i< panelSolucion.getPanelAtbo().getComponentCount();i++){
+			p = (PanelAtributos) panelSolucion.getPanelAtbo().getComponent(i);
+			Atributo a = p.getAtributo();
+			if(a!=null && h.containsKey(a.getNombre())){
+				JOptionPane.showMessageDialog(null,
+						b.getString("repeatedatt"), "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}else{
+				h.put(a.getNombre(),a.getNombre());
+			}			
+		}
+		return true;
 	}
 	
 	private boolean comprobarPanel(ScrollPanelAtbo pan ){
@@ -247,5 +279,17 @@ public class NuevoTipoFrame extends JFrame {
 		}
 		tc.setAtbos(atbos);
 	}
+	
+	protected JTextField getTextFieldNombre(){
+		return textField;
+	}
+	
+	protected ScrollPanelAtbo getPanelProblema(){
+		return panelProblema;
+	}
+	protected ScrollPanelAtbo getPanelSolucion(){
+		return panelSolucion;
+	}
+	
 
 }

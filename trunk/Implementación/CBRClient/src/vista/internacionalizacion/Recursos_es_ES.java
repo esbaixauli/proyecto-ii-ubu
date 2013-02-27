@@ -26,6 +26,7 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"nocasetypes","No hay tipos de caso disponibles."},
 		{"availablecasetypes","Tipos de caso disponibles"},
 		
+		{"seecasetype","Examinar tipo de caso."},
 		{"newcasetype","Nuevo tipo de caso."},
 		{"delcasetype","Eliminar el tipo de caso seleccionado."},
 		
@@ -34,6 +35,8 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"opsuccess","Operación completada con éxito."},
 		{"opunsuccess","No se pudo completar la operación."},
 		{"delunsuccesscause","Es posible que el tipo de caso haya sido borrado por otro usuario."},
+		
+		{"repeatedatt","El nombre de cada atributo no puede repetirse."},
 		
 		{"attribute","Atributo"},
 		{"atname","Nombre"},

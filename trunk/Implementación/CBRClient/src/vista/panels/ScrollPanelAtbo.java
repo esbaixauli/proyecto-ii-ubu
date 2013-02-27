@@ -18,15 +18,21 @@ import javax.swing.UIManager;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 
+import servidorcbr.modelo.Atributo;
+
 public class ScrollPanelAtbo extends JPanel {
 	private JScrollPane scrollPane;
 	private JPanel panelAtbo;
 	private int numeroAtributo=0;
 	private JButton buttonMas;
+	private JPanel panelAtboInicial;
+	
 	
 	public JPanel getPanelAtbo(){
 		return panelAtbo;
 	}
+	
+	
 	
 	public ScrollPanelAtbo(String título, Color color){
 		super();
@@ -47,7 +53,7 @@ public class ScrollPanelAtbo extends JPanel {
 
 		panelAtbo = new JPanel();
 		panelAtbo.setLayout(new BoxLayout(panelAtbo, BoxLayout.Y_AXIS));
-		JPanel panelAtboInicial = new PanelAtributos(numeroAtributo,panelAtbo);
+		panelAtboInicial = new PanelAtributos(numeroAtributo,panelAtbo,scrollPane);
 		panelAtbo.add(panelAtboInicial);
 		scrollPane.setViewportView(panelAtbo);
 		
@@ -55,12 +61,36 @@ public class ScrollPanelAtbo extends JPanel {
 		buttonMas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				numeroAtributo++;
-				panelAtbo.add(new PanelAtributos(numeroAtributo,panelAtbo));
-				panelAtbo.repaint();
-				scrollPane.repaint();
-				panelAtbo.revalidate();
+				panelAtbo.add(new PanelAtributos(numeroAtributo,panelAtbo,scrollPane));
+				repintar();
 			}
 
 		});
+		
+	
+	}
+	
+	private void repintar(){
+		panelAtbo.repaint();
+		scrollPane.repaint();
+		panelAtbo.revalidate();
+	}
+	
+	public void desactivarComponentes(){
+		buttonMas.setEnabled(false);
+		panelAtbo.remove(panelAtboInicial);
+		repintar();
+	}
+	
+	//Añade programáticamente un atributo.
+	//@param a el atributo a añadir
+	//@param desactivar cierto si se desea desactivar las partes del panel no editable.
+	public void addAtributo(Atributo a, boolean desactivar){
+		numeroAtributo++;
+		PanelAtributos p = new PanelAtributos(numeroAtributo,panelAtbo,scrollPane);
+		p.setAtributo(a,desactivar);
+		panelAtbo.add(new PanelAtributos(numeroAtributo,panelAtbo,scrollPane));
+		
+		repintar();
 	}
 }

@@ -38,6 +38,7 @@ public class GestionTiposFrame extends JFrame {
 	private final JFrame padre;
 	private Usuario u;
 	private int ancho=250;
+	private List<TipoCaso> tipos=null;
 	
 	ResourceBundle bundle = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
@@ -45,6 +46,8 @@ public class GestionTiposFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public GestionTiposFrame(final Usuario u,final JFrame padre) {
+		setResizable(false);
+		setTitle(bundle.getString("managecasetypes"));
 		this.u=u;
 		this.padre=padre;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -52,7 +55,7 @@ public class GestionTiposFrame extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		List<TipoCaso> tipos=null;
+	    
 		try {
 			tipos = ControlTipos.obtenerTiposCaso(u);
 		} catch (MalformedURLException e) {
@@ -88,6 +91,23 @@ public class GestionTiposFrame extends JFrame {
 				me.setEnabled(false);
 			}
 		});
+		
+		JButton btnVerbut = new JButton(new ImageIcon("res/search_32.png"));
+		btnVerbut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(list.getSelectedValue()==null){
+					JOptionPane.showMessageDialog(null, 
+							bundle.getString("noselection"),bundle.getString("noselection"), JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				TipoCaso tcEscogido = tipos.get(list.getSelectedIndex());
+				JFrame nuevo = new VerTipoFrame(me,tcEscogido);
+				nuevo.setVisible(true);
+				me.setEnabled(false);
+			}
+		});
+		toolBar.add(btnVerbut);
+		btnVerbut.setToolTipText(bundle.getString("seecasetype"));
 		btnNuevobut.setToolTipText(bundle.getString("newcasetype"));
 		toolBar.add(btnNuevobut);
 		
