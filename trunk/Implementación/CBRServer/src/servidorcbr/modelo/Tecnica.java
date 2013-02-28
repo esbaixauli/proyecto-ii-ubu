@@ -8,7 +8,16 @@ public class Tecnica implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private List<Parametro> params;
+	private boolean enabled = true;
 	
+	public boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
 	public Tecnica () {
 		
 	}

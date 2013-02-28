@@ -9,13 +9,17 @@ import javax.swing.border.EmptyBorder;
 import controlador.ControlTecnicas;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 
+import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import vista.panels.PanelTecnica;
 
@@ -25,11 +29,16 @@ public class GestionTecnicasFrame extends JFrame {
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
 	private final JFrame me = this;
+	private List<Tecnica> tecnicasRec;
+	private List<Tecnica> tecnicasReu;
+	private List<Tecnica> tecnicasRev;
+	private List<Tecnica> tecnicasRet;
 
 	/**
 	 * Create the frame.
 	 */
-	public GestionTecnicasFrame(TipoCaso tc, final JFrame padre) {
+	public GestionTecnicasFrame(final TipoCaso tc, final JFrame padre) {
+		inicializaListas(tc);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -54,19 +63,19 @@ public class GestionTecnicasFrame extends JFrame {
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 0;
 		
-		PanelTecnica panelRec = new PanelTecnica(b.getString("retrieval"), ControlTecnicas.getTecnicasRec(), tc, this);
+		final PanelTecnica panelRec = new PanelTecnica(b.getString("retrieval"), tecnicasRec, tc.getDefaultRec(), tc, this);
 		gbc_panel.gridy = 0;
 		contentPane.add(panelRec, gbc_panel);
 		
-		PanelTecnica panelReu = new PanelTecnica(b.getString("reuse"), ControlTecnicas.getTecnicasReu(), tc, this);
+		final PanelTecnica panelReu = new PanelTecnica(b.getString("reuse"), tecnicasReu, tc.getDefaultReu(), tc, this);
 		gbc_panel.gridy = 1;
 		contentPane.add(panelReu, gbc_panel);
 		
-		PanelTecnica panelRev = new PanelTecnica(b.getString("revise"), ControlTecnicas.getTecnicasRev(), tc, this);
+		final PanelTecnica panelRev = new PanelTecnica(b.getString("revise"), tecnicasRev, tc.getDefaultRev(), tc, this);
 		gbc_panel.gridy = 2;
 		contentPane.add(panelRev, gbc_panel);
 
-		PanelTecnica panelRet = new PanelTecnica(b.getString("retain"), ControlTecnicas.getTecnicasRet(), tc, this);
+		final PanelTecnica panelRet = new PanelTecnica(b.getString("retain"), tecnicasRet, tc.getDefaultRet(), tc, this);
 		gbc_panel.gridy = 3;
 		contentPane.add(panelRet, gbc_panel);
 		
@@ -75,10 +84,62 @@ public class GestionTecnicasFrame extends JFrame {
 		contentPane.add(btnsPanel, gbc_panel);
 		
 		JButton btnAceptar = new JButton(b.getString("ok"));
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelRec.actualizaLista();
+				tc.setTecnicasRecuperacion(tecnicasRec);
+				tc.setDefaultRec(panelRec.getDefaultTecnica());
+				
+				panelReu.actualizaLista();
+				tc.setTecnicasReutilizacion(tecnicasReu);
+				tc.setDefaultReu(panelReu.getDefaultTecnica());
+				
+				panelRev.actualizaLista();
+				tc.setTecnicasRevision(tecnicasRev);
+				tc.setDefaultRev(panelRev.getDefaultTecnica());
+				
+				panelRet.actualizaLista();
+				tc.setTecnicasRetencion(tecnicasRet);
+				tc.setDefaultRet(panelRet.getDefaultTecnica());
+				
+				padre.setEnabled(true);
+				me.dispose();
+			}
+		});
 		btnsPanel.add(btnAceptar);
+		me.getRootPane().setDefaultButton(btnAceptar);
 		
 		JButton btnCancelar = new JButton(b.getString("cancel"));
+		btnCancelar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				padre.setEnabled(true);
+				me.dispose();
+			}
+		});
 		btnsPanel.add(btnCancelar);
+	}
+	
+	private void inicializaListas (TipoCaso tc) {
+		if (tc.getTecnicasRecuperacion() == null) {
+			tecnicasRec = ControlTecnicas.getTecnicasRec();
+		} else {
+			tecnicasRec = tc.getTecnicasRecuperacion();
+		}
+		if (tc.getTecnicasReutilizacion() == null) {
+			tecnicasReu = ControlTecnicas.getTecnicasReu();
+		} else {
+			tecnicasReu = tc.getTecnicasReutilizacion();
+		}
+		if (tc.getTecnicasRevision() == null) {
+			tecnicasRev = ControlTecnicas.getTecnicasRev();
+		} else {
+			tecnicasRev = tc.getTecnicasRevision();
+		}
+		if (tc.getTecnicasRetencion() == null) {
+			tecnicasRet = ControlTecnicas.getTecnicasRet();
+		} else {
+			tecnicasRet = tc.getTecnicasRetencion();
+		}
 	}
 
 }
