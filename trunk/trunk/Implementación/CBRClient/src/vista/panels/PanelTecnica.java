@@ -5,6 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 
 import javax.swing.JLabel;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -31,11 +33,17 @@ public class PanelTecnica extends JPanel {
 
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
+	private List<Tecnica> lista;
+	private List<JCheckBox> checkBoxes;
+	private JComboBox comboBox;
 	
 	/**
 	 * Create the panel.
 	 */
-	public PanelTecnica(String tipo, List<Tecnica> tecnicas, TipoCaso tc, JFrame padre) {
+	public PanelTecnica(String tipo, List<Tecnica> tecnicas, Tecnica defaultTec, TipoCaso tc, JFrame padre) {
+		lista = tecnicas;
+		checkBoxes = new ArrayList<JCheckBox>(tecnicas.size());
+		
 		setLayout(new BorderLayout(0, 0));
 		setBorder(BorderFactory.createTitledBorder(tipo));
 		
@@ -46,8 +54,13 @@ public class PanelTecnica extends JPanel {
 		final JComboBox defaultComboBox = new JComboBox();
 		defaultComboBox.setEditable(false);
 		
+		int enabled = 0;
 		for (Tecnica tecnica : tecnicas) {
-			JCheckBox jcb = new JCheckBox(tecnica.getNombre(), true);
+			JCheckBox jcb = new JCheckBox(tecnica.getNombre(), tecnica.getEnabled());
+			if (tecnica.getEnabled()) {
+				enabled++;
+			}
+			checkBoxes.add(jcb);
 			if (tecnicas.size() == 1) {
 				jcb.setEnabled(false);
 			}
@@ -57,7 +70,9 @@ public class PanelTecnica extends JPanel {
 			chkbxPanel.add(config);
 			configuraBotonConfig(config, tecnica, tc, padre);
 			
-			defaultComboBox.addItem(tecnica.getNombre());
+			if (tecnica.getEnabled()) {
+				defaultComboBox.addItem(tecnica.getNombre());
+			}
 			
 			jcb.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent e) {
@@ -89,12 +104,41 @@ public class PanelTecnica extends JPanel {
 			});
 		}
 		
+		if (enabled < 2) {
+			for (int i=0; i<tecnicas.size(); i++) {
+				if (tecnicas.get(i).getEnabled()) {
+					checkBoxes.get(i).setEnabled(false);
+				}
+			}
+		}
+		
 		JPanel defPanel = new JPanel();
 		add(defPanel, BorderLayout.SOUTH);
 		JLabel def = new JLabel(b.getString("default")+":");
 		defPanel.add(def);
 		defPanel.add(defaultComboBox);
-
+		comboBox = defaultComboBox;
+		
+		if (defaultTec != null) {
+			comboBox.setSelectedItem(defaultTec.getNombre());
+		}
+	}
+	
+	public void actualizaLista () {
+		for (int i=0; i<lista.size(); i++) {
+			if (checkBoxes.get(i).getText().equals(lista.get(i).getNombre())) {
+				lista.get(i).setEnabled(checkBoxes.get(i).isSelected());
+			}
+		}
+	}
+	
+	public Tecnica getDefaultTecnica () {
+		for (Tecnica t : lista) {
+			if (t.getNombre().equals(comboBox.getSelectedItem())) {
+				return t;
+			}
+		}
+		return null;
 	}
 	
 	private void configuraBotonConfig(JButton b, final Tecnica t, final TipoCaso tc, final JFrame padre) {

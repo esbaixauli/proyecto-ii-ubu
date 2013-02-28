@@ -55,4 +55,15 @@ public class ControlTipos {
 	      
 		return casos;
 	}
+	
+	public static boolean addTipo (TipoCaso tc) throws MalformedURLException, IOException {
+		URLConnection con = ControlConexion.getServletCon("ServletTipo");
+		OutputStream outputStream = con.getOutputStream();
+	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+	    oos.writeObject("newTipo");
+	    oos.writeObject(tc);
+	    InputStream inputStream = con.getInputStream();
+	    ObjectInputStream inputDelServlet = new ObjectInputStream(inputStream);
+	    return inputDelServlet.readBoolean();
+	}
 }
