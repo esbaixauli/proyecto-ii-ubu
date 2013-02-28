@@ -64,11 +64,6 @@ public class SQLTipos {
 			ps = conn.prepareStatement("SELECT id_parametro FROM caso_tecnica_parametro WHERE id_caso=?;");
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
-			while (rs.next()) {
-				ps = conn.prepareStatement("DELETE FROM parametro WHERE id=?;");
-				ps.setInt(1, rs.getInt("id_parametro"));
-				ps.executeUpdate();
-			}
 			
 			ps = conn.prepareStatement("DELETE FROM caso_tecnica_parametro WHERE id_caso=?;");
 			ps.setInt(1, id);
@@ -90,17 +85,17 @@ public class SQLTipos {
 		
 		try { 
 			PreparedStatement psT = conn
-					.prepareStatement("INSERT INTO caso (nombre) VALUES '?';");
+					.prepareStatement("INSERT INTO caso (nombre) VALUES ?;");
 			psT.setString(1, tc.getNombre());
 			exito = psT.executeUpdate();
 
 			PreparedStatement pst = conn
-					.prepareStatement("SELECT id FROM caso WHERE nombre='?';");
+					.prepareStatement("SELECT id FROM caso WHERE nombre=?;");
 			pst.setString(1, tc.getNombre());
 			ResultSet rs = pst.executeQuery();
 			int id = -1;
 			while (rs.next()) {
-				id = rs.getInt(0);
+				id = rs.getInt(1);
 			}
 			if (id == -1) {
 				throw new PersistenciaException("Error al insertar Tipo de Caso "+tc.getNombre());
@@ -108,7 +103,7 @@ public class SQLTipos {
 
 			for (Atributo a : tc.getAtbos().values()) {
 				PreparedStatement psA = conn
-						.prepareStatement("INSERT INTO atributo VALUES '?','?',?,'?',?,?,?;");
+						.prepareStatement("INSERT INTO atributo VALUES ?,?,?,?,?,?,?;");
 				psA.setString(1, a.getNombre());
 				psA.setString(2, a.getTipo());
 				psA.setDouble(3, a.getPeso());
@@ -136,35 +131,35 @@ public class SQLTipos {
 	private void addTecnicasDefault(int id, TipoCaso tc) throws SQLException {
 		int[] ids = new int[4];
 		
-		PreparedStatement ps = conn.prepareStatement("SELECT FROM tecnica WHERE nombre='?';");
+		PreparedStatement ps = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
 		ps.setString(1, tc.getDefaultRec().getNombre());
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
 			ids[0] = rs.getInt(1);
 		}
 		
-		ps = conn.prepareStatement("SELECT FROM tecnica WHERE nombre='?';");
+		ps = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
 		ps.setString(1, tc.getDefaultReu().getNombre());
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			ids[1] = rs.getInt(1);
 		}
 		
-		ps = conn.prepareStatement("SELECT FROM tecnica WHERE nombre='?';");
+		ps = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
 		ps.setString(1, tc.getDefaultRev().getNombre());
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			ids[2] = rs.getInt(1);
 		}
 		
-		ps = conn.prepareStatement("SELECT FROM tecnica WHERE nombre='?';");
+		ps = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
 		ps.setString(1, tc.getDefaultRet().getNombre());
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			ids[3] = rs.getInt(1);
 		}
 		
-		ps = conn.prepareStatement("UPDATE caso SET defaultRec='?',defaultReu='?',defaultRev='?',defaultRet='?' WHERE id=?;");
+		ps = conn.prepareStatement("UPDATE caso SET defaultRec=?,defaultReu=?,defaultRev=?,defaultRet=? WHERE id=?;");
 		ps.setInt(1, ids[0]);
 		ps.setInt(2, ids[1]);
 		ps.setInt(3, ids[2]);
@@ -282,7 +277,7 @@ public class SQLTipos {
 	private void addTecnicasCaso (int idCaso, List<Tecnica> lista, String tipo) throws SQLException, PersistenciaException {
 		for (Tecnica t : lista) {
 			int id = -1;
-			PreparedStatement pst = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre='?';");
+			PreparedStatement pst = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
 			pst.setString(1, t.getNombre());
 			ResultSet rs = pst.executeQuery();
 			while (rs.next()) {
@@ -292,17 +287,17 @@ public class SQLTipos {
 				id = addTecnica(t, tipo);
 			}
 			
-			for (Parametro p : t.getParams()) {
-				int idp = addParametro(p);
-				
-				PreparedStatement ps = conn.prepareStatement("INSERT INTO caso_tecnica_parametro VALUES (?,?,?);");
-				ps.setInt(1, idCaso);
-				ps.setInt(2, id);
-				ps.setInt(3, idp);
-				ps.executeQuery();
-			}
-			
-			if (t.getParams().isEmpty()) {
+			if (t.getParams() != null && (! t.getParams().isEmpty())) {
+				for (Parametro p : t.getParams()) {
+					int idp = addParametro(p);
+
+					PreparedStatement ps = conn.prepareStatement("INSERT INTO caso_tecnica_parametro VALUES (?,?,?);");
+					ps.setInt(1, idCaso);
+					ps.setInt(2, id);
+					ps.setInt(3, idp);
+					ps.executeQuery();
+				}
+			} else {
 				PreparedStatement ps = conn.prepareStatement("INSERT INTO caso_tecnica_parametro VALUES (?,?,0);");
 				ps.setInt(1, idCaso);
 				ps.setInt(2, id);
@@ -314,12 +309,12 @@ public class SQLTipos {
 	private int addParametro(Parametro p) throws SQLException,
 			PersistenciaException {
 		ResultSet rs;
-		PreparedStatement psp = conn.prepareStatement("INSERT INTO parametro(nombre,valor) VALUES('?',?);");
+		PreparedStatement psp = conn.prepareStatement("INSERT INTO parametro(nombre,valor) VALUES(?,?);");
 		psp.setString(1, p.getNombre());
 		psp.setDouble(2, p.getValor());
 		psp.executeUpdate();
 		
-		psp = conn.prepareStatement("SELECT MAX(id) FROM parametro WHERE nombre='?';");
+		psp = conn.prepareStatement("SELECT MAX(id) FROM parametro WHERE nombre=?;");
 		rs = psp.executeQuery();
 		int idp = -1;
 		while (rs.next()) {
@@ -336,12 +331,12 @@ public class SQLTipos {
 		int idt = -1;
 		PreparedStatement pst;
 		ResultSet rs;
-		pst = conn.prepareStatement("INSERT INTO tecnica(nombre,tipo) VALUES ('?','?');");
+		pst = conn.prepareStatement("INSERT INTO tecnica(nombre,tipo) VALUES (?,?);");
 		pst.setString(1, t.getNombre());
 		pst.setString(2, tipo);
 		pst.executeUpdate();
 		
-		pst = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre='?';");
+		pst = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
 		pst.setString(1, t.getNombre());
 		rs = pst.executeQuery();
 		while (rs.next()) {
