@@ -123,6 +123,8 @@ public class SQLTipos {
 			addTecnicasCaso(id, tc.getTecnicasReutilizacion(), "reu");
 			addTecnicasCaso(id, tc.getTecnicasRevision(), "rev");
 			addTecnicasCaso(id, tc.getTecnicasRetencion(), "ret");
+			
+			addTecnicasDefault(id, tc);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new PersistenciaException(ex);
@@ -131,6 +133,46 @@ public class SQLTipos {
 		return (exito == tc.getAtbos().size()+1);
 	}
 	
+	private void addTecnicasDefault(int id, TipoCaso tc) throws SQLException {
+		int[] ids = new int[4];
+		
+		PreparedStatement ps = conn.prepareStatement("SELECT FROM tecnica WHERE nombre='?';");
+		ps.setString(1, tc.getDefaultRec().getNombre());
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			ids[0] = rs.getInt(1);
+		}
+		
+		ps = conn.prepareStatement("SELECT FROM tecnica WHERE nombre='?';");
+		ps.setString(1, tc.getDefaultReu().getNombre());
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			ids[1] = rs.getInt(1);
+		}
+		
+		ps = conn.prepareStatement("SELECT FROM tecnica WHERE nombre='?';");
+		ps.setString(1, tc.getDefaultRev().getNombre());
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			ids[2] = rs.getInt(1);
+		}
+		
+		ps = conn.prepareStatement("SELECT FROM tecnica WHERE nombre='?';");
+		ps.setString(1, tc.getDefaultRet().getNombre());
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			ids[3] = rs.getInt(1);
+		}
+		
+		ps = conn.prepareStatement("UPDATE caso SET defaultRec='?',defaultReu='?',defaultRev='?',defaultRet='?' WHERE id=?;");
+		ps.setInt(1, ids[0]);
+		ps.setInt(2, ids[1]);
+		ps.setInt(3, ids[2]);
+		ps.setInt(4, ids[3]);
+		ps.setInt(5, id);
+		ps.executeUpdate();
+	}
+
 	private List<TipoCaso> getTipos(PreparedStatement ps) throws PersistenciaException {
 		List<TipoCaso> lista = null;
 		try {
