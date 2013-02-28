@@ -30,7 +30,7 @@ public class VerTipoFrame extends NuevoTipoFrame {
 	private void setAtbos(TipoCaso tc, boolean problema, ScrollPanelAtbo p) {
 		p.desactivarComponentes();
 		for (Atributo a : tc.getAtbos().values()) {
-			if(a.getEsProblema()== problema){
+			if(a.getEsProblema() == problema){
 				p.addAtributo(a, true);
 			}
 		}

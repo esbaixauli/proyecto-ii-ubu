@@ -13,6 +13,9 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"password", "Contraseña:"},
 		{"emptylogin","El nombre de usuario y la contraseña no pueden estar vacíos."},
 		{"connecterror","Error al conectar con el servidor."},
+		{"inserterror","Error al insertar. Compruebe la conexión y que el nombre del tipo de caso esté repetido."},
+		
+		
 		{"usernotfound","Usuario no encontrado o contraseña incorrecta."},
 		{"port","Puerto:"},
 		

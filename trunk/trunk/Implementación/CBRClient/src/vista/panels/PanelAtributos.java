@@ -5,6 +5,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -27,6 +28,7 @@ import javax.swing.text.NumberFormatter;
 import javax.swing.JButton;
 
 import servidorcbr.modelo.Atributo;
+import vista.TraductorTipos;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -50,6 +52,12 @@ public class PanelAtributos extends JPanel {
 	private Container padre;
 	
 	private JLabel lblBorrar= new JLabel("");
+	
+	public PanelAtributos(final int numero, final Container padre, final Container scroll,
+			Atributo a){
+		this(numero, padre, scroll);
+		setAtributo(a, true);
+	}
 
 	public PanelAtributos(final int numero, final Container padre, final Container scroll) {
 		super();
@@ -249,11 +257,16 @@ public class PanelAtributos extends JPanel {
 			return null;
 		Atributo a = new Atributo();
 		a.setNombre(textFieldNombre.getText());
-		a.setMetrica(comboBoxMetricas.getSelectedItem().toString());
-		a.setTipo(comboBoxTipo.getSelectedItem().toString());
-		a.setPeso(new Double(formattedTextFieldPeso.getText()));
+		a.setTipo(TraductorTipos.indiceATipo(comboBoxTipo.getSelectedIndex()));
+		a.setMetrica(TraductorTipos.indiceAMétrica(
+				comboBoxMetricas.getSelectedIndex(), comboBoxTipo.getSelectedIndex()));
+	
+		try {
+			a.setPeso(NumberFormat.getInstance(b.getLocale()).parse(formattedTextFieldPeso.getText()).doubleValue() );
+		
 		if (!formattedTextFieldParam.getText().isEmpty())
-			a.setParamMetrica(new Double(formattedTextFieldParam.getText()).doubleValue());
+			a.setParamMetrica(NumberFormat.getInstance(b.getLocale()).parse(formattedTextFieldParam.getText()).doubleValue() );
+		}catch (ParseException e) {}
 		return a;
 	}
 	
@@ -262,15 +275,19 @@ public class PanelAtributos extends JPanel {
 	//@param desactivar permite desactivar o no las partes del panel no modificables (tipo,nombre, etc).
 	public void setAtributo(Atributo a, boolean desactivar){
 		textFieldNombre.setText(a.getNombre());
-		comboBoxTipo.setSelectedItem(a.getTipo());
-		rellenarMetricas(comboBoxMetricas, a.getTipo());
-		comboBoxMetricas.setSelectedItem(a.getMetrica());
+		comboBoxTipo.setSelectedItem(b.getString(TraductorTipos.persistenciaAVista(a.getTipo())));
+		rellenarMetricas(comboBoxMetricas, b.getString(TraductorTipos.persistenciaAVista(a.getTipo())));
+		comboBoxMetricas.setSelectedItem(b.getString(a.getMetrica()));
 		formattedTextFieldPeso.setText(NumberFormat.getInstance(b.getLocale()).format(a.getPeso()));
-		formattedTextFieldParam.setText(NumberFormat.getInstance(b.getLocale()).format(a.getPeso()));
+		formattedTextFieldParam.setText(NumberFormat.getInstance(b.getLocale()).format(a.getParamMetrica()));
 		if(desactivar){
 			textFieldNombre.setEnabled(false);
 			comboBoxTipo.setEnabled(false);
-			lblBorrar.setEnabled(false);
+			lblBorrar.setVisible(false);
 		}
+	
+		
+		
+		
 	}
 }

@@ -39,6 +39,7 @@ public class GestionTiposFrame extends JFrame {
 	private Usuario u;
 	private int ancho=250;
 	private List<TipoCaso> tipos=null;
+	private ListaCasos list;
 	
 	ResourceBundle bundle = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
@@ -72,7 +73,7 @@ public class GestionTiposFrame extends JFrame {
 		
 		}
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-		final ListaCasos list = new ListaCasos(tipos);
+		 list = new ListaCasos(tipos);
 		
 		
 		contentPane.add(list);
@@ -160,4 +161,18 @@ public class GestionTiposFrame extends JFrame {
 		
 	}
 
+	
+	@Override
+	public void setEnabled(boolean b) {
+		super.setEnabled(b);
+		if(b){
+			try {
+				tipos=ControlTipos.obtenerTiposCaso(u);
+			} catch (IOException ex){
+				JOptionPane.showMessageDialog(null, 
+						bundle.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
+			}
+			list.refrescarDatos(tipos);
+		}
+	}
 }
