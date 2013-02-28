@@ -88,9 +88,9 @@ public class ScrollPanelAtbo extends JPanel {
 	public void addAtributo(Atributo a, boolean desactivar){
 		numeroAtributo++;
 		PanelAtributos p = new PanelAtributos(numeroAtributo,panelAtbo,scrollPane);
-		p.setAtributo(a,desactivar);
-		panelAtbo.add(new PanelAtributos(numeroAtributo,panelAtbo,scrollPane));
-		
+		p.setAtributo(a, desactivar);
+		panelAtbo.add(p);
 		repintar();
+		
 	}
 }

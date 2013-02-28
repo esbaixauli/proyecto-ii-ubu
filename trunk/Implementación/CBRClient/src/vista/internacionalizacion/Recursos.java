@@ -13,6 +13,7 @@ public class Recursos extends ListResourceBundle {
 		{"password", "Password:"},
 		{"emptylogin","Username and password may not be empty."},
 		{"connecterror","Error while connecting to server."},
+		{"inserterror","Error while inserting. Check the connection status and that the case name is not repeated."},
 		{"usernotfound","User not found or wrong password."},
 		{"port","Port:"},
 		
