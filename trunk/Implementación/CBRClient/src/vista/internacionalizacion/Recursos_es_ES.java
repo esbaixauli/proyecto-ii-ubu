@@ -14,10 +14,10 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"emptylogin","El nombre de usuario y la contraseña no pueden estar vacíos."},
 		{"connecterror","Error al conectar con el servidor."},
 		{"inserterror","Error al insertar. Compruebe la conexión y que el nombre del tipo de caso esté repetido."},
-		
-		
 		{"usernotfound","Usuario no encontrado o contraseña incorrecta."},
+		{"notconfigured","No es posible insertar un tipo de caso hasta que no se hayan definido sus técnicas."},
 		{"port","Puerto:"},
+		{"admin","Administración"},
 		
 		{"managecasetypes","Gestionar tipos de caso"},
 		{"manageusers","Gestionar usuarios"},

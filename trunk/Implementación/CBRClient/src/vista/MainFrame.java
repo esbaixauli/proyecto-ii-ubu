@@ -30,6 +30,7 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.BorderLayout;
 import javax.swing.UIManager;
 import java.awt.Color;
+import java.awt.SystemColor;
 
 public class MainFrame extends JFrame{
 
@@ -58,7 +59,7 @@ public class MainFrame extends JFrame{
 	            "vista.internacionalizacion.Recursos", l);
 		setTitle(bundle.getString("mainmenu"));
 		setResizable(false);
-		setBounds(100, 100, 207, 269);
+		setBounds(100, 100, 194, 286);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -68,9 +69,14 @@ public class MainFrame extends JFrame{
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel panel_adm = new JPanel();
-		panel_adm.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Administraci\u00F3n", TitledBorder.CENTER, TitledBorder.TOP, null, UIManager.getColor("ProgressBar.selectionBackground")));
+		panel_adm.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), bundle.getString("admin"), TitledBorder.CENTER, TitledBorder.TOP, null, SystemColor.textHighlight));
 		panel.add(panel_adm);
-		panel_adm.setLayout(new BoxLayout(panel_adm, BoxLayout.Y_AXIS));
+		GridBagLayout gbl_panel_adm = new GridBagLayout();
+		gbl_panel_adm.columnWidths = new int[]{87, 0};
+		gbl_panel_adm.rowHeights = new int[]{23, 23, 23, 0};
+		gbl_panel_adm.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_adm.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_adm.setLayout(gbl_panel_adm);
 		
 		JButton btnGestionarTipos = new JButton(bundle.getString("managecasetypes"));
 		btnGestionarTipos.addActionListener(new ActionListener() {
@@ -80,32 +86,74 @@ public class MainFrame extends JFrame{
 				me.setEnabled(false);
 			}
 		});
-		panel_adm.add(btnGestionarTipos);
+		GridBagConstraints gbc_btnGestionarTipos = new GridBagConstraints();
+		gbc_btnGestionarTipos.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnGestionarTipos.insets = new Insets(0, 0, 5, 0);
+		gbc_btnGestionarTipos.gridx = 0;
+		gbc_btnGestionarTipos.gridy = 0;
+		panel_adm.add(btnGestionarTipos, gbc_btnGestionarTipos);
 		
 		JButton btnGestionarusuarios = new JButton(bundle.getString("manageusers"));
-		panel_adm.add(btnGestionarusuarios);
+		GridBagConstraints gbc_btnGestionarusuarios = new GridBagConstraints();
+		gbc_btnGestionarusuarios.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnGestionarusuarios.insets = new Insets(0, 0, 5, 0);
+		gbc_btnGestionarusuarios.gridx = 0;
+		gbc_btnGestionarusuarios.gridy = 1;
+		panel_adm.add(btnGestionarusuarios, gbc_btnGestionarusuarios);
 		
 		JButton btnEstadisticas = new JButton(bundle.getString("stats"));
-		panel_adm.add(btnEstadisticas);
+		GridBagConstraints gbc_btnEstadisticas = new GridBagConstraints();
+		gbc_btnEstadisticas.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnEstadisticas.gridx = 0;
+		gbc_btnEstadisticas.gridy = 2;
+		panel_adm.add(btnEstadisticas, gbc_btnEstadisticas);
 		
 		JPanel panel_cbr = new JPanel();
-		panel_cbr.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CBR", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 153, 255)));
+		panel_cbr.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "CBR", TitledBorder.CENTER, TitledBorder.TOP, null, SystemColor.textHighlight));
 		panel.add(panel_cbr);
-		panel_cbr.setLayout(new BoxLayout(panel_cbr, BoxLayout.Y_AXIS));
+		GridBagLayout gbl_panel_cbr = new GridBagLayout();
+		gbl_panel_cbr.columnWidths = new int[]{87, 0};
+		gbl_panel_cbr.rowHeights = new int[]{23, 23, 0};
+		gbl_panel_cbr.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_cbr.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		panel_cbr.setLayout(gbl_panel_cbr);
 		
 		JButton btnCicloConfigurado = new JButton(bundle.getString("configuredcycle"));
-		panel_cbr.add(btnCicloConfigurado);
+		GridBagConstraints gbc_btnCicloConfigurado = new GridBagConstraints();
+		gbc_btnCicloConfigurado.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnCicloConfigurado.insets = new Insets(0, 0, 5, 0);
+		gbc_btnCicloConfigurado.gridx = 0;
+		gbc_btnCicloConfigurado.gridy = 0;
+		panel_cbr.add(btnCicloConfigurado, gbc_btnCicloConfigurado);
 		
 		JButton btnCicloPorDefecto = new JButton(bundle.getString("defaultcycle"));
-		panel_cbr.add(btnCicloPorDefecto);
+		GridBagConstraints gbc_btnCicloPorDefecto = new GridBagConstraints();
+		gbc_btnCicloPorDefecto.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnCicloPorDefecto.gridx = 0;
+		gbc_btnCicloPorDefecto.gridy = 1;
+		panel_cbr.add(btnCicloPorDefecto, gbc_btnCicloPorDefecto);
+		
+		JPanel panel_1 = new JPanel();
+		panel.add(panel_1);
+		GridBagLayout gbl_panel_1 = new GridBagLayout();
+		gbl_panel_1.columnWidths = new int[]{87, 0};
+		gbl_panel_1.rowHeights = new int[]{23, 0};
+		gbl_panel_1.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panel_1.setLayout(gbl_panel_1);
 		
 		JButton btnSalir = new JButton(bundle.getString("exit"));
+		GridBagConstraints gbc_btnSalir = new GridBagConstraints();
+		gbc_btnSalir.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnSalir.anchor = GridBagConstraints.NORTH;
+		gbc_btnSalir.gridx = 0;
+		gbc_btnSalir.gridy = 0;
+		panel_1.add(btnSalir, gbc_btnSalir);
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				me.dispose();
 			}
 		});
-		panel.add(btnSalir);
 		
 		if(! u.getTipo().equals(TipoUsuario.ADMINISTRADOR)){
 			panel_adm.setVisible(false);

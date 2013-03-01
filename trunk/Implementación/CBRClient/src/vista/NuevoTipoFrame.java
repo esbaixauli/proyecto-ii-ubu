@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -148,6 +149,7 @@ public class NuevoTipoFrame extends JFrame {
 
 		toolBar = new JToolBar();
 		toolBar.setFloatable(false);
+		toolBar.setBorder(BorderFactory.createEtchedBorder() );
 		GridBagConstraints gbc_toolBar = new GridBagConstraints();
 		gbc_toolBar.insets = new Insets(0, 0, 5, 0);
 		gbc_toolBar.gridwidth = 5;
@@ -158,8 +160,15 @@ public class NuevoTipoFrame extends JFrame {
 		JButton btnGuardar = new JButton(new ImageIcon("res/save_32.png"));
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (comprobarTextField() && comprobarPaneles() && tc.getTecnicasRecuperacion()!=null) {
+				if( tc.getTecnicasRecuperacion()==null){
+					JOptionPane.showMessageDialog(null,
+							b.getString("notconfigured"), "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				if (comprobarTextField() && comprobarPaneles() ) {
 					HashMap<String, Atributo> atbos = new HashMap<String,Atributo>();
+					//Obtengo los atributos del problema
 					for (int i = 0; i < panelProblema.getPanelAtbo()
 							.getComponentCount(); i++) {
 						Atributo actual = ((PanelAtributos) panelProblema
@@ -167,6 +176,7 @@ public class NuevoTipoFrame extends JFrame {
 						actual.setEsProblema(true);
 						atbos.put(actual.getNombre(),actual);
 					}
+					//Obtengo los atributos de la solución
 					for (int i = 0; i < panelSolucion.getPanelAtbo()
 							.getComponentCount(); i++) {
 						Atributo actual = ((PanelAtributos) panelSolucion
@@ -174,10 +184,11 @@ public class NuevoTipoFrame extends JFrame {
 						actual.setEsProblema(false);
 						atbos.put(actual.getNombre(),actual);
 					}
-					
+					//Establezco los atributos y el nombre del tipo de caso
 					tc.setAtbos(atbos);
 					tc.setNombre(textField.getText().trim());
 					try{
+					//Inserto el tipo de caso
 					ControlTipos.addTipo(tc);
 					}catch(java.io.IOException exc){
 						JOptionPane.showMessageDialog(null,
@@ -185,6 +196,7 @@ public class NuevoTipoFrame extends JFrame {
 								JOptionPane.ERROR_MESSAGE);
 						exc.printStackTrace();
 					}
+					//Activo al padre y cierro la ventana actual
 					padre.setEnabled(true);
 					me.dispose();
 				}
