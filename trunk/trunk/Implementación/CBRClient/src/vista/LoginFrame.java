@@ -33,6 +33,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import servidorcbr.modelo.Usuario;
 
@@ -59,6 +61,14 @@ public class LoginFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					 try {
+							UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+						
+						} catch (UnsupportedLookAndFeelException e) {		
+							   UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+						} catch (ClassNotFoundException ex){
+							   UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+						}
 					LoginFrame frame = new LoginFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -74,11 +84,12 @@ public class LoginFrame extends JFrame {
 	 */
 	public LoginFrame() {
 		
-	
+
+       
 		setResizable(false);
 		setTitle(bundle.getString("login"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 243, 270);
+		setBounds(100, 100, 243, 239);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -108,31 +119,39 @@ public class LoginFrame extends JFrame {
 				FormFactory.DEFAULT_ROWSPEC,}));
 		
 		JLabel lblNombre = new JLabel(bundle.getString("name"));
-		contentPane.add(lblNombre, "2, 6, right, default");
+		contentPane.add(lblNombre, "2, 2, right, default");
 		
 		textFieldNombre = new JTextField();
-		contentPane.add(textFieldNombre, "4, 6, fill, default");
+		contentPane.add(textFieldNombre, "4, 2, fill, default");
 		textFieldNombre.setColumns(10);
 		
 		JLabel lblContrasea = new JLabel(bundle.getString("password"));
-		contentPane.add(lblContrasea, "2, 8, right, default");
+		contentPane.add(lblContrasea, "2, 4, right, default");
 		
 		textFieldPass = new JPasswordField();
-		contentPane.add(textFieldPass, "4, 8, fill, default");
+		contentPane.add(textFieldPass, "4, 4, fill, default");
 		textFieldPass.setColumns(10);
 		
 		final JComboBox comboBox = new JComboBox();
 		
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Español", "English"}));
-		contentPane.add(comboBox, "2, 10, 3, 1, fill, default");
+		contentPane.add(comboBox, "2, 6, 3, 1, fill, default");
 		
 		JLabel lblIp = new JLabel("IP:");
-		contentPane.add(lblIp, "2, 12, right, default");
+		contentPane.add(lblIp, "2, 8, right, default");
 		
 		ipTextField = new JTextField();
 		ipTextField.setText("localhost");
-		contentPane.add(ipTextField, "4, 12, fill, default");
+		contentPane.add(ipTextField, "4, 8, fill, default");
 		ipTextField.setColumns(10);
+		
+		JLabel lblPuerto = new JLabel(bundle.getString("port"));
+		contentPane.add(lblPuerto, "2, 10, right, default");
+		
+		puertoTextField = new JTextField();
+		puertoTextField.setText("8080");
+		contentPane.add(puertoTextField, "4, 10, left, default");
+		puertoTextField.setColumns(10);
 		
 		JButton btnAcceso = new JButton(bundle.getString("login"));
 		
@@ -179,15 +198,7 @@ public class LoginFrame extends JFrame {
 		
 		me.getRootPane().setDefaultButton(btnAcceso);
 		
-		JLabel lblPuerto = new JLabel(bundle.getString("port"));
-		contentPane.add(lblPuerto, "2, 14, right, default");
-		
-		puertoTextField = new JTextField();
-		puertoTextField.setText("8080");
-		contentPane.add(puertoTextField, "4, 14, left, default");
-		puertoTextField.setColumns(10);
-		
-		contentPane.add(btnAcceso, "2, 16, 3, 1");
+		contentPane.add(btnAcceso, "2, 14, 3, 1");
 	}
 
 }

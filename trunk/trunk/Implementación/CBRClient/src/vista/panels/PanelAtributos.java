@@ -15,6 +15,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -53,6 +54,9 @@ public class PanelAtributos extends JPanel {
 	
 	private JLabel lblBorrar= new JLabel("");
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public PanelAtributos(final int numero, final Container padre, final Container scroll,
 			Atributo a){
 		this(numero, padre, scroll);
@@ -64,8 +68,10 @@ public class PanelAtributos extends JPanel {
 		this.scroll =scroll;
 		this.padre = padre;
 		this.numero = numero;
-		setBorder(new TitledBorder(null, b.getString("attribute") + " "
-				+ numero, TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		TitledBorder titled = BorderFactory.createTitledBorder(	BorderFactory.createEtchedBorder(), 
+				b.getString("attribute") +" "+ numero,TitledBorder.CENTER,TitledBorder.TOP);
+			
+		setBorder(titled);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 59, 148, 69, 59, 49, 50, 25, 0 };
 		gridBagLayout.rowHeights = new int[] { 20, 20, 0, 1, 0 };

@@ -38,6 +38,7 @@ public class GestionTecnicasFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public GestionTecnicasFrame(final TipoCaso tc, final JFrame padre) {
+		setTitle(b.getString("managemethods"));
 		inicializaListas(tc);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {

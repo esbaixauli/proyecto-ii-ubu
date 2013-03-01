@@ -3,6 +3,7 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,6 +31,8 @@ import javax.swing.BoxLayout;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class GestionTiposFrame extends JFrame {
 
@@ -52,7 +55,7 @@ public class GestionTiposFrame extends JFrame {
 		this.u=u;
 		this.padre=padre;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 314, 314);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -73,13 +76,19 @@ public class GestionTiposFrame extends JFrame {
 		
 		}
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		 
+		 JScrollPane scrollPane = new JScrollPane();
+		 scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		 contentPane.add(scrollPane);
 		 list = new ListaCasos(tipos);
-		
-		
-		contentPane.add(list);
+		 scrollPane.setViewportView(list);
+		 
+		 		
+		 		list.setFixedCellWidth(ancho);
 		
 		
 		JToolBar toolBar = new JToolBar("ToolBar",JToolBar.HORIZONTAL);
+		toolBar.setBorder(BorderFactory.createEtchedBorder() );
 
 
 		toolBar.setFloatable(false);
@@ -149,9 +158,6 @@ public class GestionTiposFrame extends JFrame {
 		toolBar.add(btnBorrarbut);
 		
 		contentPane.add(toolBar);
-
-		
-		list.setFixedCellWidth(ancho);
 		addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent e) {
                 padre.setEnabled(true);

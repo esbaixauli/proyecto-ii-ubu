@@ -48,7 +48,7 @@ public class TablaAtributos extends JTable {
 		columnaPeso.setCellEditor(new NumberCellEditor());
 	    getTableHeader().setReorderingAllowed(false); 
 	    
-
+	 
 		final JComboBox<String> comboBoxMet = new JComboBox<String>();
 
 		TableColumn columnaMet = getColumnModel().getColumn(3);

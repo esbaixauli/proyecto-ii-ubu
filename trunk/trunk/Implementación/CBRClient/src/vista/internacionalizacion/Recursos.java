@@ -15,7 +15,10 @@ public class Recursos extends ListResourceBundle {
 		{"connecterror","Error while connecting to server."},
 		{"inserterror","Error while inserting. Check the connection status and that the case name is not repeated."},
 		{"usernotfound","User not found or wrong password."},
+		{"notconfigured","Inserting a case type is not possible until its methods have been defined."},
+		
 		{"port","Port:"},
+		{"admin","Administration"},
 		
 		{"managecasetypes","Manage case types"},
 		{"manageusers","Manage users"},

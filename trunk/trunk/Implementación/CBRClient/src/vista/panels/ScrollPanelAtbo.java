@@ -54,6 +54,7 @@ public class ScrollPanelAtbo extends JPanel {
 		panelAtbo = new JPanel();
 		panelAtbo.setLayout(new BoxLayout(panelAtbo, BoxLayout.Y_AXIS));
 		panelAtboInicial = new PanelAtributos(numeroAtributo,panelAtbo,scrollPane);
+
 		panelAtbo.add(panelAtboInicial);
 		scrollPane.setViewportView(panelAtbo);
 		
