@@ -75,7 +75,7 @@ public class SQLFacade {
 	}
 	
 	public boolean modifyTipo(TipoCaso tc) throws PersistenciaException{
-		return modifyTipo(tc);
+		return sqlTipos.updateTipoCaso(tc);
 	}
 	
 }

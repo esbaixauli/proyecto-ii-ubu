@@ -46,13 +46,16 @@ public class SQLTipos {
 		return getTipos(ps);
 	}
 	
-	private int buscarIdTipo(String nombre) throws SQLException{
-		PreparedStatement ps = conn.prepareStatement("SELECT id FROM caso WHERE nombre=?;");
+	private int buscarId(String tabla, String nombre) throws SQLException, PersistenciaException {
+		PreparedStatement ps = conn.prepareStatement("SELECT id FROM "+tabla+" WHERE nombre=?;");
 		ps.setString(1, nombre);
 		ResultSet rs = ps.executeQuery();
 		int id = -1;
 		while (rs.next()) {
 			id = rs.getInt("id");
+		}
+		if (id == -1) {
+			throw new PersistenciaException("Error al buscar el "+tabla+" "+nombre);
 		}
 		return id;	
 	}
@@ -62,7 +65,7 @@ public class SQLTipos {
 	private void removeParamTipo(int idCaso) throws SQLException{
 		PreparedStatement ps;
 		ResultSet rs;
-		ps = conn.prepareStatement("SELECT id_parametro FROM caso_tecnica_parametro WHERE id_caso=?;");
+		ps = conn.prepareStatement("SELECT id_parametro FROM caso_tecnica_parametro WHERE id_caso=? AND id_parametro!=0;");
 		ps.setInt(1, idCaso);
 		rs = ps.executeQuery();
 		while(rs.next()){
@@ -72,28 +75,14 @@ public class SQLTipos {
 		}
 	}
 	
-	/*Elimina las relaciones caso-tec-param para un caso concreto
-	* @param idcaso id del caso.
-	*/
-	private void removeCasoTecnicaParametro(int idCaso) throws SQLException{
-		PreparedStatement ps;
-		ps = conn.prepareStatement("DELETE FROM caso_tecnica_parametro WHERE id_caso=?;");
-		ps.setInt(1, idCaso);
-		ps.executeUpdate();
-	}
-	
 	public boolean removeTipo (String nombre) throws PersistenciaException {
 		boolean exito = false;
 		try {
 			PreparedStatement ps;
 			
-			int id= buscarIdTipo(nombre);
-			if (id == -1) {
-				throw new PersistenciaException("Error al eliminar el Tipo de Caso "+nombre);
-			}
+			int id= buscarId("caso", nombre);
 			
 			removeParamTipo(id);
-			removeCasoTecnicaParametro(id);
 			
 			ps = conn.prepareStatement("DELETE FROM caso WHERE id=?;");
 			ps.setInt(1, id);
@@ -115,17 +104,7 @@ public class SQLTipos {
 			psT.setString(1, tc.getNombre());
 			exito = psT.executeUpdate();
 
-			PreparedStatement pst = conn
-					.prepareStatement("SELECT id FROM caso WHERE nombre=?;");
-			pst.setString(1, tc.getNombre());
-			ResultSet rs = pst.executeQuery();
-			int id = -1;
-			while (rs.next()) {
-				id = rs.getInt(1);
-			}
-			if (id == -1) {
-				throw new PersistenciaException("Error al insertar Tipo de Caso "+tc.getNombre());
-			}
+			int id = buscarId("caso", tc.getNombre());
 
 			for (Atributo a : tc.getAtbos().values()) {
 				PreparedStatement psA = conn
@@ -154,38 +133,15 @@ public class SQLTipos {
 		return (exito == tc.getAtbos().size()+1);
 	}
 	
-	private void addTecnicasDefault(int id, TipoCaso tc) throws SQLException {
+	private void addTecnicasDefault(int id, TipoCaso tc) throws SQLException, PersistenciaException {
 		int[] ids = new int[4];
 		
-		PreparedStatement ps = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
-		ps.setString(1, tc.getDefaultRec().getNombre());
-		ResultSet rs = ps.executeQuery();
-		while (rs.next()) {
-			ids[0] = rs.getInt(1);
-		}
+		ids[0] = buscarId("tecnica", tc.getDefaultRec().getNombre());
+		ids[1] = buscarId("tecnica", tc.getDefaultReu().getNombre());
+		ids[2] = buscarId("tecnica", tc.getDefaultRev().getNombre());
+		ids[3] = buscarId("tecnica", tc.getDefaultRet().getNombre());
 		
-		ps = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
-		ps.setString(1, tc.getDefaultReu().getNombre());
-		rs = ps.executeQuery();
-		while (rs.next()) {
-			ids[1] = rs.getInt(1);
-		}
-		
-		ps = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
-		ps.setString(1, tc.getDefaultRev().getNombre());
-		rs = ps.executeQuery();
-		while (rs.next()) {
-			ids[2] = rs.getInt(1);
-		}
-		
-		ps = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
-		ps.setString(1, tc.getDefaultRet().getNombre());
-		rs = ps.executeQuery();
-		while (rs.next()) {
-			ids[3] = rs.getInt(1);
-		}
-		
-		ps = conn.prepareStatement("UPDATE caso SET defaultRec=?,defaultReu=?,defaultRev=?,defaultRet=? WHERE id=?;");
+		PreparedStatement ps = conn.prepareStatement("UPDATE caso SET defaultRec=?,defaultReu=?,defaultRev=?,defaultRet=? WHERE id=?;");
 		ps.setInt(1, ids[0]);
 		ps.setInt(2, ids[1]);
 		ps.setInt(3, ids[2]);
@@ -298,36 +254,34 @@ public class SQLTipos {
 		lista.add(t);
 		return t;
 	}
-	
+
 	// Auxiliar: guarda en la BD la relación de técnicas y parámetros asociados a un caso
 	private void addTecnicasCaso (int idCaso, List<Tecnica> lista, String tipo) throws SQLException, PersistenciaException {
 		for (Tecnica t : lista) {
-			int id = -1;
-			PreparedStatement pst = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
-			pst.setString(1, t.getNombre());
-			ResultSet rs = pst.executeQuery();
-			while (rs.next()) {
-				id = rs.getInt("id");
-			}
-			if (id == -1) { // hay que insertar la tecnica
-				id = addTecnica(t, tipo);
-			}
-			
-			if (t.getParams() != null && (! t.getParams().isEmpty())) {
-				for (Parametro p : t.getParams()) {
-					int idp = addParametro(p);
+			if (t.getEnabled()) {
+				int id;
+				try {
+					id = buscarId("tecnica", t.getNombre());
+				} catch (PersistenciaException ex) {
+					id = addTecnica(t, tipo);
+				}
 
-					PreparedStatement ps = conn.prepareStatement("INSERT INTO caso_tecnica_parametro VALUES (?,?,?);");
+				if (t.getParams() != null && (! t.getParams().isEmpty())) {
+					for (Parametro p : t.getParams()) {
+						int idp = addParametro(p);
+
+						PreparedStatement ps = conn.prepareStatement("INSERT INTO caso_tecnica_parametro VALUES (?,?,?);");
+						ps.setInt(1, idCaso);
+						ps.setInt(2, id);
+						ps.setInt(3, idp);
+						ps.executeQuery();
+					}
+				} else {
+					PreparedStatement ps = conn.prepareStatement("INSERT INTO caso_tecnica_parametro VALUES (?,?,0);");
 					ps.setInt(1, idCaso);
 					ps.setInt(2, id);
-					ps.setInt(3, idp);
-					ps.executeQuery();
+					ps.executeUpdate();
 				}
-			} else {
-				PreparedStatement ps = conn.prepareStatement("INSERT INTO caso_tecnica_parametro VALUES (?,?,0);");
-				ps.setInt(1, idCaso);
-				ps.setInt(2, id);
-				ps.executeUpdate();
 			}
 		}
 	}
@@ -354,66 +308,18 @@ public class SQLTipos {
 
 	private int addTecnica(Tecnica t, String tipo) throws SQLException,
 			PersistenciaException {
-		int idt = -1;
-		PreparedStatement pst;
-		ResultSet rs;
-		pst = conn.prepareStatement("INSERT INTO tecnica(nombre,tipo) VALUES (?,?);");
+		PreparedStatement pst = conn.prepareStatement("INSERT INTO tecnica(nombre,tipo) VALUES (?,?);");
 		pst.setString(1, t.getNombre());
 		pst.setString(2, tipo);
 		pst.executeUpdate();
-		
-		pst = conn.prepareStatement("SELECT id FROM tecnica WHERE nombre=?;");
-		pst.setString(1, t.getNombre());
-		rs = pst.executeQuery();
-		while (rs.next()) {
-			idt = rs.getInt("id");
-		}
-		if (idt == -1) {
-			throw new PersistenciaException("Error al insertar la técnica "+t.getNombre());
-		}
-		return idt;
+		return buscarId("tecnica", t.getNombre());
 	}
 
-	public void updateTipoCaso(TipoCaso tc) throws PersistenciaException{
-		try{
-		int id = buscarIdTipo(tc.getNombre());
-		if(id==-1){
-			throw new PersistenciaException("Tipo de caso no encontrado:"+tc.getNombre());
-		}else{
-			//Actualizo los atributos.
-			for(Atributo a: tc.getAtbos().values()){
-				updateAtbo(a,id);
-			}
-			//Borro los parametros asociados a las metricas del tipo
-			removeParamTipo(id);
-			//Borro las relaciones tipo_param_tecnica
-			removeCasoTecnicaParametro(id);
-			//Añado al caso los nuevos parametros y tecnicas.
-			addTecnicasCaso(id, tc.getTecnicasRecuperacion(), "rec");
-			addTecnicasCaso(id, tc.getTecnicasReutilizacion(), "reu");
-			addTecnicasCaso(id, tc.getTecnicasRevision(), "rev");
-			addTecnicasCaso(id, tc.getTecnicasRetencion(), "ret");
-			//Establezco las técnicas por defecto.
-			addTecnicasDefault(id, tc);
-			
-		}
-		}catch(SQLException ex){
-			throw new PersistenciaException(ex);
-		}
-		
+	public boolean updateTipoCaso(TipoCaso tc) throws PersistenciaException{
+		boolean exito = false;
+		removeTipo(tc.getNombre());
+		addTipo(tc);
+		exito = true;
+		return exito;
 	}
-	/*Auxiliar, actualiza un atributo de un tipo de caso.
-	/* @param a Atributo a actualizar.
-	 * @param id Identificador del caso al que pertenece el atributo.
-	 */
-	private void updateAtbo(Atributo a,int id)throws SQLException{
-		PreparedStatement ps = conn.prepareStatement("update atributo set peso=?,metrica=?,parammetrica=? where nombre=? and caso=?;");
-		ps.setDouble(1, a.getPeso());
-		ps.setString(2, a.getMetrica());
-		ps.setDouble(3, a.getParamMetrica());
-		ps.setString(4, a.getNombre());
-		ps.setInt(5, id);
-		ps.executeUpdate();
-	}
-	
 }
