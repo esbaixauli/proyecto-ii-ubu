@@ -31,7 +31,7 @@ create table parametro(
 create table caso_tecnica_parametro(
 	id_caso integer references caso on delete cascade,
 	id_tecnica integer references tecnica,
-	id_parametro integer references parametro,
+	id_parametro integer references parametro on delete cascade,
 	primary key(id_caso, id_tecnica, id_parametro)
 );
 
@@ -53,7 +53,5 @@ create table atributo(
 	check (tipo in ('S', 'I', 'D')),
 );
 
-insert into tecnica(nombre, tipo) values('K-NN','rec');
-insert into tecnica(nombre, tipo) values('Umbral','rec');
-
 insert into usuario(nombre, password, tipo) values('root','root','A');
+insert into parametro values(0, 'nada', 0);
