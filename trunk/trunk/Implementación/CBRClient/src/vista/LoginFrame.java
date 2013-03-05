@@ -47,7 +47,7 @@ public class LoginFrame extends JFrame {
 			public void run() {
 				try {
 					try {
-
+					
 						UIManager
 								.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 
@@ -150,8 +150,6 @@ public class LoginFrame extends JFrame {
 					JOptionPane.showMessageDialog(null,
 							bundle.getString("connecterror"), "Error",
 							JOptionPane.ERROR_MESSAGE);
-
-					ex.printStackTrace();
 				}
 				return u;
 			}

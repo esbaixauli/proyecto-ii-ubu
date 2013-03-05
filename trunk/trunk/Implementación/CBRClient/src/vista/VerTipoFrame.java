@@ -2,20 +2,29 @@ package vista;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import controlador.ControlTipos;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 import vista.panels.ScrollPanelAtbo;
 
+@SuppressWarnings("serial")
 public class VerTipoFrame extends NuevoTipoFrame {
-	TipoCaso tc;
 
-	public VerTipoFrame(final JFrame padre, TipoCaso tc) {
+	private JFrame me =this;
+		private ResourceBundle b = ResourceBundle.getBundle(
+				"vista.internacionalizacion.Recursos", Locale.getDefault());
+	public VerTipoFrame(final JFrame padre, TipoCaso tic) {
 		super(padre);
 		setTitle(tc.getNombre());
-		this.tc = tc;
+		super.tc= tic;
 		getTextFieldNombre().setText(tc.getNombre());
 		getTextFieldNombre().setEnabled(false);
 		setAtbosProblema(tc);
@@ -27,13 +36,26 @@ public class VerTipoFrame extends NuevoTipoFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO
+				try{
+				rellenaTC();
+				ControlTipos.modificarTipo(tc);
+				padre.setEnabled(true);
+				me.setVisible(false);
+				me.dispose();
+				}catch(IOException ex){
+					JOptionPane.showMessageDialog(null,
+							b.getString("moderror"), "Error",
+							JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
 				
 			}
 	    	
 	    });
 	}
 
+	
+	
 	private void setAtbosProblema(TipoCaso tc) {
 		setAtbos(tc, true, getPanelProblema());
 	}
