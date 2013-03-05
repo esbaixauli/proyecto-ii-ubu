@@ -86,6 +86,16 @@ public class ServletTipo extends HttpServlet {
 				}
 				boolean exito = ControladorTipos.removeTipo(tc);
 				oos.writeBoolean(exito);
+			} else if(tipo.equals("modTipo")){
+				TipoCaso tc = null;
+				try {
+					tc = (TipoCaso) ois.readObject();
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				boolean exito = ControladorTipos.modifyTipo(tc);
+				oos.writeBoolean(exito);
+				
 			}
 		} catch (PersistenciaException ex) {
 			ex.printStackTrace();
