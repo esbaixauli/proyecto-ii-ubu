@@ -1,38 +1,29 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JTable;
-import javax.swing.JList;
-
-import controlador.ControlTipos;
-
-import servidorcbr.modelo.TipoCaso;
-import servidorcbr.modelo.Usuario;
-import vista.panels.ListaCasos;
-
-import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.JToolBar;
-import javax.swing.border.BevelBorder;
+
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.border.TitledBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
+
+import servidorcbr.modelo.TipoCaso;
+import servidorcbr.modelo.Usuario;
+import vista.panels.ListaCasos;
+import controlador.ControlTipos;
 
 public class GestionTiposFrame extends JFrame {
 
@@ -51,6 +42,7 @@ public class GestionTiposFrame extends JFrame {
 	 */
 	public GestionTiposFrame(final Usuario u,final JFrame padre) {
 		setResizable(false);
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setTitle(bundle.getString("managecasetypes"));
 		this.u=u;
 		this.padre=padre;

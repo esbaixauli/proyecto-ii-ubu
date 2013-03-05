@@ -1,5 +1,6 @@
 package servidorcbr.controlador.generadorClases;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
@@ -104,6 +105,8 @@ public class GeneradorClases {
 		byte[] clase = cw.toByteArray();
 		// Genero el fichero
 		try {
+		
+			
 			FileOutputStream f = new FileOutputStream("generadas/" + nombre
 					+ ".class");
 			System.out.println("generando...");
@@ -185,7 +188,7 @@ public class GeneradorClases {
 		//Creo la clase. Sus atbos son atbo1,atbo2 (strings) y miid (integer)
 		GeneradorClases.crearClase(h, nombreClase);
 		try {
-			URL[] url = { new URL("file:C:/Users/Rubén/workspace/CBRServer/") };
+			URL[] url = { new URL("file:C:/Users/Ruben/workspace/CBRServer/") };
 			URLClassLoader classLoader = new URLClassLoader(url);
 			Class<?> clase = classLoader.loadClass("generadas."
 					+ nombreClase);

@@ -1,36 +1,24 @@
 package vista;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import net.miginfocom.swing.MigLayout;
-import java.awt.BorderLayout;
-import javax.swing.UIManager;
-import java.awt.Color;
-import java.awt.SystemColor;
 
 public class MainFrame extends JFrame{
 
@@ -58,6 +46,7 @@ public class MainFrame extends JFrame{
 		ResourceBundle bundle = ResourceBundle.getBundle(
 	            "vista.internacionalizacion.Recursos", l);
 		setTitle(bundle.getString("mainmenu"));
+		setIconImage(new javax.swing.ImageIcon("res/logocbr.png").getImage());
 		setResizable(false);
 		setBounds(100, 100, 194, 286);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -38,6 +39,7 @@ public class GestionTecnicasFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public GestionTecnicasFrame(final TipoCaso tc, final JFrame padre) {
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setTitle(b.getString("managemethods"));
 		inicializaListas(tc);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
