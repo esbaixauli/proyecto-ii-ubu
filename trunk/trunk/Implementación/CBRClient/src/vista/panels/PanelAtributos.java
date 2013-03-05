@@ -73,10 +73,10 @@ public class PanelAtributos extends JPanel {
 			
 		setBorder(titled);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 59, 148, 69, 59, 49, 50, 25, 0 };
+		gridBagLayout.columnWidths = new int[] { 59, 148, 69, 59, 49, 50, 25, 0, 0 };
 		gridBagLayout.rowHeights = new int[] { 20, 20, 0, 1, 0 };
 		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, Double.MIN_VALUE };
+				0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
 				Double.MIN_VALUE };
 		setLayout(gridBagLayout);
@@ -112,7 +112,7 @@ public class PanelAtributos extends JPanel {
 		GridBagConstraints gbc_comboBoxMetricas = new GridBagConstraints();
 		gbc_comboBoxMetricas.anchor = GridBagConstraints.NORTH;
 		gbc_comboBoxMetricas.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxMetricas.insets = new Insets(0, 0, 5, 0);
+		gbc_comboBoxMetricas.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxMetricas.gridwidth = 3;
 		gbc_comboBoxMetricas.gridx = 4;
 		gbc_comboBoxMetricas.gridy = 0;
@@ -133,6 +133,27 @@ public class PanelAtributos extends JPanel {
 				}
 			}
 		});
+		
+			
+				lblBorrar.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						padre.remove(me);
+						
+						try{
+							((JScrollPane)scroll).getVerticalScrollBar().setValue(0);
+						}catch(Exception e){}
+						padre.repaint();
+					}
+				});
+				lblBorrar.setIcon(new ImageIcon("res/delete_32.png"));
+				GridBagConstraints gbc_lblBorrar = new GridBagConstraints();
+				gbc_lblBorrar.insets = new Insets(0, 0, 5, 0);
+				gbc_lblBorrar.anchor = GridBagConstraints.NORTH;
+				gbc_lblBorrar.fill = GridBagConstraints.HORIZONTAL;
+				gbc_lblBorrar.gridx = 7;
+				gbc_lblBorrar.gridy = 0;
+				add(lblBorrar, gbc_lblBorrar);
 
 		JLabel lblTipo = new JLabel(b.getString("attype"));
 		GridBagConstraints gbc_lblTipo = new GridBagConstraints();
@@ -197,7 +218,7 @@ public class PanelAtributos extends JPanel {
 		GridBagConstraints gbc_formattedTextFieldParam = new GridBagConstraints();
 		gbc_formattedTextFieldParam.anchor = GridBagConstraints.NORTH;
 		gbc_formattedTextFieldParam.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextFieldParam.insets = new Insets(0, 0, 5, 0);
+		gbc_formattedTextFieldParam.insets = new Insets(0, 0, 5, 5);
 		gbc_formattedTextFieldParam.gridx = 6;
 		gbc_formattedTextFieldParam.gridy = 1;
 		add(formattedTextFieldParam, gbc_formattedTextFieldParam);
@@ -205,27 +226,6 @@ public class PanelAtributos extends JPanel {
 		formattedTextFieldParam
 				.setFormatterFactory(new DefaultFormatterFactory(
 						new NumberFormatter(new DecimalFormat())));
-		
-			
-				lblBorrar.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						padre.remove(me);
-						
-						try{
-							((JScrollPane)scroll).getVerticalScrollBar().setValue(0);
-						}catch(Exception e){}
-						padre.repaint();
-					}
-				});
-				lblBorrar.setIcon(new ImageIcon("res/delete_32.png"));
-				GridBagConstraints gbc_lblBorrar = new GridBagConstraints();
-				gbc_lblBorrar.insets = new Insets(0, 0, 5, 0);
-				gbc_lblBorrar.anchor = GridBagConstraints.NORTH;
-				gbc_lblBorrar.fill = GridBagConstraints.HORIZONTAL;
-				gbc_lblBorrar.gridx = 6;
-				gbc_lblBorrar.gridy = 2;
-				add(lblBorrar, gbc_lblBorrar);
 				rellenarMetricas(comboBoxMetricas,"");
 	}
 

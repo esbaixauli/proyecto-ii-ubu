@@ -50,6 +50,7 @@ public class NuevoTipoFrame extends JFrame {
 	private JSeparator separator;
 	private JSeparator separator_1;
 	private JSeparator separator_2;
+	JButton btnGuardar;
 
 	private TipoCaso tc;
 
@@ -57,6 +58,7 @@ public class NuevoTipoFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public NuevoTipoFrame(final JFrame padre) {
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setTitle(b.getString("newcasetype"));
 		this.padre = padre;
 		tc = new TipoCaso();
@@ -157,7 +159,7 @@ public class NuevoTipoFrame extends JFrame {
 		gbc_toolBar.gridy = 6;
 		contentPane.add(toolBar, gbc_toolBar);
 
-		JButton btnGuardar = new JButton(new ImageIcon("res/save_32.png"));
+		btnGuardar = new JButton(new ImageIcon("res/save_32.png"));
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if( tc.getTecnicasRecuperacion()==null){

@@ -46,32 +46,58 @@ public class SQLTipos {
 		return getTipos(ps);
 	}
 	
+	private int buscarIdTipo(String nombre) throws SQLException{
+		PreparedStatement ps = conn.prepareStatement("SELECT id FROM caso WHERE nombre=?;");
+		ps.setString(1, nombre);
+		ResultSet rs = ps.executeQuery();
+		int id = -1;
+		while (rs.next()) {
+			id = rs.getInt("id");
+		}
+		return id;	
+	}
+	/*Auxiliar. Borra los parametros asociados a la metrica de un tipo.
+	/*@param idCaso id del tipo del que se quieren borrar los parámetros.
+	 */
+	private void removeParamTipo(int idCaso) throws SQLException{
+		PreparedStatement ps;
+		ResultSet rs;
+		ps = conn.prepareStatement("SELECT id_parametro FROM caso_tecnica_parametro WHERE id_caso=?;");
+		ps.setInt(1, idCaso);
+		rs = ps.executeQuery();
+		while(rs.next()){
+			ps= conn.prepareStatement("DELETE FROM parametro WHERE id=?");
+			ps.setInt(1,rs.getInt("id_parametro"));
+			ps.executeUpdate();
+		}
+	}
+	
+	/*Elimina las relaciones caso-tec-param para un caso concreto
+	* @param idcaso id del caso.
+	*/
+	private void removeCasoTecnicaParametro(int idCaso) throws SQLException{
+		PreparedStatement ps;
+		ps = conn.prepareStatement("DELETE FROM caso_tecnica_parametro WHERE id_caso=?;");
+		ps.setInt(1, idCaso);
+		ps.executeUpdate();
+	}
+	
 	public boolean removeTipo (String nombre) throws PersistenciaException {
 		boolean exito = false;
 		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT id FROM caso WHERE nombre=?;");
-			ps.setString(1, nombre);
-			ResultSet rs = ps.executeQuery();
+			PreparedStatement ps;
 			
-			int id = -1;
-			while (rs.next()) {
-				id = rs.getInt("id");
-			}
+			int id= buscarIdTipo(nombre);
 			if (id == -1) {
 				throw new PersistenciaException("Error al eliminar el Tipo de Caso "+nombre);
 			}
 			
-			ps = conn.prepareStatement("SELECT id_parametro FROM caso_tecnica_parametro WHERE id_caso=?;");
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
-			
-			ps = conn.prepareStatement("DELETE FROM caso_tecnica_parametro WHERE id_caso=?;");
-			ps.setInt(1, id);
-			ps.executeUpdate();
+			removeParamTipo(id);
+			removeCasoTecnicaParametro(id);
 			
 			ps = conn.prepareStatement("DELETE FROM caso WHERE id=?;");
 			ps.setInt(1, id);
-			exito= (ps.executeUpdate()>0);
+			exito= (ps.executeUpdate()>0);	
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -348,4 +374,46 @@ public class SQLTipos {
 		return idt;
 	}
 
+	public void updateTipoCaso(TipoCaso tc) throws PersistenciaException{
+		try{
+		int id = buscarIdTipo(tc.getNombre());
+		if(id==-1){
+			throw new PersistenciaException("Tipo de caso no encontrado:"+tc.getNombre());
+		}else{
+			//Actualizo los atributos.
+			for(Atributo a: tc.getAtbos().values()){
+				updateAtbo(a,id);
+			}
+			//Borro los parametros asociados a las metricas del tipo
+			removeParamTipo(id);
+			//Borro las relaciones tipo_param_tecnica
+			removeCasoTecnicaParametro(id);
+			//Añado al caso los nuevos parametros y tecnicas.
+			addTecnicasCaso(id, tc.getTecnicasRecuperacion(), "rec");
+			addTecnicasCaso(id, tc.getTecnicasReutilizacion(), "reu");
+			addTecnicasCaso(id, tc.getTecnicasRevision(), "rev");
+			addTecnicasCaso(id, tc.getTecnicasRetencion(), "ret");
+			//Establezco las técnicas por defecto.
+			addTecnicasDefault(id, tc);
+			
+		}
+		}catch(SQLException ex){
+			throw new PersistenciaException(ex);
+		}
+		
+	}
+	/*Auxiliar, actualiza un atributo de un tipo de caso.
+	/* @param a Atributo a actualizar.
+	 * @param id Identificador del caso al que pertenece el atributo.
+	 */
+	private void updateAtbo(Atributo a,int id)throws SQLException{
+		PreparedStatement ps = conn.prepareStatement("update atributo set peso=?,metrica=?,parammetrica=? where nombre=? and caso=?;");
+		ps.setDouble(1, a.getPeso());
+		ps.setString(2, a.getMetrica());
+		ps.setDouble(3, a.getParamMetrica());
+		ps.setString(4, a.getNombre());
+		ps.setInt(5, id);
+		ps.executeUpdate();
+	}
+	
 }
