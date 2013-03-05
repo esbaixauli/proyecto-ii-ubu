@@ -74,4 +74,8 @@ public class SQLFacade {
 		return sqlUsuarios.removeUsuario(u);
 	}
 	
+	public boolean modifyTipo(TipoCaso tc) throws PersistenciaException{
+		return modifyTipo(tc);
+	}
+	
 }

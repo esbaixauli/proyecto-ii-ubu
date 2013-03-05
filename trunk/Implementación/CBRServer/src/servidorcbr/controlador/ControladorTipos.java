@@ -49,5 +49,10 @@ public class ControladorTipos {
 	public static boolean removeTipo (TipoCaso tc) throws PersistenciaException {
 		return SQLFacade.getInstance().removeTipo(tc.getNombre());
 	}
+
+	public static boolean modifyTipo(TipoCaso tc) throws PersistenciaException {
+	
+		return SQLFacade.getInstance().modifyTipo(tc);
+	}
 	
 }
