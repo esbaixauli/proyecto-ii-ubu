@@ -52,7 +52,7 @@ public class NuevoTipoFrame extends JFrame {
 	private JSeparator separator_2;
 	JButton btnGuardar;
 
-	private TipoCaso tc;
+	protected TipoCaso tc;
 
 	/**
 	 * Create the frame.
@@ -306,7 +306,7 @@ public class NuevoTipoFrame extends JFrame {
 		return true;
 	}
 
-	private void rellenaTC() {
+	protected void rellenaTC() {
 		tc.setNombre(textField.getText());
 		HashMap<String, Atributo> atbos = new HashMap<String, Atributo>();
 		for (Component c : panelProblema.getPanelAtbo().getComponents()) {

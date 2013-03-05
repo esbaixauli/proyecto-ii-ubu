@@ -48,6 +48,7 @@ public class ListaCasos extends JList<TipoCaso> {
 			setEnabled(false);
 		} else {
 			setListData(datos.toArray(new TipoCaso[datos.size()]));
+			setEnabled(true);
 		}
 	}
 

@@ -95,7 +95,7 @@ public class PanelTecnica extends JPanel {
 										c.setEnabled(false);
 									}
 								} catch (ClassCastException ex) {
-									ex.printStackTrace();
+									//ex.printStackTrace();
 								}
 							}
 						}

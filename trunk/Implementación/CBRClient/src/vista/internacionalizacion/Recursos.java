@@ -13,6 +13,7 @@ public class Recursos extends ListResourceBundle {
 		{"password", "Password:"},
 		{"emptylogin","Username and password may not be empty."},
 		{"connecterror","Error while connecting to server."},
+		{"moderror","Error while modifying."},
 		{"inserterror","Error while inserting. Check the connection status and that the case name is not repeated."},
 		{"usernotfound","User not found or wrong password."},
 		{"notconfigured","Inserting a case type is not possible until its methods have been defined."},
@@ -21,6 +22,7 @@ public class Recursos extends ListResourceBundle {
 		{"admin","Administration"},
 		
 		{"managecasetypes","Manage case types"},
+		{"insertcases","Insert cases"},
 		{"manageusers","Manage users"},
 		{"defaultcycle","Default CBR cycle"},
 		{"configuredcycle","Configured CBR cycle"},

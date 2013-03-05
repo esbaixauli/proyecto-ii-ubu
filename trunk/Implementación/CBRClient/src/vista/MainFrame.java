@@ -48,7 +48,7 @@ public class MainFrame extends JFrame{
 		setTitle(bundle.getString("mainmenu"));
 		setIconImage(new javax.swing.ImageIcon("res/logocbr.png").getImage());
 		setResizable(false);
-		setBounds(100, 100, 194, 286);
+		setBounds(100, 100, 227, 286);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -102,9 +102,9 @@ public class MainFrame extends JFrame{
 		panel.add(panel_cbr);
 		GridBagLayout gbl_panel_cbr = new GridBagLayout();
 		gbl_panel_cbr.columnWidths = new int[]{87, 0};
-		gbl_panel_cbr.rowHeights = new int[]{23, 23, 0};
+		gbl_panel_cbr.rowHeights = new int[]{23, 0, 23, 0};
 		gbl_panel_cbr.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_panel_cbr.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_cbr.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_cbr.setLayout(gbl_panel_cbr);
 		
 		JButton btnCicloConfigurado = new JButton(bundle.getString("configuredcycle"));
@@ -115,11 +115,19 @@ public class MainFrame extends JFrame{
 		gbc_btnCicloConfigurado.gridy = 0;
 		panel_cbr.add(btnCicloConfigurado, gbc_btnCicloConfigurado);
 		
+		JButton btnIntroducir = new JButton(bundle.getString("insertcases"));
+		GridBagConstraints gbc_btnIntroducir = new GridBagConstraints();
+		gbc_btnIntroducir.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnIntroducir.insets = new Insets(0, 0, 5, 0);
+		gbc_btnIntroducir.gridx = 0;
+		gbc_btnIntroducir.gridy = 1;
+		panel_cbr.add(btnIntroducir, gbc_btnIntroducir);
+		
 		JButton btnCicloPorDefecto = new JButton(bundle.getString("defaultcycle"));
 		GridBagConstraints gbc_btnCicloPorDefecto = new GridBagConstraints();
 		gbc_btnCicloPorDefecto.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCicloPorDefecto.gridx = 0;
-		gbc_btnCicloPorDefecto.gridy = 1;
+		gbc_btnCicloPorDefecto.gridy = 2;
 		panel_cbr.add(btnCicloPorDefecto, gbc_btnCicloPorDefecto);
 		
 		JPanel panel_1 = new JPanel();
