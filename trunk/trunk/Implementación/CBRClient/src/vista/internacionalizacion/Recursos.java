@@ -51,8 +51,10 @@ public class Recursos extends ListResourceBundle {
 		{"deluser","Delete the selected user."},
 		{"moduser","Modify user."},
 		
-		{"noselection","No case type has been selected."},
+		{"noselection","No item has been selected."},
 		{"delsure","Are you sure you want to delete the selected case type? Case data will be discarded."},
+		{"userdelsure","Are you sure you want to delete the selected user?"},
+		{"rootdeletion","For security reasons, you are not allowed to delete user 'root'."},
 		{"opsuccess","Operation completed successfully."},
 		{"opunsuccess","The operation couldn't be completed."},
 		{"delunsuccesscause","The case type may have already been deleted by another user."},

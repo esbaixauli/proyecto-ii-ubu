@@ -40,4 +40,12 @@ public class ControladorUsuarios {
 		return SQLFacade.getInstance().removeUsuario(u);
 	}
 	
+	public static boolean addUsuario (Usuario u) throws PersistenciaException {
+		return SQLFacade.getInstance().addUsuario(u);
+	}
+	
+	public static boolean modUsuario (Usuario u) throws PersistenciaException {
+		return SQLFacade.getInstance().modUsuario(u);
+	}
+	
 }
