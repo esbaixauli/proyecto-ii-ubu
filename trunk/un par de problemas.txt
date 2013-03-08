@@ -1,0 +1,7 @@
+-las ventanas de configuracion de umbrales y la que va con predicados no se ven correctamente con muchos atributos
+
+-la ventana de knn no estaba enlazada en el panel de tecnicas, no se si seria cosa de la versión
+
+-la ventana de knn no actualiza correctamente a su tipo de caso correspondiente (Nunca se le pasa en el constructor el tipocaso para que lo actualice), si le cambias el parametro por ejemplo a 7 y luego vuelves, sigue con el valor antiguo.
+
+-He corregido un error en la ventana de k-nn por el cual si se habia establecido la tecnica sin parametros al entrar en ella desde la ventana de modificar daba error.
