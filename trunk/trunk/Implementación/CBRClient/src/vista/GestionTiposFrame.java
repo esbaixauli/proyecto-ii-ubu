@@ -34,8 +34,7 @@ public class GestionTiposFrame extends JFrame {
 	private int ancho=250;
 	private List<TipoCaso> tipos=null;
 	private ListaCasos list;
-	
-	ResourceBundle bundle = ResourceBundle.getBundle(
+	private ResourceBundle bundle = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
 	/**
 	 * Create the frame.
@@ -134,8 +133,8 @@ public class GestionTiposFrame extends JFrame {
 								bundle.getString("opunsuccess"),bundle.getString("opunsuccess")+bundle.getString("delunsuccesscause")
 								, JOptionPane.INFORMATION_MESSAGE);
 					}
-					
-					list.refrescarDatos(ControlTipos.obtenerTiposCaso(u));
+					tipos = ControlTipos.obtenerTiposCaso(u);
+					list.refrescarDatos(tipos);
 				} catch (MalformedURLException e) {
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(null, 
