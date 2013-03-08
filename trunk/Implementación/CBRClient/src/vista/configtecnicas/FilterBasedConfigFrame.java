@@ -22,7 +22,6 @@ import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
-import javax.swing.BoxLayout;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -47,7 +46,7 @@ public class FilterBasedConfigFrame extends JFrame {
 	private final JFrame me = this;
 	private final NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
 	private final List<JTextField> textFields;
-	private final List<JComboBox> comboBoxes;
+	private final List<JComboBox<String>> comboBoxes;
 	private List<String> atbos;
 
 	/**
@@ -59,11 +58,13 @@ public class FilterBasedConfigFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				padre.setEnabled(true);
+				me.setVisible(false);
 				me.dispose();
 			}
 		});
 		setBounds(100, 100, 350, 300);
 		setTitle("Filter based retrieval");
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -133,15 +134,15 @@ public class FilterBasedConfigFrame extends JFrame {
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_panel_1.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		int i=0;
 		textFields = new ArrayList<JTextField>(tc.getAtbos().size());
-		comboBoxes = new ArrayList<JComboBox>(tc.getAtbos().size());
+		comboBoxes = new ArrayList<JComboBox<String>>(tc.getAtbos().size());
 		atbos = new ArrayList<String>(tc.getAtbos().size());
 		for (Atributo a : tc.getAtbos().values()) {
 			if (a.getEsProblema()) {
@@ -158,16 +159,17 @@ public class FilterBasedConfigFrame extends JFrame {
 
 				JLabel lblAtbo = new JLabel(a.getNombre());
 				GridBagConstraints gbc_lblAtbo = new GridBagConstraints();
-				gbc_lblAtbo.anchor = GridBagConstraints.EAST;
+				gbc_lblAtbo.anchor = GridBagConstraints.WEST;
 				gbc_lblAtbo.insets = new Insets(0, 0, 0, 5);
 				gbc_lblAtbo.gridx = 1;
 				gbc_lblAtbo.gridy = i;
 				panel_1.add(lblAtbo, gbc_lblAtbo);
 
-				JComboBox comboBox = new JComboBox();
+				JComboBox<String> comboBox = new JComboBox<String>();
 				GridBagConstraints gbc_comboBox = new GridBagConstraints();
 				gbc_comboBox.insets = new Insets(0, 0, 0, 5);
-				gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+//				gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
+				gbc_comboBox.anchor = GridBagConstraints.WEST;
 				gbc_comboBox.gridx = 2;
 				gbc_comboBox.gridy = i;
 				//comboBox.addItem("["+b.getString("none")+"]");
@@ -191,7 +193,9 @@ public class FilterBasedConfigFrame extends JFrame {
 				JFormattedTextField tff = new JFormattedTextField();
 				tff.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat())));
 				GridBagConstraints gbc_textField = new GridBagConstraints();
-				gbc_textField.anchor = GridBagConstraints.EAST;
+				gbc_textField.insets = new Insets(0, 5, 0, 5);
+				gbc_textField.anchor = GridBagConstraints.WEST;
+				gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 				gbc_textField.gridx = 3;
 				gbc_textField.gridy = i;
 				panel_1.add(tff, gbc_textField);

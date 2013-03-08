@@ -134,6 +134,7 @@ public class GestionTecnicasFrame extends JFrame {
 					ac.setEnabled(false);
 				}else{
 					ac.setEnabled(true);
+					ac.setParams(t.getParams());
 					break;
 				}
 			}
