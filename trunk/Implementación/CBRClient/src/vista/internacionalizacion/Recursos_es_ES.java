@@ -11,6 +11,11 @@ public class Recursos_es_ES extends ListResourceBundle {
 	static final Object[][] contents = {
 		{"name", "Usuario:"}, 
 		{"password", "Contraseña:"},
+		{"usertype", "Tipo de usuario:"},
+		{"basicuser", "Usuario básico"},
+		{"advuser", "Usuario avanzado"},
+		{"administrator", "Administrador"},
+		
 		{"emptylogin","El nombre de usuario y la contraseña no pueden estar vacíos."},
 		{"connecterror","Error al conectar con el servidor."},
 		{"moderror","Error al modificar."},
@@ -31,10 +36,19 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"mainmenu","Menú principal"},
 		{"nocasetypes","No hay tipos de caso disponibles."},
 		{"availablecasetypes","Tipos de caso disponibles"},
+		{"casestoretrieve","Número de casos a recuperar"},
 		
 		{"seecasetype","Examinar tipo de caso."},
 		{"newcasetype","Nuevo tipo de caso."},
 		{"delcasetype","Eliminar el tipo de caso seleccionado."},
+		
+		{"availableusers","Usuarios disponibles"},
+		{"nousers","No hay usuarios disponibles"},
+
+		{"seeuser","Examinar el usuario."},
+		{"newuser","Nuevo usuario."},
+		{"deluser","Eliminar el usuario seleccionado."},
+		{"moduser","Modificar usuario."},
 		
 		{"noselection","No se ha escogido ningún tipo de caso."},
 		{"delsure","¿Está seguro de que desea borrar el tipo de caso? Se perderan los casos relacionados."},
@@ -50,6 +64,7 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"attype","Tipo"},
 		{"atmetric","Métrica"},
 		{"atmetricparam","Parámetro de la métrica"},
+		{"attpredicates","Predicados para los atributos"},
 		{"managemethods","Gestionar técnicas"},
 		
 		{"emptyatt","Por favor, rellene todos los campos de cada atributo."},
@@ -76,12 +91,14 @@ public class Recursos_es_ES extends ListResourceBundle {
 		
 		{"ok","Aceptar"},
 		{"cancel","Cancelar"},
+		{"none","Ninguno"},
 
 		{"configuremethod","Configurar técnica"},
 		{"configure","Configurar"},
 		{"default","Por defecto"},
 		
 		{"attributethresholds","Umbrales para los atributos"},
+		{"negativethreshold","Los valores de los umbrales no pueden ser negativos."},
 		{"emptyfield","No puede quedar ningún campo vacío"},
 
 		{"login","Acceder"}

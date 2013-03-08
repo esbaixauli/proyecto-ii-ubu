@@ -69,8 +69,7 @@ public class FilterBasedConfigFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		//JLabel lblPredicados = new JLabel(b.getString("attpredicates"));
-		JLabel lblPredicados = new JLabel("Predicados");
+		JLabel lblPredicados = new JLabel(b.getString("attpredicates"));
 		contentPane.add(lblPredicados, BorderLayout.NORTH);
 		
 		JPanel panel = new JPanel();
@@ -110,10 +109,8 @@ public class FilterBasedConfigFrame extends JFrame {
 						JOptionPane.showMessageDialog(null, 
 								b.getString("emptyfield"),"Error", JOptionPane.ERROR_MESSAGE);
 					} else {
-						//JOptionPane.showMessageDialog(null, 
-						//		b.getString("negativethreshold"),"Error", JOptionPane.ERROR_MESSAGE);
 						JOptionPane.showMessageDialog(null, 
-								"Los umbrales tienen que ser positivos","Error", JOptionPane.ERROR_MESSAGE);
+								b.getString("negativethreshold"),"Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -170,8 +167,7 @@ public class FilterBasedConfigFrame extends JFrame {
 				gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 				gbc_comboBox.gridx = 2;
 				gbc_comboBox.gridy = i;
-				//comboBox.addItem("["+b.getString("none")+"]");
-				comboBox.addItem("[Ninguno]");
+				comboBox.addItem("["+b.getString("none")+"]");
 				for (String predicado : ControlTecnicas.getFilterPredicates()) {
 					comboBox.addItem(predicado);
 				}

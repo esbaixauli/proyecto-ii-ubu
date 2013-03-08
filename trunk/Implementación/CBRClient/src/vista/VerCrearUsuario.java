@@ -59,8 +59,7 @@ public class VerCrearUsuario extends JFrame {
 		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		//JLabel lblNombre = new JLabel(b.getString("username");
-		JLabel lblNombre = new JLabel("nombre");
+		JLabel lblNombre = new JLabel(b.getString("name"));
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
 		gbc_lblNombre.anchor = GridBagConstraints.WEST;
 		gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
@@ -77,8 +76,7 @@ public class VerCrearUsuario extends JFrame {
 		panel.add(nombreTextField, gbc_nombreTextField);
 		nombreTextField.setColumns(20);
 		
-		//JLabel lblPassword = new JLabel(b.getString("password");
-		JLabel lblPassword = new JLabel("password");
+		JLabel lblPassword = new JLabel(b.getString("password"));
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.anchor = GridBagConstraints.WEST;
 		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
@@ -95,8 +93,7 @@ public class VerCrearUsuario extends JFrame {
 		panel.add(passwordField, gbc_passwordTextField);
 		passwordField.setColumns(10);
 		
-		//JLabel lblTipo = new JLabel(b.getString("usertype"));
-		JLabel lblTipo = new JLabel("tipo");
+		JLabel lblTipo = new JLabel(b.getString("usertype"));
 		GridBagConstraints gbc_lblTipo = new GridBagConstraints();
 		gbc_lblTipo.anchor = GridBagConstraints.WEST;
 		gbc_lblTipo.insets = new Insets(0, 0, 0, 5);
@@ -109,20 +106,15 @@ public class VerCrearUsuario extends JFrame {
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox.gridx = 1;
 		gbc_comboBox.gridy = 2;
-		//comboBox.addItem(b.getString("basicuser"));
-		//comboBox.addItem(b.getString("advuser"));
-		//comboBox.addItem(b.getString("administrator"));
-		comboBox.addItem("Usuario básico");
-		comboBox.addItem("Usuario avanzado");
-		comboBox.addItem("Administrador");
+		comboBox.addItem(b.getString("basicuser"));
+		comboBox.addItem(b.getString("advuser"));
+		comboBox.addItem(b.getString("administrator"));
 		panel.add(comboBox, gbc_comboBox);
 		
 		if (u == null) {
-			//setTitle(b.getString("newuser"));
-			setTitle("usuario nuevo");
+			setTitle(b.getString("newuser"));
 		} else {
-			//setTitle(b.getString("moduser"));
-			setTitle("modificar usuario");
+			setTitle(b.getString("moduser"));
 			nombreTextField.setText(u.getNombre());
 			nombreTextField.setEnabled(false);
 			passwordField.setText(u.getPassword());

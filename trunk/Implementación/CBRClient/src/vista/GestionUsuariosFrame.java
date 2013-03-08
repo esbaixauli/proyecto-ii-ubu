@@ -87,8 +87,7 @@ public class GestionUsuariosFrame extends JFrame {
 				me.setEnabled(false);
 			}
 		});
-		//btnVer.setToolTipText(b.getString("seeuser"));
-		btnVer.setToolTipText("ver usuario");
+		btnVer.setToolTipText(b.getString("seeuser"));
 		panel.add(btnVer);
 		
 		JButton btnNuevo = new JButton(new ImageIcon("res/document_32.png"));
@@ -99,8 +98,7 @@ public class GestionUsuariosFrame extends JFrame {
 				me.setEnabled(false);
 			}
 		});
-		//btnNuevo.setToolTipText(b.getString("newuser"));
-		btnNuevo.setToolTipText("usuario nuevo");
+		btnNuevo.setToolTipText(b.getString("newuser"));
 		panel.add(btnNuevo);
 		
 		JButton btnEliminar = new JButton(new ImageIcon("res/delete_32.png"));
@@ -108,8 +106,7 @@ public class GestionUsuariosFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		//btnEliminar.setToolTipText(b.getString("deluser"));
-		btnEliminar.setToolTipText("borrar usuario");
+		btnEliminar.setToolTipText(b.getString("deluser"));
 		panel.add(btnEliminar);
 	}
 

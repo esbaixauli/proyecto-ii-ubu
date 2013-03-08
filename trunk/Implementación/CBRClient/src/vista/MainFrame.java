@@ -85,6 +85,13 @@ public class MainFrame extends JFrame{
 		panel_adm.add(btnGestionarTipos, gbc_btnGestionarTipos);
 		
 		JButton btnGestionarusuarios = new JButton(bundle.getString("manageusers"));
+		btnGestionarusuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFrame f = new GestionUsuariosFrame(me);
+				f.setVisible(true);
+				me.setEnabled(false);
+			}
+		});
 		GridBagConstraints gbc_btnGestionarusuarios = new GridBagConstraints();
 		gbc_btnGestionarusuarios.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnGestionarusuarios.insets = new Insets(0, 0, 5, 0);

@@ -10,7 +10,6 @@ public class ControlTecnicas {
 		List<Tecnica> lista = new ArrayList<Tecnica>();
 		lista.add(new Tecnica("DiverseByMedianRetrieval"));
 		lista.add(new Tecnica("FilterBasedRetrieval"));
-		lista.add(new Tecnica("LuceneRetrieval"));
 		lista.add(new Tecnica("NNretrieval"));
 		return lista;
 	}
