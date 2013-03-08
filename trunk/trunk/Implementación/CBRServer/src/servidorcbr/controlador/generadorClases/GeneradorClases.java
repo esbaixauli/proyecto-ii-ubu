@@ -188,7 +188,7 @@ public class GeneradorClases {
 		//Creo la clase. Sus atbos son atbo1,atbo2 (strings) y miid (integer)
 		GeneradorClases.crearClase(h, nombreClase);
 		try {
-			URL[] url = { new URL("file:C:/Users/Ruben/workspace/CBRServer/") };
+			URL[] url = { new URL("file:C:/Users/Rubén/workspace/CBRServer/") };
 			URLClassLoader classLoader = new URLClassLoader(url);
 			Class<?> clase = classLoader.loadClass("generadas."
 					+ nombreClase);
