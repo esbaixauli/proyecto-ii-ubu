@@ -17,7 +17,7 @@ import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
 import vista.configtecnicas.FilterBasedConfigFrame;
-import vista.configtecnicas.LuceneConfigFrame;
+import vista.configtecnicas.NNConfigFrame;
 import vista.panels.PanelIntroducirValorAtbo;
 
 import java.awt.FlowLayout;
@@ -264,9 +264,9 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 			cRec =new FilterBasedConfigFrame(t, tc, me);
 			;break;
 		case "NNretrieval":
-			cRec =new NNConfigFrame(t, tc, me);
+			cRec =new NNConfigFrame(t, me);
 			;break;
-		default: cRec = new LuceneConfigFrame(t, tc, me);
+		default: ;
 		}
 	}
 	

@@ -24,8 +24,7 @@ public class ListaUsuarios extends JList<Usuario> {
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		setBorder(new TitledBorder(null,
-				//b.getString("availableusers"), TitledBorder.LEADING,
-				"usuarios disponibles", TitledBorder.LEADING,
+				b.getString("availableusers"), TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
 		refrescarDatos(datos);
 		setVisibleRowCount(6);
@@ -43,8 +42,7 @@ public class ListaUsuarios extends JList<Usuario> {
 				vacio[i] = new Usuario();
 				vacio[i].setNombre(" ");
 			}
-			//vacio[0].setNombre(b.getString("nocasetypes"));
-			vacio[0].setNombre("sin usuarios");
+			vacio[0].setNombre(b.getString("nousers"));
 			setListData(vacio);
 			setEnabled(false);
 		} else {

@@ -11,6 +11,11 @@ public class Recursos extends ListResourceBundle {
 	static final Object[][] contents = {
 		{"name", "Username:"}, 
 		{"password", "Password:"},
+		{"usertype", "User type:"},
+		{"basicuser", "Basic user"},
+		{"advuser", "Advanced user"},
+		{"administrator", "Administrator"},
+		
 		{"emptylogin","Username and password may not be empty."},
 		{"connecterror","Error while connecting to server."},
 		{"moderror","Error while modifying."},
@@ -32,11 +37,20 @@ public class Recursos extends ListResourceBundle {
 		{"mainmenu","Main Menu"},
 		{"nocasetypes","No case types available."},
 		{"availablecasetypes","Available case types"},
+		{"casestoretrieve","Number of cases to retrieve"},
 		
 		{"seecasetype","Examine the selected case type."},
 		{"newcasetype","New case type."},
 		{"delcasetype","Delete the selected case type."},
 
+		{"availableusers","Available users"},
+		{"nousers","No users available"},
+		
+		{"seeuser","Examine the selected user."},
+		{"newuser","New user."},
+		{"deluser","Delete the selected user."},
+		{"moduser","Modify user."},
+		
 		{"noselection","No case type has been selected."},
 		{"delsure","Are you sure you want to delete the selected case type? Case data will be discarded."},
 		{"opsuccess","Operation completed successfully."},
@@ -51,6 +65,7 @@ public class Recursos extends ListResourceBundle {
 		{"attype","Type"},
 		{"atmetric","Metric"},
 		{"atmetricparam","Metric parameter"},
+		{"attpredicates","Attribute predicates"},
 		
 		{"integer","Integer"},
 		{"string","Text string"},
@@ -78,12 +93,14 @@ public class Recursos extends ListResourceBundle {
 		
 		{"ok","Ok"},
 		{"cancel","Cancel"},
+		{"none","None"},
 
 		{"configuremethod","Configure method"},
 		{"configure","Configure"},
 		{"default","Default"},
 
 		{"attributethresholds","Attribute thresholds"},
+		{"negativethreshold","Threshold values can not be negative."},
 		{"emptyfield","No fields can remain empty"},
 		
 		{"login","Log in"}

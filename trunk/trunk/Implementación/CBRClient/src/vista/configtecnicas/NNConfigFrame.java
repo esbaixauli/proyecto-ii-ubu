@@ -64,7 +64,7 @@ public class NNConfigFrame extends JFrame {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),}));
 		
-		JLabel lblNmeroDeCasos = new JLabel("Número de casos a recuperar:");
+		JLabel lblNmeroDeCasos = new JLabel(b.getString("casestoretrieve")+":");
 		contentPane.add(lblNmeroDeCasos, "2, 2");
 		
 		final JSpinner spinner = new JSpinner(new SpinnerNumberModel(5, 1, 500, 1));
