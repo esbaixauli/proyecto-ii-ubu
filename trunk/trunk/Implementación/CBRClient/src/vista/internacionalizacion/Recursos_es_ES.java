@@ -19,6 +19,7 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"notconfigured","No es posible insertar un tipo de caso hasta que no se hayan definido sus técnicas."},
 		{"port","Puerto:"},
 		{"admin","Administración"},
+		{"executeCBR","Ejecutar ciclo"},
 		
 		{"managecasetypes","Gestionar tipos de caso"},
 		{"insertcases","Insertar casos"},
@@ -77,6 +78,7 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"cancel","Cancelar"},
 
 		{"configuremethod","Configurar técnica"},
+		{"configure","Configurar"},
 		{"default","Por defecto"},
 		
 		{"attributethresholds","Umbrales para los atributos"},

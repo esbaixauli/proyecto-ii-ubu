@@ -17,6 +17,7 @@ public class Recursos extends ListResourceBundle {
 		{"inserterror","Error while inserting. Check the connection status and that the case name is not repeated."},
 		{"usernotfound","User not found or wrong password."},
 		{"notconfigured","Inserting a case type is not possible until its methods have been defined."},
+		{"executeCBR","Execute cycle"},
 		
 		{"port","Port:"},
 		{"admin","Administration"},
@@ -79,6 +80,7 @@ public class Recursos extends ListResourceBundle {
 		{"cancel","Cancel"},
 
 		{"configuremethod","Configure method"},
+		{"configure","Configure"},
 		{"default","Default"},
 
 		{"attributethresholds","Attribute thresholds"},

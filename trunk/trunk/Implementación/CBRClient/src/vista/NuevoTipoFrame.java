@@ -110,7 +110,7 @@ public class NuevoTipoFrame extends JFrame {
 		contentPane.add(textField, gbc_textField);
 		textField.setColumns(10);
 
-		panelProblema = new ScrollPanelAtbo(b.getString("problem"), Color.RED);
+		panelProblema = new ScrollPanelAtbo(b.getString("problem"), Color.RED,true);
 		GridBagConstraints gbc_panelProblema = new GridBagConstraints();
 		gbc_panelProblema.fill = GridBagConstraints.BOTH;
 		gbc_panelProblema.insets = new Insets(0, 0, 5, 0);
@@ -119,7 +119,7 @@ public class NuevoTipoFrame extends JFrame {
 		gbc_panelProblema.gridy = 3;
 		contentPane.add(panelProblema, gbc_panelProblema);
 
-		panelSolucion = new ScrollPanelAtbo(b.getString("solution"), Color.BLUE);
+		panelSolucion = new ScrollPanelAtbo(b.getString("solution"), Color.BLUE,false);
 		GridBagConstraints gbc_panelSolucion = new GridBagConstraints();
 		gbc_panelSolucion.fill = GridBagConstraints.BOTH;
 		gbc_panelSolucion.insets = new Insets(0, 0, 5, 0);

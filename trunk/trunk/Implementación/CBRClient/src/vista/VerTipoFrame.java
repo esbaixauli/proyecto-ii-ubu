@@ -23,7 +23,7 @@ public class VerTipoFrame extends NuevoTipoFrame {
 				"vista.internacionalizacion.Recursos", Locale.getDefault());
 	public VerTipoFrame(final JFrame padre, TipoCaso tic) {
 		super(padre);
-		setTitle(tc.getNombre());
+		setTitle(tic.getNombre());
 		super.tc= tic;
 		getTextFieldNombre().setText(tc.getNombre());
 		getTextFieldNombre().setEnabled(false);

@@ -59,11 +59,11 @@ public class PanelAtributos extends JPanel {
 	 */
 	public PanelAtributos(final int numero, final Container padre, final Container scroll,
 			Atributo a){
-		this(numero, padre, scroll);
+		this(numero, padre, scroll,a.getEsProblema());
 		setAtributo(a, true);
 	}
 
-	public PanelAtributos(final int numero, final Container padre, final Container scroll) {
+	public PanelAtributos(final int numero, final Container padre, final Container scroll, boolean problema) {
 		super();
 		this.scroll =scroll;
 		this.padre = padre;
@@ -141,7 +141,9 @@ public class PanelAtributos extends JPanel {
 						padre.remove(me);
 						
 						try{
-							((JScrollPane)scroll).getVerticalScrollBar().setValue(0);
+							if(scroll!=null){
+								((JScrollPane)scroll).getVerticalScrollBar().setValue(0);
+							}
 						}catch(Exception e){}
 						padre.repaint();
 					}
@@ -203,6 +205,12 @@ public class PanelAtributos extends JPanel {
 		add(formattedTextFieldPeso, gbc_formattedTextFieldPeso);
 		formattedTextFieldPeso.setFormatterFactory(new DefaultFormatterFactory(
 				new NumberFormatter(new DecimalFormat())));
+		
+		//Si este panel pertenece a un atributo de la solución
+		if(!problema){
+			formattedTextFieldPeso.setEnabled(false);
+			lblPeso.setEnabled(false);
+		}
 
 		lblParmetro = new JLabel(b.getString("atmetricparam") + ":");
 		lblParmetro.setEnabled(false);
@@ -248,12 +256,12 @@ public class PanelAtributos extends JPanel {
 		comboBox.setSelectedIndex(0);
 	}
 
-	// Comprueba que todos los campos esten llenos. El de los parametros de
-	// metricas puede no estarlo si no
-	// se requieren parametros.
+	/* Comprueba que todos los campos esten llenos. El de los parametros de
+	metricas puede no estarlo si no se requieren parametros.
+	El de los pesos puede no estarlo si es una solución y por tanto está deshabilitado*/
 	public boolean comprobarLleno() {
 		return !(textFieldNombre.getText().isEmpty()
-				|| formattedTextFieldPeso.getText().isEmpty()
+				|| (formattedTextFieldPeso.isEnabled() && formattedTextFieldPeso.getText().isEmpty())
 				|| (comboBoxMetricas.getSelectedIndex() == -1) || (formattedTextFieldParam
 				.isEnabled() && formattedTextFieldParam.getText().isEmpty()));
 	}
