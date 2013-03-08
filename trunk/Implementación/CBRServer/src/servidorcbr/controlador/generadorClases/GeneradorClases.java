@@ -105,13 +105,15 @@ public class GeneradorClases {
 		byte[] clase = cw.toByteArray();
 		// Genero el fichero
 		try {
-		
+			File folder = new File("generadas/");
+			/*if (!folder.exists())
+				folder.mkdir();*/
 			
 			FileOutputStream f = new FileOutputStream("generadas/" + nombre
 					+ ".class");
 			System.out.println("generando...");
 			f.write(clase);
-			System.out.println("Clase generada.");
+			System.out.println("Clase generada en "+folder.getCanonicalPath());
 			f.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -188,7 +190,7 @@ public class GeneradorClases {
 		//Creo la clase. Sus atbos son atbo1,atbo2 (strings) y miid (integer)
 		GeneradorClases.crearClase(h, nombreClase);
 		try {
-			URL[] url = { new URL("file:C:/Users/Rubén/workspace/CBRServer/") };
+			URL[] url = { new URL("file:C:/Users/Ruben/workspace/CBRServer/") };
 			URLClassLoader classLoader = new URLClassLoader(url);
 			Class<?> clase = classLoader.loadClass("generadas."
 					+ nombreClase);
