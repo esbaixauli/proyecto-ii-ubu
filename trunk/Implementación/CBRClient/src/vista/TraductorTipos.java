@@ -1,8 +1,5 @@
 package vista;
 
-import java.lang.Character.Subset;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class TraductorTipos {
 
@@ -23,8 +20,6 @@ public class TraductorTipos {
 		
 	}
 	
-	private static ResourceBundle b = ResourceBundle.getBundle(
-            "vista.internacionalizacion.Recursos", Locale.getDefault());
 	
 	public static String indiceATipo(int i){
 		switch(i){

@@ -34,7 +34,7 @@ public class ScrollPanelAtbo extends JPanel {
 	
 	
 	
-	public ScrollPanelAtbo(String título, Color color){
+	public ScrollPanelAtbo(String título, Color color,final boolean problema){
 		super();
 		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), título, TitledBorder.LEADING, TitledBorder.TOP, null, color));
 		scrollPane = new JScrollPane();
@@ -53,7 +53,7 @@ public class ScrollPanelAtbo extends JPanel {
 
 		panelAtbo = new JPanel();
 		panelAtbo.setLayout(new BoxLayout(panelAtbo, BoxLayout.Y_AXIS));
-		panelAtboInicial = new PanelAtributos(numeroAtributo,panelAtbo,scrollPane);
+		panelAtboInicial = new PanelAtributos(numeroAtributo,panelAtbo,scrollPane,problema);
 
 		panelAtbo.add(panelAtboInicial);
 		scrollPane.setViewportView(panelAtbo);
@@ -62,7 +62,7 @@ public class ScrollPanelAtbo extends JPanel {
 		buttonMas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				numeroAtributo++;
-				panelAtbo.add(new PanelAtributos(numeroAtributo,panelAtbo,scrollPane));
+				panelAtbo.add(new PanelAtributos(numeroAtributo,panelAtbo,scrollPane,problema));
 				repintar();
 			}
 
@@ -88,7 +88,7 @@ public class ScrollPanelAtbo extends JPanel {
 	//@param desactivar cierto si se desea desactivar las partes del panel no editable.
 	public void addAtributo(Atributo a, boolean desactivar){
 		numeroAtributo++;
-		PanelAtributos p = new PanelAtributos(numeroAtributo,panelAtbo,scrollPane);
+		PanelAtributos p = new PanelAtributos(numeroAtributo,panelAtbo,scrollPane,a.getEsProblema());
 		p.setAtributo(a, desactivar);
 		panelAtbo.add(p);
 		repintar();

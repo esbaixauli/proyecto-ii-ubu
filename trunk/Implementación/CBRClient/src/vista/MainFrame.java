@@ -20,10 +20,12 @@ import javax.swing.border.TitledBorder;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame{
 
 	
 	private final MainFrame me = this;
+	@SuppressWarnings("unused")
 	private final Usuario u;
 
 	/**
@@ -83,13 +85,6 @@ public class MainFrame extends JFrame{
 		panel_adm.add(btnGestionarTipos, gbc_btnGestionarTipos);
 		
 		JButton btnGestionarusuarios = new JButton(bundle.getString("manageusers"));
-		btnGestionarusuarios.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				GestionUsuariosFrame gestion = new GestionUsuariosFrame(me);
-				gestion.setVisible(true);
-				me.setEnabled(false);
-			}
-		});
 		GridBagConstraints gbc_btnGestionarusuarios = new GridBagConstraints();
 		gbc_btnGestionarusuarios.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnGestionarusuarios.insets = new Insets(0, 0, 5, 0);
@@ -115,6 +110,13 @@ public class MainFrame extends JFrame{
 		panel_cbr.setLayout(gbl_panel_cbr);
 		
 		JButton btnCicloConfigurado = new JButton(bundle.getString("configuredcycle"));
+		btnCicloConfigurado.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ElegirTipoCasoFrame f = new ElegirTipoCasoFrame(u, me,ElegirTipoCasoFrame.CICLO_CONFIGURADO);
+				f.setVisible(true);
+				me.setEnabled(false);
+			}
+		});
 		GridBagConstraints gbc_btnCicloConfigurado = new GridBagConstraints();
 		gbc_btnCicloConfigurado.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCicloConfigurado.insets = new Insets(0, 0, 5, 0);
@@ -131,6 +133,13 @@ public class MainFrame extends JFrame{
 		panel_cbr.add(btnIntroducir, gbc_btnIntroducir);
 		
 		JButton btnCicloPorDefecto = new JButton(bundle.getString("defaultcycle"));
+		btnCicloPorDefecto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ElegirTipoCasoFrame f = new ElegirTipoCasoFrame(u, me, ElegirTipoCasoFrame.CICLO_BASICO);
+				f.setVisible(true);
+				me.setEnabled(false);
+			}
+		});
 		GridBagConstraints gbc_btnCicloPorDefecto = new GridBagConstraints();
 		gbc_btnCicloPorDefecto.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnCicloPorDefecto.gridx = 0;

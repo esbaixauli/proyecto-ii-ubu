@@ -53,13 +53,11 @@ public class DiverseByMedianConfigFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				padre.setEnabled(true);
-				me.setVisible(false);
 				me.dispose();
 			}
 		});
 		setBounds(100, 100, 350, 300);
 		setTitle("Diverse by median retrieval");
-		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

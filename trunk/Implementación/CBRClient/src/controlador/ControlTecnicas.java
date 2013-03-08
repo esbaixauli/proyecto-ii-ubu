@@ -61,4 +61,13 @@ public class ControlTecnicas {
 		return lista;
 	}
 	
+	public static Tecnica buscaTecnica(List<Tecnica> ltc, String buscada){
+		for(Tecnica t :ltc){
+			if(t.getNombre().equals(buscada)){
+				return t;
+			}
+		}
+		return null;
+	}
+	
 }

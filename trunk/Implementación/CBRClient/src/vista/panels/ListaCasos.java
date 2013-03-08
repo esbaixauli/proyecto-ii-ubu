@@ -1,11 +1,13 @@
 package vista.panels;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.SystemColor;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
@@ -47,6 +49,33 @@ public class ListaCasos extends JList<TipoCaso> {
 		} else {
 			setListData(datos.toArray(new TipoCaso[datos.size()]));
 			setEnabled(true);
+		}
+	}
+
+	class AltCellRenderer extends DefaultListCellRenderer {
+
+		public AltCellRenderer() {
+			super();
+			setOpaque(true);
+		}
+
+		@Override
+		public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+			Component c = super.getListCellRendererComponent(list, value,
+					index, isSelected, cellHasFocus);
+			if (!isSelected) {
+				if (index % 2 != 0) {
+					c.setBackground(SystemColor.inactiveCaption);
+
+				} else {
+					c.setBackground(SystemColor.WHITE);
+				}
+			} else {
+				c.setBackground(SystemColor.textHighlight);
+			}
+
+			return c;
 		}
 	}
 
