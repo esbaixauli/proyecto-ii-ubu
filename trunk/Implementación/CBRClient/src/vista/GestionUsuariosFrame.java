@@ -22,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JList;
 
+import controlador.ControlTipos;
 import controlador.ControlUsuarios;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -34,6 +35,7 @@ public class GestionUsuariosFrame extends JFrame {
 	private HashMap<String,Usuario> users = null;
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
+	private ListaUsuarios list;
 
 	/**
 	 * Create the frame.
@@ -72,7 +74,7 @@ public class GestionUsuariosFrame extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		
-		final ListaUsuarios list = new ListaUsuarios(users);
+		list = new ListaUsuarios(users);
 		scrollPane.setViewportView(list);
 		
 		JPanel panel = new JPanel();
@@ -81,8 +83,7 @@ public class GestionUsuariosFrame extends JFrame {
 		JButton btnVer = new JButton(new ImageIcon("res/search_32.png"));
 		btnVer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String nombre = list.getSelectedValue().getNombre();
-				JFrame f = new VerCrearUsuario(users.get(nombre), me);
+				JFrame f = new VerCrearUsuario(list.getSelectedValue(), me);
 				f.setVisible(true);
 				me.setEnabled(false);
 			}
@@ -104,10 +105,53 @@ public class GestionUsuariosFrame extends JFrame {
 		JButton btnEliminar = new JButton(new ImageIcon("res/delete_32.png"));
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Usuario u = list.getSelectedValue();
+				if (u == null) {
+					JOptionPane.showMessageDialog(null, 
+							b.getString("noselection"),b.getString("noselection"), JOptionPane.INFORMATION_MESSAGE);
+					return;
+				} else if (u.getNombre().equals("root")) {
+					JOptionPane.showMessageDialog(null, 
+							b.getString("rootdeletion"),b.getString("rootdeletion"), JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
+				int opcion= JOptionPane.showConfirmDialog(null, 
+						b.getString("userdelsure"),b.getString("delsure"),JOptionPane.YES_NO_OPTION);
+				try {
+				if (opcion==0) {
+					if (ControlUsuarios.removeUsuario(u)) {
+						JOptionPane.showMessageDialog(null, 
+								b.getString("opsuccess"),b.getString("opsuccess"), JOptionPane.INFORMATION_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null, 
+								b.getString("opunsuccess"),b.getString("opunsuccess"), JOptionPane.INFORMATION_MESSAGE);
+					}
+					users = ControlUsuarios.getUsuarios();
+					list.refrescarDatos(users);
+				}
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null, 
+							b.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
 			}
 		});
 		btnEliminar.setToolTipText(b.getString("deluser"));
 		panel.add(btnEliminar);
+	}
+	
+	@Override
+	public void setEnabled(boolean flag) {
+		super.setEnabled(flag);
+		if (flag) {
+			try {
+				users = ControlUsuarios.getUsuarios();
+			} catch (IOException ex){
+				JOptionPane.showMessageDialog(null, 
+						b.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
+			}
+			list.refrescarDatos(users);
+		}
 	}
 
 }

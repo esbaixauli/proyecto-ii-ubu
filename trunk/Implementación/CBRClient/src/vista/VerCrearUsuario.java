@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
+import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
@@ -19,6 +21,12 @@ import java.util.ResourceBundle;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+
+import controlador.ControlUsuarios;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class VerCrearUsuario extends JFrame {
 
@@ -101,7 +109,7 @@ public class VerCrearUsuario extends JFrame {
 		gbc_lblTipo.gridy = 2;
 		panel.add(lblTipo, gbc_lblTipo);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
+		final JComboBox<String> comboBox = new JComboBox<String>();
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox.gridx = 1;
@@ -134,9 +142,69 @@ public class VerCrearUsuario extends JFrame {
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		
 		JButton btnOk = new JButton(b.getString("ok"));
+		btnOk.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (user == null) {
+						// crear usuario nuevo
+						user = new Usuario();
+						user.setNombre(nombreTextField.getText().trim());
+						if (user.getNombre() == null || user.getNombre().equals("")) {
+							throw new NullPointerException();
+						}
+						user.setPassword(new String(passwordField.getPassword()));
+						switch (comboBox.getSelectedIndex()) {
+						case 0:
+							user.setTipo(TipoUsuario.UBASICO);
+							break;
+						case 1:
+							user.setTipo(TipoUsuario.UAVANZADO);
+							break;
+						default:
+							user.setTipo(TipoUsuario.ADMINISTRADOR);
+							break;
+						}
+						ControlUsuarios.newUsuario(user);
+					} else {
+						// modificar usuario existente
+						user.setPassword(new String(passwordField.getPassword()));
+						switch (comboBox.getSelectedIndex()) {
+						case 0:
+							user.setTipo(TipoUsuario.UBASICO);
+							break;
+						case 1:
+							user.setTipo(TipoUsuario.UAVANZADO);
+							break;
+						default:
+							user.setTipo(TipoUsuario.ADMINISTRADOR);
+							break;
+						}
+						ControlUsuarios.modUsuario(user);
+					}
+					padre.setEnabled(true);
+					me.setVisible(false);
+					me.dispose();
+				} catch (NullPointerException ex) {
+					JOptionPane.showMessageDialog(null,
+							b.getString("emptyfield"), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null,
+							b.getString("connecterror"), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		panel_1.add(btnOk);
 		
 		JButton btnCancel = new JButton(b.getString("cancel"));
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				padre.setEnabled(true);
+				me.setVisible(false);
+				me.dispose();
+			}
+		});
 		panel_1.add(btnCancel);
 	}
 

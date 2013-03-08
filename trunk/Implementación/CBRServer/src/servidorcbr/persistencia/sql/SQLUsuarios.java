@@ -57,13 +57,13 @@ public class SQLUsuarios {
 		int exito = 0;
 		int count = 0;
 		try {
-			PreparedStatement ps = conn.prepareStatement("SELECT usuario WHERE nombre='?';");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM usuario WHERE nombre=?;");
 			ps.setString(1, u.getNombre());
 			ResultSet rs = ps.executeQuery();
 			
 			int id = -1;
 			while (rs.next()) {
-				id = rs.getInt(0);
+				id = rs.getInt(1);
 			}
 			if (id == -1) {
 				throw new PersistenciaException("Error al eliminar el usuario "+u.getNombre());
@@ -88,6 +88,21 @@ public class SQLUsuarios {
 		}
 
 		return (exito == count+1);
+	}
+	
+	public boolean modUsuario (Usuario u) throws PersistenciaException {
+		int count = 0;
+		try {
+			PreparedStatement ps = conn.prepareStatement("UPDATE usuario SET password=?,tipo=? WHERE nombre=?;");
+			ps.setString(1, u.getPassword());
+			ps.setString(2, traducirTipoUsuario(u.getTipo()));
+			ps.setString(3, u.getNombre());
+			count = ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new PersistenciaException(e);
+		}
+		return (count == 1);
 	}
 	
 	/*Auxiliar. Traduce un tipo de usuario a la notación de la aplicación.*/

@@ -56,6 +56,27 @@ public class ServletUsuarios extends HttpServlet {
 			if (tipo.equals("getUsuarios")) {
 				HashMap<String,Usuario> l = ControladorUsuarios.getUsuarios();
 				oos.writeObject(l);
+			} else if (tipo.equals("removeUsuario")) {
+				Usuario u = null;
+				try {
+					u = (Usuario) ois.readObject();
+				} catch (ClassNotFoundException e) { }
+				boolean exito = ControladorUsuarios.removeUsuario(u);
+				oos.writeObject(exito);
+			} else if (tipo.equals("newUsuario")) {
+				Usuario u = null;
+				try {
+					u = (Usuario) ois.readObject();
+				} catch (ClassNotFoundException e) { }
+				boolean exito = ControladorUsuarios.addUsuario(u);
+				oos.writeObject(exito);
+			} else if (tipo.equals("modUsuario")) {
+				Usuario u = null;
+				try {
+					u = (Usuario) ois.readObject();
+				} catch (ClassNotFoundException e) { }
+				boolean exito = ControladorUsuarios.modUsuario(u);
+				oos.writeObject(exito);
 			}
 		} catch (PersistenciaException ex) {
 			ex.printStackTrace();

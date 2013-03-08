@@ -116,14 +116,17 @@ public class GestionTiposFrame extends JFrame {
 		JButton btnBorrarbut = new JButton(new ImageIcon("res/delete_32.png"));
 		btnBorrarbut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				if(list.getSelectedValue()==null){
 					JOptionPane.showMessageDialog(null, 
 							bundle.getString("noselection"),bundle.getString("noselection"), JOptionPane.INFORMATION_MESSAGE);
 					return;
+				} else if (list.selectedValue().getNombre().equals("root")) {
+					JOptionPane.showMessageDialog(null, 
+							bundle.getString("rootdeletion"),bundle.getString("rootdeletion"), JOptionPane.INFORMATION_MESSAGE);
+					return;
 				}
 			 int opcion= JOptionPane.showConfirmDialog(null, 
-						bundle.getString("delsure"),bundle.getString("delsure"),JOptionPane.YES_NO_OPTION);
+						bundle.getString("userdelsure"),bundle.getString("delsure"),JOptionPane.YES_NO_OPTION);
 			 if(opcion==0){
 				try {
 					if(ControlTipos.borrarTiposCaso(list.getSelectedValue())){

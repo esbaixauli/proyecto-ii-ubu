@@ -50,8 +50,10 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"deluser","Eliminar el usuario seleccionado."},
 		{"moduser","Modificar usuario."},
 		
-		{"noselection","No se ha escogido ningún tipo de caso."},
+		{"noselection","No se ha escogido ningún elemento."},
 		{"delsure","¿Está seguro de que desea borrar el tipo de caso? Se perderan los casos relacionados."},
+		{"userdelsure","¿Está seguro de que desea borrar el usuario seleccionado?"},
+		{"rootdeletion","Por razones de seguridad, no está permitido eliminar al usuario 'root'."},
 		{"opsuccess","Operación completada con éxito."},
 		{"opunsuccess","No se pudo completar la operación."},
 		{"delunsuccesscause","Es posible que el tipo de caso haya sido borrado por otro usuario."},
