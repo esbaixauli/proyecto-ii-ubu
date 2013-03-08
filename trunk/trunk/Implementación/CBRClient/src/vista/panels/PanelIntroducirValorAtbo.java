@@ -58,6 +58,8 @@ public class PanelIntroducirValorAtbo extends JPanel {
 			btnConfigurar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					JFrame caf =new ConfigAtributoFrame(a, padre);
+					caf.setVisible(true);
+					padre.setEnabled(false);
 				}
 			});
 			add(btnConfigurar);
@@ -68,8 +70,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		if(a.getTipo().equals("S")){
 			textField = new JTextField();
 		}else if(a.getTipo().equals("I")){
-			textField = new JFormattedTextField(new DefaultFormatterFactory(
-					new NumberFormatter()));
+			textField = new JFormattedTextField(new Integer(1));
 		}else{
 			textField = new JFormattedTextField(new DefaultFormatterFactory(
 					new NumberFormatter(new DecimalFormat())));

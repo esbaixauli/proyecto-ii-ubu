@@ -1,14 +1,18 @@
 package vista;
 
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.awt.event.MouseAdapter;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,11 +32,11 @@ public class ElegirTipoCasoFrame extends JFrame {
 	private int tipo;
 	private JFrame padre, me = this;
 	private List<TipoCaso> datos;
-	
-	public static final int CICLO_CONFIGURADO=1;
-	public static final int CICLO_BASICO=2;
-	public static final int INTRODUCIR_MANUAL=3;
-	public static final int VER_ESTADISTICAS=4;
+
+	public static final int CICLO_CONFIGURADO = 1;
+	public static final int CICLO_BASICO = 2;
+	public static final int INTRODUCIR_MANUAL = 3;
+	public static final int VER_ESTADISTICAS = 4;
 
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
@@ -40,18 +44,26 @@ public class ElegirTipoCasoFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ElegirTipoCasoFrame(Usuario u, JFrame padre,
-			final int tipo) {
-		assert(tipo>=1 && tipo <=4);
+	public ElegirTipoCasoFrame(Usuario u, JFrame padre, final int tipo) {
+		assert (tipo >= 1 && tipo <= 4);
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setResizable(false);
 		this.padre = padre;
-		switch(tipo) {
-			case CICLO_CONFIGURADO:setTitle(b.getString("configuredcycle"));break;
-			case CICLO_BASICO:setTitle(b.getString("defaultcycle"));break;
-			case INTRODUCIR_MANUAL:setTitle(b.getString("insertcases"));break;
-			case VER_ESTADISTICAS:setTitle(b.getString("stats"));break;
+		switch (tipo) {
+		case CICLO_CONFIGURADO:
+			setTitle(b.getString("configuredcycle"));
+			break;
+		case CICLO_BASICO:
+			setTitle(b.getString("defaultcycle"));
+			break;
+		case INTRODUCIR_MANUAL:
+			setTitle(b.getString("insertcases"));
+			break;
+		case VER_ESTADISTICAS:
+			setTitle(b.getString("stats"));
+			break;
 		}
-			
+
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 237, 300);
 		this.tipo = tipo;
@@ -75,38 +87,49 @@ public class ElegirTipoCasoFrame extends JFrame {
 		cierreVentana();
 	}
 
-	private void establecerControlLista(ListaCasos l){
-		
-		switch(tipo){
+	private void establecerControlLista(ListaCasos l) {
+
+		switch (tipo) {
 		case CICLO_CONFIGURADO:
-			l.addListSelectionListener(new ListSelectionListener() {
-				
-				public void valueChanged(ListSelectionEvent arg0) {
-					JFrame f = new IntroducirConsultaCBRFrame(datos.get(arg0
-							.getFirstIndex()), true, me);
-					f.setVisible(true);
-					me.setEnabled(false);
+			l.addMouseListener(new MouseAdapter() {
+
+				public void mouseClicked(MouseEvent arg0) {
+					@SuppressWarnings("rawtypes")
+					JList list = (JList) arg0.getSource();
+					if (arg0.getClickCount() >= 2) {
+						JFrame f = new IntroducirConsultaCBRFrame(datos
+								.get(list.getSelectedIndex()), true, me);
+						f.setVisible(true);
+						me.setEnabled(false);
+					}
 				}
-			});break;
+			});
+			break;
 		case CICLO_BASICO:
-			l.addListSelectionListener(new ListSelectionListener() {
-				
-				public void valueChanged(ListSelectionEvent arg0) {
-					JFrame f = new IntroducirConsultaCBRFrame(datos.get(arg0
-							.getFirstIndex()), false, me);
-					f.setVisible(true);
-					me.setEnabled(false);
+			l.addMouseListener(new MouseAdapter() {
+
+				public void mouseClicked(MouseEvent arg0) {
+					@SuppressWarnings("rawtypes")
+					JList list = (JList) arg0.getSource();
+					if (arg0.getClickCount() >= 2) {
+						JFrame f = new IntroducirConsultaCBRFrame(datos
+								.get(list.getSelectedIndex()), false, me);
+						f.setVisible(true);
+						me.setEnabled(false);
+					}
 				}
-			});break;
+			});
+			break;
 		case INTRODUCIR_MANUAL:
-			;break;
+			;
+			break;
 		case VER_ESTADISTICAS:
-			;break;
+			;
+			break;
 		}
-		
-		
+
 	}
-	
+
 	private void cierreVentana() {
 		addWindowListener(new WindowAdapter() {
 			@Override

@@ -50,7 +50,7 @@ public class MainFrame extends JFrame{
 		setTitle(bundle.getString("mainmenu"));
 		setIconImage(new javax.swing.ImageIcon("res/logocbr.png").getImage());
 		setResizable(false);
-		setBounds(100, 100, 227, 286);
+		setBounds(100, 100, 227, 303);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
