@@ -32,5 +32,10 @@ public class Usuario implements Serializable {
 	public void setTipo(TipoUsuario tipo) {
 		this.tipo = tipo;
 	}
+	
+	@Override
+	public String toString() {
+		return nombre + " (" + tipo + ")";
+	}
 
 }

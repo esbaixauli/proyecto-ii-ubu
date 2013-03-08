@@ -105,32 +105,40 @@ public class SQLTipos {
 			exito = psT.executeUpdate();
 
 			int id = buscarId("caso", tc.getNombre());
-
-			for (Atributo a : tc.getAtbos().values()) {
-				PreparedStatement psA = conn
-						.prepareStatement("INSERT INTO atributo VALUES ?,?,?,?,?,?,?;");
-				psA.setString(1, a.getNombre());
-				psA.setString(2, a.getTipo());
-				psA.setDouble(3, a.getPeso());
-				psA.setString(4, a.getMetrica());
-				psA.setDouble(5, a.getParamMetrica());
-				psA.setInt(6, id);
-				psA.setBoolean(7, a.getEsProblema());
-				exito += psA.executeUpdate();
-			}
 			
-			addTecnicasCaso(id, tc.getTecnicasRecuperacion(), "rec");
-			addTecnicasCaso(id, tc.getTecnicasReutilizacion(), "reu");
-			addTecnicasCaso(id, tc.getTecnicasRevision(), "rev");
-			addTecnicasCaso(id, tc.getTecnicasRetencion(), "ret");
+			exito += terminaAddTipo(id, tc);
 			
-			addTecnicasDefault(id, tc);
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			throw new PersistenciaException(ex);
 		}
 		
 		return (exito == tc.getAtbos().size()+1);
+	}
+
+	private int terminaAddTipo(int id, TipoCaso tc)
+					throws SQLException, PersistenciaException {
+		int exito = 0;
+		for (Atributo a : tc.getAtbos().values()) {
+			PreparedStatement psA = conn
+					.prepareStatement("INSERT INTO atributo VALUES ?,?,?,?,?,?,?;");
+			psA.setString(1, a.getNombre());
+			psA.setString(2, a.getTipo());
+			psA.setDouble(3, a.getPeso());
+			psA.setString(4, a.getMetrica());
+			psA.setDouble(5, a.getParamMetrica());
+			psA.setInt(6, id);
+			psA.setBoolean(7, a.getEsProblema());
+			exito += psA.executeUpdate();
+		}
+		
+		addTecnicasCaso(id, tc.getTecnicasRecuperacion(), "rec");
+		addTecnicasCaso(id, tc.getTecnicasReutilizacion(), "reu");
+		addTecnicasCaso(id, tc.getTecnicasRevision(), "rev");
+		addTecnicasCaso(id, tc.getTecnicasRetencion(), "ret");
+		
+		addTecnicasDefault(id, tc);
+		return exito;
 	}
 	
 	private void addTecnicasDefault(int id, TipoCaso tc) throws SQLException, PersistenciaException {
@@ -274,7 +282,7 @@ public class SQLTipos {
 						ps.setInt(1, idCaso);
 						ps.setInt(2, id);
 						ps.setInt(3, idp);
-						ps.executeQuery();
+						ps.executeUpdate();
 					}
 				} else {
 					PreparedStatement ps = conn.prepareStatement("INSERT INTO caso_tecnica_parametro VALUES (?,?,0);");
@@ -295,6 +303,7 @@ public class SQLTipos {
 		psp.executeUpdate();
 		
 		psp = conn.prepareStatement("SELECT MAX(id) FROM parametro WHERE nombre=?;");
+		psp.setString(1, p.getNombre());
 		rs = psp.executeQuery();
 		int idp = -1;
 		while (rs.next()) {
@@ -316,10 +325,21 @@ public class SQLTipos {
 	}
 
 	public boolean updateTipoCaso(TipoCaso tc) throws PersistenciaException{
-		boolean exito = false;
-		removeTipo(tc.getNombre());
-		addTipo(tc);
-		exito = true;
-		return exito;
+		int exito = 0;
+		try {
+			int id = buscarId("caso", tc.getNombre());
+			removeTipo(tc.getNombre());
+
+			PreparedStatement ps = conn.prepareStatement("INSERT INTO caso(id, nombre) VALUES (?,?);");
+			ps.setInt(1, id);
+			ps.setString(2, tc.getNombre());
+			exito += ps.executeUpdate();
+			
+			exito += terminaAddTipo(id, tc);
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+			throw new PersistenciaException(ex);
+		}
+		return (exito == tc.getAtbos().size()+1);
 	}
 }

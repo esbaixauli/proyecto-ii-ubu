@@ -36,16 +36,16 @@ public class SQLUsuarios {
 		
 		HashMap<String, Usuario> usuarios = new HashMap<String, Usuario>();
 		try{
-		PreparedStatement ps = conn.prepareStatement("SELECT * FROM usuario;");
-		ResultSet rs = ps.executeQuery();
-		Usuario u;
-		while(rs.next()){
-			u = new Usuario();
-			u.setNombre(rs.getString("nombre"));
-			u.setPassword(rs.getString("password"));
-			u.setTipo(traducirTipoUsuario(rs.getString("tipo")));
-			usuarios.put(u.getNombre(), u);
-		}
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM usuario;");
+			ResultSet rs = ps.executeQuery();
+			Usuario u;
+			while(rs.next()){
+				u = new Usuario();
+				u.setNombre(rs.getString("nombre"));
+				u.setPassword(rs.getString("password"));
+				u.setTipo(traducirTipoUsuario(rs.getString("tipo")));
+				usuarios.put(u.getNombre(), u);
+			}
 		}catch(SQLException e){
 			e.printStackTrace();
 			throw new PersistenciaException(e);
