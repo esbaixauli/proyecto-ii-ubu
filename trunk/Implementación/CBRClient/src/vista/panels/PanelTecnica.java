@@ -21,6 +21,7 @@ import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
 import vista.configtecnicas.FilterBasedConfigFrame;
+import vista.configtecnicas.NNConfigFrame;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -161,6 +162,13 @@ public class PanelTecnica extends JPanel {
 			});
 			break;
 		case "NNretrieval":
+			b.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFrame f = new NNConfigFrame(t, padre);
+					f.setVisible(true);
+					padre.setEnabled(false);
+				}
+			});
 			break;
 		default:
 			b.setEnabled(false);

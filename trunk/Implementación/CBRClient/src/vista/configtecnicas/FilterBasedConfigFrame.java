@@ -23,6 +23,7 @@ import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -38,6 +39,7 @@ import javax.swing.JComboBox;
 import controlador.ControlTecnicas;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class FilterBasedConfigFrame extends JFrame {
 
@@ -54,6 +56,8 @@ public class FilterBasedConfigFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public FilterBasedConfigFrame(final Tecnica t, TipoCaso tc, final JFrame padre) {
+		setResizable(false);
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -62,7 +66,7 @@ public class FilterBasedConfigFrame extends JFrame {
 				me.dispose();
 			}
 		});
-		setBounds(100, 100, 350, 300);
+		setBounds(100, 100, 438, 300);
 		setTitle("Filter based retrieval");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -127,14 +131,19 @@ public class FilterBasedConfigFrame extends JFrame {
 		});
 		panel.add(btnCancel);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		contentPane.add(scrollPane, BorderLayout.CENTER);
 		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
+		scrollPane.setViewportView(panel_1);
+		
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0};
+		gbl_panel_1.columnWidths = new int[]{0, 0, 263, 92, 0};
 		gbl_panel_1.rowHeights = new int[]{0, 0, 0};
 		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
+		
+	
 		
 		int i=0;
 		textFields = new ArrayList<JTextField>(tc.getAtbos().size());

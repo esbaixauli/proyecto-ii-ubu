@@ -40,6 +40,8 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
+import java.awt.Component;
+import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class IntroducirConsultaCBRFrame extends JFrame {
@@ -70,6 +72,7 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 	private JPanel panelAtbos;
 	private JScrollPane scrollPane;
 	private JPanel panelMet;
+	private JSeparator separator;
 
 	/**
 	 * Create the frame.
@@ -85,26 +88,14 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		cierreVentana();
 
-		setBounds(100, 100, 397, 431);
+		setBounds(100, 100, 423, 406);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 30, 332, 39, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 103, 248, 23, 0 };
-		gbl_contentPane.columnWeights = new double[] { 0.0, 0.0, 0.0,
-				Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
-				Double.MIN_VALUE };
-		contentPane.setLayout(gbl_contentPane);
+		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
 		scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane.gridx = 1;
-		gbc_scrollPane.gridy = 1;
-		contentPane.add(scrollPane, gbc_scrollPane);
+		contentPane.add(scrollPane);
 
 		panelAtbos = new JPanel();
 		scrollPane.setViewportView(panelAtbos);
@@ -115,12 +106,8 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 					.getBorder("TitledBorder.border"), b
 					.getString("managemethods"), TitledBorder.CENTER,
 					TitledBorder.TOP, null, null));
-			GridBagConstraints gbc_panelMet = new GridBagConstraints();
-			gbc_panelMet.fill = GridBagConstraints.BOTH;
-			gbc_panelMet.insets = new Insets(0, 0, 5, 5);
-			gbc_panelMet.gridx = 1;
-			gbc_panelMet.gridy = 2;
-			contentPane.add(panelMet, gbc_panelMet);
+	
+			contentPane.add(panelMet);
 			GridBagLayout gbl_panelMet = new GridBagLayout();
 			gbl_panelMet.columnWidths = new int[] { 30, 145, 35, 87, 0, 0 };
 			gbl_panelMet.rowHeights = new int[] { 14, 23, 14, 23, 14, 23, 14,
@@ -263,12 +250,12 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 				}
 			});
 		}
+		
+		separator = new JSeparator();
+		contentPane.add(separator);
 		btnEjecutarCiclo = new JButton(b.getString("executeCBR"));
-		GridBagConstraints gbc_btnEjecutarCiclo = new GridBagConstraints();
-		gbc_btnEjecutarCiclo.insets = new Insets(0, 0, 0, 5);
-		gbc_btnEjecutarCiclo.gridx = 1;
-		gbc_btnEjecutarCiclo.gridy = 3;
-		contentPane.add(btnEjecutarCiclo, gbc_btnEjecutarCiclo);
+		btnEjecutarCiclo.setAlignmentX(Component.CENTER_ALIGNMENT);
+		contentPane.add(btnEjecutarCiclo);
 		rellenarAtributos();
 		if (configurado) {
 			rellenarListas();
@@ -277,7 +264,7 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 			estableceFrameTecReu();
 			estableceFrameTecRev();
 		} else {
-			me.setBounds(me.getX(), me.getY(),me.getWidth(), me.getHeight() - 300);
+			me.setBounds(me.getX(), me.getY(),me.getWidth(), me.getHeight() - 200);
 		}
 	}
 
