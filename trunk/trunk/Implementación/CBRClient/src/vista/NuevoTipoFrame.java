@@ -259,7 +259,7 @@ public class NuevoTipoFrame extends JFrame {
 		});
 	}
 
-	private boolean comprobarPaneles() {
+	protected boolean comprobarPaneles() {
 		return comprobarPanel(panelProblema) && comprobarPanel(panelSolucion)
 				&& comprobarNombresRepetidos();
 	}

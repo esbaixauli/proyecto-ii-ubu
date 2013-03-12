@@ -37,11 +37,13 @@ public class VerTipoFrame extends NuevoTipoFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try{
+					if(comprobarPaneles()){
 				rellenaTC();
 				ControlTipos.modificarTipo(tc);
 				padre.setEnabled(true);
 				me.setVisible(false);
 				me.dispose();
+					}
 				}catch(IOException ex){
 					JOptionPane.showMessageDialog(null,
 							b.getString("moderror"), "Error",
