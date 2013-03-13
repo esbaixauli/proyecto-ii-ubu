@@ -22,6 +22,7 @@ public class Recursos extends ListResourceBundle {
 		{"emptylogin","Username and password may not be empty."},
 		{"connecterror","Error while connecting to server."},
 		{"moderror","Error while modifying."},
+		{"operror","Error during the operation"},
 		{"filenotfounderror","Error: File not found"},
 		{"inserterror","Error while inserting. Check the connection status and that the case name is not repeated."},
 		{"usernotfound","User not found or wrong password."},
@@ -55,7 +56,9 @@ public class Recursos extends ListResourceBundle {
 		{"deluser","Delete the selected user."},
 		{"moduser","Modify user."},
 		
-		{"noselection","No case type has been selected."},
+		{"noselection","No item has been selected."},
+		{"userdelsure","Are you sure you want to delete the selected user?"},
+		{"rootdeletion","For security reasons, you are not allowed to delete user 'root'."},
 		{"delsure","Are you sure you want to delete the selected case type? Case data will be discarded."},
 		{"opsuccess","Operation completed successfully."},
 		{"opunsuccess","The operation couldn't be completed."},

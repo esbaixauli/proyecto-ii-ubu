@@ -26,7 +26,7 @@ public class SQLTipos {
 		try {
 			PreparedStatement ps = conn.prepareStatement("select caso.* from caso join " +
 					"caso_usuario on id_caso=caso.id"
-					+ " join usuario on id_usuario=usuario.id where usuario.nombre='?';");
+					+ " join usuario on id_usuario=usuario.id where usuario.nombre=?;");
 			ps.setString(1, usuario);
 			return getTipos(ps);
 		} catch (SQLException e) {

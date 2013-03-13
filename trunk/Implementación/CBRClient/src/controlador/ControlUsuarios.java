@@ -32,13 +32,15 @@ public class ControlUsuarios {
 		return users;
 	}
 	
-	public static boolean newUsuario (Usuario u) throws IOException {
+	public static boolean newUsuario (Usuario u, List<String> casos){
 		boolean exito = false;
+		try{
 		URLConnection con = ControlConexion.getServletCon("ServletUsuarios");
 		OutputStream outputStream = con.getOutputStream();
 	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
 	    oos.writeObject("newUsuario");
 	    oos.writeObject(u);
+	    oos.writeObject(casos);
 	    InputStream inputStream = con.getInputStream();
 	    ObjectInputStream inputDelServlet = new ObjectInputStream(inputStream);
 	    try{
@@ -48,16 +50,23 @@ public class ControlUsuarios {
 	    }
 	    inputDelServlet.close();
 	    inputStream.close();
+		}catch(IOException ex){
+			exito=false;
+			
+		}
 		return exito;
 	}
 	
-	public static boolean modUsuario (Usuario u) throws IOException {
+	public static boolean modUsuario (Usuario u, List<String> casos) {
 		boolean exito = false;
+		try{
+		
 		URLConnection con = ControlConexion.getServletCon("ServletUsuarios");
 		OutputStream outputStream = con.getOutputStream();
 	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
 	    oos.writeObject("modUsuario");
 	    oos.writeObject(u);
+	    oos.writeObject(casos);
 	    InputStream inputStream = con.getInputStream();
 	    ObjectInputStream inputDelServlet = new ObjectInputStream(inputStream);
 	    try{
@@ -67,6 +76,9 @@ public class ControlUsuarios {
 	    }
 	    inputDelServlet.close();
 	    inputStream.close();
+	    }catch(IOException ex){
+	    	exito=false;
+	    }
 		return exito;
 	}
 	

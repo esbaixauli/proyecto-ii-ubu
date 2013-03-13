@@ -18,6 +18,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.factories.FormFactory;
+
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JButton;
@@ -38,6 +40,7 @@ public class NNConfigFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public NNConfigFrame(final Tecnica t, final JFrame padre) {
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -68,7 +71,7 @@ public class NNConfigFrame extends JFrame {
 		contentPane.add(lblNmeroDeCasos, "2, 2");
 		
 		final JSpinner spinner = new JSpinner(new SpinnerNumberModel(5, 1, 500, 1));
-		if (t.getParams() != null) {
+		if (t.getParams() != null && ! (t.getParams().isEmpty())) {
 			spinner.setValue((int) t.getParams().get(0).getValor());
 		}
 		contentPane.add(spinner, "2, 4");

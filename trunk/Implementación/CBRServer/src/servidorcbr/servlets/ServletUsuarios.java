@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -65,17 +66,21 @@ public class ServletUsuarios extends HttpServlet {
 				oos.writeObject(exito);
 			} else if (tipo.equals("newUsuario")) {
 				Usuario u = null;
+				List<String> casos=null;
 				try {
 					u = (Usuario) ois.readObject();
+					casos = (List<String>) ois.readObject();
 				} catch (ClassNotFoundException e) { }
-				boolean exito = ControladorUsuarios.addUsuario(u);
+				boolean exito = ControladorUsuarios.addUsuario(u,casos);
 				oos.writeObject(exito);
 			} else if (tipo.equals("modUsuario")) {
 				Usuario u = null;
+				List<String> casos=null;
 				try {
 					u = (Usuario) ois.readObject();
+					casos = (List<String>) ois.readObject();
 				} catch (ClassNotFoundException e) { }
-				boolean exito = ControladorUsuarios.modUsuario(u);
+				boolean exito = ControladorUsuarios.modUsuario(u,casos);
 				oos.writeObject(exito);
 			}
 		} catch (PersistenciaException ex) {

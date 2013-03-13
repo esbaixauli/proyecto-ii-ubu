@@ -210,6 +210,7 @@ public class GeneradorClases {
 			clase.getDeclaredMethod("setAtbo1", String.class).invoke(c,
 					"Correcto");
 
+			
 			Method m = clase.getDeclaredMethod("getAtbo1", null);
 			System.out.println("El resultado del get es:" + m.invoke(c, null));
 			System.out.println("La clase invocada es:" + clase.getSimpleName());

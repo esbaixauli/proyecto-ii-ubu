@@ -3,12 +3,15 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
+import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import javax.swing.JButton;
@@ -16,18 +19,29 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 
+import controlador.ControlTipos;
 import controlador.ControlUsuarios;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.peer.TextFieldPeer;
 import java.io.IOException;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import javax.swing.border.TitledBorder;
+import javax.swing.UIManager;
 
+@SuppressWarnings("serial")
 public class VerCrearUsuario extends JFrame {
 
 	private JPanel contentPane;
@@ -38,6 +52,7 @@ public class VerCrearUsuario extends JFrame {
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
 
+	private HashMap<String,JCheckBox> asociaciones = new HashMap<String,JCheckBox>();
 	/**
 	 * Create the frame.
 	 */
@@ -50,7 +65,7 @@ public class VerCrearUsuario extends JFrame {
                 me.dispose();
             }
         });
-		setBounds(100, 100, 300, 159);
+		setBounds(100, 100, 300, 285);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -62,9 +77,9 @@ public class VerCrearUsuario extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{0, 0, 0};
-		gbl_panel.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_panel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		JLabel lblNombre = new JLabel(b.getString("name"));
@@ -104,13 +119,14 @@ public class VerCrearUsuario extends JFrame {
 		JLabel lblTipo = new JLabel(b.getString("usertype"));
 		GridBagConstraints gbc_lblTipo = new GridBagConstraints();
 		gbc_lblTipo.anchor = GridBagConstraints.WEST;
-		gbc_lblTipo.insets = new Insets(0, 0, 0, 5);
+		gbc_lblTipo.insets = new Insets(0, 0, 5, 5);
 		gbc_lblTipo.gridx = 0;
 		gbc_lblTipo.gridy = 2;
 		panel.add(lblTipo, gbc_lblTipo);
 		
 		final JComboBox<String> comboBox = new JComboBox<String>();
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox.gridx = 1;
 		gbc_comboBox.gridy = 2;
@@ -119,9 +135,44 @@ public class VerCrearUsuario extends JFrame {
 		comboBox.addItem(b.getString("administrator"));
 		panel.add(comboBox, gbc_comboBox);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridheight = 2;
+		gbc_scrollPane.gridwidth = 2;
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 3;
+		panel.add(scrollPane, gbc_scrollPane);
+		
+		JPanel panelTipos = new JPanel();
+		panelTipos.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), b.getString("managecasetypes"), TitledBorder.CENTER, TitledBorder.TOP, null, null));
+		scrollPane.setViewportView(panelTipos);
+		panelTipos.setLayout(new BoxLayout(panelTipos, BoxLayout.Y_AXIS));
+	
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
+		try{
+			
+			for(TipoCaso tc: ControlTipos.obtenerTiposCaso(null)){
+				JCheckBox jcb = new JCheckBox(tc.getNombre());
+				panelTipos.add(jcb);
+				asociaciones.put(tc.getNombre(),jcb);
+			}
+			//Si estoy modificando el usuario, que muestre los casos que tenia asociados antes.
+			if(u!=null){
+				for(TipoCaso tc: ControlTipos.obtenerTiposCaso(u)){
+					if(asociaciones.containsKey(tc.getNombre())){
+						asociaciones.get(tc.getNombre()).setSelected(true);
+					}
+				}
+				
+			}
+		}catch(IOException ex){
+			panelTipos.add(new JLabel(b.getString("connecterror")));
+		}
 		if (u == null) {
 			setTitle(b.getString("newuser"));
 		} else {
+			
 			setTitle(b.getString("moduser"));
 			nombreTextField.setText(u.getNombre());
 			nombreTextField.setEnabled(false);
@@ -144,15 +195,27 @@ public class VerCrearUsuario extends JFrame {
 		JButton btnOk = new JButton(b.getString("ok"));
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean exito=false;
+				List<String> casosEscogidos = new ArrayList<String>();
+				for(JCheckBox jcbx :asociaciones.values()){
+					if(jcbx.isSelected()){
+						casosEscogidos.add(jcbx.getText());
+					}
+				}
 				try {
+					String password = new String(passwordField.getPassword());
+					String username= nombreTextField.getText().trim();
+					if (username == null || username.isEmpty()
+							|| password.isEmpty()) {
+						throw new NullPointerException();
+					}
 					if (user == null) {
 						// crear usuario nuevo
+						
 						user = new Usuario();
-						user.setNombre(nombreTextField.getText().trim());
-						if (user.getNombre() == null || user.getNombre().equals("")) {
-							throw new NullPointerException();
-						}
-						user.setPassword(new String(passwordField.getPassword()));
+						user.setNombre(username);
+						
+						user.setPassword(password);
 						switch (comboBox.getSelectedIndex()) {
 						case 0:
 							user.setTipo(TipoUsuario.UBASICO);
@@ -164,10 +227,18 @@ public class VerCrearUsuario extends JFrame {
 							user.setTipo(TipoUsuario.ADMINISTRADOR);
 							break;
 						}
-						ControlUsuarios.newUsuario(user);
+						
+						exito=ControlUsuarios.newUsuario(user,casosEscogidos);
+						if(!exito){
+							JOptionPane.showMessageDialog(null,
+									b.getString("operror"), "Error",
+									JOptionPane.ERROR_MESSAGE);
+							exito=false;
+							user=null;
+						}
 					} else {
 						// modificar usuario existente
-						user.setPassword(new String(passwordField.getPassword()));
+						user.setPassword(password);
 						switch (comboBox.getSelectedIndex()) {
 						case 0:
 							user.setTipo(TipoUsuario.UBASICO);
@@ -179,18 +250,21 @@ public class VerCrearUsuario extends JFrame {
 							user.setTipo(TipoUsuario.ADMINISTRADOR);
 							break;
 						}
-						ControlUsuarios.modUsuario(user);
+						exito= ControlUsuarios.modUsuario(user,casosEscogidos);
+						if(!exito){
+							JOptionPane.showMessageDialog(null,
+									b.getString("moderror"), "Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
 					}
-					padre.setEnabled(true);
+					if(exito){
+						padre.setEnabled(true);
 					me.setVisible(false);
 					me.dispose();
+					}
 				} catch (NullPointerException ex) {
 					JOptionPane.showMessageDialog(null,
 							b.getString("emptyfield"), "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null,
-							b.getString("connecterror"), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
 			}

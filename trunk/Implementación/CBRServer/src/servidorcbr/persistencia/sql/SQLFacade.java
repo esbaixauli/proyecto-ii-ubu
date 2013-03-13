@@ -58,8 +58,8 @@ public class SQLFacade {
 		return sqlTipos.removeTipo(nombre);
 	}
 	
-	public boolean addUsuario(Usuario u) throws PersistenciaException{
-		return sqlUsuarios.addUsuario(u);
+	public boolean addUsuario(Usuario u,List<String> casos) throws PersistenciaException{
+		return sqlUsuarios.addUsuario(u,casos);
 	}
 	
 	public HashMap<String, Usuario> getUsuarios() throws PersistenciaException {
@@ -78,8 +78,8 @@ public class SQLFacade {
 		return sqlTipos.updateTipoCaso(tc);
 	}
 	
-	public boolean modUsuario (Usuario u)  throws PersistenciaException {
-		return sqlUsuarios.modUsuario(u);
+	public boolean modUsuario (Usuario u,List<String> casos)  throws PersistenciaException {
+		return sqlUsuarios.modUsuario(u,casos);
 	}
 	
 }
