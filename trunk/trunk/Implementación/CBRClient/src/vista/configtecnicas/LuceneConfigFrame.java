@@ -3,7 +3,6 @@ package vista.configtecnicas;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -25,7 +24,6 @@ public class LuceneConfigFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public LuceneConfigFrame(Tecnica t, TipoCaso tc, JFrame padre) {
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 350, 300);
 		contentPane = new JPanel();
