@@ -16,9 +16,15 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"advuser", "Usuario avanzado"},
 		{"administrator", "Administrador"},
 		
+		
+		{"open","Abrir"},
+		{"loadfromfile","Cargar desde fichero"},
+		{"manualinsert","Inserción manual"},
+		
 		{"emptylogin","El nombre de usuario y la contraseña no pueden estar vacíos."},
 		{"connecterror","Error al conectar con el servidor."},
 		{"moderror","Error al modificar."},
+		{"filenotfounderror","Error: Fichero no encontrado"},
 		{"inserterror","Error al insertar. Compruebe la conexión y que el nombre del tipo de caso esté repetido."},
 		{"usernotfound","Usuario no encontrado o contraseña incorrecta."},
 		{"notconfigured","No es posible insertar un tipo de caso hasta que no se hayan definido sus técnicas."},
@@ -50,10 +56,8 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"deluser","Eliminar el usuario seleccionado."},
 		{"moduser","Modificar usuario."},
 		
-		{"noselection","No se ha escogido ningún elemento."},
+		{"noselection","No se ha escogido ningún tipo de caso."},
 		{"delsure","¿Está seguro de que desea borrar el tipo de caso? Se perderan los casos relacionados."},
-		{"userdelsure","¿Está seguro de que desea borrar el usuario seleccionado?"},
-		{"rootdeletion","Por razones de seguridad, no está permitido eliminar al usuario 'root'."},
 		{"opsuccess","Operación completada con éxito."},
 		{"opunsuccess","No se pudo completar la operación."},
 		{"delunsuccesscause","Es posible que el tipo de caso haya sido borrado por otro usuario."},
