@@ -36,8 +36,8 @@ create table caso_tecnica_parametro(
 );
 
 create table caso_usuario(
-	id_caso integer references caso,
-	id_usuario integer references usuario,
+	id_caso integer references caso on delete cascade,
+	id_usuario integer references usuario on delete cascade,
 	primary key(id_caso, id_usuario)
 );
 
