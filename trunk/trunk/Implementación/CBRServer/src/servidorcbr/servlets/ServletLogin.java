@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import servidorcbr.controlador.ControladorUsuarios;
 import servidorcbr.modelo.Usuario;
-import servidorcbr.modelo.excepciones.PersistenciaException;
 
 @WebServlet("/ServletLogin")
 public class ServletLogin extends HttpServlet {

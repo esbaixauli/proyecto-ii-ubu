@@ -34,7 +34,7 @@ public class ControlTipos {
 		OutputStream outputStream = con.getOutputStream();
 	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
 	    String tipo;
-		if(u.getTipo().equals(TipoUsuario.ADMINISTRADOR)){
+		if(u==null || u.getTipo().equals(TipoUsuario.ADMINISTRADOR)){
 		     tipo = "getTipos";
 				oos.writeObject(tipo);
 		}else{

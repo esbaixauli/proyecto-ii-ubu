@@ -24,6 +24,7 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"emptylogin","El nombre de usuario y la contraseña no pueden estar vacíos."},
 		{"connecterror","Error al conectar con el servidor."},
 		{"moderror","Error al modificar."},
+		{"operror","Error en la operación"},
 		{"filenotfounderror","Error: Fichero no encontrado"},
 		{"inserterror","Error al insertar. Compruebe la conexión y que el nombre del tipo de caso esté repetido."},
 		{"usernotfound","Usuario no encontrado o contraseña incorrecta."},
@@ -56,7 +57,9 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"deluser","Eliminar el usuario seleccionado."},
 		{"moduser","Modificar usuario."},
 		
-		{"noselection","No se ha escogido ningún tipo de caso."},
+		{"noselection","No se ha escogido ningún elemento."},
+		{"userdelsure","¿Está seguro de que desea borrar el usuario seleccionado?"},
+		{"rootdeletion","Por razones de seguridad, no está permitido eliminar al usuario 'root'."},
 		{"delsure","¿Está seguro de que desea borrar el tipo de caso? Se perderan los casos relacionados."},
 		{"opsuccess","Operación completada con éxito."},
 		{"opunsuccess","No se pudo completar la operación."},

@@ -120,7 +120,7 @@ public class GestionTiposFrame extends JFrame {
 					JOptionPane.showMessageDialog(null, 
 							bundle.getString("noselection"),bundle.getString("noselection"), JOptionPane.INFORMATION_MESSAGE);
 					return;
-				} else if (list.selectedValue().getNombre().equals("root")) {
+				} else if (list.getSelectedValue().getNombre().equals("root")) {
 					JOptionPane.showMessageDialog(null, 
 							bundle.getString("rootdeletion"),bundle.getString("rootdeletion"), JOptionPane.INFORMATION_MESSAGE);
 					return;
