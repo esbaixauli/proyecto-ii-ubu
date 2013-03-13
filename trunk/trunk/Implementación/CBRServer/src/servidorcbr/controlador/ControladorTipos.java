@@ -9,6 +9,7 @@ import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
+import servidorcbr.persistencia.hbase.HbaseFacade;
 import servidorcbr.persistencia.sql.SQLFacade;
 
 public class ControladorTipos {
@@ -25,10 +26,10 @@ public class ControladorTipos {
 		boolean exito;
 		exito = SQLFacade.getInstance().addTipo(tc);
 		exito = exito &&
-		GeneradorClases.crearClase(creaMapa(tc.getAtbos(),true),tc.getNombre()+"Description") &&
-		GeneradorClases.crearClase(creaMapa(tc.getAtbos(),false),tc.getNombre()+"Solution");
+				HbaseFacade.getInstance().createTable(tc) &&
+				GeneradorClases.crearClase(creaMapa(tc.getAtbos(),true),tc.getNombre()+"Description") &&
+				GeneradorClases.crearClase(creaMapa(tc.getAtbos(),false),tc.getNombre()+"Solution");
 		return exito;
-		
 	}
 	
 	//Crea un mapa tipo de atributo:lista de atributos de ese tipo
