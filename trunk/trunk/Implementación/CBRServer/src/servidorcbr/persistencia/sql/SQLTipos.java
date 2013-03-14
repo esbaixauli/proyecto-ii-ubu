@@ -328,12 +328,27 @@ public class SQLTipos {
 		int exito = 0;
 		try {
 			int id = buscarId("caso", tc.getNombre());
+			List<Integer> usuarios=new ArrayList<Integer>();
+			PreparedStatement psUsuarios = conn.prepareStatement("Select id_usuario from caso_usuario where id_caso=?");
+			psUsuarios.setInt(1, id);
+			ResultSet rs=psUsuarios.executeQuery();
+			while(rs.next() ){
+				usuarios.add(rs.getInt(1));
+			}
+			
 			removeTipo(tc.getNombre());
 
 			PreparedStatement ps = conn.prepareStatement("INSERT INTO caso(id, nombre) VALUES (?,?);");
 			ps.setInt(1, id);
 			ps.setString(2, tc.getNombre());
 			exito += ps.executeUpdate();
+			
+			for(Integer i:usuarios){
+				psUsuarios = conn.prepareStatement("Insert into caso_usuario (id_caso,id_usuario) values (?,?)");
+				psUsuarios.setInt(1, id);
+				psUsuarios.setInt(2, i.intValue());
+				psUsuarios.executeUpdate();
+			}
 			
 			exito += terminaAddTipo(id, tc);
 		} catch (SQLException ex) {
