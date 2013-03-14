@@ -121,7 +121,18 @@ public class ElegirTipoCasoFrame extends JFrame {
 			});
 			break;
 		case INTRODUCIR_MANUAL:
-			;
+			l.addMouseListener(new MouseAdapter() {
+
+				public void mouseClicked(MouseEvent arg0) {
+					@SuppressWarnings("rawtypes")
+					JList list = (JList) arg0.getSource();
+					if (arg0.getClickCount() >= 2) {
+						JFrame f = new InsertarCasoFrame(datos.get(list.getSelectedIndex()),me);
+						f.setVisible(true);
+						me.setEnabled(false);
+					}
+				}
+			});
 			break;
 		case VER_ESTADISTICAS:
 			;
@@ -129,6 +140,8 @@ public class ElegirTipoCasoFrame extends JFrame {
 		}
 
 	}
+	
+	
 
 	private void cierreVentana() {
 		addWindowListener(new WindowAdapter() {

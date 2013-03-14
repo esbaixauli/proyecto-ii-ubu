@@ -49,7 +49,7 @@ public class JFilePicker extends JPanel {
 		add(label);
 		add(textField);
 		add(button);
-		addFileTypeFilter("csv","*.CSV");
+		addFileTypeFilter("WEKA arff","arff");
 	}
 	
 	private void buttonActionPerformed(ActionEvent evt) {
@@ -64,8 +64,8 @@ public class JFilePicker extends JPanel {
 		}
 	}
 
-	public void addFileTypeFilter(String extension, String description) {
-		fileChooser.setFileFilter(new FileNameExtensionFilter(extension, description));	
+	public void addFileTypeFilter(String description, String extension) {
+		fileChooser.setFileFilter(new FileNameExtensionFilter(description, extension));	
 	}
 	
 	public void setMode(int mode) {
