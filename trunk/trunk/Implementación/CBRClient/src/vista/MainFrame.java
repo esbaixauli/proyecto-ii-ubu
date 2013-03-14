@@ -132,6 +132,13 @@ public class MainFrame extends JFrame{
 		panel_cbr.add(btnCicloConfigurado, gbc_btnCicloConfigurado);
 		
 		JButton btnIntroducir = new JButton(bundle.getString("insertcases"));
+		btnIntroducir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ElegirTipoCasoFrame f = new ElegirTipoCasoFrame(u, me, ElegirTipoCasoFrame.INTRODUCIR_MANUAL);
+				f.setVisible(true);
+				me.setEnabled(false);
+			}
+		});
 		GridBagConstraints gbc_btnIntroducir = new GridBagConstraints();
 		gbc_btnIntroducir.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnIntroducir.insets = new Insets(0, 0, 5, 0);

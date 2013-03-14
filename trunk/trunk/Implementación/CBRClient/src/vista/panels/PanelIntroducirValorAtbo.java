@@ -17,6 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.BoxLayout;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -44,7 +46,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		this.a=a;
 		this.configurado=configurado;
 		setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+		setPreferredSize(new Dimension(getPreferredSize().width,30));
 		JLabel lblNombre = new JLabel(a.getNombre()+" ("
 		+b.getString(TraductorTipos.persistenciaAVista(a.getTipo()))+"):");
 		add(lblNombre);
