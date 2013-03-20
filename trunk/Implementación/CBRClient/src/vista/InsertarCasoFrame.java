@@ -28,6 +28,7 @@ import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 import vista.panels.JFilePicker;
 import vista.panels.PanelIntroducirValorAtbo;
+import controlador.ControlCasos;
 import controlador.util.LectorCaso;
 import javax.swing.BoxLayout;
 import javax.swing.ScrollPaneConstants;
@@ -46,12 +47,13 @@ public class InsertarCasoFrame extends JFrame {
 
 	private TipoCaso tc;
 	private JTable table;
+	private List<HashMap<String,Object>> casos;
 	
 	private JFrame me=this, padre;
 	/**
 	 * Create the frame.
 	 */
-	public InsertarCasoFrame(final TipoCaso tc, JFrame padre) {
+	public InsertarCasoFrame(final TipoCaso tc, final JFrame padre) {
 		setResizable(false);
 		this.padre=padre;
 		cierreVentana();
@@ -82,12 +84,11 @@ public class InsertarCasoFrame extends JFrame {
 		contentPane.add(panelFichero, gbc_panelFichero);
 		panelFichero.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panelFichero.add(pickerFichero);
-		JButton btnInsertar = new JButton(b.getString("insertcases"));
+		JButton btnInsertar = new JButton(b.getString("loadfromfile"));
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					List<HashMap<String,Object>> casos=
-					LectorCaso.leerCaso(new File(pickerFichero.getSelectedFilePath()), tc);
+					casos = LectorCaso.leerCaso(new File(pickerFichero.getSelectedFilePath()), tc);
 					if(casos!=null){
 						table.setModel(new CasosTableModel(casos, tc));
 					}
@@ -138,6 +139,27 @@ public class InsertarCasoFrame extends JFrame {
 		contentPane.add(panel_1, gbc_panel_1);
 		
 		JButton btnInsertmanual = new JButton(b.getString("insertcases"));
+		btnInsertmanual.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (ControlCasos.insertarCasos(tc, casos)) {
+						JOptionPane.showMessageDialog(null, 
+								b.getString("opsuccess"),b.getString("opsuccess"), JOptionPane.INFORMATION_MESSAGE);
+						padre.setEnabled(true);
+						me.setVisible(false);
+						me.dispose();
+					} else {
+						JOptionPane.showMessageDialog(null, 
+								b.getString("opunsuccess"),b.getString("opunsuccess"), JOptionPane.INFORMATION_MESSAGE);
+					}
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null,
+							b.getString("connecterror"), "Error",
+							JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
+			}
+		});
 		panel_1.add(btnInsertmanual);
 		
 		
