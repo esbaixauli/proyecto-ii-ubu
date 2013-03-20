@@ -35,6 +35,7 @@ import vista.panels.JFilePicker;
 import vista.panels.PanelIntroducirValorAtbo;
 import vista.tablas.CasosTableCellRenderer;
 import vista.tablas.CasosTableModel;
+import controlador.ControlCasos;
 import controlador.util.LectorCaso;
 
 @SuppressWarnings("serial")
@@ -48,6 +49,7 @@ public class InsertarCasoFrame extends JFrame {
 	private JLabel lblCargadas;
 	private TipoCaso tc;
 	private JTable table;
+	private List<HashMap<String,Object>> casos;
 	
 	private JFrame me=this, padre;
 	/**
@@ -88,7 +90,7 @@ public class InsertarCasoFrame extends JFrame {
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					List<HashMap<String,Object>> casos=
+					casos=
 					LectorCaso.leerCaso(new File(pickerFichero.getSelectedFilePath()), tc);
 					if(casos!=null){
 						table.setModel(new CasosTableModel(casos, tc));
