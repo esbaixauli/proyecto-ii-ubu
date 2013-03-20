@@ -29,6 +29,8 @@ public class Recursos extends ListResourceBundle {
 		{"notconfigured","Inserting a case type is not possible until its methods have been defined."},
 		{"executeCBR","Execute cycle"},
 		
+		{"loadedcases","Cases loaded:"},
+		
 		{"port","Port:"},
 		{"admin","Administration"},
 		
