@@ -42,4 +42,5 @@ public class Tecnica implements Serializable {
 		this.params = params;
 	}
 	
+	
 }
