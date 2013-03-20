@@ -1,8 +1,9 @@
 package vista;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -15,12 +16,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -28,14 +33,9 @@ import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 import vista.panels.JFilePicker;
 import vista.panels.PanelIntroducirValorAtbo;
-import controlador.ControlCasos;
+import vista.tablas.CasosTableCellRenderer;
+import vista.tablas.CasosTableModel;
 import controlador.util.LectorCaso;
-import javax.swing.BoxLayout;
-import javax.swing.ScrollPaneConstants;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JTable;
 
 @SuppressWarnings("serial")
 public class InsertarCasoFrame extends JFrame {
@@ -45,9 +45,9 @@ public class InsertarCasoFrame extends JFrame {
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
 
+	private JLabel lblCargadas;
 	private TipoCaso tc;
 	private JTable table;
-	private List<HashMap<String,Object>> casos;
 	
 	private JFrame me=this, padre;
 	/**
@@ -60,16 +60,16 @@ public class InsertarCasoFrame extends JFrame {
 		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setTitle(b.getString("insertcases"));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 573, 342);
+		setBounds(100, 100, 573, 380);
 		this.tc=tc;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{557, 0};
-		gbl_contentPane.rowHeights = new int[]{66, 107, 93, 33, 0};
+		gbl_contentPane.rowHeights = new int[]{66, 107, 0, 93, 33, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JPanel panelFichero = new JPanel();
@@ -88,9 +88,14 @@ public class InsertarCasoFrame extends JFrame {
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					casos = LectorCaso.leerCaso(new File(pickerFichero.getSelectedFilePath()), tc);
+					List<HashMap<String,Object>> casos=
+					LectorCaso.leerCaso(new File(pickerFichero.getSelectedFilePath()), tc);
 					if(casos!=null){
 						table.setModel(new CasosTableModel(casos, tc));
+						lblCargadas.setText(b.getString("loadedcases")+casos.size());
+						table.setDefaultRenderer(Object.class, new CasosTableCellRenderer(tc));
+					}else{
+						throw new IOException();
 					}
 				} catch (FileNotFoundException e) {
 					JOptionPane.showMessageDialog(null, 
@@ -112,7 +117,18 @@ public class InsertarCasoFrame extends JFrame {
 		contentPane.add(scrollPane_1, gbc_scrollPane_1);
 		
 		table = new JTable();
+		table.setAutoCreateRowSorter(true);
 		scrollPane_1.setViewportView(table);
+		
+		JLabel label = new JLabel("New label");
+		scrollPane_1.setColumnHeaderView(label);
+		
+		lblCargadas = new JLabel(b.getString("loadedcases")+0);
+		GridBagConstraints gbc_lblCargadas = new GridBagConstraints();
+		gbc_lblCargadas.insets = new Insets(0, 0, 5, 0);
+		gbc_lblCargadas.gridx = 0;
+		gbc_lblCargadas.gridy = 2;
+		contentPane.add(lblCargadas, gbc_lblCargadas);
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -122,7 +138,7 @@ public class InsertarCasoFrame extends JFrame {
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 2;
+		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
 		JPanel panel = new JPanel();
@@ -135,7 +151,7 @@ public class InsertarCasoFrame extends JFrame {
 		gbc_panel_1.anchor = GridBagConstraints.NORTH;
 		gbc_panel_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 3;
+		gbc_panel_1.gridy = 4;
 		contentPane.add(panel_1, gbc_panel_1);
 		
 		JButton btnInsertmanual = new JButton(b.getString("insertcases"));
