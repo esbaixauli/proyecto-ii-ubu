@@ -2,51 +2,29 @@ package servidorcbr.controlador.cicloCBR.ejecucion;
 
 import java.util.Collection;
 
-import org.apache.catalina.tribes.util.TcclThreadFactory;
-
-import jcolibri.cbrcore.Attribute;
 import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRQuery;
+import jcolibri.method.retrieve.RetrievalResult;
 import jcolibri.method.retrieve.NNretrieval.NNConfig;
 import jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
 import jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
-import servidorcbr.controlador.CargadorClases;
-import servidorcbr.modelo.Atributo;
-import servidorcbr.modelo.Tecnica;
+import jcolibri.method.retrieve.selection.SelectCases;
 import servidorcbr.modelo.TipoCaso;
 
-public class EjecutorKNN implements EjecutorTecnica {
+public class EjecutorKNN extends EjecutorTecnicaRetrieval {
 
-	private static TipoCaso tc;
 
-	public EjecutorKNN(TipoCaso tc) {
-		this.tc = tc;
+	public EjecutorKNN(TipoCaso tic) {
+		super(tic);
 	}
 
 	@Override
-	public void ejecutar(Collection<CBRCase> casos, CBRQuery query) throws ClassNotFoundException {
+	public Collection<CBRCase> ejecutar(Collection<CBRCase> casos, CBRQuery query) throws ClassNotFoundException {
 		NNConfig simConfig = getSimilaridadGlobalConfig();
 		simConfig.setDescriptionSimFunction(new Average());
-		NNScoringMethod.evaluateSimilarity(casos,query,simConfig);
+		Collection<RetrievalResult> cr = NNScoringMethod.evaluateSimilarity(casos,query,simConfig);
+		return SelectCases.selectTopK(cr,(int) tc.getDefaultRec().getParams().get(0).getValor());
 	}
 
-	public static NNConfig getSimilaridadGlobalConfig() throws ClassNotFoundException{
-		NNConfig config = new NNConfig();
-		Attribute at;
-		Class<?> clase;
-		try {
-			clase = CargadorClases.cargarClaseProblema(tc.getNombre());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		for(Atributo actual: tc.getAtbos().values()){
-			if(actual.getEsProblema()){
-				at = new Attribute(actual.getNombre(),clase);//Nombre del atbo, *.class al que pertenece
-				config.addMapping(at,ConversorMetricas.obtenerMetrica(actual));
-				config.setWeight(at, actual.getPeso());
-			}
-		}
-		return config;
-	}
+	
 }
