@@ -33,6 +33,8 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"admin","Administración"},
 		{"executeCBR","Ejecutar ciclo"},
 		
+		{"loadedcases","Casos cargados:"},
+		
 		{"managecasetypes","Gestionar tipos de caso"},
 		{"insertcases","Insertar casos"},
 		{"manageusers","Gestionar usuarios"},
