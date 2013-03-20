@@ -1,4 +1,4 @@
-package servidorcbr.controlador;
+package servidorcbr.controlador.generadorClases;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
