@@ -112,6 +112,18 @@ public class Recursos extends ListResourceBundle {
 		{"negativethreshold","Threshold values can not be negative."},
 		{"emptyfield","No fields can remain empty"},
 		
-		{"login","Log in"}
+		{"login","Log in"},
+		
+		{"own","Own"},
+		{"byuserandcase","By user and case"},
+		{"global","Global"},
+		
+		{"report","Stats Report"},
+		{"totalexec","Total CBR executions"},
+		{"avgquality","Average qualiy of solution"},
+		{"successexec","Successful (>50% quality) solutions"},
+		{"invalidexec","Unusable (0% quality) solutions"},
+		{"pctgesuccess","Percentage of successful"},
+		{"pctgeinvalid","Percentage of unusable"}
 	};
 }
