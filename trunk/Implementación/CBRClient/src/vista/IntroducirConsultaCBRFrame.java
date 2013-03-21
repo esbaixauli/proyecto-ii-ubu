@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -24,6 +25,7 @@ import java.awt.FlowLayout;
 import javax.swing.JScrollPane;
 import javax.swing.BoxLayout;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -33,13 +35,19 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
+import controlador.ControlCBR;
 import controlador.ControlTecnicas;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.io.IOException;
+import java.io.Serializable;
+import java.net.MalformedURLException;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
 
@@ -252,6 +260,22 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 	
 		}
 		btnEjecutarCiclo = new JButton(b.getString("executeCBR"));
+		btnEjecutarCiclo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HashMap<String,Serializable> query = new HashMap<String,Serializable>();
+				for (Component c : panelAtbos.getComponents()) {
+					PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) c;
+					query.put(p.getKey(), p.getValue());
+				}
+				try {
+					ControlCBR.retrieve(tc, query);
+					// TODO: Ir al panel de resultados
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null,
+							b.getString("connecterror"), "Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		
 		panelEjec = new JPanel();
 		panelEjec.add(btnEjecutarCiclo);
