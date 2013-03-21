@@ -112,6 +112,19 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"negativethreshold","Los valores de los umbrales no pueden ser negativos."},
 		{"emptyfield","No puede quedar ningún campo vacío"},
 
-		{"login","Acceder"}
+		{"login","Acceder"},
+		
+		{"own","Propias"},
+		{"byuserandcase","Por usuario y caso"},
+		{"global","Globales"},
+		
+		{"report","Informe de estadísticas"},
+		{"totalexec","Ejecuciones CBR totales"},
+		{"avgquality","Calidad media de la solución"},
+		{"successexec","Soluciones exitosas (Calidad>50%)"},
+		{"invalidexec","Soluciones inusables (Calidad 0%)"},
+		{"pctgesuccess","Porcentaje de exitosas"},
+		{"pctgeinvalid","Porcentaje de inusables"}
+		
 	};
 }

@@ -204,7 +204,7 @@ public class VerCrearUsuario extends JFrame {
 				}
 				try {
 					String password = new String(passwordField.getPassword());
-					String username= nombreTextField.getText().trim();
+					String username= nombreTextField.getText().trim().replaceAll("\\s","");
 					if (username == null || username.isEmpty()
 							|| password.isEmpty()) {
 						throw new NullPointerException();
