@@ -21,7 +21,9 @@ import javax.swing.SwingConstants;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.swing.JTextField;
@@ -30,6 +32,7 @@ import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.Serializable;
 
 /*Panel que permite introducir el valor de la Query para un atributo*/
 @SuppressWarnings("serial")
@@ -76,6 +79,20 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		}else{
 			textField = new JFormattedTextField(new DefaultFormatterFactory(
 					new NumberFormatter(new DecimalFormat())));
+		}
+	}
+	
+	public String getKey() {
+		return a.getNombre();
+	}
+	
+	public Serializable getValue() {
+		if(a.getTipo().equals("S")){
+			return textField.getText();
+		}else if(a.getTipo().equals("I")){
+			return Integer.parseInt(textField.getText());
+		}else{
+			return Double.parseDouble(textField.getText());
 		}
 	}
 }
