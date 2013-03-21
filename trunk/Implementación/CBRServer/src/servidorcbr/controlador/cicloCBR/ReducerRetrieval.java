@@ -1,5 +1,9 @@
 package servidorcbr.controlador.cicloCBR;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -7,6 +11,11 @@ import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRQuery;
 import jcolibri.cbrcore.CaseComponent;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -21,30 +30,43 @@ import servidorcbr.modelo.TipoCaso;
 
 public class ReducerRetrieval
 		extends
-		Reducer<ImmutableBytesWritable, Text, ImmutableBytesWritable, IntWritable> {
+		Reducer<ImmutableBytesWritable, Result, ImmutableBytesWritable, Text> {
 
 	@Override
-	public void reduce(ImmutableBytesWritable key, Iterable<Text> values,
+	public void reduce(ImmutableBytesWritable key, Iterable<Result> values,
 			Context context) {
 		// Convierte los values a objetos del problema y se los manda a ejecutar
 		Collection<CBRCase> casos = new ArrayList<CBRCase>();
+		BufferedWriter out = null;
+		TipoCaso tc = cargarTipoCaso(context.getConfiguration().get("caso"));
 		try {
-			for (Text row : values) {
+			out = new BufferedWriter(new FileWriter("log.txt", true));
+			out.write("--> Inicio Reducer");
+			out.write("--> Tipo de caso: "+tc.getNombre());
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		try {
+			for (Result row : values) {
+				out.write(row.toString());
 				CBRCase caso;
-				caso = obtenerCaso(row, context);
+				caso = obtenerCaso(tc, row, context);
 				casos.add(caso);
 			}
+			out.write("<-- Fin Reducer");
+			out.flush();
+			out.close();
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		//Cargar desde serialización el objeto CBRQuery
 		// ejecutarRetrieval(casos, query, context);TODO
 	}
 
-	private CBRCase obtenerCaso(Text row, Context context)
+	private CBRCase obtenerCaso(TipoCaso tc, Result row, Context context)
 			throws ClassNotFoundException {
-
-		TipoCaso tc = cargarTipoCaso(context.getConfiguration().get("caso"));
 		Class<?> cdesc = CargadorClases.cargarClaseProblema(tc.getNombre());
 		Class<?> csolution = CargadorClases.cargarClaseSolucion(tc.getNombre());
 		try {
@@ -62,9 +84,18 @@ public class ReducerRetrieval
 	}
 
 	private TipoCaso cargarTipoCaso(String nombreCaso) {
-		// cargar tipo de caso(serializable)
-		// TODO
-		return null;
+		TipoCaso tc = null;
+		try {
+			Configuration conf = new Configuration();
+			FileSystem fs = FileSystem.get(conf);
+			Path inFile = new Path("/"+nombreCaso+".tc");
+			FSDataInputStream in = fs.open(inFile);
+			ObjectInputStream ois = new ObjectInputStream(in);
+			tc = (TipoCaso) ois.readObject();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) { }
+		return tc;
 	}
 
 	private Collection<CBRCase> ejecutarRetrieval(Collection<CBRCase> casos,
