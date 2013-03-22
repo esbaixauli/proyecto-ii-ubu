@@ -38,6 +38,12 @@ create table caso_tecnica_parametro(
 create table caso_usuario(
 	id_caso integer references caso on delete cascade,
 	id_usuario integer references usuario on delete cascade,
+	ejecTotales bigint default 0,
+	mediacalidad double default 0,
+	ejecSatisfactorias bigint default 0,
+	ejecInusables bigint default 0,
+	fechaUltima timestamp,
+	calidadUltima bigint,
 	primary key(id_caso, id_usuario)
 );
 
