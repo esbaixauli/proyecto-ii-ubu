@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import servidorcbr.modelo.Atributo;
+import servidorcbr.modelo.Estadistica;
 import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
@@ -329,11 +330,22 @@ public class SQLTipos {
 		try {
 			int id = buscarId("caso", tc.getNombre());
 			List<Integer> usuarios=new ArrayList<Integer>();
-			PreparedStatement psUsuarios = conn.prepareStatement("Select id_usuario from caso_usuario where id_caso=?");
+			List<Estadistica> estadisticas = new ArrayList<Estadistica>();
+			PreparedStatement psUsuarios = conn.prepareStatement("Select id_usuario,ejecTotales,mediacalidad," +
+					"ejecSatisfactorias,ejecInusables,fechaUltima,calidadUltima"
+						+" from caso_usuario where id_caso=?");
 			psUsuarios.setInt(1, id);
 			ResultSet rs=psUsuarios.executeQuery();
 			while(rs.next() ){
 				usuarios.add(rs.getInt(1));
+				Estadistica e = new Estadistica();
+				e.setEjecTotales(rs.getLong(2));
+				e.setMediaCalidad(rs.getDouble(3));
+				e.setEjecSatisfactorias(rs.getLong(4));
+				e.setEjecInusables(rs.getLong(5));
+				e.setFechaUltima(rs.getDate(6));
+				e.setCalidadUltima(rs.getLong(7));
+				estadisticas.add(e);
 			}
 			
 			removeTipo(tc.getNombre());
@@ -343,10 +355,18 @@ public class SQLTipos {
 			ps.setString(2, tc.getNombre());
 			exito += ps.executeUpdate();
 			
-			for(Integer i:usuarios){
-				psUsuarios = conn.prepareStatement("Insert into caso_usuario (id_caso,id_usuario) values (?,?)");
+			for(int i=0;i<usuarios.size();i++){
+				psUsuarios = conn.prepareStatement("Insert into caso_usuario (id_caso,id_usuario," +
+						"ejecTotales,mediacalidad,ejecSatisfactorias,ejecInusables,fechaUltima,calidadUltima)" +
+						" values (?,?,?,?,?,?,?)");
 				psUsuarios.setInt(1, id);
-				psUsuarios.setInt(2, i.intValue());
+				psUsuarios.setInt(2, usuarios.get(i));
+				psUsuarios.setLong(3, estadisticas.get(i).getEjecTotales());
+				psUsuarios.setDouble(4, estadisticas.get(i).getMediaCalidad());
+				psUsuarios.setLong(5, estadisticas.get(i).getEjecSatisfactorias());
+				psUsuarios.setLong(6,  estadisticas.get(i).getEjecInusables());
+				psUsuarios.setDate(7,  new java.sql.Date (estadisticas.get(i).getFechaUltima().getTime()));
+				psUsuarios.setLong(8,  estadisticas.get(i).getCalidadUltima());
 				psUsuarios.executeUpdate();
 			}
 			

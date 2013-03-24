@@ -14,8 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import servidorcbr.modelo.Atributo;
+import servidorcbr.modelo.Estadistica;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
+import servidorcbr.modelo.TipoUsuario;
+import servidorcbr.modelo.Usuario;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
 import vista.configtecnicas.FilterBasedConfigFrame;
 import vista.configtecnicas.NNConfigFrame;
@@ -30,6 +33,7 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Panel;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -37,7 +41,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import controlador.ControlCBR;
+import controlador.ControlEstadisticas;
 import controlador.ControlTecnicas;
 
 import java.awt.event.ActionListener;
@@ -50,6 +54,8 @@ import java.net.MalformedURLException;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.UIManager;
+import javax.swing.ScrollPaneConstants;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class IntroducirConsultaCBRFrame extends JFrame {
@@ -81,12 +87,17 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 	private JScrollPane scrollPane;
 	private JPanel panelMet;
 	private JPanel panelEjec;
+	private JPanel panel;
+	private JLabel lblEjecTotales;
+	private JPanel panel_1;
+	private JLabel lblMediaCalidad;
+	private JButton btnPasoapaso;
 
 	/**
 	 * Create the frame.
 	 */
 	public IntroducirConsultaCBRFrame(TipoCaso tic, boolean configurado,
-			JFrame padre) {
+			final JFrame padre) {
 		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setResizable(false);
 		this.tc = tic;
@@ -96,161 +107,167 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		cierreVentana();
 
-		setBounds(100, 100, 512, 431);
+		setBounds(100, 100, 573, 415);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(2, 2));
 
 		scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		
 		contentPane.add(scrollPane,BorderLayout.NORTH);
 
 		panelAtbos = new JPanel();
 		scrollPane.setViewportView(panelAtbos);
 		panelAtbos.setLayout(new BoxLayout(panelAtbos, BoxLayout.Y_AXIS));
+		//El panel de tecnicas solo existe en un ciclo configurado
 		if (configurado) {
 			panelMet = new JPanel();
 			panelMet.setBorder(new TitledBorder(UIManager
 					.getBorder("TitledBorder.border"), b
 					.getString("managemethods"), TitledBorder.CENTER,
-					TitledBorder.TOP, null, null));
+					TitledBorder.TOP, null, Color.BLUE));
 			contentPane.add(panelMet,BorderLayout.CENTER);
 			GridBagLayout gbl_panelMet = new GridBagLayout();
-			gbl_panelMet.columnWidths = new int[] { 30, 145, 35, 87, 0, 0 };
-			gbl_panelMet.rowHeights = new int[] { 14, 23, 14, 23, 14, 23, 14,
+			gbl_panelMet.columnWidths = new int[] { 90, 0, 145, 35, 87, 72, 0, 0 };
+			gbl_panelMet.rowHeights = new int[] { 10, 14, 23, 14, 23, 14, 23, 14,
 					23, 0, 0 };
-			gbl_panelMet.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
-					0.0, Double.MIN_VALUE };
-			gbl_panelMet.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
+			gbl_panelMet.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
+					0.0, 0.0, Double.MIN_VALUE };
+			gbl_panelMet.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 					0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 			panelMet.setLayout(gbl_panelMet);
 
 			lblRec = new JLabel(b.getString("retrieval"));
 			GridBagConstraints gbc_lblRec = new GridBagConstraints();
 			gbc_lblRec.insets = new Insets(0, 0, 5, 5);
-			gbc_lblRec.gridx = 1;
-			gbc_lblRec.gridy = 0;
+			gbc_lblRec.gridx = 2;
+			gbc_lblRec.gridy = 1;
 			panelMet.add(lblRec, gbc_lblRec);
 
 			comboBoxRec = new JComboBox<String>();
 			GridBagConstraints gbc_comboBoxRec = new GridBagConstraints();
+			gbc_comboBoxRec.gridwidth = 4;
 			gbc_comboBoxRec.fill = GridBagConstraints.HORIZONTAL;
 			gbc_comboBoxRec.insets = new Insets(0, 0, 5, 5);
 			gbc_comboBoxRec.gridx = 1;
-			gbc_comboBoxRec.gridy = 1;
+			gbc_comboBoxRec.gridy = 2;
 			panelMet.add(comboBoxRec, gbc_comboBoxRec);
 			comboBoxRec.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent arg0) {
 					estableceFrameTecRec();
 				}
 			});
-
-			btnConfigRec = new JButton(b.getString("configure"));
-			GridBagConstraints gbc_btnConfigRec = new GridBagConstraints();
-			gbc_btnConfigRec.insets = new Insets(0, 0, 5, 5);
-			gbc_btnConfigRec.gridx = 3;
-			gbc_btnConfigRec.gridy = 1;
-			panelMet.add(btnConfigRec, gbc_btnConfigRec);
-			btnConfigRec.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					cRec.setVisible(true);
-					me.setEnabled(false);
-				}
-			});
+			
+						btnConfigRec = new JButton(b.getString("configure"));
+						GridBagConstraints gbc_btnConfigRec = new GridBagConstraints();
+						gbc_btnConfigRec.insets = new Insets(0, 0, 5, 5);
+						gbc_btnConfigRec.gridx = 5;
+						gbc_btnConfigRec.gridy = 2;
+						panelMet.add(btnConfigRec, gbc_btnConfigRec);
+						btnConfigRec.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								cRec.setVisible(true);
+								me.setEnabled(false);
+							}
+						});
 
 			lblReu = new JLabel(b.getString("reuse"));
 			GridBagConstraints gbc_lblReu = new GridBagConstraints();
 			gbc_lblReu.insets = new Insets(0, 0, 5, 5);
-			gbc_lblReu.gridx = 1;
-			gbc_lblReu.gridy = 2;
+			gbc_lblReu.gridx = 2;
+			gbc_lblReu.gridy = 3;
 			panelMet.add(lblReu, gbc_lblReu);
 
 			comboBoxReu = new JComboBox<String>();
 			GridBagConstraints gbc_comboBoxReu = new GridBagConstraints();
+			gbc_comboBoxReu.gridwidth = 4;
 			gbc_comboBoxReu.fill = GridBagConstraints.HORIZONTAL;
 			gbc_comboBoxReu.insets = new Insets(0, 0, 5, 5);
 			gbc_comboBoxReu.gridx = 1;
-			gbc_comboBoxReu.gridy = 3;
+			gbc_comboBoxReu.gridy = 4;
 			panelMet.add(comboBoxReu, gbc_comboBoxReu);
 			comboBoxReu.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent arg0) {
 					estableceFrameTecReu();
 				}
 			});
-
-			btnConfigReu = new JButton(b.getString("configure"));
-			GridBagConstraints gbc_btnConfigReu = new GridBagConstraints();
-			gbc_btnConfigReu.insets = new Insets(0, 0, 5, 5);
-			gbc_btnConfigReu.gridx = 3;
-			gbc_btnConfigReu.gridy = 3;
-			panelMet.add(btnConfigReu, gbc_btnConfigReu);
-			btnConfigReu.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					cReu.setVisible(true);
-					me.setEnabled(false);
-				}
-			});
+			
+						btnConfigReu = new JButton(b.getString("configure"));
+						GridBagConstraints gbc_btnConfigReu = new GridBagConstraints();
+						gbc_btnConfigReu.insets = new Insets(0, 0, 5, 5);
+						gbc_btnConfigReu.gridx = 5;
+						gbc_btnConfigReu.gridy = 4;
+						panelMet.add(btnConfigReu, gbc_btnConfigReu);
+						btnConfigReu.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								cReu.setVisible(true);
+								me.setEnabled(false);
+							}
+						});
 
 			lblRev = new JLabel(b.getString("revise"));
 			GridBagConstraints gbc_lblRev = new GridBagConstraints();
 			gbc_lblRev.insets = new Insets(0, 0, 5, 5);
-			gbc_lblRev.gridx = 1;
-			gbc_lblRev.gridy = 4;
+			gbc_lblRev.gridx = 2;
+			gbc_lblRev.gridy = 5;
 			panelMet.add(lblRev, gbc_lblRev);
 
 			comboBoxRev = new JComboBox<String>();
 			GridBagConstraints gbc_comboBoxRev = new GridBagConstraints();
+			gbc_comboBoxRev.gridwidth = 4;
 			gbc_comboBoxRev.fill = GridBagConstraints.HORIZONTAL;
 			gbc_comboBoxRev.insets = new Insets(0, 0, 5, 5);
 			gbc_comboBoxRev.gridx = 1;
-			gbc_comboBoxRev.gridy = 5;
+			gbc_comboBoxRev.gridy = 6;
 			panelMet.add(comboBoxRev, gbc_comboBoxRev);
 			comboBoxRev.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent arg0) {
 					estableceFrameTecRev();
 				}
 			});
-
-			btnConfigRev = new JButton(b.getString("configure"));
-			GridBagConstraints gbc_btnConfigRev = new GridBagConstraints();
-			gbc_btnConfigRev.insets = new Insets(0, 0, 5, 5);
-			gbc_btnConfigRev.gridx = 3;
-			gbc_btnConfigRev.gridy = 5;
-			panelMet.add(btnConfigRev, gbc_btnConfigRev);
-			btnConfigRev.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					cRev.setVisible(true);
-					me.setEnabled(false);
-				}
-			});
+			
+						btnConfigRev = new JButton(b.getString("configure"));
+						GridBagConstraints gbc_btnConfigRev = new GridBagConstraints();
+						gbc_btnConfigRev.insets = new Insets(0, 0, 5, 5);
+						gbc_btnConfigRev.gridx = 5;
+						gbc_btnConfigRev.gridy = 6;
+						panelMet.add(btnConfigRev, gbc_btnConfigRev);
+						btnConfigRev.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								cRev.setVisible(true);
+								me.setEnabled(false);
+							}
+						});
 
 			lblRet = new JLabel(b.getString("retain"));
 			GridBagConstraints gbc_lblRet = new GridBagConstraints();
 			gbc_lblRet.insets = new Insets(0, 0, 5, 5);
-			gbc_lblRet.gridx = 1;
-			gbc_lblRet.gridy = 6;
+			gbc_lblRet.gridx = 2;
+			gbc_lblRet.gridy = 7;
 			panelMet.add(lblRet, gbc_lblRet);
 
 			comboBoxRet = new JComboBox<String>();
 			GridBagConstraints gbc_comboBoxRet = new GridBagConstraints();
+			gbc_comboBoxRet.gridwidth = 4;
 			gbc_comboBoxRet.fill = GridBagConstraints.HORIZONTAL;
 			gbc_comboBoxRet.insets = new Insets(0, 0, 5, 5);
 			gbc_comboBoxRet.gridx = 1;
-			gbc_comboBoxRet.gridy = 7;
+			gbc_comboBoxRet.gridy = 8;
 			panelMet.add(comboBoxRet, gbc_comboBoxRet);
 			comboBoxRet.addItemListener(new ItemListener() {
 				public void itemStateChanged(ItemEvent arg0) {
 					estableceFrameTecRet();
 				}
 			});
-
-			btnConfigRet = new JButton(b.getString("configure"));
-			GridBagConstraints gbc_btnConfigRet = new GridBagConstraints();
-			gbc_btnConfigRet.insets = new Insets(0, 0, 5, 5);
-			gbc_btnConfigRet.gridx = 3;
-			gbc_btnConfigRet.gridy = 7;
-			panelMet.add(btnConfigRet, gbc_btnConfigRet);
+			
+						btnConfigRet = new JButton(b.getString("configure"));
+						GridBagConstraints gbc_btnConfigRet = new GridBagConstraints();
+						gbc_btnConfigRet.insets = new Insets(0, 0, 5, 5);
+						gbc_btnConfigRet.gridx = 5;
+						gbc_btnConfigRet.gridy = 8;
+						panelMet.add(btnConfigRet, gbc_btnConfigRet);
 			btnConfigRet.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					cRet.setVisible(true);
@@ -259,26 +276,48 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 			});
 	
 		}
+		
+		panelEjec = new JPanel();
+		panelEjec.setLayout(new BoxLayout(panelEjec, BoxLayout.Y_AXIS));
+		
+		panel_1 = new JPanel();
+		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"),  b.getString("quickstats"), TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLUE));
+		panelEjec.add(panel_1);
+		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		lblEjecTotales = new JLabel(b.getString("totalexec")+":");
+		panel_1.add(lblEjecTotales);
+		
+		lblMediaCalidad = new JLabel(b.getString("avgquality")+":");
+		panel_1.add(lblMediaCalidad);
+		
+		panel = new JPanel();
+		panelEjec.add(panel);
 		btnEjecutarCiclo = new JButton(b.getString("executeCBR"));
+		panel.add(btnEjecutarCiclo);
+		
+		btnPasoapaso = new JButton(b.getString("stepbystep"));
+		panel.add(btnPasoapaso);
 		btnEjecutarCiclo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				HashMap<String,Serializable> query = new HashMap<String,Serializable>();
 				for (Component c : panelAtbos.getComponents()) {
 					PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) c;
 					query.put(p.getKey(), p.getValue());
+					Atributo a =tc.getAtbos().get(p.getKey());
+					a.setMetrica(p.getMetrica());
+					a.setParamMetrica(p.getParamMetrica());
 				}
-				try {
+			
+			/*	try {
 					ControlCBR.retrieve(tc, query);
 					// TODO: Ir al panel de resultados
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(null,
 							b.getString("connecterror"), "Error",JOptionPane.ERROR_MESSAGE);
-				}
+				}*/
 			}
 		});
-		
-		panelEjec = new JPanel();
-		panelEjec.add(btnEjecutarCiclo);
 		contentPane.add(panelEjec, BorderLayout.SOUTH);
 		rellenarAtributos();
 		if (configurado) {
@@ -288,7 +327,25 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 			estableceFrameTecReu();
 			estableceFrameTecRev();
 		} else {
-			me.setBounds(me.getX(), me.getY(),me.getWidth(), scrollPane.getHeight() + 250);
+			me.setBounds(me.getX(), me.getY(),me.getWidth(), scrollPane.getPreferredSize().height+140);
+		}
+		
+		pedirEstadisticas();
+	}
+	
+	private void pedirEstadisticas(){
+		Estadistica e=null;
+		Usuario us = new Usuario();
+		us.setNombre("ver todos");
+		us.setTipo(TipoUsuario.ADMINISTRADOR);
+		try {
+			e=ControlEstadisticas.getEstadistica(us, tc);
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null,
+					b.getString("connecterror"), "Error",JOptionPane.ERROR_MESSAGE);
+		}if(e!=null){
+			lblEjecTotales.setText(b.getString("totalexec")+":"+e.getEjecTotales());
+			lblMediaCalidad.setText(b.getString("avgquality")+":"+e.getMediaCalidad());
 		}
 	}
 
@@ -341,15 +398,16 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 	}
 
 	private void rellenarAtributos() {
-		int i=0;
+		//Si hay un solo atbo de consulta se usa un tam de 60 para el scrollpane, si no, el normal de 86
+		int tam=0;
 		for (Atributo at : tc.getAtbos().values()) {
 			if (at.getEsProblema()) {
-				panelAtbos
-						.add(new PanelIntroducirValorAtbo(at, configurado, me));
+				JPanel p =new PanelIntroducirValorAtbo(at, configurado, me);
+				panelAtbos.add(p);
+				tam+=60;
 			}
-			i++;
 		}
-		scrollPane.setPreferredSize(new Dimension(scrollPane.getWidth(),Math.min(i*30, 150)));
+		scrollPane.setPreferredSize(new Dimension(scrollPane.getWidth(),Math.min(tam,86)));
 	}
 
 	// Auxiliar. Asigna la técnica de un combobox como técnica por defecto del

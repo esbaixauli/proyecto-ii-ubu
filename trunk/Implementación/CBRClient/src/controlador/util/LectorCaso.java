@@ -57,21 +57,5 @@ public class LectorCaso {
 	} 
 	
 	
-	/*private static void invocarSetter(Atributo a,Class<?> clase,Scanner s, Object c) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		Class<?> tipo;
-		switch(a.getTipo()){
-		case "S":
-			tipo=String.class;
-			clase.getDeclaredMethod("set"+a.getNombre(), tipo).invoke(c,
-					s.next());break;
-		case "I":
-			tipo=Integer.class;
-			clase.getDeclaredMethod("set"+a.getNombre(), tipo).invoke(c,
-					s.nextInt());break;
-		case "D":
-			tipo=Double.class;
-			clase.getDeclaredMethod("set"+a.getNombre(), tipo).invoke(c,
-					s.nextDouble());break;
-		}
-	}*/
+	
 }

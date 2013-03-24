@@ -1,5 +1,5 @@
 package vista.estadisticas;
 
 public enum EnumEstadisticas {
-	PROPIAS,USUARIOYCASO,TOTALES
+	PROPIAS,USUARIOYCASO
 }

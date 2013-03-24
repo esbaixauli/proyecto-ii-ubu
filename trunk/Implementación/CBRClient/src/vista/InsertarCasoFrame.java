@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -46,6 +47,7 @@ public class InsertarCasoFrame extends JFrame {
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
 
+	private JPanel panelManual;
 	private JLabel lblCargadas;
 	private TipoCaso tc;
 	private JTable table;
@@ -69,9 +71,9 @@ public class InsertarCasoFrame extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{557, 0};
-		gbl_contentPane.rowHeights = new int[]{66, 107, 0, 93, 33, 0};
+		gbl_contentPane.rowHeights = new int[]{66, 111, 0, 93, 0, 15, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
 		JPanel panelFichero = new JPanel();
@@ -125,12 +127,24 @@ public class InsertarCasoFrame extends JFrame {
 		JLabel label = new JLabel("New label");
 		scrollPane_1.setColumnHeaderView(label);
 		
+		JPanel panel_2 = new JPanel();
+		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_2.gridx = 0;
+		gbc_panel_2.gridy = 2;
+		contentPane.add(panel_2, gbc_panel_2);
+		
 		lblCargadas = new JLabel(b.getString("loadedcases")+0);
-		GridBagConstraints gbc_lblCargadas = new GridBagConstraints();
-		gbc_lblCargadas.insets = new Insets(0, 0, 5, 0);
-		gbc_lblCargadas.gridx = 0;
-		gbc_lblCargadas.gridy = 2;
-		contentPane.add(lblCargadas, gbc_lblCargadas);
+		panel_2.add(lblCargadas);
+		
+		JButton btnInsertFichero = new JButton(b.getString("insertcases"));
+		panel_2.add(btnInsertFichero);
+		btnInsertFichero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				insertarCasos(casos);
+			}
+			
+		});
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -143,49 +157,74 @@ public class InsertarCasoFrame extends JFrame {
 		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, b.getString("manualinsert"), TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		scrollPane.setViewportView(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panelManual = new JPanel();
+		panelManual.setBorder(new TitledBorder(null, b.getString("manualinsert"), 
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		scrollPane.setViewportView(panelManual);
+		panelManual.setLayout(new BoxLayout(panelManual, BoxLayout.Y_AXIS));
+		
+		JButton btnInsManual = new JButton(b.getString("manualinsert"));
+		btnInsManual.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				List<HashMap<String,Object>> casos = new ArrayList<HashMap<String,Object>>();
+				HashMap<String, Object> caso = new HashMap<String, Object>();
+				for(int i=0; i<panelManual.getComponentCount();i++){
+					PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) panelManual.getComponent(i);
+					Object valor = p.getValue();
+					if(valor!=null){
+						caso.put(p.getKey(),p.getValue());
+					}else{
+						JOptionPane.showMessageDialog(null,
+								b.getString("emptyatt"), "Error",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+				casos.add(caso);
+				insertarCasos(casos);
+			}
+		});
+		GridBagConstraints gbc_btnInsManual = new GridBagConstraints();
+		gbc_btnInsManual.insets = new Insets(0, 0, 5, 0);
+		gbc_btnInsManual.gridx = 0;
+		gbc_btnInsManual.gridy = 4;
+		contentPane.add(btnInsManual, gbc_btnInsManual);
 		
 		JPanel panel_1 = new JPanel();
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 		gbc_panel_1.anchor = GridBagConstraints.NORTH;
 		gbc_panel_1.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 4;
+		gbc_panel_1.gridy = 5;
 		contentPane.add(panel_1, gbc_panel_1);
-		
-		JButton btnInsertmanual = new JButton(b.getString("insertcases"));
-		btnInsertmanual.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					if (ControlCasos.insertarCasos(tc, casos)) {
-						JOptionPane.showMessageDialog(null, 
-								b.getString("opsuccess"),b.getString("opsuccess"), JOptionPane.INFORMATION_MESSAGE);
-						padre.setEnabled(true);
-						me.setVisible(false);
-						me.dispose();
-					} else {
-						JOptionPane.showMessageDialog(null, 
-								b.getString("opunsuccess"),b.getString("opunsuccess"), JOptionPane.INFORMATION_MESSAGE);
-					}
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,
-							b.getString("connecterror"), "Error",
-							JOptionPane.ERROR_MESSAGE);
-					ex.printStackTrace();
-				}
-			}
-		});
-		panel_1.add(btnInsertmanual);
 		
 		
 		for(Atributo at : tc.getAtbos().values()){
 			JPanel p = new PanelIntroducirValorAtbo(at, false, this);
-			panel.add(p);
+			panelManual.add(p);
 		}
 		
+	}
+	
+	private void insertarCasos(List<HashMap<String,Object>> lcasos){
+		try {
+			
+			if (lcasos!=null && !lcasos.isEmpty() && ControlCasos.insertarCasos(tc, lcasos)) {
+				JOptionPane.showMessageDialog(null, 
+						b.getString("opsuccess"),b.getString("opsuccess"), JOptionPane.INFORMATION_MESSAGE);
+				padre.setEnabled(true);
+				me.setVisible(false);
+				me.dispose();
+			} else {
+				JOptionPane.showMessageDialog(null, 
+						b.getString("opunsuccess"),b.getString("opunsuccess"), JOptionPane.INFORMATION_MESSAGE);
+			}
+		} catch (IOException ex) {
+			JOptionPane.showMessageDialog(null,
+					b.getString("connecterror"), "Error",
+					JOptionPane.ERROR_MESSAGE);
+			ex.printStackTrace();
+		}
 	}
 	
 	private void cierreVentana() {

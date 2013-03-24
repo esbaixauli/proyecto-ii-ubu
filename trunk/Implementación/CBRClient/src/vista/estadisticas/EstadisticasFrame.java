@@ -7,11 +7,13 @@ import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
 
+import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import javax.swing.JTabbedPane;
 
@@ -29,11 +31,12 @@ public class EstadisticasFrame extends JFrame {
 	 */
 	public EstadisticasFrame(Usuario u,JFrame padre) {
 		setResizable(false);
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		this.u=u;
 		this.padre=padre;
 		setTitle(b.getString("stats"));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 995, 390);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -42,17 +45,11 @@ public class EstadisticasFrame extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
-		JTabbedPane tabbedPanePropias = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.addTab(b.getString("own"), null, tabbedPanePropias, null);
-		
-		JTabbedPane tabbedPaneUsuario = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.addTab(b.getString("byuser"), null, tabbedPaneUsuario, null);
-		
-		JTabbedPane tabbedPaneCaso = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.addTab(b.getString("bycase"), null, tabbedPaneCaso, null);
-		
-		JTabbedPane tabbedPaneTotales = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.addTab(b.getString("global"), null, tabbedPaneTotales, null);	
+		tabbedPane.addTab(b.getString("own"),new PanelEstadisticas(EnumEstadisticas.PROPIAS, u) );
+		if(u.getTipo().equals(TipoUsuario.ADMINISTRADOR)){
+			tabbedPane.addTab(b.getString("byuserandcase"),new PanelEstadisticas(EnumEstadisticas.USUARIOYCASO, u) );
+		}
+		cierreVentana();
 	}
 	
 	private void cierreVentana() {

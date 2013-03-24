@@ -260,7 +260,11 @@ public class PanelAtributos extends JPanel {
 	metricas puede no estarlo si no se requieren parametros.
 	El de los pesos puede no estarlo si es una solución y por tanto está deshabilitado*/
 	public boolean comprobarLleno() {
-		return !(textFieldNombre.getText().isEmpty()
+		String cadNombre = textFieldNombre.getText().replaceAll("//s","");
+		if(cadNombre.equals(" ")){
+			cadNombre="";
+		}
+		return !(cadNombre.isEmpty()
 				|| (formattedTextFieldPeso.isEnabled() && formattedTextFieldPeso.getText().isEmpty())
 				|| (comboBoxMetricas.getSelectedIndex() == -1) || (formattedTextFieldParam
 				.isEnabled() && formattedTextFieldParam.getText().isEmpty()));
@@ -270,7 +274,8 @@ public class PanelAtributos extends JPanel {
 		if (!comprobarLleno())
 			return null;
 		Atributo a = new Atributo();
-		a.setNombre(textFieldNombre.getText());
+		//Longitud maxima de 18, sin caracteres como espacios o tabuladores.
+		a.setNombre(textFieldNombre.getText().substring(0, Math.min(textFieldNombre.getText().length(),18)).replace("\\s",""));
 		a.setTipo(TraductorTipos.indiceATipo(comboBoxTipo.getSelectedIndex()));
 		a.setMetrica(TraductorTipos.indiceAMétrica(
 				comboBoxMetricas.getSelectedIndex(), comboBoxTipo.getSelectedIndex()));

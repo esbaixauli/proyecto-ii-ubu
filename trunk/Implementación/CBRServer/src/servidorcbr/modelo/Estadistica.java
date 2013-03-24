@@ -1,13 +1,15 @@
 package servidorcbr.modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Estadistica {
+public class Estadistica implements Serializable {
 	private long ejecTotales;
 	private double mediaCalidad;
 	private long ejecSatisfactorias;
 	private long ejecInusables;
 	private Date fechaUltima;
+	private long calidadUltima;
 	
 	public long getEjecTotales() {
 		return ejecTotales;
@@ -45,5 +47,5 @@ public class Estadistica {
 	public void setCalidadUltima(long calidadUltima) {
 		this.calidadUltima = calidadUltima;
 	}
-	private long calidadUltima;
+	
 }

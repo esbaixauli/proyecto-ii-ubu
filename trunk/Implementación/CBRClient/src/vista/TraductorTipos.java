@@ -29,6 +29,13 @@ public class TraductorTipos {
 		}
 	}
 	
+	public static String indiceAMétrica(int i, String tipo){
+		if(tipo.equals("S")){
+			return indiceAMétrica(i,1);
+		}else{
+			return indiceAMétrica(i,0);
+		}
+	}
 	
 	public static String indiceAMétrica(int i, int tipo){
 			
