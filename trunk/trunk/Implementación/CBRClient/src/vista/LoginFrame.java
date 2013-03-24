@@ -13,6 +13,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -111,9 +112,13 @@ public class LoginFrame extends JFrame {
 		btnAcceso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (comboBox.getSelectedIndex() == 0) {
+					//Español
 					Locale.setDefault(new Locale("es", "ES"));
+					JComponent.setDefaultLocale(new Locale("es", "ES"));
 				} else {
+					//Inglés
 					Locale.setDefault(Locale.US);
+					JComponent.setDefaultLocale(Locale.US);
 				}
 				if (textFieldNombre.getText().isEmpty()
 						|| textFieldPass.getText().isEmpty()) {

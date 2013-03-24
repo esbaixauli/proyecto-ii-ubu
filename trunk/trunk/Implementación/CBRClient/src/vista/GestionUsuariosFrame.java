@@ -41,6 +41,9 @@ public class GestionUsuariosFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public GestionUsuariosFrame(final JFrame padre) {
+		
+		setTitle(b.getString("manageusers"));
+		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
@@ -122,7 +125,7 @@ public class GestionUsuariosFrame extends JFrame {
 					return;
 				}
 				int opcion = JOptionPane.showConfirmDialog(null,
-						b.getString("userdelsure"), b.getString("delsure"),
+						b.getString("userdelsure"), b.getString("userdelsure"),
 						JOptionPane.YES_NO_OPTION);
 				try {
 					if (opcion == 0) {

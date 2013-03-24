@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import servidorcbr.modelo.Estadistica;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
@@ -16,6 +17,7 @@ public class SQLFacade {
 	private static SQLFacade instance=null;
 	private SQLTipos sqlTipos;
 	private SQLUsuarios sqlUsuarios;
+	private SQLOtros sqlOtros;
 	
 	private SQLFacade () throws PersistenciaException {
 		try {
@@ -30,6 +32,7 @@ public class SQLFacade {
 		
 		sqlTipos = new SQLTipos(conn);
 		sqlUsuarios = new SQLUsuarios(conn);
+		sqlOtros = new SQLOtros(conn);
 	}
 	
 	public static SQLFacade getInstance () throws PersistenciaException {
@@ -80,6 +83,14 @@ public class SQLFacade {
 	
 	public boolean modUsuario (Usuario u,List<String> casos)  throws PersistenciaException {
 		return sqlUsuarios.modUsuario(u,casos);
+	}
+	
+	public Estadistica getEstadistica(Usuario u, TipoCaso tc) throws PersistenciaException{
+		return sqlOtros.getEstadistica(u,tc);
+	}
+	
+	public void limpiarEstadistica(Usuario u, TipoCaso tc) throws PersistenciaException{
+		sqlOtros.limpiarEstadistica(u,tc);
 	}
 	
 }

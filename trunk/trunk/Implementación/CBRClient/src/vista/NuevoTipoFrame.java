@@ -307,7 +307,7 @@ public class NuevoTipoFrame extends JFrame {
 	}
 
 	protected void rellenaTC() {
-		tc.setNombre(textField.getText());
+		tc.setNombre(textField.getText().substring(0,Math.min(18,textField.getText().length())));
 		HashMap<String, Atributo> atbos = new HashMap<String, Atributo>();
 		for (Component c : panelProblema.getPanelAtbo().getComponents()) {
 			PanelAtributos p = (PanelAtributos) c;

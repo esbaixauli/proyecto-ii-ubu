@@ -121,10 +121,24 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"report","Informe de estadísticas"},
 		{"totalexec","Ejecuciones CBR totales"},
 		{"avgquality","Calidad media de la solución"},
+		{"latestquality","Calidad de la última ejecución"},
+		{"lastexec","Fecha de la última ejecución"},
 		{"successexec","Soluciones exitosas (Calidad>50%)"},
 		{"invalidexec","Soluciones inusables (Calidad 0%)"},
 		{"pctgesuccess","Porcentaje de exitosas"},
-		{"pctgeinvalid","Porcentaje de inusables"}
+		{"pctgeinvalid","Porcentaje de inusables"},
+		{"seeall","--Global--"},
+		{"wishtodelete","¿Desea limpiar las estadisticas para el usuario:"},
+		{"andcase"," y el tipo de caso:"},
 		
+		{"sucshort","Éxitosas"},
+		{"invshort","Inusables"},
+		{"other","Otros"},
+		{"qualitychart","Gráfico de calidades"},
+		{"avgvslatest","Media vs Última"},
+		{"quickstats","Estadisticas rápidas"},
+		{"stepbystep","Paso a paso"},
+		
+		{"casebases","Bases de casos"}
 	};
 }

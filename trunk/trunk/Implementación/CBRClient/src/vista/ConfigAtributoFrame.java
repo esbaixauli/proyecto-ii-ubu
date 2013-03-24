@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import servidorcbr.modelo.Atributo;
 import vista.panels.PanelAtributos;
 import java.awt.FlowLayout;
+import javax.swing.ScrollPaneConstants;
 
 public class ConfigAtributoFrame extends JFrame {
 
@@ -36,19 +37,19 @@ public class ConfigAtributoFrame extends JFrame {
 
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
+	private JScrollPane scrollPane;
 	/**
 	 * Create the frame.
 	 */
 	public ConfigAtributoFrame(Atributo at,final JFrame padre) {
+		contentPane = new JPanel();
+		setContentPane(contentPane);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JToolBar toolBar = new JToolBar();
+		toolBar.setLayout(new FlowLayout());
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.SOUTH);
-		
-		//JPanel panel = new PanelAtributos(0, getContentPane(), new JScrollPane(), temp);
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.CENTER);
 		
 		 setResizable(false);
 			setTitle(at.getNombre());
@@ -88,6 +89,13 @@ public class ConfigAtributoFrame extends JFrame {
 				}
 			});
 			toolBar.add(btnSalir);
+			
+			scrollPane = new JScrollPane();
+			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			getContentPane().add(scrollPane, BorderLayout.CENTER);
+			JPanel panel = new PanelAtributos(0, getContentPane(), new JScrollPane(), temp);
+			scrollPane.add(panel);
 			cierreVentana();
 	}
 	
@@ -101,62 +109,5 @@ public class ConfigAtributoFrame extends JFrame {
 		});
 	}
 	
-	/*
-	 * setResizable(false);
-		setTitle(at.getNombre());
-		a = at;
-		this.padre=padre;
-		temp = new Atributo();
-		temp.setEsProblema(a.getEsProblema());
-		temp.setMetrica(a.getMetrica());
-		temp.setNombre(a.getNombre());
-		temp.setParamMetrica(a.getParamMetrica());
-		temp.setPeso(a.getPeso());
-		temp.setTipo(a.getTipo());
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 547, 130);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
-		setContentPane(contentPane);
 
-		PanelAtributos panel = new PanelAtributos(0, this, null, temp);
-		toolBar = new JToolBar();
-		toolBar.setFloatable(false);
-		toolBar.setBorder(BorderFactory.createEtchedBorder());
-		GridBagConstraints gbc_toolBar = new GridBagConstraints();
-		gbc_toolBar.insets = new Insets(0, 0, 5, 0);
-		gbc_toolBar.gridwidth = 5;
-		gbc_toolBar.gridx = 0;
-		gbc_toolBar.gridy = 6;
-		contentPane.add(toolBar,gbc_toolBar);
-
-		btnGuardar = new JButton(new ImageIcon("res/save_32.png"));
-		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				a.setPeso(temp.getPeso());
-				a.setMetrica(temp.getMetrica());
-				a.setParamMetrica(temp.getParamMetrica());
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
-		toolBar.add(btnGuardar);
-		JButton btnSalir = new JButton(new ImageIcon("res/left_32.png"));
-		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				if (JOptionPane.showConfirmDialog(null,
-						b.getString("exitnosave"), b.getString("exitnosave"),
-						JOptionPane.YES_NO_OPTION) == 0) {
-					padre.setEnabled(true);
-					padre.setVisible(true);
-					me.dispose();
-				}
-			}
-		});
-		toolBar.add(btnSalir);
-		cierreVentana();
-		contentPane.add(panel, BorderLayout.CENTER);
-	 */
 }

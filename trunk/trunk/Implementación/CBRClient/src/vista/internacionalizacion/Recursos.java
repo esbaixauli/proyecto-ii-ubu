@@ -120,10 +120,26 @@ public class Recursos extends ListResourceBundle {
 		
 		{"report","Stats Report"},
 		{"totalexec","Total CBR executions"},
-		{"avgquality","Average qualiy of solution"},
+		{"avgquality","Average quality of solution"},
+		{"latestquality","Latest execution quality"},
+		{"lastexec","Latest execution date"},
 		{"successexec","Successful (>50% quality) solutions"},
 		{"invalidexec","Unusable (0% quality) solutions"},
 		{"pctgesuccess","Percentage of successful"},
-		{"pctgeinvalid","Percentage of unusable"}
+		{"pctgeinvalid","Percentage of unusable"},
+		{"seeall","--Global--"},
+		{"wishtodelete","Do you wish to clean the stats for user:"},
+		{"andcase"," and case type:"},
+		
+		{"sucshort","Successful"},
+		{"invshort","Unusable"},
+		{"other","Other"},
+		
+		{"qualitychart","Quality chart"},
+		{"avgvslatest","Latest vs Avg"},
+		{"quickstats","Quick stats"},
+		{"stepbystep","Step by step"},
+		
+		{"casebases","Casebases"}
 	};
 }
