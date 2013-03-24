@@ -1,12 +1,14 @@
 package vista.estadisticas;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 
 import java.awt.BorderLayout;
 import java.io.File;
@@ -410,8 +412,9 @@ public class PanelEstadisticas extends JPanel {
 				Usuario verTodos= new Usuario();
 				verTodos.setTipo(TipoUsuario.ADMINISTRADOR);
 				verTodos.setNombre(b.getString("seeall"));
-				usuarios.put(verTodos.getNombre(),verTodos);
 				listaU = new ListaUsuarios(usuarios);
+				//Introduzco a "ver todos" en la posición 0
+				listaU.addUsuario(verTodos, 0);
 				JScrollPane scrollpaneU = new  JScrollPane();
 				scrollpaneU.setPreferredSize(new Dimension(200, getPreferredSize().height));
 				scrollpaneU.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
