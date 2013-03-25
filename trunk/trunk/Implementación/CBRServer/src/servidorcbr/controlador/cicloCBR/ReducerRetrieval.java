@@ -38,22 +38,23 @@ public class ReducerRetrieval
 		// Convierte los values a objetos del problema y se los manda a ejecutar
 		Collection<CBRCase> casos = new ArrayList<CBRCase>();
 		BufferedWriter out = null;
-		TipoCaso tc = cargarTipoCaso(context.getConfiguration().get("caso"));
+		TipoCaso tc = cargarTipoCaso(context.getConfiguration().get("tipocaso"));
 		try {
 			out = new BufferedWriter(new FileWriter("log.txt", true));
-			out.write("--> Inicio Reducer");
-			out.write("--> Tipo de caso: "+tc.getNombre());
+			out.write("--> Inicio Reducer\n");
+			out.flush();
+			out.write("--> Tipo de caso: "+tc.getNombre()+"\n");
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 		try {
 			for (Result row : values) {
-				out.write(row.toString());
+				out.write(row.toString()+"\n");
 				CBRCase caso;
 				caso = obtenerCaso(tc, row, context);
 				casos.add(caso);
 			}
-			out.write("<-- Fin Reducer");
+			out.write("<-- Fin Reducer\n");
 			out.flush();
 			out.close();
 		} catch (ClassNotFoundException e) {
