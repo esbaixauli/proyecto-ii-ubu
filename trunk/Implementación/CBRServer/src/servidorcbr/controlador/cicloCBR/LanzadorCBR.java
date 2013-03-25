@@ -1,6 +1,7 @@
 package servidorcbr.controlador.cicloCBR;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
@@ -18,6 +19,7 @@ import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.IdentityTableMapper;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
@@ -59,9 +61,10 @@ public class LanzadorCBR implements StandardCBRApplication {
 		return null;
 	}
 
-	public Collection<CBRCase> retrieve (TipoCaso tc, HashMap<String,Serializable> query) {
+	public Collection<CBRCase> retrieve (TipoCaso tc, HashMap<String,Serializable> query) throws IOException {
 		// create a configuration
 		Configuration conf = new Configuration();
+		conf.set("tipocaso", tc.getNombre());
 		// escribe el tipo de caso en HDFS para leerlo en el reducer
 		escribeTipoCasoHDFS(tc, conf);
 		// create a new job based on the configuration
@@ -122,17 +125,28 @@ public class LanzadorCBR implements StandardCBRApplication {
 		return null;
 	}
 	
-	private void escribeTipoCasoHDFS (TipoCaso tc, Configuration conf) {
+	private void escribeTipoCasoHDFS (TipoCaso tc, Configuration conf) throws IOException {
 		try {
 			FileSystem fs = FileSystem.get(conf);
-			Path outFile = new Path("/"+tc.getNombre()+".tc");
+			Path outFile = new Path("/tcs/");
+			if (!fs.exists(outFile)) {
+				fs.mkdirs(outFile);
+			}
+			outFile = new Path(outFile, tc.getNombre()+".tc");
+			if (fs.exists(outFile)) {
+				fs.delete(outFile, true);
+			}
 			FSDataOutputStream outfs = fs.create(outFile);
-			ObjectOutputStream oos = new ObjectOutputStream(outfs);
+			/*ObjectOutputStream oos = new ObjectOutputStream(outfs);
 			oos.writeObject(tc);
+			oos.writeFields();
+			oos.flush();*/
+			outfs.writeUTF("prueba");
 			outfs.close();
-			oos.close();
+			//oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw e;
 		}
 	}
 }
