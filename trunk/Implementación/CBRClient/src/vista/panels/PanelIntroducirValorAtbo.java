@@ -86,7 +86,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 			}
 		});
 		
-		JLabel lblNombre = new JLabel(b.getString("atname")+":"+a.getNombre() + " ("
+		JLabel lblNombre = new JLabel(a.getNombre() + " ("
 				+ b.getString(TraductorTipos.persistenciaAVista(a.getTipo()))
 				+ "):");
 		GridBagConstraints gbc_lblNombre = new GridBagConstraints();

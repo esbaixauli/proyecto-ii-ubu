@@ -1,70 +1,55 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
-import javax.swing.JButton;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-
+import vista.componentes.FrameEstandar;
 import controlador.ControlTipos;
 import controlador.ControlUsuarios;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.peer.TextFieldPeer;
-import java.io.IOException;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
-
 @SuppressWarnings("serial")
-public class VerCrearUsuario extends JFrame {
+public class VerCrearUsuarioFrame extends FrameEstandar {
 
 	private JPanel contentPane;
-	private JFrame me = this;
 	private JTextField nombreTextField;
 	private JPasswordField passwordField;
 	private Usuario user;
-	private ResourceBundle b = ResourceBundle.getBundle(
-            "vista.internacionalizacion.Recursos", Locale.getDefault());
+	
 
 	private HashMap<String,JCheckBox> asociaciones = new HashMap<String,JCheckBox>();
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
-	public VerCrearUsuario(Usuario u, final JFrame padre) {
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                padre.setEnabled(true);
-                me.setVisible(false);
-                me.dispose();
-            }
-        });
+	public VerCrearUsuarioFrame(Usuario u, final JFrame padre) {
+		
+		super(padre);me=this;
 		setBounds(100, 100, 300, 285);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

@@ -1,11 +1,10 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
@@ -14,21 +13,15 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.UIManager;
-import javax.swing.border.TitledBorder;
+import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import vista.estadisticas.EstadisticasFrame;
-import javax.swing.SpringLayout;
-import javax.swing.JLabel;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame{

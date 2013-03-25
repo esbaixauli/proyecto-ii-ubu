@@ -1,38 +1,33 @@
 package vista.configtecnicas;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
 import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
-import servidorcbr.modelo.TipoCaso;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
+import vista.componentes.FrameEstandar;
+
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.JButton;
-import javax.swing.SpinnerNumberModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-public class NNConfigFrame extends JFrame {
+@SuppressWarnings("serial")
+public class NNConfigFrame extends FrameEstandar {
 
 	private JPanel contentPane;
-	private final JFrame me = this;
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
 
@@ -40,18 +35,8 @@ public class NNConfigFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public NNConfigFrame(final Tecnica t, final JFrame padre) {
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.setVisible(false);
-				me.dispose();
-			}
-		});
+		super(padre);me=this;
 		setBounds(100, 100, 350, 130);
-		setResizable(false);
 		setTitle("NN Retrieval");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

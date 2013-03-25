@@ -1,17 +1,12 @@
 package vista;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,19 +14,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
-import javax.swing.border.EmptyBorder;
-
-import servidorcbr.modelo.Atributo;
-import vista.panels.PanelAtributos;
-import java.awt.FlowLayout;
 import javax.swing.ScrollPaneConstants;
 
-public class ConfigAtributoFrame extends JFrame {
+import servidorcbr.modelo.Atributo;
+import vista.componentes.FrameEstandar;
+import vista.panels.PanelAtributos;
+
+@SuppressWarnings("serial")
+public class ConfigAtributoFrame extends FrameEstandar {
 
 	private JPanel contentPane;
 	private Atributo a, temp;
-	
-	private JFrame padre,me=this;
 	
 	private JButton btnGuardar,btnSalir;
 
@@ -42,6 +35,8 @@ public class ConfigAtributoFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public ConfigAtributoFrame(Atributo at,final JFrame padre) {
+		//Establezco referencias al padre y a la propia ventana
+		super(padre);me = this;
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -51,7 +46,7 @@ public class ConfigAtributoFrame extends JFrame {
 		toolBar.setFloatable(false);
 		getContentPane().add(toolBar, BorderLayout.SOUTH);
 		
-		 setResizable(false);
+		
 			setTitle(at.getNombre());
 			a = at;
 			this.padre=padre;
@@ -96,18 +91,9 @@ public class ConfigAtributoFrame extends JFrame {
 			getContentPane().add(scrollPane, BorderLayout.CENTER);
 			JPanel panel = new PanelAtributos(0, getContentPane(), new JScrollPane(), temp);
 			scrollPane.add(panel);
-			cierreVentana();
+			
 	}
 	
-	private void cierreVentana() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
-	}
 	
 
 }

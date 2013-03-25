@@ -137,8 +137,16 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"qualitychart","Gráfico de calidades"},
 		{"avgvslatest","Media vs Última"},
 		{"quickstats","Estadisticas rápidas"},
-		{"stepbystep","Paso a paso"},
+		{"stepbystep","Paso a paso"},	
+		{"casebases","Bases de casos"},
 		
-		{"casebases","Bases de casos"}
+		{"file","Archivo"},
+		{"help","Ayuda"},
+		{"about","Acerca de..."},
+		
+		{"searchfilter","Filtrar:"},
+		{"filtererror","No se puede filtrar por la cadena de texto especificada. La búsqueda contiene"+
+		" caracteres no válidos o caracteres comodín usados incorrectamente."}
+		
 	};
 }

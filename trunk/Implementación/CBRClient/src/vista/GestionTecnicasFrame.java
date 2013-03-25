@@ -1,35 +1,27 @@
 package vista;
 
-import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
-import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import controlador.ControlTecnicas;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.swing.JButton;
-
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
+import vista.componentes.FrameEstandar;
 import vista.panels.PanelTecnica;
+import controlador.ControlTecnicas;
 
-public class GestionTecnicasFrame extends JFrame {
+@SuppressWarnings("serial")
+public class GestionTecnicasFrame extends FrameEstandar {
 
 	private JPanel contentPane;
-	private ResourceBundle b = ResourceBundle.getBundle(
-			"vista.internacionalizacion.Recursos", Locale.getDefault());
-	private final JFrame me = this;
+	
 	private List<Tecnica> tecnicasRec;
 	private List<Tecnica> tecnicasReu;
 	private List<Tecnica> tecnicasRev;
@@ -39,19 +31,12 @@ public class GestionTecnicasFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public GestionTecnicasFrame(final TipoCaso tc, final JFrame padre) {
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
+		//Establezco referencias al padre y a la propia ventana
+		super(padre);me = this;
 		setTitle(b.getString("managemethods"));
 		inicializaListas(tc);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
+	
 		setBounds(100, 100, 550, 524);
-		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

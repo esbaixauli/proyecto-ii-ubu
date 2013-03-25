@@ -1,47 +1,39 @@
 package vista;
 
 import java.awt.Color;
-import java.net.MalformedURLException;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Component;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JToolBar;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
-
-import controlador.ControlTipos;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.border.EmptyBorder;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
+import vista.componentes.FrameEstandar;
 import vista.panels.PanelAtributos;
 import vista.panels.ScrollPanelAtbo;
+import controlador.ControlTipos;
 
-public class NuevoTipoFrame extends JFrame {
-
-	
-	private JFrame me = this;
+@SuppressWarnings("serial")
+public class NuevoTipoFrame extends FrameEstandar {
 	private JPanel contentPane;
 	private JTextField textField;
-	private ResourceBundle b = ResourceBundle.getBundle(
-			"vista.internacionalizacion.Recursos", Locale.getDefault());
-	private JFrame padre;
 	private JButton btnTecnicas;
 
 	private JToolBar toolBar;
@@ -58,13 +50,10 @@ public class NuevoTipoFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public NuevoTipoFrame(final JFrame padre) {
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
+		super(padre);me=this;
 		setTitle(b.getString("newcasetype"));
-		this.padre = padre;
 		tc = new TipoCaso();
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 767, 361);
+		setBounds(100, 100, 767, 389);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -246,6 +235,7 @@ public class NuevoTipoFrame extends JFrame {
 		gbc_separator_1.gridy = 7;
 		contentPane.add(separator_1, gbc_separator_1);
 
+		removeWindowListener(getWindowListeners()[0]);
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				if (JOptionPane.showConfirmDialog(null,

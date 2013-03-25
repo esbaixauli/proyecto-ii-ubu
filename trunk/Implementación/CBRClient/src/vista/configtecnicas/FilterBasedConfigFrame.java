@@ -1,6 +1,11 @@
 package vista.configtecnicas;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
@@ -12,8 +17,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
@@ -22,50 +36,25 @@ import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-
-import java.awt.GridBagLayout;
-import javax.swing.JSeparator;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-
+import vista.componentes.FrameEstandar;
 import controlador.ControlTecnicas;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JScrollPane;
 
-public class FilterBasedConfigFrame extends JFrame {
+public class FilterBasedConfigFrame extends FrameEstandar {
 
 	private JPanel contentPane;
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
-	private final JFrame me = this;
 	private final NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
 	private final List<JTextField> textFields;
 	private final List<JComboBox> comboBoxes;
 	private List<String> atbos;
 
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public FilterBasedConfigFrame(final Tecnica t, TipoCaso tc, final JFrame padre) {
-		setResizable(false);
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
+		super(padre);me=this;
+		
 		setBounds(100, 100, 438, 300);
 		setTitle("Filter based retrieval");
 		contentPane = new JPanel();

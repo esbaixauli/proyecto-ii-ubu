@@ -1,21 +1,11 @@
 package vista.configtecnicas;
 
 import java.awt.BorderLayout;
-
-import javax.swing.ImageIcon;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.text.DefaultFormatterFactory;
-import javax.swing.text.NumberFormatter;
-
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
-import javax.swing.JSeparator;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -23,43 +13,41 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import javax.swing.JScrollPane;
+import vista.componentes.FrameEstandar;
 
-public class DiverseByMedianConfigFrame extends JFrame {
+@SuppressWarnings("serial")
+public class DiverseByMedianConfigFrame extends FrameEstandar {
 
 	private JPanel contentPane;
 	private List<JTextField> textFields;
 	private List<String> atbos;
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
-	private final JFrame me = this;
+	
 	private final NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
 
 	/**
 	 * Create the frame.
 	 */
 	public DiverseByMedianConfigFrame(final Tecnica t, TipoCaso tc, final JFrame padre) {
-		setResizable(false);
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
+		super(padre);me=this;
 		setBounds(100, 100, 350, 300);
 		setTitle("Diverse by median retrieval");
 		contentPane = new JPanel();
