@@ -1,36 +1,32 @@
 package vista;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.awt.event.MouseAdapter;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
+import vista.componentes.FrameEstandar;
 import vista.panels.ListaCasos;
 import controlador.ControlTipos;
 
 @SuppressWarnings("serial")
-public class ElegirTipoCasoFrame extends JFrame {
+public class ElegirTipoCasoFrame extends FrameEstandar {
 
 	private JPanel contentPane;
 	private int tipo;
-	private JFrame padre, me = this;
+	
 	private List<TipoCaso> datos;
 
 	public static final int CICLO_CONFIGURADO = 1;
@@ -38,17 +34,15 @@ public class ElegirTipoCasoFrame extends JFrame {
 	public static final int INTRODUCIR_MANUAL = 3;
 	public static final int VER_ESTADISTICAS = 4;
 
-	private ResourceBundle b = ResourceBundle.getBundle(
-			"vista.internacionalizacion.Recursos", Locale.getDefault());
-
+	
 	/**
 	 * Create the frame.
 	 */
 	public ElegirTipoCasoFrame(Usuario u, JFrame padre, final int tipo) {
+		//Establezco referencias al padre y a la propia ventana
+		super(padre);me = this;
 		assert (tipo >= 1 && tipo <= 4);
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
-		setResizable(false);
-		this.padre = padre;
+		
 		switch (tipo) {
 		case CICLO_CONFIGURADO:
 			setTitle(b.getString("configuredcycle"));
@@ -64,7 +58,6 @@ public class ElegirTipoCasoFrame extends JFrame {
 			break;
 		}
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 237, 300);
 		this.tipo = tipo;
 		contentPane = new JPanel();

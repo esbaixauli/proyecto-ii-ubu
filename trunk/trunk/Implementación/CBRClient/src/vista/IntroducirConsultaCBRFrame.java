@@ -1,17 +1,35 @@
 package vista;
 
+import controlador.ControlCBR;
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.Estadistica;
@@ -19,56 +37,23 @@ import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
+import vista.componentes.FrameEstandar;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
 import vista.configtecnicas.FilterBasedConfigFrame;
 import vista.configtecnicas.NNConfigFrame;
 import vista.panels.PanelIntroducirValorAtbo;
-
-import java.awt.FlowLayout;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
-
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Panel;
-
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import controlador.ControlEstadisticas;
 import controlador.ControlTecnicas;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.MalformedURLException;
-
-import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
-import javax.swing.ScrollPaneConstants;
-import java.awt.Color;
-
 @SuppressWarnings("serial")
-public class IntroducirConsultaCBRFrame extends JFrame {
+public class IntroducirConsultaCBRFrame extends FrameEstandar {
 
 	private JPanel contentPane;
 
 	private JFrame cRec, cReu, cRev, cRet;
 
-	private ResourceBundle b = ResourceBundle.getBundle(
-			"vista.internacionalizacion.Recursos", Locale.getDefault());
 
 	private TipoCaso tc;
-	private JFrame padre, me = this;
 	private boolean configurado;
 	private JComboBox<String> comboBoxRec;
 	private JButton btnConfigRec;
@@ -98,16 +83,11 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 	 */
 	public IntroducirConsultaCBRFrame(TipoCaso tic, boolean configurado,
 			final JFrame padre) {
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
-		setResizable(false);
+		super(padre);me=this;
 		this.tc = tic;
 		this.configurado = configurado;
-		this.padre = padre;
 		setTitle("CBR: " + tc.getNombre());
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		cierreVentana();
-
-		setBounds(100, 100, 573, 415);
+		setBounds(100, 100, 573, 455);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -309,13 +289,13 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 					a.setParamMetrica(p.getParamMetrica());
 				}
 			
-			/*	try {
+				try {
 					ControlCBR.retrieve(tc, query);
 					// TODO: Ir al panel de resultados
 				} catch (IOException e1) {
 					JOptionPane.showMessageDialog(null,
 							b.getString("connecterror"), "Error",JOptionPane.ERROR_MESSAGE);
-				}*/
+				}
 			}
 		});
 		contentPane.add(panelEjec, BorderLayout.SOUTH);
@@ -463,15 +443,4 @@ public class IntroducirConsultaCBRFrame extends JFrame {
 		}
 		comboBoxRet.setSelectedItem(tc.getDefaultRet().toString());
 	}
-
-	private void cierreVentana() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
-	}
-
 }

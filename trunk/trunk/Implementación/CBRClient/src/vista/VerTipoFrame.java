@@ -19,8 +19,7 @@ import vista.panels.ScrollPanelAtbo;
 public class VerTipoFrame extends NuevoTipoFrame {
 
 	private JFrame me =this;
-		private ResourceBundle b = ResourceBundle.getBundle(
-				"vista.internacionalizacion.Recursos", Locale.getDefault());
+	
 	public VerTipoFrame(final JFrame padre, TipoCaso tic) {
 		super(padre);
 		setTitle(tic.getNombre());

@@ -138,8 +138,15 @@ public class Recursos extends ListResourceBundle {
 		{"qualitychart","Quality chart"},
 		{"avgvslatest","Latest vs Avg"},
 		{"quickstats","Quick stats"},
-		{"stepbystep","Step by step"},
+		{"stepbystep","Step by step"},	
+		{"casebases","Casebases"},
 		
-		{"casebases","Casebases"}
+		{"file","File"},
+		{"help","Help"},
+		{"about","About..."},
+		
+		{"searchfilter","Filter:"},
+		{"filtererror","Can't filter by the selected text string. The search contains"+
+		" invalid characters of metacharacters incorrectly used."}
 	};
 }

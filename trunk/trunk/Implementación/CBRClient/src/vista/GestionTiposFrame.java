@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -22,31 +20,25 @@ import javax.swing.border.EmptyBorder;
 
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
+import vista.componentes.FrameEstandar;
 import vista.panels.ListaCasos;
 import controlador.ControlTipos;
 
-public class GestionTiposFrame extends JFrame {
+@SuppressWarnings("serial")
+public class GestionTiposFrame extends FrameEstandar{
 
-	private final JFrame me=this;
 	private JPanel contentPane;
-	private final JFrame padre;
 	private Usuario u;
 	private int ancho=250;
 	private List<TipoCaso> tipos=null;
 	private ListaCasos list;
-	
-	ResourceBundle bundle = ResourceBundle.getBundle(
-            "vista.internacionalizacion.Recursos", Locale.getDefault());
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public GestionTiposFrame(final Usuario u,final JFrame padre) {
-		setResizable(false);
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
-		setTitle(bundle.getString("managecasetypes"));
+		super(padre);me=this;
+		setTitle(b.getString("managecasetypes"));
 		this.u=u;
-		this.padre=padre;
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 314, 314);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -59,7 +51,7 @@ public class GestionTiposFrame extends JFrame {
 			e.printStackTrace();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, 
-					bundle.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
+					b.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 			JFrame login = new LoginFrame();
 			login.setVisible(true);
@@ -99,7 +91,7 @@ public class GestionTiposFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(list.getSelectedValue()==null){
 					JOptionPane.showMessageDialog(null, 
-							bundle.getString("noselection"),bundle.getString("noselection"), JOptionPane.INFORMATION_MESSAGE);
+							b.getString("noselection"),b.getString("noselection"), JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 				TipoCaso tcEscogido = tipos.get(list.getSelectedIndex());
@@ -109,8 +101,8 @@ public class GestionTiposFrame extends JFrame {
 			}
 		});
 		toolBar.add(btnVerbut);
-		btnVerbut.setToolTipText(bundle.getString("seecasetype"));
-		btnNuevobut.setToolTipText(bundle.getString("newcasetype"));
+		btnVerbut.setToolTipText(b.getString("seecasetype"));
+		btnNuevobut.setToolTipText(b.getString("newcasetype"));
 		toolBar.add(btnNuevobut);
 		
 		JButton btnBorrarbut = new JButton(new ImageIcon("res/delete_32.png"));
@@ -118,23 +110,23 @@ public class GestionTiposFrame extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				if(list.getSelectedValue()==null){
 					JOptionPane.showMessageDialog(null, 
-							bundle.getString("noselection"),bundle.getString("noselection"), JOptionPane.INFORMATION_MESSAGE);
+							b.getString("noselection"),b.getString("noselection"), JOptionPane.INFORMATION_MESSAGE);
 					return;
 				} else if (list.getSelectedValue().getNombre().equals("root")) {
 					JOptionPane.showMessageDialog(null, 
-							bundle.getString("rootdeletion"),bundle.getString("rootdeletion"), JOptionPane.INFORMATION_MESSAGE);
+							b.getString("rootdeletion"),b.getString("rootdeletion"), JOptionPane.INFORMATION_MESSAGE);
 					return;
 				}
 			 int opcion= JOptionPane.showConfirmDialog(null, 
-						bundle.getString("userdelsure"),bundle.getString("delsure"),JOptionPane.YES_NO_OPTION);
+						b.getString("userdelsure"),b.getString("delsure"),JOptionPane.YES_NO_OPTION);
 			 if(opcion==0){
 				try {
 					if(ControlTipos.borrarTiposCaso(list.getSelectedValue())){
 						JOptionPane.showMessageDialog(null, 
-								bundle.getString("opsuccess"),bundle.getString("opsuccess"), JOptionPane.INFORMATION_MESSAGE);
+								b.getString("opsuccess"),b.getString("opsuccess"), JOptionPane.INFORMATION_MESSAGE);
 					}else{
 						JOptionPane.showMessageDialog(null, 
-								bundle.getString("opunsuccess"),bundle.getString("opunsuccess")+bundle.getString("delunsuccesscause")
+								b.getString("opunsuccess"),b.getString("opunsuccess")+b.getString("delunsuccesscause")
 								, JOptionPane.INFORMATION_MESSAGE);
 					}
 					
@@ -142,36 +134,30 @@ public class GestionTiposFrame extends JFrame {
 				} catch (MalformedURLException e) {
 				} catch (IOException e) {
 					JOptionPane.showMessageDialog(null, 
-							bundle.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
+							b.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
 					e.printStackTrace();
 				}
 			}
 			}
 		});
 		
-		btnBorrarbut.setToolTipText(bundle.getString("delcasetype"));
+		btnBorrarbut.setToolTipText(b.getString("delcasetype"));
 		toolBar.add(btnBorrarbut);
 		
 		contentPane.add(toolBar);
-		addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent e) {
-                padre.setEnabled(true);
-                me.dispose();
-            }
-        });
 		
 	}
 
 	
 	@Override
-	public void setEnabled(boolean b) {
-		super.setEnabled(b);
-		if(b){
+	public void setEnabled(boolean boo) {
+		super.setEnabled(boo);
+		if(boo){
 			try {
 				tipos=ControlTipos.obtenerTiposCaso(u);
 			} catch (IOException ex){
 				JOptionPane.showMessageDialog(null, 
-						bundle.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
+						b.getString("connecterror"),"Error", JOptionPane.ERROR_MESSAGE);
 			}
 			list.refrescarDatos(tipos);
 		}

@@ -1,42 +1,35 @@
 package vista.estadisticas;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JList;
 
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
-import javax.swing.JTabbedPane;
+import vista.componentes.FrameEstandar;
 
-public class EstadisticasFrame extends JFrame {
+@SuppressWarnings("serial")
+public class EstadisticasFrame extends FrameEstandar {
 
 	private JPanel contentPane;
 	EnumEstadisticas tipoEst;
 	Usuario u;
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
-	JFrame me=this, padre;
 	
 	/**
-	 * Crear el frame.
+	 * Crea el frame.
 	 */
 	public EstadisticasFrame(Usuario u,JFrame padre) {
-		setResizable(false);
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
+		super(padre);me=this;
 		this.u=u;
-		this.padre=padre;
-		setTitle(b.getString("stats"));
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 995, 390);
+		
+		setBounds(100, 100, 995, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -49,17 +42,5 @@ public class EstadisticasFrame extends JFrame {
 		if(u.getTipo().equals(TipoUsuario.ADMINISTRADOR)){
 			tabbedPane.addTab(b.getString("byuserandcase"),new PanelEstadisticas(EnumEstadisticas.USUARIOYCASO, u) );
 		}
-		cierreVentana();
 	}
-	
-	private void cierreVentana() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
-	}
-
 }

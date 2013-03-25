@@ -6,16 +6,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -26,45 +23,46 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
+import vista.componentes.FrameEstandar;
 import vista.panels.JFilePicker;
 import vista.panels.PanelIntroducirValorAtbo;
 import vista.tablas.CasosTableCellRenderer;
 import vista.tablas.CasosTableModel;
 import controlador.ControlCasos;
 import controlador.util.LectorCaso;
+import javax.swing.border.EtchedBorder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
-public class InsertarCasoFrame extends JFrame {
+public class InsertarCasoFrame extends FrameEstandar {
 
 	private JFilePicker pickerFichero;
 	private JPanel contentPane;
-	private ResourceBundle b = ResourceBundle.getBundle(
-			"vista.internacionalizacion.Recursos", Locale.getDefault());
 
 	private JPanel panelManual;
 	private JLabel lblCargadas;
 	private TipoCaso tc;
 	private JTable table;
 	private List<HashMap<String,Object>> casos;
+	private JTextField textFieldFilter;
 	
-	private JFrame me=this, padre;
+
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public InsertarCasoFrame(final TipoCaso tc, final JFrame padre) {
-		setResizable(false);
-		this.padre=padre;
-		cierreVentana();
-		setIconImage(new ImageIcon("res/logocbr.png").getImage());
+		super(padre);me=this;
 		setTitle(b.getString("insertcases"));
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 573, 380);
+		setBounds(100, 100, 573, 426);
 		this.tc=tc;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -129,10 +127,42 @@ public class InsertarCasoFrame extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+		gbc_panel_2.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_2.gridx = 0;
 		gbc_panel_2.gridy = 2;
 		contentPane.add(panel_2, gbc_panel_2);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_2.add(panel);
+		
+		JLabel lblSeachfilter = new JLabel(b.getString("searchfilter"));
+		panel.add(lblSeachfilter);
+		
+		textFieldFilter = new JTextField();
+		panel.add(textFieldFilter);
+		textFieldFilter.setColumns(10);
+		
+		JButton btnFilter = new JButton(new ImageIcon("res/search_16.png"));
+		btnFilter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String cadenaBusqueda = textFieldFilter.getText();
+				TableRowSorter<CasosTableModel> sorter = (TableRowSorter<CasosTableModel>)
+						table.getRowSorter();
+				if(! cadenaBusqueda.isEmpty()){
+					try{
+					sorter.setRowFilter(RowFilter.regexFilter(cadenaBusqueda));
+					}catch(PatternSyntaxException ex){
+						JOptionPane.showMessageDialog(null, b.getString("filtererror"),
+								"Error",JOptionPane.INFORMATION_MESSAGE);
+					}
+				}else{
+					sorter.setRowFilter(null);
+				}
+			}
+		});
+		panel.add(btnFilter);
 		
 		lblCargadas = new JLabel(b.getString("loadedcases")+0);
 		panel_2.add(lblCargadas);
@@ -227,14 +257,6 @@ public class InsertarCasoFrame extends JFrame {
 		}
 	}
 	
-	private void cierreVentana() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
-	}
+
 
 }
