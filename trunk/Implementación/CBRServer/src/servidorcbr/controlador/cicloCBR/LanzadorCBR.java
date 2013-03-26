@@ -64,6 +64,8 @@ public class LanzadorCBR implements StandardCBRApplication {
 	public Collection<CBRCase> retrieve (TipoCaso tc, HashMap<String,Serializable> query) throws IOException {
 		// create a configuration
 		Configuration conf = new Configuration();
+	    conf.addResource(new Path("/etc/hadoop/core-site.xml"));
+	    conf.addResource(new Path("/etc/hadoop/hdfs-site.xml"));
 		conf.set("tipocaso", tc.getNombre());
 		// escribe el tipo de caso en HDFS para leerlo en el reducer
 		escribeTipoCasoHDFS(tc, conf);
@@ -125,28 +127,22 @@ public class LanzadorCBR implements StandardCBRApplication {
 		return null;
 	}
 	
-	private void escribeTipoCasoHDFS (TipoCaso tc, Configuration conf) throws IOException {
+	private void escribeTipoCasoHDFS (TipoCaso tc, Configuration conf) {
 		try {
 			FileSystem fs = FileSystem.get(conf);
-			Path outFile = new Path("/tcs/");
+			// "tcs/" se traduce en hdfs a "/user/$USER/tcs/"
+			Path outFile = new Path("tcs/");
 			if (!fs.exists(outFile)) {
 				fs.mkdirs(outFile);
 			}
-			outFile = new Path(outFile, tc.getNombre()+".tc");
-			if (fs.exists(outFile)) {
-				fs.delete(outFile, true);
-			}
-			FSDataOutputStream outfs = fs.create(outFile);
-			/*ObjectOutputStream oos = new ObjectOutputStream(outfs);
+			FSDataOutputStream outfs = fs.create(outFile, true);
+			ObjectOutputStream oos = new ObjectOutputStream(outfs);
 			oos.writeObject(tc);
-			oos.writeFields();
-			oos.flush();*/
-			outfs.writeUTF("prueba");
+			oos.flush();
+			oos.close();
 			outfs.close();
-			//oos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw e;
 		}
 	}
 }
