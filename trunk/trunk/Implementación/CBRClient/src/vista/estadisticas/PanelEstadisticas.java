@@ -123,7 +123,7 @@ public class PanelEstadisticas extends JPanel {
 		add(panelEstInterno);
 						GridBagLayout gbl_panelEstInterno = new GridBagLayout();
 						gbl_panelEstInterno.columnWidths = new int[]{30, 105, 42, 45, 257, 0, 79, 0, 0};
-						gbl_panelEstInterno.rowHeights = new int[]{30, 16, 14, 47, 0, 14, 14, 14, 14, 14, 14, 0, 0, 123, 0, 0};
+						gbl_panelEstInterno.rowHeights = new int[]{88, 16, 14, 47, 0, 14, 14, 14, 14, 14, 14, 0, 0, 123, 0, 0};
 						gbl_panelEstInterno.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 						gbl_panelEstInterno.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 						panelEstInterno.setLayout(gbl_panelEstInterno);
