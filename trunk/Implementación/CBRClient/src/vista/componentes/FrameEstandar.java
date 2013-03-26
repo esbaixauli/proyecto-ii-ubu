@@ -12,6 +12,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+
+import vista.AcercaDeJFrame;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -19,7 +22,7 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 public class FrameEstandar extends JFrame {
 
-	protected JFrame me;
+	protected FrameEstandar me;
 	protected JFrame padre;
 	protected ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
@@ -28,7 +31,7 @@ public class FrameEstandar extends JFrame {
 	
 	public FrameEstandar(JFrame padre){
 		super();
-		
+		me=this;
 		this.padre=padre;
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -45,6 +48,14 @@ public class FrameEstandar extends JFrame {
 		mnHelp.add(mntmHelp);
 		
 		JMenuItem mntmAbout = new JMenuItem(b.getString("about"));
+		mntmAbout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFrame f = new AcercaDeJFrame(me);
+				me.setEnabled(false);
+				f.setVisible(true);
+				
+			}
+		});
 		mnHelp.add(mntmAbout);
 		cierreVentana();
 	}

@@ -87,7 +87,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 		this.tc = tic;
 		this.configurado = configurado;
 		setTitle("CBR: " + tc.getNombre());
-		setBounds(100, 100, 573, 455);
+		setBounds(100, 100, 573, 466);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -307,7 +307,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			estableceFrameTecReu();
 			estableceFrameTecRev();
 		} else {
-			me.setBounds(me.getX(), me.getY(),me.getWidth(), scrollPane.getPreferredSize().height+140);
+			me.setBounds(me.getX(), me.getY(),me.getWidth(), scrollPane.getPreferredSize().height+150);
 		}
 		
 		pedirEstadisticas();
