@@ -146,7 +146,8 @@ public class Recursos_es_ES extends ListResourceBundle {
 		
 		{"searchfilter","Filtrar:"},
 		{"filtererror","No se puede filtrar por la cadena de texto especificada. La búsqueda contiene"+
-		" caracteres no válidos o caracteres comodín usados incorrectamente."}
+		" caracteres no válidos o caracteres comodín usados incorrectamente."},
+		{"helperror","Error al localizar la ayuda. La página solicitada no se encuentra disponible."}
 		
 	};
 }

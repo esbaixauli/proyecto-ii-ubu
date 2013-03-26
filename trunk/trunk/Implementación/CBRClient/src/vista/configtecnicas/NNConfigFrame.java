@@ -36,7 +36,7 @@ public class NNConfigFrame extends FrameEstandar {
 	 */
 	public NNConfigFrame(final Tecnica t, final JFrame padre) {
 		super(padre);me=this;
-		setBounds(100, 100, 350, 130);
+		setBounds(100, 100, 350, 157);
 		setTitle("NN Retrieval");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

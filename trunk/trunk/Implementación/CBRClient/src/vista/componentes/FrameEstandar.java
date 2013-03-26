@@ -1,16 +1,18 @@
 package vista.componentes;
 
-import java.awt.MenuBar;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import vista.AcercaDeJFrame;
@@ -18,6 +20,8 @@ import vista.AcercaDeJFrame;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.net.URL;
 
 @SuppressWarnings("serial")
 public class FrameEstandar extends JFrame {
@@ -27,7 +31,11 @@ public class FrameEstandar extends JFrame {
 	protected ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
 	
+	private HelpBroker hb;
+    private HelpSet helpset;
+	
 	private JMenuBar menuBar;
+	private JMenuItem mntmHelp;
 	
 	public FrameEstandar(JFrame padre){
 		super();
@@ -43,7 +51,7 @@ public class FrameEstandar extends JFrame {
 		JMenu mnHelp = new JMenu(b.getString("help"));
 		menuBar.add(mnHelp);
 		
-		JMenuItem mntmHelp = new JMenuItem(b.getString("help"));
+		mntmHelp = new JMenuItem(b.getString("help"));
 		mntmHelp.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
 		mnHelp.add(mntmHelp);
 		
@@ -58,6 +66,7 @@ public class FrameEstandar extends JFrame {
 		});
 		mnHelp.add(mntmAbout);
 		cierreVentana();
+		refrescar();
 	}
 	
 	
@@ -72,6 +81,39 @@ public class FrameEstandar extends JFrame {
 				me.dispose();
 			}
 		});
+	}
+	
+
+	protected final void refrescar(){
+		try {
+
+			String executionPath = System.getProperty("user.dir");
+			
+			// Carga el fichero de ayuda
+			String helpse="res/help/help_set.hs";
+			if(Locale.getDefault().equals(Locale.ENGLISH))
+				helpse="res/help/help_set_en.hs";
+			File fichero = new File(helpse);
+			URL hsURL = fichero.toURI().toURL();
+
+			// Crea el HelpSet y el HelpBroker
+			helpset = new HelpSet(getClass().getClassLoader(), hsURL);
+			hb = helpset.createHelpBroker();
+			// Pone ayuda a item de menu al pulsarlo y a F1 en ventana
+			hb.enableHelpOnButton(mntmHelp,getClass().getSimpleName(), helpset);
+			//hb.enableHelp(mntmHelp, "aplicacion", helpset);
+			//hb.enableHelpKey(this.getContentPane(), getClass().getSimpleName(), helpset);
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null,
+					b.getString("helperror"), "Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	@Override
+	public void setEnabled(boolean v){
+		super.setEnabled(v);
+		refrescar();
 	}
 
 }

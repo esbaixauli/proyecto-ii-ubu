@@ -147,6 +147,7 @@ public class Recursos extends ListResourceBundle {
 		
 		{"searchfilter","Filter:"},
 		{"filtererror","Can't filter by the selected text string. The search contains"+
-		" invalid characters of metacharacters incorrectly used."}
+		" invalid characters of metacharacters incorrectly used."},
+		{"helperror","Error while locating help. The requested help page is not available."}
 	};
 }
