@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='ISO-8859-1'  ?>
+<!DOCTYPE index
+  PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
+         "http://java.sun.com/products/javahelp/index_1_0.dtd">
+<index version="1.0">
+		<indexitem text="Main window actions"    target="MainFrame"/>
+		<indexitem text="Choosing a case type"    target="ElegirTipoCasoFrame"/>
+		<indexitem text="Methods of a case type"    target="GestionTecnicasFrame"/>
+		<indexitem text="Case types"    target="GestionTiposFrame"/>
+		<indexitem text="Users"    target="GestionUsuariosFrame"/>
+		<indexitem text="Importing cases"    target="InsertarCasoFrame"/>
+		<indexitem text="Making a query"    target="IntroducirConsultaCBRFrame"/>
+		<indexitem text="Creating a new case type"    target="NuevoTipoFrame"/>
+		<indexitem text="Adding and modifying users"    target="VerCrearUsuarioFrame"/>
+		<indexitem text="Modifying case types"    target="VerTipoFrame"/>	
+		<indexitem text="Retrieval:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigFrame"/>	
+		<indexitem text="Retrieval:Filter Based (By predicates)"    target="FilterBasedConfigFrame"/>	
+		<indexitem text="Retrieval:K-NN (K nearest neighbors)"    target="NNConfigFrame"/>			
+</index>
+
+

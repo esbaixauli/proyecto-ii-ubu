@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<toc version="1.0"> <!--  categoryclosedimage="FolderClosed" categoryopenimage="FolderOpened"  
+topicimage="ItemIco"-->
+        <tocitem text="Temas de ayuda">
+		<tocitem text="Acciones en la ventana principal"    target="MainFrame"/>
+		<tocitem text="Escogiendo un tipo de caso"    target="ElegirTipoCasoFrame"/>
+		<tocitem text="Técnicas de un tipo de caso"    target="GestionTecnicasFrame"/>
+		<tocitem text="Tipos de caso"    target="GestionTiposFrame"/>
+		<tocitem text="Usuarios"    target="GestionUsuariosFrame"/>
+		<tocitem text="Importación de casos"    target="InsertarCasoFrame"/>
+		<tocitem text="Realizar una consulta"    target="IntroducirConsultaCBRFrame"/>
+		<tocitem text="Crear un nuevo tipo de caso"    target="NuevoTipoFrame"/>
+		<tocitem text="Crear y modificar usuarios"    target="VerCrearUsuarioFrame"/>
+		<tocitem text="Modificar tipos de caso"    target="VerTipoFrame"/>	
+		<tocitem text="Recuperación:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigFrame"/>	
+		<tocitem text="Recuperación:Filter Based (Por predicados)"    target="FilterBasedConfigFrame"/>	
+		<tocitem text="Recuperación:K-NN (K vecinos más cercanos)"    target="NNConfigFrame"/>	
+        </tocitem>
+	
+</toc>

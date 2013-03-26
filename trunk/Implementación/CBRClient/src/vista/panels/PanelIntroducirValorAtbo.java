@@ -1,51 +1,31 @@
 package vista.panels;
 
-import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
-import servidorcbr.modelo.Atributo;
-import vista.ConfigAtributoFrame;
-import vista.TraductorTipos;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.BoxLayout;
-import javax.swing.JOptionPane;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JButton;
+import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.Serializable;
-import javax.swing.JComboBox;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import javax.swing.border.EtchedBorder;
-import javax.swing.SpringLayout;
-import java.awt.BorderLayout;
+
+import servidorcbr.modelo.Atributo;
+import vista.TraductorTipos;
 
 /*Panel que permite introducir el valor de la Query para un atributo*/
 @SuppressWarnings("serial")
