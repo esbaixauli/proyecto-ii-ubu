@@ -40,9 +40,8 @@ public class ReducerRetrieval
 		BufferedWriter out = null;
 		TipoCaso tc = cargarTipoCaso(context.getConfiguration().get("tipocaso"));
 		try {
-			out = new BufferedWriter(new FileWriter("log.txt", true));
+			out = new BufferedWriter(new FileWriter("log.txt", false));
 			out.write("--> Inicio Reducer\n");
-			out.flush();
 			out.write("--> Tipo de caso: "+tc.getNombre()+"\n");
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -51,14 +50,14 @@ public class ReducerRetrieval
 			for (Result row : values) {
 				out.write(row.toString()+"\n");
 				CBRCase caso;
-				caso = obtenerCaso(tc, row, context);
-				casos.add(caso);
+				//caso = obtenerCaso(tc, row, context);
+				//casos.add(caso);
 			}
 			out.write("<-- Fin Reducer\n");
 			out.flush();
 			out.close();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		//} catch (ClassNotFoundException e) {
+		//	e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -88,11 +87,15 @@ public class ReducerRetrieval
 		TipoCaso tc = null;
 		try {
 			Configuration conf = new Configuration();
+			conf.addResource(new Path("/etc/hadoop/core-site.xml"));
+		    conf.addResource(new Path("/etc/hadoop/hdfs-site.xml"));
 			FileSystem fs = FileSystem.get(conf);
-			Path inFile = new Path("/"+nombreCaso+".tc");
+			Path inFile = new Path("tcs/"+nombreCaso+".tc");
 			FSDataInputStream in = fs.open(inFile);
 			ObjectInputStream ois = new ObjectInputStream(in);
 			tc = (TipoCaso) ois.readObject();
+			ois.close();
+			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) { }
