@@ -28,7 +28,8 @@ public class SQLOtros {
 	 * @throws PersistenciaException en caso de que el caso/usuario no existan o se produzca un error de conexión.
 	 */
 	public Estadistica getEstadistica(Usuario u, TipoCaso tc) throws PersistenciaException{
-		String consulta= "Select sum(ejecTotales),avg(mediacalidad),sum(ejecSatisfactorias),sum(ejecInusables),max(fechaUltima)"+
+		String consulta= "Select sum(ejecTotales),sum(mediacalidad*ejecTotales)/coalesce(nullif(sum(ejecTotales),0),1)," +
+				"sum(ejecSatisfactorias),sum(ejecInusables),max(fechaUltima)"+
 							"from caso_usuario";
 		Estadistica es=null;
 		try{
