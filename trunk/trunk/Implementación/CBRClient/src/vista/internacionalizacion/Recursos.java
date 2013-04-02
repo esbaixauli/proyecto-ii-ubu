@@ -19,6 +19,7 @@ public class Recursos extends ListResourceBundle {
 		{"manualinsert","Manual insert"},
 		
 		{"open","Open"},
+		{"exporterror","Failed to export to selected path."},
 		{"emptylogin","Username and password may not be empty."},
 		{"connecterror","Error while connecting to server."},
 		{"moderror","Error while modifying."},
@@ -139,6 +140,7 @@ public class Recursos extends ListResourceBundle {
 		{"avgvslatest","Latest vs Avg"},
 		{"quickstats","Quick stats"},
 		{"stepbystep","Step by step"},	
+		{"export","Export"},
 		{"casebases","Casebases"},
 		
 		{"file","File"},

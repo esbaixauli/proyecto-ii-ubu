@@ -21,6 +21,8 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"loadfromfile","Cargar desde fichero"},
 		{"manualinsert","Inserción manual"},
 		
+		
+		{"exporterror","Error al exportar en la ruta seleccionada."},
 		{"emptylogin","El nombre de usuario y la contraseña no pueden estar vacíos."},
 		{"connecterror","Error al conectar con el servidor."},
 		{"moderror","Error al modificar."},
@@ -138,6 +140,7 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"avgvslatest","Media vs Última"},
 		{"quickstats","Estadisticas rápidas"},
 		{"stepbystep","Paso a paso"},	
+		{"export","Exportar"},
 		{"casebases","Bases de casos"},
 		
 		{"file","Archivo"},

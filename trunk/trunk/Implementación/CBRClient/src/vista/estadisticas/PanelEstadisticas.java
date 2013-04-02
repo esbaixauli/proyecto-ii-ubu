@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +44,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -100,6 +102,17 @@ public class PanelEstadisticas extends JPanel {
 	private JToolBar toolBar;
 	private JButton btnLimpiar;
 	private JButton btnExportar;
+	
+	
+	/**
+	 * Anchura de los graficos al exportarlos.
+	 */
+	private static final int ANCHOCHART=450;
+	/**
+	 * Altura de los graficos al exportarlos.
+	 */
+	private static final int ALTOCHART=250;
+	
 	/**
 	 * Crea el panel.
 	 */
@@ -294,7 +307,7 @@ public class PanelEstadisticas extends JPanel {
 											getSelectedComponent()).getComponent(0)).getChart();
 									//Me aseguro de que el fichero se guarda como png, aunque el usuario no lo indique
 									File f = new File(jfc.getSelectedFile().getAbsolutePath()+".png");
-									ChartUtilities.saveChartAsPNG(f,chart, 450, 300);
+									ChartUtilities.saveChartAsPNG(f,chart,ANCHOCHART, ALTOCHART);
 								} catch (IOException e) {
 									JOptionPane.showMessageDialog(null,
 											b.getString("operror"), "Error",
@@ -524,6 +537,38 @@ public class PanelEstadisticas extends JPanel {
         panelInuExitoTotal.add(new ChartPanel(chart4),BorderLayout.CENTER);
         panelInuExitoTotal.revalidate();
         panelInuExitoTotal.repaint();
+     
+	}
+	
+	/** Obtiene el texto de las estadisticas que se estan mostrando.
+	 * @return Lista de cadenas de texto con las estadisticas mostradas. 
+	 */
+	public List<String> getTexto(){
+		List<String> texto = new ArrayList<String>();
+		texto.add(lblEjecucionestotales.getText());
+		texto.add(lblMediaCalidad.getText());
+		texto.add(lblUltimaej.getText());
+		texto.add(lblCalidadultima.getText());
+		texto.add(lblEjecsatis.getText());
+		texto.add(lblPctjesatis.getText());
+		texto.add(lblEjecinusables.getText());
+		texto.add(lblPctjeinusables.getText());
+		return texto;
+	}
+	
+	/** Obtiene los graficos correspondientes a las estadisticas mostradas.
+	 * @return Lista de imagenes de los graficos mostrados.
+	 */
+	public List<Image> getGraficos(){
+		List<Image> graficos = new ArrayList<Image>();
+		//Por cada pestaña en mi tabbedpane de graficos
+		for(int i=0;i<tabbedPaneGraficos.getComponentCount();i++){
+			//Obtengo el chart
+			JFreeChart chart =((ChartPanel)((JPanel)tabbedPaneGraficos.
+					getComponent(i)).getComponent(0)).getChart();
+			graficos.add(chart.createBufferedImage(ANCHOCHART, ALTOCHART));
+		}
+		return graficos;
 	}
 	
 }
