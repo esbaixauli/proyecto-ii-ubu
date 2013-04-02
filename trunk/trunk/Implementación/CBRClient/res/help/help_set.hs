@@ -5,7 +5,8 @@
  
 
 <helpset version="1.0">
-        <title>Ejemplo ayuda JavaHelp</title>
+  
+        <title>Ayuda CBR</title>
         <maps>
                 <!-- Pagina por defecto al mostrar la ayuda -->
                 <homeID>MainFrame</homeID>
@@ -23,7 +24,7 @@
 
   <view>
     <name>Indice</name>
-    <label>El indice</label>
+    <label>Indice</label>
     <type>javax.help.IndexView</type>
     <data>indice.xml</data>
   </view>

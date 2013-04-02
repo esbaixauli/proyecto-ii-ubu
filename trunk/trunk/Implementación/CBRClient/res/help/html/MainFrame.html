@@ -1,9 +1,36 @@
-<html>
+﻿<html>
 <head>
-	<title>Operaciones principales de la aplicaci�n</title>
+	<title>Acciones en la ventana principal</title>
 </head>
 <body>
-	<h1>Casos</h1>
-	<p></p>
+	<h1>Acciones en la ventana principal</h1>
+	<p>Esta ventana explica las principales funciones de la aplicación
+	 de forma general. Puede consultarse el apartado correspondiente a cada
+	 operación para una explicación más detallada.
+	<h2>Acciones de administrador</h3><br/><br/>
+	<img src="img/mainframe.jpg"/>
+	<h3>Gestionar Tipos de caso</h3>
+	<p>Un tipo de caso es un conjunto Problema-Solución del que se almacenarán
+     casos concretos. El botón de Gestionar Tipos permite definir, modificar 
+	 y borrar dichos Tipos de Caso, estableciendo de qué atributos se compone,
+	 como se evaluan por defecto y 
+	 como se permite realizar una consulta en dicho Tipo según las etapas CBR.</p>
+	 <h3>Gestionar Usuarios</h3>
+	<p>Esta ventana permite crear, modificar y borrar los distintos usuarios de la aplicación.</p>
+	<h2>Acciones de usuario</h2>
+	<h3>Ejecutar ciclo CBR</h3>
+	<p>Ejecutar un ciclo CBR (Razonamiento Basado en Casos) consiste en realizar una consulta para un Tipo
+	 de Caso concreto. Se pedirá al usuario los datos del problema y se le ofrecerá una solución, que
+	 podrá valorar de 0 a 100, hecho que se tendrá en cuenta en siguientes consultas. 
+	 <br/>La opción de ciclo CBR configurado está restringida a usuarios avanzados y permite, además,
+	 establecer la métrica (método de evaluación) de cada atributo, su peso a la hora de buscar una
+	 solución y las técnicas a emplear en cada fase del ciclo CBR.</p>
+	 <h3>Importar casos</h3>
+	 <p>La opción de Insertar Casos permite introducir casos para un determinado Tipo de Caso manualmente 
+	 o desde un fichero WEKA, para que la Base de Casos de ese Tipo sea más completa</p>
+	 <h3>Estadisticas</h3>
+	 <p>Completas estadísticas del uso de la aplicación por parte de los usuarios. Los usuarios corrientes
+	 únicamente pueden ver sus propias estadísticas, mientras que los administradores pueden ver estadísticas
+	 globales o filtrar según usuarios y Tipos de Caso</p>
 </body>
 </html>

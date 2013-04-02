@@ -2,19 +2,20 @@
 <toc version="1.0"> <!--  categoryclosedimage="FolderClosed" categoryopenimage="FolderOpened"  
 topicimage="ItemIco"-->
         <tocitem text="Help topics">
-		<tocitem text="Main window actions"    target="MainFrame"/>
-		<tocitem text="Choosing a case type"    target="ElegirTipoCasoFrame"/>
-		<tocitem text="Methods of a case type"    target="GestionTecnicasFrame"/>
-		<tocitem text="Case types"    target="GestionTiposFrame"/>
-		<tocitem text="Users"    target="GestionUsuariosFrame"/>
-		<tocitem text="Importing cases"    target="InsertarCasoFrame"/>
-		<tocitem text="Making a query"    target="IntroducirConsultaCBRFrame"/>
-		<tocitem text="Creating a new case type"    target="NuevoTipoFrame"/>
-		<tocitem text="Adding and modifying users"    target="VerCrearUsuarioFrame"/>
-		<tocitem text="Modifying case types"    target="VerTipoFrame"/>	
-		<tocitem text="Retrieval:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigFrame"/>	
-		<tocitem text="Retrieval:Filter Based (By predicates)"    target="FilterBasedConfigFrame"/>	
-		<tocitem text="Retrieval:K-NN (K nearest neighbors)"    target="NNConfigFrame"/>	
+			<tocitem text="Main window actions"    target="MainFrame"/>
+			<tocitem text="Choosing a case type"    target="ElegirTipoCasoFrame"/>
+			<tocitem text="Methods of a case type"    target="GestionTecnicasFrame">
+				<tocitem text="Retrieval:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigFrame"/>	
+				<tocitem text="Retrieval:Filter Based (By predicates)"    target="FilterBasedConfigFrame"/>	
+				<tocitem text="Retrieval:K-NN (K nearest neighbors)"    target="NNConfigFrame"/>	
+			</tocitem>
+			<tocitem text="Case types"    target="GestionTiposFrame"/>
+			<tocitem text="Users"    target="GestionUsuariosFrame"/>
+			<tocitem text="Importing cases"    target="InsertarCasoFrame"/>
+			<tocitem text="Making a query"    target="IntroducirConsultaCBRFrame"/>
+			<tocitem text="Creating a new case type"    target="NuevoTipoFrame"/>
+			<tocitem text="Adding and modifying users"    target="VerCrearUsuarioFrame"/>
+			<tocitem text="Modifying case types"    target="VerTipoFrame"/>	
         </tocitem>
 	
 </toc>

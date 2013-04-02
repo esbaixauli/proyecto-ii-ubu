@@ -1,10 +1,34 @@
-<html>
+﻿<html>
 <head>
-	<title>Importaci�n de casos</title>
+	<title>Importación de casos</title>
 </head>
 <body>
-	<h1>Importaci�n desde fichero</h1>
-	<p></p>
-	<h1>Importaci�n a mano</h1>
+	<h1>Importación de casos</h1>
+	<p>La aplicación permite importar casos de un tipo concreto, rellenando con ellos la base de casos.
+	 De este modo existirán datos suficientes para que los usuarios realicen consultas CBR y la base de casos
+	 se retroalimente con la información que estos le suministran.
+	</p>
+	<h2>Importación desde fichero</h2>
+	<p>Se permite la importación de ficheros WEKA en formato *.arff. (Consúltese 
+	<A HREF="http://www.cs.waikato.ac.nz/ml/weka/arff.html"> este enlace </A> para ver el formato de dichos ficheros).
+	 El fichero deberá contener una columna por cada campo del Tipo de Caso al que se está importando, cuyo nombre y
+	 tipo de dato coincidan con lo especificado en el Tipo de Caso. Asimismo, debe haber un atributo de nombre META_QUALITY 
+	 y tipo NUMERIC, que indica la medida de calidad del caso de 0 a 100. Con todo, un fichero *.arff válido debería tener el siguiente aspecto:<br/><br/>
+	<img src="img/arff.png"/><br/><br/>
+	 Para cargar el fichero, desde el panel de importar desde fichero, Pulse el botón "Abrir" y, con el fichero seleccionado 
+	 (Su ruta aparecerá en el cuadro de texto a su izquierda) pulse "Cargar desde Fichero".<br/><br/>
+	 <img src="img/cargarfichero.png"/><br/>
+	 Verá como los casos aparecen en la tabla inferior. Los atributos del problema aparecen en rojo,
+	 los de la solución en azul y la calidad en verde.<br/>
+	 Ahora, puede modificar, ordenar (pulsando la cabecera de cada columna) o buscar en la tabla
+	 (con el filtro que se muestra a continuación). Cuando haya terminado, puede pulsar el botón "Insertar casos" para completar la operación.<br/>
+	 <br/>
+	  <img src="img/filtrar.png"/><br/>
+	  Recuerde que el filtro acepta expresiones regulares básicas, según la convención corriente.
+	</p>
+
+	<h2>Importación a mano</h2>
+	</p>También se permite introducir manualmente un caso desde el panel inferior de Inserción manual. 
+	 Simplemente rellénese el formulario y pulse el botón "Inserción Manual". Recuerde que la calidad es un atributo de 0 a 100.<p>
 </body>
 </html>

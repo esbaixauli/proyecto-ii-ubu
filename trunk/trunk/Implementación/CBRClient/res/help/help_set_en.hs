@@ -5,6 +5,7 @@
  
 
 <helpset version="1.0">
+  
         <title>CBR help</title>
         <maps>
                 <!-- Pagina por defecto al mostrar la ayuda -->
