@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
+import javax.help.HelpSetException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -85,10 +86,7 @@ public class FrameEstandar extends JFrame {
 	
 
 	protected final void refrescar(){
-		try {
-
-			String executionPath = System.getProperty("user.dir");
-			
+		try {			
 			// Carga el fichero de ayuda
 			String helpse="res/help/help_set.hs";
 			if(Locale.getDefault().equals(Locale.ENGLISH))
@@ -101,12 +99,11 @@ public class FrameEstandar extends JFrame {
 			hb = helpset.createHelpBroker();
 			// Pone ayuda a item de menu al pulsarlo y a F1 en ventana
 			hb.enableHelpOnButton(mntmHelp,getClass().getSimpleName(), helpset);
-			//hb.enableHelp(mntmHelp, "aplicacion", helpset);
-			//hb.enableHelpKey(this.getContentPane(), getClass().getSimpleName(), helpset);
-
+		
+		} catch (IllegalArgumentException e) {
+			hb.enableHelpOnButton(mntmHelp, "MainFrame",helpset);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,
-					b.getString("helperror"), "Error",JOptionPane.ERROR_MESSAGE);
+			
 		}
 	}
 	

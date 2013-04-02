@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="jcommon-1.0.17.jar"/>
 	<classpathentry kind="lib" path="jfreechart-1.0.14.jar"/>
 	<classpathentry kind="lib" path="javahelp-2.0.02.jar"/>
+	<classpathentry kind="lib" path="itextpdf-5.4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
