@@ -15,7 +15,7 @@ PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN"
 		<mapID target="VerTipoFrame" url="html_en/VerTipoFrame.html"/>		
 		<mapID target="DiverseByMedianConfigFrame" url="html_en/DiverseByMedianConfigFrame.html"/>	
 		<mapID target="FilterBasedConfigFrame" url="html_en/FilterBasedConfigFrame.html"/>	
-		<mapID target="NNConfigFrame" url="html_en/NNConfigFrame.html"/>	
+		<mapID target="NNConfigFrame" url="html_en/NNConfigFrame.html"/>		
 </map>
 
 	

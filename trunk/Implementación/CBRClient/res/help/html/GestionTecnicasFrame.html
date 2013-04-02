@@ -1,9 +1,28 @@
-<html>
+﻿<html>
 <head>
-	<title>Ventana principal</title>
+	<title>Técnicas de un tipo de caso</title>
 </head>
 <body>
-	<h1>Ventana principal</h1>
-	<p></p>
+	<h1>Técnicas de un tipo de caso</h1>
+	<p>Las técnicas representan los diversos métodos que el CBR puede emplear para cada fase
+	 del ciclo CBR cuando un usuario realiza una consulta. Como mínimo siempre debe haber una técnica
+	 para cada fase (Que se convertirá en la Técnica por Defecto), pero el administrador puede marcar 
+	 cuáles pueden ser empleadas por los usuarios en un ciclo CBR configurado. Existe un tipo de técnica por
+	 fase del ciclo CBR;
+	<br/>Las técnicas de recuperación establecen la manera en que se obtienen los casos más similares
+	 al problema presentado en la consulta.
+	 <br/>Las técnicas de adaptación definen cómo los casos escogidos en la recuperación son recombinados
+	 en una solución al problema del usuario.
+	 <br/>Las técnicas de revisión establecen cómo se permite al usuario indicar la corrección de la solución
+	 propuesta y modificar dicha solución si es preciso.</p>
+	 <br/>Las técnicas de retención definen el modo en que la solución 
+	 revisada por el usuario es integrada en el sistema.<br/>
+	 Por cada tipo de técnica aparece un panel de este tipo:<br/>
+	 <img src="img/tecnica.jpg"/><br/>
+	 En las casillas de verificación de la izquierda de cada técnica se permite habilitar o deshabilitar dicha
+	 técnica, para permitir o impedir que un usuario avanzado la emplee. En algunas técnicas, además, se permite
+	 configurar ciertos parámetros necesarios para su funcionamiento.
+	 Por otro lado, el desplegable
+	 permite seleccionar qué técnica se usará por defecto en cada etapa.
 </body>
 </html>
