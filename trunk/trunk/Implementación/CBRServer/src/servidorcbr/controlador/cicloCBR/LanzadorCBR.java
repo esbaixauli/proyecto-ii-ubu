@@ -135,6 +135,7 @@ public class LanzadorCBR implements StandardCBRApplication {
 			if (!fs.exists(outFile)) {
 				fs.mkdirs(outFile);
 			}
+			outFile = new Path(outFile, tc.getNombre()+".tc");
 			FSDataOutputStream outfs = fs.create(outFile, true);
 			ObjectOutputStream oos = new ObjectOutputStream(outfs);
 			oos.writeObject(tc);
