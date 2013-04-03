@@ -37,28 +37,26 @@ public class ReducerRetrieval
 			Context context) {
 		// Convierte los values a objetos del problema y se los manda a ejecutar
 		Collection<CBRCase> casos = new ArrayList<CBRCase>();
-		BufferedWriter out = null;
 		TipoCaso tc = cargarTipoCaso(context.getConfiguration().get("tipocaso"));
+		/*BufferedWriter out = null;
 		try {
 			out = new BufferedWriter(new FileWriter("log.txt", false));
 			out.write("--> Inicio Reducer\n");
 			out.write("--> Tipo de caso: "+tc.getNombre()+"\n");
 		} catch (IOException e1) {
 			e1.printStackTrace();
-		}
+		}*/
 		try {
 			for (Result row : values) {
-				out.write(row.toString()+"\n");
+				//out.write(row.toString()+"\n");
 				CBRCase caso;
-				//caso = obtenerCaso(tc, row, context);
-				//casos.add(caso);
+				caso = obtenerCaso(tc, row, context);
+				casos.add(caso);
 			}
-			out.write("<-- Fin Reducer\n");
+			/*out.write("<-- Fin Reducer\n");
 			out.flush();
-			out.close();
-		//} catch (ClassNotFoundException e) {
-		//	e.printStackTrace();
-		} catch (IOException e) {
+			out.close();*/
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		//Cargar desde serialización el objeto CBRQuery
@@ -80,6 +78,17 @@ public class ReducerRetrieval
 		// parsear la row y convertir cada cosa en su formato (Hace falta que
 		// venga el nombre de cada atbo)
 		// TODO
+		BufferedWriter out = null;
+		try {
+			out = new BufferedWriter(new FileWriter("log.txt", false));
+			out.write("--> Inicio Reducer\n");
+			out.write("Clase leída: "+cdesc.getCanonicalName()+"\n");
+			out.write("Clase leída: "+csolution.getCanonicalName()+"\n");
+			out.flush();
+			out.close();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		return null;
 	}
 
@@ -104,7 +113,7 @@ public class ReducerRetrieval
 
 	private Collection<CBRCase> ejecutarRetrieval(Collection<CBRCase> casos,
 			CBRQuery query, Context c) throws ClassNotFoundException {
-		// cargar tipo de caso (serializable)
+		// cargar tipo de caso (serializado en un fichero en hdfs)
 		TipoCaso tc = cargarTipoCaso(c.getConfiguration().get("caso"));
 		EjecutorTecnicaRetrieval ejecutor = null;
 		switch (tc.getDefaultRec().getNombre()) {

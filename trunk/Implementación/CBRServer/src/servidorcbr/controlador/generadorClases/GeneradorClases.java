@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import jcolibri.cbrcore.Attribute;
 import jcolibri.cbrcore.CaseComponent;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -104,17 +109,21 @@ public class GeneradorClases {
 		cw.visitEnd();
 		byte[] clase = cw.toByteArray();
 		// Genero el fichero
+		Configuration conf = new Configuration();
+		conf.addResource(new Path("/etc/hadoop/core-site.xml"));
+	    conf.addResource(new Path("/etc/hadoop/hdfs-site.xml"));
 		try {
-			File folder = new File("generadas/");
-			/*if (!folder.exists())
-				folder.mkdir();*/
-			
-			FileOutputStream f = new FileOutputStream("generadas/" + nombre
-					+ ".class");
-			System.out.println("generando...");
-			f.write(clase);
-			System.out.println("Clase generada en "+folder.getCanonicalPath());
-			f.close();
+			FileSystem fs = FileSystem.get(conf);
+			Path outFile = new Path("/classes/generadas/");
+			if (!fs.exists(outFile)) {
+				fs.mkdirs(outFile);
+			}
+			outFile = new Path(outFile, nombre+".class");
+			FSDataOutputStream outfs = fs.create(outFile, true);
+			outfs.write(clase);
+			outfs.flush();
+			outfs.close();
+			DistributedCache.addFileToClassPath(new Path("/classes/"), conf, fs);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -171,53 +180,6 @@ public class GeneradorClases {
 		mv.visitInsn(Opcodes.RETURN);
 		mv.visitMaxs(2, 2);
 		mv.visitEnd();
-	}
-	//EJEMPLO
-	public static void main(String[] args) {
-		//Contiene un Hashmap tipo:lista de parametros de ese tipo
-		HashMap<String, ArrayList<String>> h = new HashMap<String, ArrayList<String>>();
-		//lista de parametros "String"
-		ArrayList<String> cadenas = new ArrayList<String>();
-		cadenas.add("atbo1");
-		cadenas.add("atbo2");
-		h.put("String", cadenas);
-		//lista de parametros "Integer"
-		ArrayList<String> enteros = new ArrayList<String>();
-		enteros.add("miid");
-		h.put("Integer", enteros);
-		
-		String nombreClase = "Prueba";
-		//Creo la clase. Sus atbos son atbo1,atbo2 (strings) y miid (integer)
-		GeneradorClases.crearClase(h, nombreClase);
-		try {
-			URL[] url = { new URL("file:C:/Users/Ruben/workspace/CBRServer/") };
-			URLClassLoader classLoader = new URLClassLoader(url);
-			Class<?> clase = classLoader.loadClass("generadas."
-					+ nombreClase);
-			CaseComponent c = (CaseComponent) clase.newInstance();
-			
-			//Obtengo un Integer "miid" que declare al principio.
-			clase.getDeclaredMethod("setMiid", Integer.class).invoke(c,
-					new Integer(5));
-			//Establezco que a partir de dicho "miid" (Integer) se ha de crear un atributo
-			//de tipo Attribute que contenga dicho integer.
-			clase.getDeclaredMethod("setIdAttribute", jcolibri.cbrcore.Attribute.class).invoke(c,
-					new Attribute("miid", c.getClass()));
-			//Compruebo que el attribute es dicho "miid"
-			System.out.println("El id es de tipo "+ c.getIdAttribute().getType()+" y su nombre"
-					+" es "+ c.getIdAttribute().getName());
-
-			clase.getDeclaredMethod("setAtbo1", String.class).invoke(c,
-					"Correcto");
-
-			
-			Method m = clase.getDeclaredMethod("getAtbo1", null);
-			System.out.println("El resultado del get es:" + m.invoke(c, null));
-			System.out.println("La clase invocada es:" + clase.getSimpleName());
-			classLoader.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }
