@@ -118,7 +118,7 @@ public class GestionTiposFrame extends FrameEstandar{
 					return;
 				}
 			 int opcion= JOptionPane.showConfirmDialog(null, 
-						b.getString("userdelsure"),b.getString("delsure"),JOptionPane.YES_NO_OPTION);
+						b.getString("delsure"),b.getString("delsure"),JOptionPane.YES_NO_OPTION);
 			 if(opcion==0){
 				try {
 					if(ControlTipos.borrarTiposCaso(list.getSelectedValue())){
