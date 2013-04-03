@@ -1,24 +1,30 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import vista.componentes.FrameEstandar;
-import javax.swing.JToolBar;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.BoxLayout;
 import javax.swing.border.EtchedBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.JSeparator;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.factories.FormFactory;
 
 @SuppressWarnings("serial")
 public class AcercaDeJFrame extends JFrame {
@@ -38,7 +44,7 @@ public class AcercaDeJFrame extends JFrame {
 		setMenuBar(null);
 		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 675, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -94,6 +100,63 @@ public class AcercaDeJFrame extends JFrame {
 			}
 		});
 		panel_1.add(btnJtattoo);
+		
+		JButton btnitext = new JButton(new ImageIcon("res/itext_64.png"));
+		btnitext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				navegarEnlace("http://itextpdf.com/");
+			}
+		});
+		panel_1.add(btnitext);
+		
+		JButton btnOxygen = new JButton(new ImageIcon("res/oxygen_64.png"));
+		btnOxygen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				navegarEnlace("http://www.oxygen-icons.org/");
+			}
+		});
+		panel_1.add(btnOxygen);
+		
+		JPanel panel_2 = new JPanel();
+		contentPane.add(panel_2, BorderLayout.CENTER);
+		panel_2.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("1px"),
+				ColumnSpec.decode("12px"),
+				ColumnSpec.decode("499px"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,},
+			new RowSpec[] {
+				RowSpec.decode("1px"),
+				RowSpec.decode("66px"),
+				RowSpec.decode("14px"),
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("14px"),
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("14px"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("14px"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
+		
+		JSeparator separator = new JSeparator();
+		panel_2.add(separator, "1, 1, center, center");
+		
+		JLabel lblUniversidadDeBurgos = new JLabel(b.getString("ubu"));
+		panel_2.add(lblUniversidadDeBurgos, "3, 3, center, center");
+		
+		JSeparator separator_1 = new JSeparator();
+		panel_2.add(separator_1, "1, 1, center, center");
+		
+		JLabel label = new JLabel("2012-2013");
+		panel_2.add(label, "3, 5, center, center");
+		
+		JLabel lblAutores = new JLabel(b.getString("authors")+": Rubén Antón García, Enrique Sainz Baixauli");
+		panel_2.add(lblAutores, "3, 7, center, center");
+		
+		JLabel lblTutores = new JLabel(b.getString("tutors")+": Álvaro Herrero, Belén Vaquerizo");
+		panel_2.add(lblTutores, "3, 9, center, center");
 
 		cierreVentana();
 	}
