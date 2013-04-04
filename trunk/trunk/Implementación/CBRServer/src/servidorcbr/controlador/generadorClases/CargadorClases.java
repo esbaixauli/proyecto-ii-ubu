@@ -1,6 +1,9 @@
 package servidorcbr.controlador.generadorClases;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -8,7 +11,11 @@ import java.net.URLClassLoader;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+
+import servidorcbr.modelo.TipoCaso;
 
 public class CargadorClases {
 
@@ -28,21 +35,30 @@ public class CargadorClases {
 		} catch (MalformedURLException e){
 			e.printStackTrace();
 		}*/
-		/*Configuration conf = new Configuration();
+		Configuration conf = new Configuration();
 		conf.addResource(new Path("/etc/hadoop/core-site.xml"));
 	    conf.addResource(new Path("/etc/hadoop/hdfs-site.xml"));
-	    URI[] url = DistributedCache.getCacheFiles(conf);
-		URIClassLoader classLoader = new URLClassLoader(url);*/
-		ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-		
-		Class<?> clase = classLoader.loadClass("generadas."+ nombre+tipo);
-		
-		/*try {
-			classLoader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-		return clase;
+	    Object clase = null;
+	    try {
+	    	FileSystem fs = FileSystem.get(conf);
+	    	Path inFile = new Path("/classes/generadas/"+nombre+tipo+".cl");
+	    	FSDataInputStream in = fs.open(inFile);
+	    	ObjectInputStream ois = new ObjectInputStream(in);
+	    	clase = ois.readObject();
+	    	ois.close();
+	    	in.close();
+	    } catch (IOException ex) {
+	    	ex.printStackTrace();
+	    }
+	    
+		return (Class<?>) clase;
 	}
+	
+	private byte[] serialize(Object obj) throws IOException {
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        ObjectOutputStream o = new ObjectOutputStream(b);
+        o.writeObject(obj);
+        return b.toByteArray();
+    }
 	
 }
