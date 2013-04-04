@@ -1,8 +1,12 @@
 package servidorcbr.controlador.generadorClases;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;
@@ -80,27 +84,7 @@ public class GeneradorClases {
 				actuales = at.get(tipo);
 				String descriptor;
 				for (String atbo : actuales) {
-					// Descriptor del tipo de atributo
-					descriptor = getDescriptor(tipo);
-					// Visitante para los m�todos, permite definir su c�digo.
-					MethodVisitor mv;
-					// Modificadores de acceso, nombre, descriptor del tipo,
-					// genericidad, modificador final
-					cw.visitField(Opcodes.ACC_PUBLIC, atbo, descriptor, null,
-							null);
-					// Modificadores de acceso, nombre, firma,genericidad,
-					// excepciones
-					mv = cw.visitMethod(Opcodes.ACC_PUBLIC,
-							"get" + Character.toUpperCase(atbo.charAt(0))
-									+ atbo.substring(1), "()" + descriptor,
-							null, null);
-					crearGetter(mv, nombre, atbo, descriptor);
-					mv = cw.visitMethod(Opcodes.ACC_PUBLIC,
-							"set" + Character.toUpperCase(atbo.charAt(0))
-									+ atbo.substring(1), "(" + descriptor
-									+ ")V", null, null);
-					crearSetter(mv, nombre, atbo, descriptor);
-
+					crearAtbo(nombre, cw, tipo, atbo);
 				}
 			}
 		}
@@ -108,27 +92,82 @@ public class GeneradorClases {
 		// Termino de generar la clase
 		cw.visitEnd();
 		byte[] clase = cw.toByteArray();
+		
 		// Genero el fichero
 		Configuration conf = new Configuration();
 		conf.addResource(new Path("/etc/hadoop/core-site.xml"));
 	    conf.addResource(new Path("/etc/hadoop/hdfs-site.xml"));
 		try {
-			FileSystem fs = FileSystem.get(conf);
-			Path outFile = new Path("/classes/generadas/");
-			if (!fs.exists(outFile)) {
-				fs.mkdirs(outFile);
-			}
-			outFile = new Path(outFile, nombre+".class");
-			FSDataOutputStream outfs = fs.create(outFile, true);
-			outfs.write(clase);
-			outfs.flush();
-			outfs.close();
-			DistributedCache.addFileToClassPath(new Path("/classes/"), conf, fs);
-		} catch (Exception e) {
+			Class<?> claseClass = crearClass(nombre, clase);
+			escribirClassHDFS(nombre, conf, claseClass);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
+	}
+
+	private static void escribirClassHDFS(String nombre, Configuration conf,
+			Class<?> claseClass) throws IOException {
+		FileSystem fs = FileSystem.get(conf);
+		Path p = new Path("/classes/generadas/");
+		if (!fs.exists(p)) {
+			fs.mkdirs(p);
+		}
+		p = new Path(p, nombre+".cl");
+		FSDataOutputStream out = fs.create(p, true);
+		ObjectOutputStream oos = new ObjectOutputStream(out);
+		oos.writeObject(claseClass);
+		oos.flush();
+		oos.close();
+		out.close();
+	}
+
+	private static Class<?> crearClass(String nombre, byte[] clase)
+			throws IOException, ClassNotFoundException {
+		File folder = new File("classes/generadas/");
+		if (!folder.exists())
+			folder.mkdir();
+		
+		FileOutputStream f = new FileOutputStream(folder.getCanonicalPath()+"/"+nombre+ ".class");
+		f.write(clase);
+		f.close();
+		
+		String path = "file:"+folder.getAbsoluteFile().getParent()+"/";
+		URL[] url = { new URL(path) };
+		URLClassLoader classLoader = new URLClassLoader(url, Thread.currentThread().getContextClassLoader());
+		Class<?> claseClass = classLoader.loadClass("generadas."
+				+ nombre);
+		classLoader.close();
+		return claseClass;
+	}
+
+	private static void crearAtbo(String nombre, ClassWriter cw, String tipo,
+			String atbo) {
+		String descriptor;
+		// Descriptor del tipo de atributo
+		descriptor = getDescriptor(tipo);
+		// Visitante para los m�todos, permite definir su c�digo.
+		MethodVisitor mv;
+		// Modificadores de acceso, nombre, descriptor del tipo,
+		// genericidad, modificador final
+		cw.visitField(Opcodes.ACC_PUBLIC, atbo, descriptor, null,
+				null);
+		// Modificadores de acceso, nombre, firma,genericidad,
+		// excepciones
+		mv = cw.visitMethod(Opcodes.ACC_PUBLIC,
+				"get" + Character.toUpperCase(atbo.charAt(0))
+						+ atbo.substring(1), "()" + descriptor,
+				null, null);
+		crearGetter(mv, nombre, atbo, descriptor);
+		mv = cw.visitMethod(Opcodes.ACC_PUBLIC,
+				"set" + Character.toUpperCase(atbo.charAt(0))
+						+ atbo.substring(1), "(" + descriptor
+						+ ")V", null, null);
+		crearSetter(mv, nombre, atbo, descriptor);
 	}
 
 	// Implementa atbos y m�todos para el interfaz CaseComponent
@@ -181,5 +220,5 @@ public class GeneradorClases {
 		mv.visitMaxs(2, 2);
 		mv.visitEnd();
 	}
-
+	
 }
