@@ -98,31 +98,24 @@ public class GeneradorClases {
 		conf.addResource(new Path("/etc/hadoop/core-site.xml"));
 	    conf.addResource(new Path("/etc/hadoop/hdfs-site.xml"));
 		try {
-			Class<?> claseClass = crearClass(nombre, clase);
-			escribirClassHDFS(nombre, conf, claseClass);
+			escribirClaseHDFS(nombre, clase, conf);
 		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return false;
 		}
 		return true;
 	}
 
-	private static void escribirClassHDFS(String nombre, Configuration conf,
-			Class<?> claseClass) throws IOException {
+	private static void escribirClaseHDFS(String nombre, byte[] clase,
+			Configuration conf) throws IOException {
 		FileSystem fs = FileSystem.get(conf);
 		Path p = new Path("/classes/generadas/");
 		if (!fs.exists(p)) {
 			fs.mkdirs(p);
 		}
-		p = new Path(p, nombre+".cl");
+		p = new Path(p, nombre+".class");
 		FSDataOutputStream out = fs.create(p, true);
-		ObjectOutputStream oos = new ObjectOutputStream(out);
-		oos.writeObject(claseClass);
-		oos.flush();
-		oos.close();
+		out.write(clase);
 		out.close();
 	}
 

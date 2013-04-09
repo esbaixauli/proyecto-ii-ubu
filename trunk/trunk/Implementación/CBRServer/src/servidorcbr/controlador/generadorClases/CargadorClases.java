@@ -29,36 +29,29 @@ public class CargadorClases {
 	}
 	
 	private static Class<?> cargarClase(String nombre,String tipo) throws ClassNotFoundException{
-		/*URL[] url = new URL[1];
-		try {
-			url[0]= new URL("hdfs://127.0.0.1:8020/"); //RUTA EN LA QUE SE BUSCA
-		} catch (MalformedURLException e){
-			e.printStackTrace();
-		}*/
 		Configuration conf = new Configuration();
+		Class<?> clase = null;
 		conf.addResource(new Path("/etc/hadoop/core-site.xml"));
 	    conf.addResource(new Path("/etc/hadoop/hdfs-site.xml"));
-	    Object clase = null;
+	    String folder = conf.get("cbr.class.dir");
 	    try {
 	    	FileSystem fs = FileSystem.get(conf);
-	    	Path inFile = new Path("/classes/generadas/"+nombre+tipo+".cl");
-	    	FSDataInputStream in = fs.open(inFile);
-	    	ObjectInputStream ois = new ObjectInputStream(in);
-	    	clase = ois.readObject();
-	    	ois.close();
-	    	in.close();
+	    	Path inFile = new Path("/classes/generadas/"+nombre+tipo+".class");
+	    	Path outFile = new Path(folder+"/generadas/"+nombre+tipo+".class");
+	    	fs.copyToLocalFile(inFile, outFile);
+	    	URL[] url = new URL[1];
+	    	url[0]= new URL("file:"+folder+"/");
+	    	URLClassLoader cLoader = URLClassLoader.newInstance(url);
+	    	
+	    	jcolibri.cbrcore.CaseComponent cc = new jcolibri.test.test8.TravelDescription();
+	    	System.out.println("CaseComponent::TravelDescription: "+cc.toString());
+	    	cLoader.loadClass("jcolibri.cbrcore.CaseComponent");
+	    	
+	    	clase = cLoader.loadClass("generadas."+nombre+tipo);
 	    } catch (IOException ex) {
 	    	ex.printStackTrace();
 	    }
-	    
-		return (Class<?>) clase;
+		return clase;
 	}
-	
-	private byte[] serialize(Object obj) throws IOException {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        ObjectOutputStream o = new ObjectOutputStream(b);
-        o.writeObject(obj);
-        return b.toByteArray();
-    }
-	
+
 }
