@@ -3,6 +3,7 @@
 PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN"
 "http://java.sun.com/products/javahelp/map_2_0.dtd">
 <map version="1.0">
+		<mapID target="ConceptosBasicos" url="html/ConceptosBasicos.html"/>	
 		<mapID target="MainFrame" url="html/MainFrame.html"/>
 		<mapID target="ElegirTipoCasoFrame" url="html/ElegirTipoCasoFrame.html"/>
 		<mapID target="GestionTecnicasFrame" url="html/GestionTecnicasFrame.html"/>
@@ -15,7 +16,8 @@ PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN"
 		<mapID target="VerTipoFrame" url="html/VerTipoFrame.html"/>		
 		<mapID target="DiverseByMedianConfigFrame" url="html/DiverseByMedianConfigFrame.html"/>	
 		<mapID target="FilterBasedConfigFrame" url="html/FilterBasedConfigFrame.html"/>	
-		<mapID target="NNConfigFrame" url="html/NNConfigFrame.html"/>	
+		<mapID target="NNConfigFrame" url="html/NNConfigFrame.html"/>
+		<mapID target="NumOrCopyConfigFrame" url="html/NumOrCopyConfigFrame.html"/>
 </map>
 
 	

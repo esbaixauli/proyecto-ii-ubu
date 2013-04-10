@@ -3,7 +3,23 @@
 	<title>Recuperación: K-NN</title>
 </head>
 <body>
-	<h1>Bases teóricas de la técnica</h1>
-	<p></p>
+	<h1>Recuperación K-NN</h1>
+	<p>En este tipo de recuperación se escogen los N-Vecinos más cercanos a la consulta suministrada por el usuario. Esto es, para cada caso almacenado en
+	 el programa se mide la distancia parcial de cada uno de sus atributos (Da) respecto a su equivalente en la consulta (según la métrica del atributo). 
+	 Entonces, en cada caso se suman estos resultados (Da1 + Da2+ ... DaN, donde N es el número de atributos del tipo de caso.), obteniéndose
+	 una Puntuación del Caso (Pc), de dicho caso con la consulta.
+	 Finalmente, se obtienen los K (valor especificado en la configuración de la técnica) Casos que hayan obtenido <b>mejor</b> Pc.</p>
+	 <h1>Ejemplo de recuperación K-NN</h1>
+	 <p> Tenemos definido en el programa un tipo de caso cuyos atributos del problema son A(número),B(número),C(texto) y cuya solución es D(texto).
+	 Los atributos numéricos tienen definida como su métrica <A HREF="ConceptosBasicos.html">(Ver apartado sobre conceptos básicos, sección Métricas)</p>
+	 'Igualdad', y el atributo C tiene definida como su métrica 'Subcadena más larga'.
+	 Para él, existen 2 casos almacenados:<br/>
+	 <b>Caso x:</b>Problema:[2,2,'test'] Solución:['solución X'] <br/>
+	 <b>Caso y:</b>Problema:[3,5,'testear'] Solución:['solución Y']<br/>
+	 Entonces, para la consulta del usuario: [3,2,'testear'], si pedimos una recuperación K-NN <b>con parámetro 1</b>:<br/>
+	 Puntuación del caso x: 0+1+(4/7) = 11/7<br/>
+	 Puntuación del caso y: 1+0+(7/7) = 14/7<br/>
+	 Por tanto, se escogerá como caso más similar el caso y, que tiene mejor puntuación, y la solución mostrada será 'Solución Y'.
+	 </p>
 </body>
 </html>

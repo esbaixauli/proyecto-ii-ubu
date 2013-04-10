@@ -150,6 +150,13 @@ public class Recursos extends ListResourceBundle {
 		{"searchfilter","Filter:"},
 		{"filtererror","Can't filter by the selected text string. The search contains"+
 		" invalid characters of metacharacters incorrectly used."},
-		{"helperror","Error while locating help. The requested help page is not available."}
+		{"helperror","Error while locating help. The requested help page is not available."},
+		
+		{"ubu","Burgos University. Computer Engineering. Computer systems"},
+		{"authors","Authors"},
+		{"tutors","Tutors"},
+		
+		{"source","Source"},
+		{"destination","Destination"}
 	};
 }

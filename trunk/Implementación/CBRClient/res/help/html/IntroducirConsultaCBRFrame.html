@@ -1,9 +1,33 @@
-<html>
+﻿<html>
 <head>
 	<title>Introducir una consulta</title>
 </head>
 <body>
-	<h1>Consultas configuradas y b�sicas</h1>
-	<p></p>
+	<h1>Introducir una consulta CBR</h1>
+	<h2>Consultas configuradas y básicas</h2>
+	<p>Los <b>usuarios básicos</b> únicamente pueden realizar consultas básicas. En este tipo de consultas
+	 únicamente se permite introducir los datos del problema para obtener una solución. Los <b>usuarios avanzados</b> pueden realizar
+	 consultas configuradas. En ellas se puede introducir, ademas de los datos del problema, de qué forma (métrica) y con que peso (grado de importancia)
+	 se considerará cada atributo, así como la técnica que se empleará en cada paso del ciclo CBR.</p>
+	<h2>Introducir una consulta básica</h2>
+	 <img src="img/consultabasica.jpg"/><br/>
+	<p>Para realizar una consulta básica, simplemente introduzca los datos del problema.
+	 Al lado del nombre de cada atributo aparece el tipo de datos al que pertenece.
+	 Si intenta introducir un valor que no se corresponde al tipo se le informará de esto. Para realizar la consulta, pulse el botón 
+	 <b>Ejecutar Ciclo</b> si desea ejecutar el ciclo completo de una vez o el botón <b>Paso a paso</b> si quiere ver los resultados intermedios
+	 de cada etapa del ciclo.</p>
+	 <h2>Introducir una consulta configurada</h2>
+	  <img src="img/consultaconfigurada.jpg"/><br/>
+	 <h3>Configurar los datos del problema<h3>
+	 <p>En una consulta configurada le aparecerá al lado de cada atributo su peso (Importancia relativa respecto al resto de atributos) y su
+	  métrica (Forma en que se comparará el atributo). Estos pueden ser modificados por el usuario alterando los valores del campo de texto
+	  y el desplegable correspondientes.
+	 </p>
+	 <h3>Configurar las técnicas<h3>
+	 <p>Se le permite escoger qué técnica empleará en cada etapa del ciclo CBR entre varias (determinadas por su administrador).
+	  Para escoger emplear una técnica en concreto, selecciónela en su desplegable correspondiente. Si desea una técnica no disponible para este problema,
+	  contacte con su administrador para que la habilite.</p>
+	  <p>Una vez escogida su técnica, configúrela pulsando el botón "Configurar". Para más información sobre cada técnica concreta y cómo configurarla,
+	   consulte la página correspondiente a ella en esta ayuda.</p>
 </body>
 </html>

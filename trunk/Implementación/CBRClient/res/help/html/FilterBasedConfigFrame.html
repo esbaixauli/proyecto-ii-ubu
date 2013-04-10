@@ -1,9 +1,25 @@
 <html>
 <head>
-	<title>Ventana principal</title>
+	<title>Recuperación: Filter-Based</title>
 </head>
 <body>
-	<h1>Ventana principal</h1>
-	<p></p>
+	<h1>Recuperación: Filter-Based</h1>
+	<p>En la recuperación basada en filtros, para cada atributo del problema se establece una condición lógica que debe satisfacer respecto a la consulta del usuario.
+	 Entonces, se seleccionan todos los casos que coinciden con todos los filtros, si existe alguno.</p>
+	 <h1>Ejemplo: Recuperación Filter-Based</h1>
+	 <p>
+	 Tenemos definido en el programa un tipo de caso cuyos atributos del problema son A(número),B(número),C(texto) y cuya solución es D(texto).
+	 Para él, existen 3 casos almacenados:<br/>
+	 <b>Caso x:</b>Problema:[2,2,'test'] Solución:['solución X'] <br/>
+	 <b>Caso y:</b>Problema:[3,5,'testear'] Solución:['solución Y']<br/>
+	 <b>Caso z:</b>Problema:[3,7,'test'] Solución:['solución Z']<br/>
+	 Entonces, para la consulta del usuario: [3,2,'testear'], pedimos una recuperación Filter-Based con los siguientes filtros:
+	 Para el atributo A, igualdad con el atributo correspondiente en la consulta del usuario (3)<br/>
+	 Para el atributo B, superioridad con el atributo correspondiente en la consulta del usuario (5) <br/>
+	 Para el atributo C, desigualdad con el atributo correspondiente en la consulta del usuario ('testear')<br/> 
+	 Entonces, el caso x es descartado por no cumplir la condición de igualdad en el atributo A (2!=3). El caso y es descartado por
+	 no cumplir la condición de desigualdad en el atributo C ('testear'='testear'). El único caso que cumple todos los predicados es el caso z, que será,
+	 junto con su solución ('solución Z') el resultado de la búsqueda.
+	 </p>
 </body>
 </html>
