@@ -36,7 +36,7 @@ public class ElegirTipoCasoFrame extends FrameEstandar {
 
 	
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public ElegirTipoCasoFrame(Usuario u, JFrame padre, final int tipo) {
 		//Establezco referencias al padre y a la propia ventana

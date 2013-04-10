@@ -22,6 +22,7 @@ import servidorcbr.modelo.TipoCaso;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
 import vista.configtecnicas.FilterBasedConfigFrame;
 import vista.configtecnicas.NNConfigFrame;
+import vista.configtecnicas.NumOrCopyConfigFrame;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -170,6 +171,25 @@ public class PanelTecnica extends JPanel {
 				}
 			});
 			break;
+		case "DirectAttributeCopyMethod":
+			b.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFrame f = new NumOrCopyConfigFrame(true,t,tc, padre);
+					f.setVisible(true);
+					padre.setEnabled(false);
+				}
+			});
+			break;
+		case "NumericDirectProportionMethod":
+			b.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFrame f = new NumOrCopyConfigFrame(false,t,tc, padre);
+					f.setVisible(true);
+					padre.setEnabled(false);
+				}
+			});
+			break;	
+			
 		default:
 			b.setEnabled(false);
 		}
