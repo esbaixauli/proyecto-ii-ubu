@@ -17,7 +17,9 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.IdentityTableMapper;
+import org.apache.hadoop.hbase.mapreduce.TableInputFormat;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
+import org.apache.hadoop.hbase.mapreduce.TableOutputFormat;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
@@ -83,7 +85,7 @@ public class LanzadorCBR implements StandardCBRApplication {
 		job.setReducerClass(ReducerRetrieval.class);
 		// here you have to set the jar which is containing your 
 		// map/reduce class, so you can use the mapper class
-		job.setJarByClass(IdentityTableMapper.class);
+		job.setJarByClass(ReducerRetrieval.class);
 		
 		Scan scan = new Scan();
 		scan.setCaching(500);        // 1 is the default in Scan, which will be bad for MapReduce jobs

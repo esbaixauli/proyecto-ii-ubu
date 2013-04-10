@@ -17,6 +17,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -26,6 +27,7 @@ import servidorcbr.controlador.cicloCBR.ejecucion.EjecutorFilterBased;
 import servidorcbr.controlador.cicloCBR.ejecucion.EjecutorKNN;
 import servidorcbr.controlador.cicloCBR.ejecucion.EjecutorTecnicaRetrieval;
 import servidorcbr.controlador.generadorClases.CargadorClases;
+import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 
 public class ReducerRetrieval
@@ -38,24 +40,14 @@ public class ReducerRetrieval
 		// Convierte los values a objetos del problema y se los manda a ejecutar
 		Collection<CBRCase> casos = new ArrayList<CBRCase>();
 		TipoCaso tc = cargarTipoCaso(context.getConfiguration().get("tipocaso"));
-		/*BufferedWriter out = null;
 		try {
-			out = new BufferedWriter(new FileWriter("log.txt", false));
-			out.write("--> Inicio Reducer\n");
-			out.write("--> Tipo de caso: "+tc.getNombre()+"\n");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}*/
-		try {
+			Class<? extends CaseComponent> cdesc = CargadorClases.cargarClaseProblema(tc.getNombre());
+			Class<? extends CaseComponent> csolution = CargadorClases.cargarClaseSolucion(tc.getNombre());
 			for (Result row : values) {
-				//out.write(row.toString()+"\n");
 				CBRCase caso;
-				caso = obtenerCaso(tc, row, context);
+				caso = obtenerCaso(tc, row, cdesc, csolution);
 				casos.add(caso);
 			}
-			/*out.write("<-- Fin Reducer\n");
-			out.flush();
-			out.close();*/
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -63,32 +55,26 @@ public class ReducerRetrieval
 		// ejecutarRetrieval(casos, query, context);TODO
 	}
 
-	private CBRCase obtenerCaso(TipoCaso tc, Result row, Context context)
+	private CBRCase obtenerCaso(TipoCaso tc, Result row, Class<? extends CaseComponent> cdesc, Class<? extends CaseComponent> csol)
 			throws ClassNotFoundException {
-		Class<?> cdesc = CargadorClases.cargarClaseProblema(tc.getNombre());
-		Class<?> csolution = CargadorClases.cargarClaseSolucion(tc.getNombre());
 		try {
-			CaseComponent desc = (CaseComponent) cdesc.newInstance();
-			CaseComponent solution = (CaseComponent) csolution.newInstance();
+			CaseComponent desc = cdesc.newInstance();
+			CaseComponent solution = csol.newInstance();
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		// parsear la row y convertir cada cosa en su formato (Hace falta que
-		// venga el nombre de cada atbo)
-		// TODO
-		BufferedWriter out = null;
-		try {
-			out = new BufferedWriter(new FileWriter("log.txt", false));
-			out.write("--> Inicio Reducer\n");
-			out.write("Clase leída: "+cdesc.getCanonicalName()+"\n");
-			out.write("Clase leída: "+csolution.getCanonicalName()+"\n");
-			out.flush();
-			out.close();
-		} catch (IOException e1) {
-			e1.printStackTrace();
+		for (Atributo atb : tc.getAtbos().values()) {
+			byte[] val = null;
+			if (atb.getEsProblema()) {
+				val = row.getValue(Bytes.toBytes("problema"), Bytes.toBytes(atb.getNombre()));
+				//TODO: rellena el atributo haciendo un set a desc
+			} else {
+				val = row.getValue(Bytes.toBytes("solucion"), Bytes.toBytes(atb.getNombre()));
+			}
 		}
+		// TODO: convierte los dos casecomponent en un CBRCase
 		return null;
 	}
 
@@ -118,6 +104,20 @@ public class ReducerRetrieval
 		EjecutorTecnicaRetrieval ejecutor = null;
 		switch (tc.getDefaultRec().getNombre()) {
 		case "DiverseByMedianRetrieval":
+			ejecutor = new EjecutorDiverseByMedian(tc);
+			break;
+		case "NNretrieval":
+			ejecutor = new EjecutorKNN(tc);
+			break;
+		case "FilterBasedRetrieval":
+			ejecutor = new EjecutorFilterBased(tc);
+			break;
+		}
+		return ejecutor.ejecutar(casos, query);
+	}
+
+}
+erseByMedianRetrieval":
 			ejecutor = new EjecutorDiverseByMedian(tc);
 			break;
 		case "NNretrieval":
