@@ -41,11 +41,12 @@
 		 80º,120 dBA,'bajo' -> Rotura de motor, 450€,4 horas.<br/>
 		 132º,90 dBA,'muy bajo' ->Sobrecalentamiento,100€,2 horas.<br/>
 	 Para el atributo Niveles de aceite, con valores 'bajo' y 'muy bajo', si usamos una métrica de Igualdad exacta, 'bajo' no se considerará que bajo
-	 se parezca a 'muy bajo' en nada (0% de similitud). Búsquedas que requieran un nivel de aceite 'bajo' ignorarán los casos anteriores en los que el nivel sea 'muy bajo'.
+	 se parezca a 'muy bajo' en nada (0% de similitud). Búsquedas que requieran un nivel de aceite 'bajo' valorarán en menor medida o
+	 ignorarán los casos anteriores en los que el nivel sea 'muy bajo'.
 	 Sin embargo, con la métrica Subcadena más larga (Mayor parecido en el texto), 'bajo' si guarda cierta similitud, y se considerarán en la búsqueda
 	 para problemas con niveles de aceite 'bajo'.<br/><br/>
 	 Las métricas disponibles en esta versión de la aplicación son:<br/>
-	 Igualdad: Igualdad exacta entre 2 elementos. Se considerará máxima (1) si los 2 atributos son exactamente iguales y mínima (0) si no lo son.<br/>
+	 Igualdad: Igualdad exacta entre 2 elementos. Se considerará máxima (100%) si los 2 atributos son exactamente iguales y mínima (0%) si no lo son.<br/>
 	 Ej:Igualdad exacta entre 'bajo' y 'muy bajo' = 0%, Igualdad exacta entre 'bajo' y 'Bajo' = 0%, Igualdad exacta entre 80 y 80 = 100%.<br/><br/>
 	 Igualdad Ignorando mayúsculas (Sólo para cadenas de texto): Se comporta como Igualdad para cadenas de texto, pero ignora las mayúsculas.<br/>
 	 Ej:Igualdad Ignorando Mayúsculas entre 'bajo' y 'BaJO' = 100%.<br/><br/>

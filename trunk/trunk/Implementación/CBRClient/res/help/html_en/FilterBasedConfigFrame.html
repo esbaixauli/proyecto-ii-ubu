@@ -1,0 +1,25 @@
+﻿<html>
+<head>
+	<title>Retrieval: Filter-Based</title>
+</head>
+<body>
+	<h1>Retrieval: Filter-Based</h1>
+	<p>In filter-Based retrieval, a logical condition that must be satisfied when compared to the user query is established for each problem attribute.
+	 Then, all the cases that coincide with the filters are selected, if some exist.</p>
+	 <h1>Example: Filter-Based retrieval</h1>
+	 <p>
+	 We have defined in the program a case type whose problem attributes are A(number),B(number),C(text) and whose solution is D(text).
+	 For it, 3 stored cases exist:<br/>
+	 <b>Case x:</b>Problem:[2,2,'test'] Solution:['solution X'] <br/>
+	 <b>Case y:</b>Problem:[3,5,'testing'] Solution:['solution Y']<br/>
+	 <b>Case z:</b>Problem:[3,7,'test'] Solution:['solution Z']<br/>
+	 Then, for the user query:[3,2,'testing'], we use a filter based retrieval using the following filters:
+	 For attribute A, equality with the corresponding attribute in the user query (3)<br/>
+	 For attribute B, superiority to the corresponding attribute in the user query (5)<br/>
+	 For attribute A, inequality with the corresponding attribute in the user query ('testing')<br/>
+	 Then, the case x is discarded for not fulfilling the equality condition in attribute A (2!=3). The case y is discarded because it
+	 doesn't follow the inequality condition in attribute C ('testing'='testing'). The only case that fulfills all of the predicates is case z, which
+	 will be, along with its solution ('solution Z') the search result.
+	 </p>
+</body>
+</html>
