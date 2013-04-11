@@ -1,21 +1,21 @@
-<html>
+ï»¿<html>
 <head>
-	<title>Recuperación:Diverse By Median</title>
+	<title>RecuperaciÃ³n:Diverse By Median</title>
 </head>
 <body>
-	<h1>Recuperación:Diverse By Median</h1>
-	<p>En la recuperación Diverse By median se halla la mediana para cada atributo del tipo de caso, entre todos los casos en la base. 
-	 Después, cada caso es evaluado de la siguiente manera:<br/>
+	<h1>RecuperaciÃ³n:Diverse By Median</h1>
+	<p>En la recuperaciÃ³n Diverse By median se halla la mediana para cada atributo del tipo de caso, entre todos los casos en la base. 
+	 DespuÃ©s, cada caso es evaluado de la siguiente manera:<br/>
 	 Por cada atributo en el caso se compara con dicha mediana. Si su diferencia con la mediana
-	 supera un umbral (por exceso o por defecto), definido para cada atributo, se añade +1 a la puntuación del caso.
-	 Finalmente se obtiene el caso de menor puntuación (El primero en caso de empate).<br/>
-	<b>Nota</b>: Esta versión de diverse by median devuelve únicamente el caso más parecido (No es configurable).
+	 supera un umbral (por exceso o por defecto), definido para cada atributo, se aÃ±ade +1 a la puntuaciÃ³n del caso.
+	 Finalmente se obtiene el caso de menor puntuaciÃ³n (El primero en caso de empate).<br/>
+	<b>Nota</b>: Esta versiÃ³n de diverse by median devuelve Ãºnicamente el caso mÃ¡s parecido (No es configurable).
 	</p>
 	<h2> Ejemplo:</h2>
 	<p>Supongamos una base de casos cuyo tipo de caso consta de los atributos A,B,C y SOLUCION. Las medianas de los atributos para este tipo de caso
 	 son 0,1,2,3 (Calculadas como la mediana de cada atributo para cada caso almacenado en el programa.)
-	 Supongamos también que el umbral para todos los atributos es 0,5. Entonces, un caso 'x' almacenado en el programa con valores 1 , 0 , 2.2 , 3 
-	 obtendría una puntuación de 2 (Porque sus atributos A y B se separan de la mediana por más de 0,5), mientras que un caso 'y' de valores 0 , 1 , 1.5 , 3.1
-	 obtendría una puntuación de 1 (A causa de su atributo 2). Entonces, se devolvería como resultado de la recuperación el caso y.</p>
+	 Supongamos tambiÃ©n que el umbral para todos los atributos es 0,5. Entonces, un caso 'x' almacenado en el programa con valores 1 , 0 , 2.2 , 3 
+	 obtendrÃ­a una puntuaciÃ³n de 2 (Porque sus atributos A y B se separan de la mediana por mÃ¡s de 0,5), mientras que un caso 'y' de valores 0 , 1 , 1.5 , 3.1
+	 obtendrÃ­a una puntuaciÃ³n de 1 (A causa de su atributo 2). Entonces, se devolverÃ­a como resultado de la recuperaciÃ³n el caso y.</p>
 </body>
 </html>

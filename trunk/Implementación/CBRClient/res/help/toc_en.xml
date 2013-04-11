@@ -10,7 +10,8 @@ topicimage="ItemIco"-->
 				<tocitem text="Retrieval:Filter Based (By predicates)"    target="FilterBasedConfigFrame"/>	
 				<tocitem text="Retrieval:K-NN (K nearest neighbors)"    target="NNConfigFrame"/>
 				<tocitem text="Revisión:Direct copy (Attribute copy)"  target="NumOrCopyConfigFrame"/>	
-				<tocitem text="Revisión:Numeric proportion"  target="NumOrCopyConfigFrame"/>					
+				<tocitem text="Revisión:Numeric proportion"  target="NumOrCopyConfigFrame"/>
+				<indexitem text="Revision:Combine Query and Cases" target="NumOrCopyConfigFrame"/>					
 			</tocitem>
 			<tocitem text="Case types"    target="GestionTiposFrame"/>
 			<tocitem text="Users"    target="GestionUsuariosFrame">

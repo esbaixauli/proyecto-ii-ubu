@@ -1,25 +1,25 @@
-<html>
+Ôªø<html>
 <head>
-	<title>RecuperaciÛn: K-NN</title>
+	<title>Recuperaci√≥n: K-NN</title>
 </head>
 <body>
-	<h1>RecuperaciÛn K-NN</h1>
-	<p>En este tipo de recuperaciÛn se escogen los N-Vecinos m·s cercanos a la consulta suministrada por el usuario. Esto es, para cada caso almacenado en
-	 el programa se mide la distancia parcial de cada uno de sus atributos (Da) respecto a su equivalente en la consulta (seg˙n la mÈtrica del atributo). 
-	 Entonces, en cada caso se suman estos resultados (Da1 + Da2+ ... DaN, donde N es el n˙mero de atributos del tipo de caso.), obteniÈndose
-	 una PuntuaciÛn del Caso (Pc), de dicho caso con la consulta.
-	 Finalmente, se obtienen los K (valor especificado en la configuraciÛn de la tÈcnica) Casos que hayan obtenido <b>mejor</b> Pc.</p>
-	 <h1>Ejemplo de recuperaciÛn K-NN</h1>
-	 <p> Tenemos definido en el programa un tipo de caso cuyos atributos del problema son A(n˙mero),B(n˙mero),C(texto) y cuya soluciÛn es D(texto).
-	 Los atributos numÈricos tienen definida como su mÈtrica <A HREF="ConceptosBasicos.html">(Ver apartado sobre conceptos b·sicos, secciÛn MÈtricas)</p>
-	 'Igualdad', y el atributo C tiene definida como su mÈtrica 'Subcadena m·s larga'.
-	 Para Èl, existen 2 casos almacenados:<br/>
-	 <b>Caso x:</b>Problema:[2,2,'test'] SoluciÛn:['soluciÛn X'] <br/>
-	 <b>Caso y:</b>Problema:[3,5,'testear'] SoluciÛn:['soluciÛn Y']<br/>
-	 Entonces, para la consulta del usuario: [3,2,'testear'], si pedimos una recuperaciÛn K-NN <b>con par·metro 1</b>:<br/>
-	 PuntuaciÛn del caso x: 0+1+(4/7) = 11/7<br/>
-	 PuntuaciÛn del caso y: 1+0+(7/7) = 14/7<br/>
-	 Por tanto, se escoger· como caso m·s similar el caso y, que tiene mejor puntuaciÛn, y la soluciÛn mostrada ser· 'SoluciÛn Y'.
+	<h1>Recuperaci√≥n K-NN</h1>
+	<p>En este tipo de recuperaci√≥n se escogen los N-Vecinos m√°s cercanos a la consulta suministrada por el usuario. Esto es, para cada caso almacenado en
+	 el programa se mide la distancia parcial de cada uno de sus atributos (Da) respecto a su equivalente en la consulta (seg√∫n la m√©trica del atributo). 
+	 Entonces, en cada caso se suman estos resultados (Da1 + Da2+ ... DaN, donde N es el n√∫mero de atributos del tipo de caso.), obteni√©ndose
+	 una Puntuaci√≥n del Caso (Pc), de dicho caso con la consulta.
+	 Finalmente, se obtienen los K (valor especificado en la configuraci√≥n de la t√©cnica) Casos que hayan obtenido <b>mejor</b> Pc.</p>
+	 <h1>Ejemplo de recuperaci√≥n K-NN</h1>
+	 <p> Tenemos definido en el programa un tipo de caso cuyos atributos del problema son A(n√∫mero),B(n√∫mero),C(texto) y cuya soluci√≥n es D(texto).
+	 Los atributos num√©ricos tienen definida como su m√©trica <A HREF="ConceptosBasicos.html">(Ver apartado sobre conceptos b√°sicos, secci√≥n M√©tricas)</p>
+	 'Igualdad', y el atributo C tiene definida como su m√©trica 'Subcadena m√°s larga'.
+	 Para √©l, existen 2 casos almacenados:<br/>
+	 <b>Caso x:</b>Problema:[2,2,'test'] Soluci√≥n:['soluci√≥n X'] <br/>
+	 <b>Caso y:</b>Problema:[3,5,'testear'] Soluci√≥n:['soluci√≥n Y']<br/>
+	 Entonces, para la consulta del usuario: [3,2,'testear'], si pedimos una recuperaci√≥n K-NN <b>con par√°metro 1</b>:<br/>
+	 Puntuaci√≥n del caso x: 0+1+(4/7) = 11/7<br/>
+	 Puntuaci√≥n del caso y: 1+0+(7/7) = 14/7<br/>
+	 Por tanto, se escoger√° como caso m√°s similar el caso y, que tiene mejor puntuaci√≥n, y la soluci√≥n mostrada ser√° 'Soluci√≥n Y'.
 	 </p>
 </body>
 </html>
