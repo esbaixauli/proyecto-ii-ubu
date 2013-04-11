@@ -66,9 +66,9 @@ public class MainFrame extends JFrame{
 		JPanel panel_adm = new JPanel();
 		tabbedpane.addTab( bundle.getString("admin"), panel_adm);
 		GridBagLayout gbl_panel_adm = new GridBagLayout();
-		gbl_panel_adm.columnWidths = new int[]{54, 147, 35, 152, 0};
+		gbl_panel_adm.columnWidths = new int[]{54, 147, 35, 152, 0, 0};
 		gbl_panel_adm.rowHeights = new int[]{31, 58, 28, 0};
-		gbl_panel_adm.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_adm.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_adm.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_adm.setLayout(gbl_panel_adm);
 		
@@ -100,7 +100,7 @@ public class MainFrame extends JFrame{
 		});
 		GridBagConstraints gbc_btnGestionarusuarios = new GridBagConstraints();
 		gbc_btnGestionarusuarios.fill = GridBagConstraints.BOTH;
-		gbc_btnGestionarusuarios.insets = new Insets(0, 0, 5, 0);
+		gbc_btnGestionarusuarios.insets = new Insets(0, 0, 5, 5);
 		gbc_btnGestionarusuarios.gridx = 3;
 		gbc_btnGestionarusuarios.gridy = 1;
 		panel_adm.add(btnGestionarusuarios, gbc_btnGestionarusuarios);
@@ -123,6 +123,7 @@ public class MainFrame extends JFrame{
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_1.setBackground(new Color(224, 255, 255));
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.insets = new Insets(0, 0, 0, 5);
 		gbc_panel_1.fill = GridBagConstraints.BOTH;
 		gbc_panel_1.gridx = 3;
 		gbc_panel_1.gridy = 2;
@@ -134,9 +135,9 @@ public class MainFrame extends JFrame{
 		JPanel panel_cbr = new JPanel();
 		tabbedpane.addTab("CBR",panel_cbr);
 		GridBagLayout gbl_panel_cbr = new GridBagLayout();
-		gbl_panel_cbr.columnWidths = new int[]{54, 147, 35, 152, 0};
+		gbl_panel_cbr.columnWidths = new int[]{54, 147, 35, 152, 0, 0};
 		gbl_panel_cbr.rowHeights = new int[]{31, 58, 28, 0};
-		gbl_panel_cbr.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_cbr.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_cbr.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_cbr.setLayout(gbl_panel_cbr);
 		
@@ -166,8 +167,9 @@ public class MainFrame extends JFrame{
 			}
 		});
 		GridBagConstraints gbc_btnCicloPorDefecto = new GridBagConstraints();
+		gbc_btnCicloPorDefecto.gridx = 2;
 		gbc_btnCicloPorDefecto.fill = GridBagConstraints.BOTH;
-		gbc_btnCicloPorDefecto.insets = new Insets(0, 0, 5, 0);
+		gbc_btnCicloPorDefecto.insets = new Insets(0, 0, 5, 5);
 		if(u.getTipo().equals(TipoUsuario.UBASICO)){
 			//Centro el boton para los usuarios basicos
 			gbc_btnCicloPorDefecto.gridx = 2;	
@@ -194,6 +196,8 @@ public class MainFrame extends JFrame{
 		panel_cbrpordefecto.setBackground(new Color(224, 255, 255));
 		panel_cbrpordefecto.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		GridBagConstraints gbc_panel_cbrpordefecto = new GridBagConstraints();
+		gbc_panel_cbrpordefecto.insets = new Insets(0, 0, 0, 5);
+		gbc_panel_cbrpordefecto.gridx = 2;
 		gbc_panel_cbrpordefecto.fill = GridBagConstraints.BOTH;
 		
 		if(u.getTipo().equals(TipoUsuario.UBASICO)){
@@ -211,9 +215,9 @@ public class MainFrame extends JFrame{
 		JPanel panel_casebase = new JPanel();
 		tabbedpane.addTab(bundle.getString("casebases"),panel_casebase);
 		GridBagLayout gbl_panel_casebase = new GridBagLayout();
-		gbl_panel_casebase.columnWidths = new int[]{54, 147, 35, 152, 0};
+		gbl_panel_casebase.columnWidths = new int[]{54, 147, 35, 152, 0, 0};
 		gbl_panel_casebase.rowHeights = new int[]{31, 58, 28, 0};
-		gbl_panel_casebase.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_casebase.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_casebase.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_casebase.setLayout(gbl_panel_casebase);
 		
