@@ -1,25 +1,25 @@
-<html>
+ï»¿<html>
 <head>
-	<title>Recuperación: Filter-Based</title>
+	<title>RecuperaciÃ³n: Filter-Based</title>
 </head>
 <body>
-	<h1>Recuperación: Filter-Based</h1>
-	<p>En la recuperación basada en filtros, para cada atributo del problema se establece una condición lógica que debe satisfacer respecto a la consulta del usuario.
+	<h1>RecuperaciÃ³n: Filter-Based</h1>
+	<p>En la recuperaciÃ³n basada en filtros, para cada atributo del problema se establece una condiciÃ³n lÃ³gica que debe satisfacer respecto a la consulta del usuario.
 	 Entonces, se seleccionan todos los casos que coinciden con todos los filtros, si existe alguno.</p>
-	 <h1>Ejemplo: Recuperación Filter-Based</h1>
+	 <h1>Ejemplo: RecuperaciÃ³n Filter-Based</h1>
 	 <p>
-	 Tenemos definido en el programa un tipo de caso cuyos atributos del problema son A(número),B(número),C(texto) y cuya solución es D(texto).
-	 Para él, existen 3 casos almacenados:<br/>
-	 <b>Caso x:</b>Problema:[2,2,'test'] Solución:['solución X'] <br/>
-	 <b>Caso y:</b>Problema:[3,5,'testear'] Solución:['solución Y']<br/>
-	 <b>Caso z:</b>Problema:[3,7,'test'] Solución:['solución Z']<br/>
-	 Entonces, para la consulta del usuario: [3,2,'testear'], pedimos una recuperación Filter-Based con los siguientes filtros:
+	 Tenemos definido en el programa un tipo de caso cuyos atributos del problema son A(nÃºmero),B(nÃºmero),C(texto) y cuya soluciÃ³n es D(texto).
+	 Para Ã©l, existen 3 casos almacenados:<br/>
+	 <b>Caso x:</b>Problema:[2,2,'test'] SoluciÃ³n:['soluciÃ³n X'] <br/>
+	 <b>Caso y:</b>Problema:[3,5,'testear'] SoluciÃ³n:['soluciÃ³n Y']<br/>
+	 <b>Caso z:</b>Problema:[3,7,'test'] SoluciÃ³n:['soluciÃ³n Z']<br/>
+	 Entonces, para la consulta del usuario: [3,2,'testear'], pedimos una recuperaciÃ³n Filter-Based con los siguientes filtros:
 	 Para el atributo A, igualdad con el atributo correspondiente en la consulta del usuario (3)<br/>
 	 Para el atributo B, superioridad con el atributo correspondiente en la consulta del usuario (5) <br/>
 	 Para el atributo C, desigualdad con el atributo correspondiente en la consulta del usuario ('testear')<br/> 
-	 Entonces, el caso x es descartado por no cumplir la condición de igualdad en el atributo A (2!=3). El caso y es descartado por
-	 no cumplir la condición de desigualdad en el atributo C ('testear'='testear'). El único caso que cumple todos los predicados es el caso z, que será,
-	 junto con su solución ('solución Z') el resultado de la búsqueda.
+	 Entonces, el caso x es descartado por no cumplir la condiciÃ³n de igualdad en el atributo A (2!=3). El caso y es descartado por
+	 no cumplir la condiciÃ³n de desigualdad en el atributo C ('testear'='testear'). El Ãºnico caso que cumple todos los predicados es el caso z, que serÃ¡,
+	 junto con su soluciÃ³n ('soluciÃ³n Z') el resultado de la bÃºsqueda.
 	 </p>
 </body>
 </html>

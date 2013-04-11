@@ -11,6 +11,7 @@ topicimage="ItemIco"-->
 				<tocitem text="Recuperación:K-NN (K vecinos más cercanos)"    target="NNConfigFrame"/>
 				<tocitem text="Revisión:Direct copy (Copia de atributos)" target="NumOrCopyConfigFrame"/>	
 				<tocitem text="Revisión:Numeric proportion" target="NumOrCopyConfigFrame"/>	
+				<tocitem text="Revisión:Combine Query and Cases" target="NumOrCopyConfigFrame"/>	
 			</tocitem>
 			<tocitem text="Tipos de caso"    target="GestionTiposFrame"/>
 			<tocitem text="Usuarios"    target="GestionUsuariosFrame">
