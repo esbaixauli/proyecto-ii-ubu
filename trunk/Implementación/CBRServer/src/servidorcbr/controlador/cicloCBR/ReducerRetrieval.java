@@ -1,9 +1,9 @@
 package servidorcbr.controlador.cicloCBR;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -18,7 +18,6 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
@@ -30,13 +29,11 @@ import servidorcbr.controlador.generadorClases.CargadorClases;
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 
-public class ReducerRetrieval
-		extends
+public class ReducerRetrieval extends
 		Reducer<ImmutableBytesWritable, Result, ImmutableBytesWritable, Text> {
 
 	@Override
-	public void reduce(ImmutableBytesWritable key, Iterable<Result> values,
-			Context context) {
+	public void reduce(ImmutableBytesWritable key, Iterable<Result> values, Context context) {
 		// Convierte los values a objetos del problema y se los manda a ejecutar
 		Collection<CBRCase> casos = new ArrayList<CBRCase>();
 		TipoCaso tc = cargarTipoCaso(context.getConfiguration().get("tipocaso"));
@@ -48,6 +45,7 @@ public class ReducerRetrieval
 				caso = obtenerCaso(tc, row, cdesc, csolution);
 				casos.add(caso);
 			}
+			System.out.println("## Reducer "+key.toString()+" ejecutandose, nº de casos: " + casos.size());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -57,9 +55,10 @@ public class ReducerRetrieval
 
 	private CBRCase obtenerCaso(TipoCaso tc, Result row, Class<? extends CaseComponent> cdesc, Class<? extends CaseComponent> csol)
 			throws ClassNotFoundException {
+		CaseComponent desc = null, solution = null;
 		try {
-			CaseComponent desc = cdesc.newInstance();
-			CaseComponent solution = csol.newInstance();
+			desc = cdesc.newInstance();
+			solution = csol.newInstance();
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
@@ -67,15 +66,54 @@ public class ReducerRetrieval
 		}
 		for (Atributo atb : tc.getAtbos().values()) {
 			byte[] val = null;
+			Class<?> tipo = null, clase = null;;
+			Object valor = null;
+			CaseComponent cc = null;
 			if (atb.getEsProblema()) {
 				val = row.getValue(Bytes.toBytes("problema"), Bytes.toBytes(atb.getNombre()));
-				//TODO: rellena el atributo haciendo un set a desc
+				clase = cdesc;
+				cc = desc;
 			} else {
 				val = row.getValue(Bytes.toBytes("solucion"), Bytes.toBytes(atb.getNombre()));
+				clase = csol;
+				cc = solution;
+			}
+			switch (atb.getTipo()) {
+			case "S":
+				tipo = String.class;
+				valor = Bytes.toString(val);
+				break;
+			case "D":
+				tipo = Double.class;
+				valor = Bytes.toDouble(val);
+				break;
+			case "I":
+				tipo = Integer.class;
+				valor = Bytes.toInt(val);
+				break;
+			default:
+				return null;
+			}
+			String mName = "set" 
+						+ atb.getNombre().substring(0, 1).toUpperCase() 
+						+ atb.getNombre().substring(1, atb.getNombre().length());
+			try {
+				Method m = clase.getMethod(mName, tipo);
+				m.invoke(cc, valor);
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
 		}
-		// TODO: convierte los dos casecomponent en un CBRCase
-		return null;
+		CBRCase caso = new CBRCase();
+		caso.setDescription(desc);
+		caso.setSolution(solution);
+		return caso;
 	}
 
 	private TipoCaso cargarTipoCaso(String nombreCaso) {
@@ -104,20 +142,6 @@ public class ReducerRetrieval
 		EjecutorTecnicaRetrieval ejecutor = null;
 		switch (tc.getDefaultRec().getNombre()) {
 		case "DiverseByMedianRetrieval":
-			ejecutor = new EjecutorDiverseByMedian(tc);
-			break;
-		case "NNretrieval":
-			ejecutor = new EjecutorKNN(tc);
-			break;
-		case "FilterBasedRetrieval":
-			ejecutor = new EjecutorFilterBased(tc);
-			break;
-		}
-		return ejecutor.ejecutar(casos, query);
-	}
-
-}
-erseByMedianRetrieval":
 			ejecutor = new EjecutorDiverseByMedian(tc);
 			break;
 		case "NNretrieval":

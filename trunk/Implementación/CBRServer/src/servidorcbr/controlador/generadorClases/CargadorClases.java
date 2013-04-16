@@ -21,6 +21,7 @@ public class CargadorClases {
 		return cargarClase(nombre,"Solution");
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static Class<? extends CaseComponent> cargarClase(String nombre,String tipo) throws ClassNotFoundException{
 		Configuration conf = new Configuration();
 		Class<? extends CaseComponent> clase = null;
@@ -43,7 +44,7 @@ public class CargadorClases {
 	}
 
 }
- cc = new jcolibri.test.test8.TravelDescription();
+velDescription();
 	    	System.out.println("CaseComponent::TravelDescription: "+cc.toString());
 	    	cLoader.loadClass("jcolibri.cbrcore.CaseComponent");
 	    	

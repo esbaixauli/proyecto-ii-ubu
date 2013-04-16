@@ -10,6 +10,8 @@ import java.util.Map;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
+import org.apache.hadoop.hbase.HRegionInfo;
+import org.apache.hadoop.hbase.HRegionLocation;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
@@ -40,7 +42,7 @@ public class HbaseFacade {
 	}
 
 	public static HbaseFacade getInstance() throws PersistenciaException {
-		if (instance == null) {
+		if (instance == null || instance.conn.isClosed()) {
 			instance = new HbaseFacade();
 		}
 		return instance;
@@ -120,6 +122,37 @@ public class HbaseFacade {
 			p.add(Bytes.toBytes(familia),
 					Bytes.toBytes(a.getNombre()),
 					Bytes.toBytes((Double) atb.getValue()));
+		}
+	}
+	
+	public long getRegionId (byte[] tableName, byte[] row) throws PersistenciaException {
+		try {
+			HRegionLocation loc = conn.locateRegion(tableName, row);
+			if (loc == null) {
+				return 0;
+			}
+			HRegionInfo inf = loc.getRegionInfo();
+			if (inf == null) {
+				return 0;
+			}
+			return inf.getRegionId();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new PersistenciaException(e);
+		}
+	}
+	
+	public int getNRegions (byte[] tableName) throws PersistenciaException {
+		try {
+			List<HRegionLocation> l = conn.locateRegions(tableName);
+			if (l == null) {
+				return 0;
+			} else {
+				return l.size();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new PersistenciaException(e);
 		}
 	}
 

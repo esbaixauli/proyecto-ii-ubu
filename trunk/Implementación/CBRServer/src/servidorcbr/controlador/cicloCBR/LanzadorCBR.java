@@ -1,13 +1,16 @@
 package servidorcbr.controlador.cicloCBR;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
+
+import jcolibri.cbraplications.StandardCBRApplication;
+import jcolibri.cbrcore.CBRCase;
+import jcolibri.cbrcore.CBRCaseBase;
+import jcolibri.cbrcore.CBRQuery;
+import jcolibri.exception.ExecutionException;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
@@ -16,26 +19,17 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
+import org.apache.hadoop.hbase.mapreduce.HRegionPartitioner;
 import org.apache.hadoop.hbase.mapreduce.IdentityTableMapper;
-import org.apache.hadoop.hbase.mapreduce.TableInputFormat;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
-import org.apache.hadoop.hbase.mapreduce.TableOutputFormat;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
 import servidorcbr.modelo.TipoCaso;
-
-import jcolibri.cbraplications.StandardCBRApplication;
-import jcolibri.cbrcore.CBRCase;
-import jcolibri.cbrcore.CBRCaseBase;
-import jcolibri.cbrcore.CBRQuery;
-import jcolibri.cbrcore.CaseBaseFilter;
-import jcolibri.cbrcore.Connector;
-import jcolibri.exception.ExecutionException;
-import jcolibri.exception.InitializingException;
+import servidorcbr.modelo.excepciones.PersistenciaException;
+import servidorcbr.persistencia.hbase.HbaseFacade;
 
 public class LanzadorCBR implements StandardCBRApplication {
 
@@ -64,6 +58,7 @@ public class LanzadorCBR implements StandardCBRApplication {
 	}
 
 	public Collection<CBRCase> retrieve (TipoCaso tc, HashMap<String,Serializable> query) throws IOException {
+		System.out.println("Configurando job:");
 		// create a configuration
 		Configuration conf = new Configuration();
 	    conf.addResource(new Path("/etc/hadoop/core-site.xml"));
@@ -71,6 +66,7 @@ public class LanzadorCBR implements StandardCBRApplication {
 		conf.set("tipocaso", tc.getNombre());
 		// escribe el tipo de caso en HDFS para leerlo en el reducer
 		escribeTipoCasoHDFS(tc, conf);
+		
 		// create a new job based on the configuration
 		Job job = null;
 		try {
@@ -79,13 +75,6 @@ public class LanzadorCBR implements StandardCBRApplication {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		// here you have to put your mapper class
-		job.setMapperClass(IdentityTableMapper.class);
-		// here you have to put your reducer class
-		job.setReducerClass(ReducerRetrieval.class);
-		// here you have to set the jar which is containing your 
-		// map/reduce class, so you can use the mapper class
-		job.setJarByClass(ReducerRetrieval.class);
 		
 		Scan scan = new Scan();
 		scan.setCaching(500);        // 1 is the default in Scan, which will be bad for MapReduce jobs
@@ -105,11 +94,48 @@ public class LanzadorCBR implements StandardCBRApplication {
 			e.printStackTrace();
 		}
 		
+		// here you have to put your reducer class
+		job.setReducerClass(ReducerRetrieval.class);
+		// here you have to set the jar which is containing your 
+		// map/reduce class, so you can use the mapper class
+		job.setJarByClass(ReducerRetrieval.class);
+
 		// key/value of your reducer output
 		job.setOutputKeyClass(ImmutableBytesWritable.class);
 		job.setOutputValueClass(Text.class);
 		// same with output
 		job.setOutputFormatClass(NullOutputFormat.class);
+		
+		// partitioner HRegionPartitioner para usar IdentityTableMapper y que lo divida por regiones
+		job.setPartitionerClass(HRegionPartitioner.class);
+		int nregions=0;
+		try {
+			nregions = HbaseFacade.getInstance().getNRegions(Bytes.toBytes(tc.getNombre()));
+		} catch (PersistenciaException e2) {
+			e2.printStackTrace();
+		}
+		try {
+			if (job.getNumReduceTasks() > nregions) {
+				if (nregions > 0) {
+					job.setNumReduceTasks(nregions);
+				} else {
+					job.setNumReduceTasks(1);
+				}
+			}
+		} catch (IllegalStateException e3) {
+			e3.printStackTrace();
+		}
+		
+		try {
+			System.out.println("- Mapper: "+job.getMapperClass().getSimpleName());
+			System.out.println("- Partitioner: "+job.getPartitionerClass().getSimpleName());
+			System.out.println("- Reducer: "+job.getReducerClass().getSimpleName());
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		System.out.println("Preparado para lanzar job para " +tc.getNombre()+", nº regiones: "+nregions);
 
 		// this waits until the job completes and prints debug out to STDOUT or whatever
 		// has been configured in your log4j properties.
