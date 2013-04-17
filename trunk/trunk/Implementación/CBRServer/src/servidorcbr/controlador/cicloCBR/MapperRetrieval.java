@@ -30,7 +30,6 @@ public class MapperRetrieval extends TableMapper<ImmutableBytesWritable, Result>
 		} catch (PersistenciaException e) {
 			e.printStackTrace();
 		}
-		System.out.println("## Mapper ejecutandose: region "+regionId);
 		byte[] region = Bytes.toBytes(regionId);
 		context.write(new ImmutableBytesWritable(region), value);
 	}

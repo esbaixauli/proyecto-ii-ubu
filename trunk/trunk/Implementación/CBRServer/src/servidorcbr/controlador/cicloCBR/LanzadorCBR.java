@@ -24,9 +24,11 @@ import org.apache.hadoop.hbase.mapreduce.IdentityTableMapper;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.lib.HashPartitioner;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.output.NullOutputFormat;
 
+import servidorcbr.controlador.generadorClases.RellenadorClases;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 import servidorcbr.persistencia.hbase.HbaseFacade;
@@ -58,21 +60,34 @@ public class LanzadorCBR implements StandardCBRApplication {
 	}
 
 	public Collection<CBRCase> retrieve (TipoCaso tc, HashMap<String,Serializable> query) throws IOException {
-		System.out.println("Configurando job:");
 		// create a configuration
 		Configuration conf = new Configuration();
 	    conf.addResource(new Path("/etc/hadoop/core-site.xml"));
 	    conf.addResource(new Path("/etc/hadoop/hdfs-site.xml"));
 		conf.set("tipocaso", tc.getNombre());
-		// escribe el tipo de caso en HDFS para leerlo en el reducer
+		// escribe el tipo de caso y el query en HDFS para leerlo en el reducer
 		escribeTipoCasoHDFS(tc, conf);
+		String queryFile = escribeQueryHDFS(query, tc, conf);
+		conf.set("query", queryFile);
+		
+		// crea la tabla temporal en HBase en la que escribirá el reducer
+		int i = 0;
+		String outputTable = null;
+		try {
+			HbaseFacade hbf = HbaseFacade.getInstance();
+			do {
+				outputTable = tc.getNombre() + i;
+				i++;
+			} while (!hbf.createTable(outputTable));
+		} catch (PersistenciaException e2) {
+			e2.printStackTrace();
+		}
 		
 		// create a new job based on the configuration
 		Job job = null;
 		try {
 			job = new Job(conf);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -83,78 +98,46 @@ public class LanzadorCBR implements StandardCBRApplication {
 
 		try {
 			TableMapReduceUtil.initTableMapperJob(
-			  tc.getNombre(),        // input HBase table name
-			  scan,             // Scan instance to control CF and attribute selection
-			  IdentityTableMapper.class,   // mapper
-			  ImmutableBytesWritable.class,             // mapper output key
-			  Result.class,             // mapper output value
-			  job);
+					tc.getNombre(),        			// input HBase table name
+					scan,             // Scan instance to control CF and attribute selection
+					MapperRetrieval.class,
+					ImmutableBytesWritable.class,   // mapper output key
+					Result.class,             		// mapper output value
+					job);
+			TableMapReduceUtil.initTableReducerJob(
+					outputTable, 
+					ReducerRetrieval.class, 
+					job, 
+					HashPartitioner.class);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		// here you have to put your reducer class
-		job.setReducerClass(ReducerRetrieval.class);
 		// here you have to set the jar which is containing your 
 		// map/reduce class, so you can use the mapper class
 		job.setJarByClass(ReducerRetrieval.class);
-
-		// key/value of your reducer output
-		job.setOutputKeyClass(ImmutableBytesWritable.class);
-		job.setOutputValueClass(Text.class);
-		// same with output
-		job.setOutputFormatClass(NullOutputFormat.class);
 		
-		// partitioner HRegionPartitioner para usar IdentityTableMapper y que lo divida por regiones
-		job.setPartitionerClass(HRegionPartitioner.class);
-		int nregions=0;
-		try {
-			nregions = HbaseFacade.getInstance().getNRegions(Bytes.toBytes(tc.getNombre()));
-		} catch (PersistenciaException e2) {
-			e2.printStackTrace();
-		}
-		try {
-			if (job.getNumReduceTasks() > nregions) {
-				if (nregions > 0) {
-					job.setNumReduceTasks(nregions);
-				} else {
-					job.setNumReduceTasks(1);
-				}
-			}
-		} catch (IllegalStateException e3) {
-			e3.printStackTrace();
-		}
-		
-		try {
-			System.out.println("- Mapper: "+job.getMapperClass().getSimpleName());
-			System.out.println("- Partitioner: "+job.getPartitionerClass().getSimpleName());
-			System.out.println("- Reducer: "+job.getReducerClass().getSimpleName());
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		System.out.println("Preparado para lanzar job para " +tc.getNombre()+", nº regiones: "+nregions);
-
 		// this waits until the job completes and prints debug out to STDOUT or whatever
 		// has been configured in your log4j properties.
 		try {
 			job.waitForCompletion(true);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		// TODO: Sacar las filas de hbase y convertirlas a una Collection<CBRCase>, luego limpiar la tabla y la query
 		return null;
 	}
 	
+	/**
+	 * Escribe un tipo de caso en HDFS. Lo escribe en la carpeta "tcs/" dentro de la carpeta
+	 * del usuario que ejecuta el servidor.
+	 * @param tc El tipo de caso.
+	 * @param conf Configuración para crear el objeto FileSystem.
+	 */
 	private void escribeTipoCasoHDFS (TipoCaso tc, Configuration conf) {
 		try {
 			FileSystem fs = FileSystem.get(conf);
@@ -164,14 +147,57 @@ public class LanzadorCBR implements StandardCBRApplication {
 				fs.mkdirs(outFile);
 			}
 			outFile = new Path(outFile, tc.getNombre()+".tc");
-			FSDataOutputStream outfs = fs.create(outFile, true);
-			ObjectOutputStream oos = new ObjectOutputStream(outfs);
-			oos.writeObject(tc);
-			oos.flush();
-			oos.close();
-			outfs.close();
+			escribeObjetoHDFS(tc, fs, outFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Escribe un CBRQuery en HDFS. Lo escribe en la carpeta "queries/" dentro de la carpeta
+	 * del usuario que ejecuta el servidor, con un nombre determinado por el nombre del tipo
+	 * de caso y un autonumérico.
+	 * @param query el CBRQuery a escribir.
+	 * @param tc El tipo de caso para obtener el nombre.
+	 * @param conf Configuración para crear el objeto FileSystem.
+	 */
+	private String escribeQueryHDFS (HashMap<String,Serializable> query, TipoCaso tc, Configuration conf) {
+		String nombre = null;
+		try {
+			FileSystem fs = FileSystem.get(conf);
+			// "queries/" se traduce en hdfs a "/user/$USER/queries/"
+			Path outFolder = new Path("queries/");
+			if (!fs.exists(outFolder)) {
+				fs.mkdirs(outFolder);
+			}
+			Path outFile = null;
+			int i = 1;
+			do {
+				nombre = tc.getNombre()+i+".query";
+				outFile = new Path(outFolder, nombre);
+				i++;
+			} while (fs.exists(outFile));
+			escribeObjetoHDFS(query, fs, outFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return nombre;
+	}
+
+	/**
+	 * Serializa un objeto en un fichero en HDFS.
+	 * @param nombre Nombre del fichero.
+	 * @param s Objeto a escribir.
+	 * @param fs FileSystem que representa a HDFS.
+	 * @param outFile Path que apunta al fichero a crear.
+	 * @throws IOException
+	 */
+	private void escribeObjetoHDFS(Serializable s, FileSystem fs, Path outFile) throws IOException {
+		FSDataOutputStream outfs = fs.create(outFile, true);
+		ObjectOutputStream oos = new ObjectOutputStream(outfs);
+		oos.writeObject(s);
+		oos.flush();
+		oos.close();
+		outfs.close();
 	}
 }

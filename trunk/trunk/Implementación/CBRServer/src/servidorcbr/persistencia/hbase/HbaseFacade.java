@@ -13,6 +13,7 @@ import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HRegionInfo;
 import org.apache.hadoop.hbase.HRegionLocation;
 import org.apache.hadoop.hbase.HTableDescriptor;
+import org.apache.hadoop.hbase.TableExistsException;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
 import org.apache.hadoop.hbase.client.HBaseAdmin;
 import org.apache.hadoop.hbase.client.HConnection;
@@ -56,6 +57,24 @@ public class HbaseFacade {
 			HBaseAdmin hba = new HBaseAdmin(conn);
 			hba.createTable(ht);
 			hba.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new PersistenciaException(e);
+		}
+		return true;
+	}
+	
+	public boolean createTable(String nombre) throws PersistenciaException {
+		HTableDescriptor ht = new HTableDescriptor(nombre);
+		ht.addFamily(new HColumnDescriptor("campos"));
+		try {
+			HBaseAdmin hba = new HBaseAdmin(conn);
+			hba.createTable(ht);
+			hba.close();
+		} catch (IllegalArgumentException e) {
+			return false;
+		} catch (TableExistsException e) {
+			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new PersistenciaException(e);

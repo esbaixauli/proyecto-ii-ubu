@@ -31,10 +31,9 @@ public class GeneradorClases {
 	// Auxiliar, establece los tipos permitidos para un atributo de la clase
 	public static ArrayList<String> establecerTipos() {
 		ArrayList<String> tiposAtbo = new ArrayList<String>();
-		tiposAtbo.add("String");
-		tiposAtbo.add("Integer");
-		tiposAtbo.add("Double");
-		tiposAtbo.add("Object");
+		tiposAtbo.add("S");
+		tiposAtbo.add("I");
+		tiposAtbo.add("D");
 		return tiposAtbo;
 	}
 
@@ -42,15 +41,13 @@ public class GeneradorClases {
 	// cadena
 	// que identifica a su tipo
 	private static String getDescriptor(String entrada) {
-		String descriptor;
-		if (entrada.equals("String")) {
+		String descriptor = null;
+		if (entrada.equals("S")) {
 			descriptor = Type.getDescriptor(String.class);
-		} else if (entrada.equals("Double")) {
+		} else if (entrada.equals("D")) {
 			descriptor = Type.getDescriptor(Double.class);
-		} else if (entrada.equals("Integer")) {
+		} else if (entrada.equals("I")) {
 			descriptor = Type.getDescriptor(Integer.class);
-		} else {
-			descriptor = Type.getDescriptor(Object.class);
 		}
 		return descriptor;
 	}
