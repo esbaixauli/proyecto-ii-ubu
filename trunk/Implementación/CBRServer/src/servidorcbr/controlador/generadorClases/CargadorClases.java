@@ -44,15 +44,3 @@ public class CargadorClases {
 	}
 
 }
-velDescription();
-	    	System.out.println("CaseComponent::TravelDescription: "+cc.toString());
-	    	cLoader.loadClass("jcolibri.cbrcore.CaseComponent");
-	    	
-	    	clase = cLoader.loadClass("generadas."+nombre+tipo);
-	    } catch (IOException ex) {
-	    	ex.printStackTrace();
-	    }
-		return clase;
-	}
-
-}
