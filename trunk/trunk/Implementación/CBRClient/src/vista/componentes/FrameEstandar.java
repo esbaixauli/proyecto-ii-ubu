@@ -89,7 +89,7 @@ public class FrameEstandar extends JFrame {
 		try {			
 			// Carga el fichero de ayuda
 			String helpse="res/help/help_set.hs";
-			if(Locale.getDefault().equals(Locale.ENGLISH))
+			if(! b.getLocale().equals(new Locale("es", "ES")))
 				helpse="res/help/help_set_en.hs";
 			File fichero = new File(helpse);
 			URL hsURL = fichero.toURI().toURL();
