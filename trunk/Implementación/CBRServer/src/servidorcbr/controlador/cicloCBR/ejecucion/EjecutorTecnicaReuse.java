@@ -1,16 +1,25 @@
 package servidorcbr.controlador.cicloCBR.ejecucion;
 
+import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import jcolibri.cbrcore.Attribute;
 import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRQuery;
+import jcolibri.cbrcore.CaseComponent;
 import jcolibri.method.reuse.CombineQueryAndCasesMethod;
 import jcolibri.method.reuse.DirectAttributeCopyMethod;
 import jcolibri.method.reuse.NumericDirectProportionMethod;
 import servidorcbr.controlador.generadorClases.CargadorClases;
+import servidorcbr.controlador.generadorClases.RellenadorClases;
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.Parametro;
+import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 
 public class EjecutorTecnicaReuse {
@@ -51,7 +60,7 @@ public class EjecutorTecnicaReuse {
 			}	
 		}	
 		
-		return null;
+		return casos;
 	}
 
 	
@@ -62,7 +71,7 @@ public class EjecutorTecnicaReuse {
 	 */
 	private void setOrigenYDestino(String origen,String destino) {
 		Parametro p1 = tc.getDefaultReu().getParams().get(0);
-		
+	
 		//Un valor de 0 en la configuración indica que la técnica no está configurada.
 		if(p1.getValor()==0){
 		  if(tc.getDefaultReu().getNombre().equalsIgnoreCase("DirectAttributeCopyMethod")){
@@ -104,4 +113,159 @@ public class EjecutorTecnicaReuse {
 		}
 		return null;
 	}
+
+	
+	/** Realiza una combinación de los resultados, si la técnica así lo indica en sus parámetros.
+	 * @return
+	 */
+	private Collection<CBRCase> combinar(Collection<CBRCase> casos){
+		Tecnica t = tc.getDefaultReu();
+		String combinacion;
+		//Si la tecnica no está configurada (solo tiene un parametro, con valor 0).
+		if(t.getParams().get(0).getValor() == 0){
+			return casos;
+		}//En la combine query and cases, el parametro en 0 debe tener un valor de 3 para que se combine
+		if(t.getNombre().equalsIgnoreCase("CombineQueryAndCasesMethod")){
+			combinacion=t.getParams().get(0).getNombre();
+			
+		}else{//En las demás, es el parametro 2 el que tiene un valor de 3.
+			combinacion=t.getParams().get(2).getNombre();
+		}
+		return combinar(combinacion,casos);
+		
+	}
+	
+	/**Auxiliar. Realiza la combinación de los casos según el modo pedido.
+	 * @return
+	 */
+	private Collection<CBRCase> combinar(String combinacion,Collection<CBRCase> casos){
+		try{
+			CBRCase combinado;
+			HashMap<String,Serializable> calculos = new HashMap<String,Serializable>();
+			if(combinacion.equals("MEDIA")){
+				//Por cada atributo
+				for(Atributo a: tc.getAtbos().values()){
+					//Si es un numerico
+					if(a.getTipo().equals("I") || a.getTipo().equals("D")){
+						List<Double> values=new ArrayList<Double>();
+						Class<?> ccaso;
+						//Por cada caso
+						for(CBRCase caso: casos){
+							CaseComponent casodessol= caso.getDescription();
+							//Si el atbo es del problema, cojo la parte del problema del caso, si no, la solución
+							if(!a.getEsProblema()){
+								casodessol = caso.getSolution();
+							}
+							ccaso = caso.getClass();
+							//Obtengo dinamicamente el valor de este atributo para este caso
+							Double d = (double) ccaso.getMethod("get"+a.getNombre().substring(0,1).toUpperCase()+
+									a.getNombre().substring(1), null).invoke(casodessol,null);
+							values.add(d);
+						}//Calculo la media
+						Double media = media(values);
+						if(a.getTipo().equals("I")){
+							//lo inserto en un hashmap {"NombreAtbo",valor}
+							calculos.put(a.getNombre(),media.intValue());
+						}else{
+							calculos.put(a.getNombre(), media);
+						}
+					}else{//Para las cadenas, se hace la moda
+						calculos.put(a.getNombre(),calcularModa(casos, a));
+					}	
+				}
+				return getListaCBRCase(calculos);
+			}else if(combinacion.equals("MODA")){
+				for(Atributo a: tc.getAtbos().values()){
+					calculos.put(a.getNombre(),calcularModa(casos,a));
+				}
+				return getListaCBRCase(calculos);
+			}
+			//Ante cualquier excepción, devuelve los casos sin adaptar (Cancela la adaptación)
+		}catch(Exception ex){ex.printStackTrace();}
+		return casos;
+	}
+
+	/** Auxiliar. Obtiene una lista de CBRCase que contiene unicamente un CBRCase, correspondiente
+	 * al hashmap de calculos que recibe.
+	 * @param calculos Mapa {nombredeatbo,valor} para generar un CBRCase.
+	 * @return Lista de CBRCase con el objeto generado a través del mapa de cálculos.
+	 * @throws ClassNotFoundException Si no se encontró el tipo de caso correspondiente al mapa de cálculos.
+	 */
+	private Collection<CBRCase> getListaCBRCase(
+			HashMap<String, Serializable> calculos)
+			throws ClassNotFoundException {
+		CBRCase combinado;
+		combinado = RellenadorClases.rellenarCaso(tc, calculos);
+		//Para respetar la firma del método
+		List<CBRCase> listaComb = new ArrayList<CBRCase>(1);
+		listaComb.add(combinado);
+		return listaComb;
+	}
+
+	/** Auxiliar. Calcula la moda de un atributo para un conjunto de casos
+	 * @param casos Los casos en los que se va a calcular la moda.
+	 * @param a El atributo para el que se va a calcular.
+	 * @return El objeto que devuelve la moda.
+	 * @throws Exception en caso de que la clase no se encuentre.
+	 */
+	private Serializable calcularModa(Collection<CBRCase> casos, Atributo a)
+			throws Exception {
+		Serializable obj;
+		try{
+		List<String> values=new ArrayList<String>();
+		Class<?> ccaso;
+		for(CBRCase caso: casos){
+			ccaso = caso.getClass();
+			CaseComponent casodessol= caso.getDescription();
+			//Si el atbo es del problema, cojo la parte del problema del caso, si no, la solución
+			if(!a.getEsProblema()){
+				casodessol = caso.getSolution();
+			}
+			String d = ccaso.getMethod("get"+a.getNombre().substring(0,1).toUpperCase()+
+					a.getNombre().substring(1), null).invoke(casodessol,null) +"";
+			values.add(d);
+		}
+		String moda = moda(values);
+		if(a.getTipo().equals("I")){
+			obj= Integer.parseInt(moda);
+		}else if(a.getTipo().equals("D")){
+			obj= Double.parseDouble(moda);
+		}else{
+			obj=moda;
+		}
+		}catch(Exception e){
+			throw new Exception(e);
+		}
+		return obj;
+	}
+	
+	/**Auxiliar. Calcula la media aritmética de un conjunto de doubles.
+	 * @param values Los valores del conjunto.
+	 * @return Media aritmética del conjunto
+	 */
+	private double media(List<Double> values){
+		double suma=0, den=0;
+		for(Double v:values){
+			suma+=v;
+			den++;
+		}
+		return suma/den;
+	}
+	
+	/**Auxiliar. Calcula la moda de un conjunto de doubles.
+	 * @param values Los valores del conjunto.
+	 * @return Moda del conjunto
+	 */
+	private String moda(List<String> values){
+		int max=0;
+		String val=values.get(0);
+		for(String a:values){
+			if(max< Collections.frequency(values, a)){
+				val=a;
+			}
+		}
+		return val;
+	}
+	
 }
+
