@@ -157,7 +157,15 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"tutors","Tutores"},
 		
 		{"source","Origen"},
-		{"destination","Destino"}
+		{"destination","Destino"},
+		{"go","Ir"},
 		
+		
+		{"numeric","Numéricos"},
+		{"combinebyavg","Combinar por media"},
+		{"combinebymode","Combinar por moda"},
+		{"combine","Combinar resultados"},
+		{"nocases","No se han encontrado casos para esta consulta."},
+		{"continue","Continuar"}
 	};
 }

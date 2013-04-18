@@ -11,6 +11,7 @@ import java.awt.event.ItemListener;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -202,6 +203,23 @@ public class PanelIntroducirValorAtbo extends JPanel {
 			return Integer.parseInt(textField.getText());
 		} else {
 			return Double.parseDouble(textField.getText());
+		}
+	}
+	
+	/**Establece el valor del campo de este panel.
+	 * @param valor el valor a introducir.
+	 */
+	public void setValue(Object valor){
+		if(valor!=null){
+			textField.setText(valor+"");
+			if(a.getTipo().equals("S")){
+				try {
+					((JFormattedTextField) textField).commitEdit();
+					//Si falla el parseo el textfield queda vacío.
+				} catch (ParseException e) {
+					textField.setText("");
+				}
+			}
 		}
 	}
 }
