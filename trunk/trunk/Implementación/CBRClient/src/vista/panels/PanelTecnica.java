@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
+import vista.configtecnicas.CombineQueryConfigFrame;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
 import vista.configtecnicas.FilterBasedConfigFrame;
 import vista.configtecnicas.NNConfigFrame;
@@ -189,7 +190,15 @@ public class PanelTecnica extends JPanel {
 				}
 			});
 			break;	
-			
+		case "CombineQueryAndCasesMethod":
+			b.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JFrame f = new CombineQueryConfigFrame(t, padre);
+					f.setVisible(true);
+					padre.setEnabled(false);
+				}
+			});
+			break;	
 		default:
 			b.setEnabled(false);
 		}

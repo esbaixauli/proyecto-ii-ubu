@@ -157,6 +157,15 @@ public class Recursos extends ListResourceBundle {
 		{"tutors","Tutors"},
 		
 		{"source","Source"},
-		{"destination","Destination"}
+		{"destination","Destination"},
+		{"go","Go"},
+		
+		
+		{"numeric","Numérics"},
+		{"combinebyavg","Combine by average"},
+		{"combinebymode","Combine by mode"},
+		{"combine","Combine results"},
+		{"nocases","No cases found for this query."},
+		{"continue","Continue"}
 	};
 }

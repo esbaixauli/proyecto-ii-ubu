@@ -38,9 +38,11 @@ import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import vista.componentes.FrameEstandar;
+import vista.configtecnicas.CombineQueryConfigFrame;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
 import vista.configtecnicas.FilterBasedConfigFrame;
 import vista.configtecnicas.NNConfigFrame;
+import vista.configtecnicas.NumOrCopyConfigFrame;
 import vista.panels.PanelIntroducirValorAtbo;
 import controlador.ControlEstadisticas;
 import controlador.ControlTecnicas;
@@ -348,7 +350,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			cRec = new NNConfigFrame(t, me);
 			;
 			break;
-		default:
+		default: btnConfigRec.setEnabled(false);
 			;
 		}
 	}
@@ -356,9 +358,25 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 	private void estableceFrameTecReu() {
 		String tec = (String) comboBoxReu.getSelectedItem();
 		asignaTecnicaCB(tec, "reu");
-		// En caso de crear nuevas técnicas,se debe seguir el switch de
-		// estableceFrameTecRec
-		btnConfigReu.setEnabled(false);
+		Tecnica t = tc.getDefaultReu();
+		//Decido qué frame se abre según la técnica
+		switch (tec) {
+		case "DirectAttributeCopyMethod":
+			cReu = new NumOrCopyConfigFrame(true,t, tc, me);
+			;
+			break;
+		case "NumericDirectProportionMethod":
+			cReu = new NumOrCopyConfigFrame(false,t, tc, me);
+			;
+			break;
+		case "CombineQueryAndCasesMethod":
+			cReu = new CombineQueryConfigFrame(t, me);
+			;
+			break;
+		default:btnConfigReu.setEnabled(false);
+			;
+		}
+		
 	}
 
 	private void estableceFrameTecRev() {
