@@ -3,7 +3,7 @@
 PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN"
 "http://java.sun.com/products/javahelp/map_2_0.dtd">
 <map version="1.0">
-		<mapID target="ConceptosBasicos" url="html/ConceptosBasicos.html"/>	
+		<mapID target="ConceptosBasicos" url="html_en/ConceptosBasicos.html"/>	
 		<mapID target="MainFrame" url="html_en/MainFrame.html"/>
 		<mapID target="ElegirTipoCasoFrame" url="html_en/ElegirTipoCasoFrame.html"/>
 		<mapID target="GestionTecnicasFrame" url="html_en/GestionTecnicasFrame.html"/>
