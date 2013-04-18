@@ -34,7 +34,7 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 	private int etapa;
 	private TipoCaso tc;
 	
-	private final static int RETRIEVE=0,REVISE=1,REUSE=2;
+	public final static int RETRIEVE=0,REVISE=1,REUSE=2;
 	/**
 	 * Posición en la lista de casos del caso en el que nos encontramos actualmente. Inicialmente 0.
 	 */
