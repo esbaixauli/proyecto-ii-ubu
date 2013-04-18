@@ -17,7 +17,7 @@ import servidorcbr.modelo.Usuario;
 
 public class ControlCBR {
 	
-	public static boolean retrieve(TipoCaso tc, HashMap<String,Serializable> query) throws MalformedURLException, IOException{
+	public static List<HashMap<String,Serializable>> retrieve(TipoCaso tc, HashMap<String,Serializable> query) throws MalformedURLException, IOException{
 		URLConnection con = ControlConexion.getServletCon("ServletCBR");
 		OutputStream outputStream = con.getOutputStream();
 	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
@@ -27,8 +27,10 @@ public class ControlCBR {
 	    InputStream inputStream = con.getInputStream();
 	    ObjectInputStream inputDelServlet = new ObjectInputStream(
 		          inputStream);
-	    return inputDelServlet.readBoolean();
-	    
+	    try {
+			return (List<HashMap<String,Serializable>>)inputDelServlet.readObject();
+		} catch (ClassNotFoundException e) {}
+	    return null;
 	}
 
 }

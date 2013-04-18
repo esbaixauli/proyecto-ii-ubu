@@ -279,6 +279,29 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 		panel.add(btnEjecutarCiclo);
 		
 		btnPasoapaso = new JButton(b.getString("stepbystep"));
+		btnPasoapaso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HashMap<String,Serializable> query = new HashMap<String,Serializable>();
+				for (Component c : panelAtbos.getComponents()) {
+					PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) c;
+					query.put(p.getKey(), p.getValue());
+					Atributo a =tc.getAtbos().get(p.getKey());
+					a.setMetrica(p.getMetrica());
+					a.setParamMetrica(p.getParamMetrica());
+				}
+			
+				try {
+					List<HashMap<String,Serializable>> ret = ControlCBR.retrieve(tc, query);
+					JFrame res = new ResultadosConsultaFrame(padre, ret, ResultadosConsultaFrame.RETRIEVE, tc);
+					res.setVisible(true);
+					me.setVisible(false);
+					me.dispose();
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null,
+							b.getString("connecterror"), "Error",JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
 		panel.add(btnPasoapaso);
 		btnEjecutarCiclo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
