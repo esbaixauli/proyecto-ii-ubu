@@ -123,6 +123,7 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 			panelResultados.setLayout(new BorderLayout());
 			panelCambiarCaso.setEnabled(false);
 			panelResultados.add(new JLabel(b.getString("nocases")));
+		
 		}
 	}
 	

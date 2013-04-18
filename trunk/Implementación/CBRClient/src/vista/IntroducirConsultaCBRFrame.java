@@ -288,6 +288,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 					Atributo a =tc.getAtbos().get(p.getKey());
 					a.setMetrica(p.getMetrica());
 					a.setParamMetrica(p.getParamMetrica());
+					a.setPeso(p.getPeso());
 				}
 			
 				try {

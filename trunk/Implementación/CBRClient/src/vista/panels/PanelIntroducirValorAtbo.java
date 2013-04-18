@@ -39,6 +39,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 	private JTextField textFieldParam=new JFormattedTextField(new DefaultFormatterFactory(
 			new NumberFormatter(new DecimalFormat())));
 	private JComboBox<String> comboBox;
+	private JFormattedTextField textFieldPeso;
 	
 	/**
 	 * Crea el panel.
@@ -50,9 +51,9 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		this.configurado = configurado;
 		setPreferredSize(new Dimension(531, 86));
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{77, 55, 189, 81, 55, 50, 0, 0};
+		gridBagLayout.columnWidths = new int[]{50, 55, 81, 116, 81, 55, 50, 0, 0};
 		gridBagLayout.rowHeights = new int[]{12, 0, 20, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
@@ -79,7 +80,6 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		add(lblNombre, gbc_lblNombre);
 		textField= establecerComponentesTipo();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 2;
 		gbc_textField.anchor = GridBagConstraints.NORTH;
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
@@ -87,6 +87,25 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		gbc_textField.gridy = 1;
 		add(textField, gbc_textField);
 		textField.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel(b.getString("atweight"));
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 4;
+		gbc_lblNewLabel.gridy = 1;
+		add(lblNewLabel, gbc_lblNewLabel);
+		
+		textFieldPeso = new JFormattedTextField(new DefaultFormatterFactory(
+				new NumberFormatter(new DecimalFormat()) ));
+		GridBagConstraints gbc_textFieldPeso = new GridBagConstraints();
+		gbc_textFieldPeso.gridwidth = 2;
+		gbc_textFieldPeso.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldPeso.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldPeso.gridx = 5;
+		gbc_textFieldPeso.gridy = 1;
+		add(textFieldPeso, gbc_textFieldPeso);
+		textFieldPeso.setColumns(10);
 		
 		
 		
@@ -98,6 +117,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		gbc_lblMetrica.gridy = 2;
 		add(lblMetrica, gbc_lblMetrica);
 		GridBagConstraints gbc_comboBox = new GridBagConstraints();
+		gbc_comboBox.gridwidth = 2;
 		gbc_comboBox.anchor = GridBagConstraints.NORTH;
 		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBox.insets = new Insets(0, 0, 0, 5);
@@ -111,7 +131,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		GridBagConstraints gbc_lblMParam = new GridBagConstraints();
 		gbc_lblMParam.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblMParam.insets = new Insets(0, 0, 0, 5);
-		gbc_lblMParam.gridx = 3;
+		gbc_lblMParam.gridx = 4;
 		gbc_lblMParam.gridy = 2;
 		add(lblMParam, gbc_lblMParam);
 		
@@ -125,10 +145,11 @@ public class PanelIntroducirValorAtbo extends JPanel {
 			}
 		});
 		GridBagConstraints gbc_textFieldParam = new GridBagConstraints();
+		gbc_textFieldParam.gridwidth = 2;
 		gbc_textFieldParam.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldParam.anchor = GridBagConstraints.NORTH;
 		gbc_textFieldParam.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldParam.gridx = 4;
+		gbc_textFieldParam.gridx = 5;
 		gbc_textFieldParam.gridy = 2;
 		add(textFieldParam, gbc_textFieldParam);
 		textFieldParam.setColumns(5);
@@ -188,7 +209,16 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		}
 	}
 		
+	/**Obtiene el peso del atributo de este panel.
+	 * @return El peso del atributo de este panel.
+	 */
+	public double getPeso(){
+		return Double.parseDouble(textFieldPeso.getText());
+	}
 	
+	/**Obtiene el nombre del atributo de este panel.
+	 * @return nombre del atributo.
+	 */
 	public String getKey() {
 		return a.getNombre();
 	}
