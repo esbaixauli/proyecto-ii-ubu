@@ -1,5 +1,7 @@
 package vista.componentes;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Locale;
@@ -70,8 +72,10 @@ public class FrameEstandar extends JFrame {
 		refrescar();
 	}
 	
-	
 
+	/**
+	 * Gestiona la acción por defecto al cerrar la ventana.
+	 */
 	private void cierreVentana() {
 		addWindowListener(new WindowAdapter() {
 			@Override

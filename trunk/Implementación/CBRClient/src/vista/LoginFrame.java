@@ -41,7 +41,7 @@ public class LoginFrame extends JFrame {
 	private JComboBox<String> comboBox;
 
 	/**
-	 * Launch the application.
+	 * Lanza la aplicación.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -72,7 +72,7 @@ public class LoginFrame extends JFrame {
 	private JLabel lblImagen;
 
 	/**
-	 * Create the frame.
+	 * Crea el frame.
 	 */
 	public LoginFrame() {
 

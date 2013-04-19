@@ -22,11 +22,19 @@ public class CasosTableCellRenderer extends DefaultTableCellRenderer {
 			boolean isSelected, boolean hasFocus, int row, int column) {
 
 		Component c= super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-		String nombreCol = table.getColumnName(column);
-		if(tc.getAtbos().get(nombreCol).getEsProblema()){
-			c.setForeground(Color.red);
+		String nombreCol="";
+		try{
+		nombreCol = table.getColumnName(column);
+		}catch(Exception ex){ex.printStackTrace();}
+		//Calidad en gris
+		if(nombreCol.equals("META_QUALITY")){
+			c.setForeground(Color.gray);
 		}else{
-			c.setForeground(Color.blue);
+			if(tc.getAtbos().get(nombreCol).getEsProblema()){
+				c.setForeground(Color.red);
+			}else{
+				c.setForeground(Color.blue);
+			}
 		}
 		return c;
 	}

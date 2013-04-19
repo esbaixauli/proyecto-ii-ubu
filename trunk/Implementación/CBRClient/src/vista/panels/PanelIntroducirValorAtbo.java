@@ -51,7 +51,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		this.configurado = configurado;
 		setPreferredSize(new Dimension(531, 86));
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{50, 55, 81, 116, 81, 55, 50, 0, 0};
+		gridBagLayout.columnWidths = new int[]{30, 84, 81, 116, 81, 55, 50, 0, 0};
 		gridBagLayout.rowHeights = new int[]{12, 0, 20, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -80,8 +80,8 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		add(lblNombre, gbc_lblNombre);
 		textField= establecerComponentesTipo();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.anchor = GridBagConstraints.NORTH;
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField.anchor = GridBagConstraints.NORTH;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.gridx = 3;
 		gbc_textField.gridy = 1;
@@ -99,7 +99,6 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		textFieldPeso = new JFormattedTextField(new DefaultFormatterFactory(
 				new NumberFormatter(new DecimalFormat()) ));
 		GridBagConstraints gbc_textFieldPeso = new GridBagConstraints();
-		gbc_textFieldPeso.gridwidth = 2;
 		gbc_textFieldPeso.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldPeso.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldPeso.gridx = 5;
@@ -145,7 +144,6 @@ public class PanelIntroducirValorAtbo extends JPanel {
 			}
 		});
 		GridBagConstraints gbc_textFieldParam = new GridBagConstraints();
-		gbc_textFieldParam.gridwidth = 2;
 		gbc_textFieldParam.insets = new Insets(0, 0, 0, 5);
 		gbc_textFieldParam.anchor = GridBagConstraints.NORTH;
 		gbc_textFieldParam.fill = GridBagConstraints.HORIZONTAL;
@@ -159,6 +157,8 @@ public class PanelIntroducirValorAtbo extends JPanel {
 			lblMetrica.setVisible(false);
 			lblMParam.setVisible(false);
 			textFieldParam.setVisible(false);
+			textFieldPeso.setVisible(false);
+			lblNewLabel.setVisible(false);
 			setPreferredSize(new Dimension(getWidth(), 50));
 		}
 	}
@@ -242,7 +242,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 	public void setValue(Object valor){
 		if(valor!=null){
 			textField.setText(valor+"");
-			if(a.getTipo().equals("S")){
+			if(!a.getTipo().equals("S")){//Si no es una cadena de texto
 				try {
 					((JFormattedTextField) textField).commitEdit();
 					//Si falla el parseo el textfield queda vacío.
@@ -252,4 +252,5 @@ public class PanelIntroducirValorAtbo extends JPanel {
 			}
 		}
 	}
+	
 }

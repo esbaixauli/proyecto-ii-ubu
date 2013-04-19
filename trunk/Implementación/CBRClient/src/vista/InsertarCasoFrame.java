@@ -62,7 +62,7 @@ public class InsertarCasoFrame extends FrameEstandar {
 	public InsertarCasoFrame(final TipoCaso tc, final JFrame padre) {
 		super(padre);me=this;
 		setTitle(b.getString("insertcases"));
-		setBounds(100, 100, 615, 426);
+		setBounds(100, 100, 573, 426);
 		this.tc=tc;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -233,6 +233,11 @@ public class InsertarCasoFrame extends FrameEstandar {
 			JPanel p = new PanelIntroducirValorAtbo(at, false, this);
 			panelManual.add(p);
 		}
+		Atributo calidad= new Atributo();
+		calidad.setNombre("META_QUALITY");
+		calidad.setTipo("D");
+		calidad.setMetrica("equal");
+		panelManual.add(new PanelIntroducirValorAtbo(calidad, false, this));
 		
 	}
 	

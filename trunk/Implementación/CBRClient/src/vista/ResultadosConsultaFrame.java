@@ -1,6 +1,8 @@
 package vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,13 +26,20 @@ import servidorcbr.modelo.TipoCaso;
 import vista.componentes.FrameEstandar;
 import vista.panels.PanelIntroducirValorAtbo;
 import vista.panels.PanelMostrarAtbo;
+import javax.swing.border.TitledBorder;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 
 @SuppressWarnings("serial")
 public class ResultadosConsultaFrame extends FrameEstandar {
 	private JFrame me;
 	private JSpinner spinner;
 	private List<HashMap<String, Serializable>> casos;
-	private JPanel panelResultados;
+	private JPanel panelProblema;
+	private JPanel panelSol;
 	private int etapa;
 	private TipoCaso tc;
 	
@@ -50,79 +59,111 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 	 */
 	public ResultadosConsultaFrame(JFrame padre,
 			List<HashMap<String, Serializable>> lcasos,int etapa, TipoCaso tc) {
-		super(padre);
+		super(padre);me = this;
+		setSize(1060, 350); setLocationRelativeTo(null);
 		this.tc=tc;
 		this.etapa=etapa;
-		me = this;
+
 		this.casos=lcasos;
-		getContentPane().setLayout(new BorderLayout(0, 0));
-		
+		getContentPane().setLayout(new BorderLayout());
 		switch(etapa){
 			case RETRIEVE:setTitle(b.getString("retrieval"));break;
 			case REUSE:setTitle(b.getString("reuse"));break;
 			case REVISE:setTitle(b.getString("revise"));break;
 		}
-
+		int tam=1;
+		if(casos!=null){
+		 tam =  casos.size();
+		}
+		
 		JPanel panelCambiarCaso = new JPanel();
 		panelCambiarCaso.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		getContentPane().add(panelCambiarCaso, BorderLayout.NORTH);
 		panelCambiarCaso.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-
-		JButton buttonAnterior = new JButton("<<");
-		buttonAnterior.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(actual-1 >= 0){
-					cambiarDeCaso(actual-1);
-				}
-			}
-		});
-		panelCambiarCaso.add(buttonAnterior);
 		
-		spinner = new JSpinner();
-		spinner.setModel(new SpinnerNumberModel(1, 1, casos.size(), 1));
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panelCambiarCaso.add(panel_3);
 		
-		panelCambiarCaso.add(spinner);
-
-		
-		JLabel lblnumero = new JLabel("/"+casos.size());
-		panelCambiarCaso.add(lblnumero);
-		
-		JButton btnGo = new JButton(b.getString("go"));
-		btnGo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				cambiarDeCaso( ((int)spinner.getValue()) -1);
-			}
-		});
-		panelCambiarCaso.add(btnGo);
-
-		JButton buttonSiguiente = new JButton(">>");
-		buttonSiguiente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(actual+1<casos.size()){
-					cambiarDeCaso(actual+1);
-				}
-			}
-		});
-		panelCambiarCaso.add(buttonSiguiente);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
-		
-		panelResultados = new JPanel();
-		scrollPane.setViewportView(panelResultados);
+				JButton buttonAnterior = new JButton("<<");
+				panel_3.add(buttonAnterior);
+				
+				JPanel panel_2 = new JPanel();
+				panel_2.setBackground(Color.LIGHT_GRAY);
+				panel_3.add(panel_2);
+				panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+				
+				spinner = new JSpinner();
+				panel_2.add(spinner);
+				spinner.setPreferredSize(new Dimension(35,(int) spinner.getPreferredSize().getHeight()));
+				spinner.setModel(new SpinnerNumberModel(1, 1,tam, 1));
+				
+						
+						JLabel lblnumero = new JLabel("/"+Math.max(tam-1,0));
+						panel_2.add(lblnumero);
+						
+						JButton btnGo = new JButton(b.getString("go"));
+						panel_2.add(btnGo);
+						
+								JButton buttonSiguiente = new JButton(">>");
+								panel_3.add(buttonSiguiente);
+								buttonSiguiente.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										if(actual+1<casos.size()){
+											cambiarDeCaso(actual+1);
+										}
+									}
+								});
+						btnGo.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								cambiarDeCaso( ((int)spinner.getValue()) -1);
+							}
+						});
+				buttonAnterior.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if(actual-1 >= 0){
+							cambiarDeCaso(actual-1);
+						}
+					}
+				});
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		
 		JButton btnContinuar = new JButton(b.getString("continue"));
 		panel.add(btnContinuar);
+		
+		JPanel panel_1 = new JPanel();
+		getContentPane().add(panel_1, BorderLayout.CENTER);
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		panel_1.add(scrollPane);
+		
+		panelProblema = new JPanel();
+		scrollPane.setViewportView(panelProblema);
+		panelProblema.setBorder(new TitledBorder(null, b.getString("problem"), TitledBorder.CENTER, TitledBorder.TOP, null, Color.RED));
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		panel_1.add(scrollPane_1);
+		
+		panelSol = new JPanel();
+		scrollPane_1.setViewportView(panelSol);
+		panelSol.setBorder(new TitledBorder(null, b.getString("solution"), TitledBorder.CENTER, TitledBorder.TOP, null, Color.BLUE));
 		if(casos!=null && (!casos.isEmpty())){
-			panelResultados.setLayout(new BoxLayout(panelResultados, BoxLayout.Y_AXIS));
+			panelProblema.setLayout(new BoxLayout(panelProblema, BoxLayout.Y_AXIS));
+			panelSol.setLayout(new BoxLayout(panelSol, BoxLayout.Y_AXIS));
 			cambiarDeCaso(0);
 		}else{
-			panelResultados.setLayout(new BorderLayout());
-			panelCambiarCaso.setEnabled(false);
-			panelResultados.add(new JLabel(b.getString("nocases")));
+			panelProblema.setLayout(new FlowLayout());
+			btnContinuar.setEnabled(false);
+			btnGo.setEnabled(false);
+			buttonAnterior.setEnabled(false);
+			buttonSiguiente.setEnabled(false);
+			spinner.setEnabled(false);
+			panelProblema.add(new JLabel(b.getString("nocases")));
 		
 		}
 	}
@@ -131,12 +172,15 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 	 * @param i El número del caso seleccionado (empezando por el 0).
 	 */
 	private void cambiarDeCaso(int i){
-		panelResultados.removeAll();
+		panelProblema.removeAll();
+		panelSol.removeAll();
 		establecerPanelesCaso(i);
 		actual = i;
-		spinner.setValue(i);
-		panelResultados.revalidate();
-		panelResultados.repaint();
+		spinner.setValue(i+1);
+		panelProblema.revalidate();
+		panelProblema.repaint();
+		panelSol.revalidate();
+		panelSol.repaint();
 	}
 	
 	/**Auxiliar. Establece los paneles de cada atributo del tipo de caso al cambiar de uno a otro.
@@ -146,12 +190,21 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 		if(etapa == REVISE){
 			for(Atributo a: tc.getAtbos().values() ){
 				PanelIntroducirValorAtbo pa = new PanelIntroducirValorAtbo(a, false, me);
-				
 				pa.setValue(casos.get(i).get(a.getNombre()));
+				if(a.getEsProblema()){//Segun sea problema o no va en su panel correspondiente
+					panelProblema.add(pa);
+				}else{
+					panelSol.add(pa);
+				}
 			}
 		}else{
 			for(Entry<String, Serializable> atbo: casos.get(i).entrySet()){
-				panelResultados.add(new PanelMostrarAtbo(atbo.getKey(),atbo.getValue()));
+				JPanel pa = new PanelMostrarAtbo(atbo.getKey(),atbo.getValue());
+				if(tc.getAtbos().get(atbo.getKey()).getEsProblema()){
+					panelProblema.add(pa);
+				}else{
+					panelSol.add(pa);
+				}
 			}
 		}
 	}
