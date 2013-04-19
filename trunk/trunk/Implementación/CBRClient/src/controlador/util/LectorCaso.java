@@ -24,20 +24,31 @@ public class LectorCaso {
 		casos = new ArrayList<HashMap<String,Object>>();
 		Instances instancias = new Instances(reader);
 		tic=tc;
+		if(instancias.numInstances()<=0 || instancias.instance(0).numAttributes()!= tc.getAtbos().size()+1){
+			return null;
+		}
 		//por cada fila de las instancias (cada Instancia es un caso)
 		for(int i=0; i<instancias.numInstances();i++){
 			casos.add(new HashMap<String,Object>());
 			Instance instancia=instancias.instance(i);
-			for(int j = 0; j<tc.getAtbos().size();j++){
+			//size +1 por la calidad
+			for(int j = 0; j<tc.getAtbos().size()+1;j++){
 				insertarAtributo(instancia,i,j);
 			}
-			if(casos.get(i).isEmpty()){
+			//de nuevo, tc.getAtbos().size()+1, es decir, numero de atributos
+			//+ 1 atbo que es la calidad
+			if(casos.get(i).size() != tc.getAtbos().size()+1 ){
 				return null;
 			}
 		}
 		return casos;
 	}
 	
+	/**Inserta un atributo como par clave-valor en el hashmap de la fila correspondiente.
+	 * @param instancia Instancia correspondiente a un caso, con todos los atributos del caso.
+	 * @param i Fila correspondiente al caso.
+	 * @param j Columna del atributo a insertar.
+	 */
 	private static void insertarAtributo(Instance instancia,int i,int j){
 		Attribute at = instancia.attribute(j);
 		String valor = instancia.toString(j);
@@ -45,14 +56,19 @@ public class LectorCaso {
 		Object o=valor;
 		if(tic.getAtbos().containsKey(nombre)){
 			if(at.isNumeric()){
-				String tipoCaso = tic.getAtbos().get(nombre).getTipo();
-				if(tipoCaso.equals("I")){
-					o=Integer.parseInt(valor);
-				}else{
+				try{
+					String tipoCaso = tic.getAtbos().get(nombre).getTipo();
 					o =Double.parseDouble(valor);
+					if(tipoCaso.equals("I")){
+						o=Math.round((Double) o);
+					}
+				}catch(NumberFormatException ex){
+					return;
 				}
 			}
 			casos.get(i).put(nombre,o);
+		}else if(nombre.equalsIgnoreCase("META_QUALITY") && at.isNumeric() ){
+			casos.get(i).put("META_QUALITY",o);
 		}
 	} 
 	
