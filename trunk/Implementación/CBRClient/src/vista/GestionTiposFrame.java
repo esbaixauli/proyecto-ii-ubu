@@ -23,6 +23,8 @@ import servidorcbr.modelo.Usuario;
 import vista.componentes.FrameEstandar;
 import vista.panels.ListaCasos;
 import controlador.ControlTipos;
+import java.awt.BorderLayout;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class GestionTiposFrame extends FrameEstandar{
@@ -59,11 +61,11 @@ public class GestionTiposFrame extends FrameEstandar{
 			me.dispose();
 		
 		}
-		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
+		 contentPane.setLayout(new BorderLayout(0, 0));
 		 
 		 JScrollPane scrollPane = new JScrollPane();
 		 scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		 contentPane.add(scrollPane);
+		 contentPane.add(scrollPane, BorderLayout.CENTER);
 		 list = new ListaCasos(tipos);
 		 scrollPane.setViewportView(list);
 		 
@@ -71,11 +73,12 @@ public class GestionTiposFrame extends FrameEstandar{
 		 		list.setFixedCellWidth(ancho);
 		
 		
-		JToolBar toolBar = new JToolBar("ToolBar",JToolBar.HORIZONTAL);
-		toolBar.setBorder(BorderFactory.createEtchedBorder() );
+		JPanel toolBarPanel = new JPanel();
+		toolBarPanel.setBackground(Color.GRAY);
+		toolBarPanel.setBorder(BorderFactory.createEtchedBorder() );
 
 
-		toolBar.setFloatable(false);
+		
 		
 		JButton btnNuevobut = new JButton(new ImageIcon("res/document_32.png"));
 		btnNuevobut.addActionListener(new ActionListener() {
@@ -100,10 +103,10 @@ public class GestionTiposFrame extends FrameEstandar{
 				me.setEnabled(false);
 			}
 		});
-		toolBar.add(btnVerbut);
+		toolBarPanel.add(btnVerbut);
 		btnVerbut.setToolTipText(b.getString("seecasetype"));
 		btnNuevobut.setToolTipText(b.getString("newcasetype"));
-		toolBar.add(btnNuevobut);
+		toolBarPanel.add(btnNuevobut);
 		
 		JButton btnBorrarbut = new JButton(new ImageIcon("res/delete_32.png"));
 		btnBorrarbut.addActionListener(new ActionListener() {
@@ -142,10 +145,10 @@ public class GestionTiposFrame extends FrameEstandar{
 		});
 		
 		btnBorrarbut.setToolTipText(b.getString("delcasetype"));
-		toolBar.add(btnBorrarbut);
+		toolBarPanel.add(btnBorrarbut);
 		
-		contentPane.add(toolBar);
-		
+		contentPane.add(toolBarPanel, BorderLayout.SOUTH);
+		setLocationRelativeTo(padre);
 	}
 
 	

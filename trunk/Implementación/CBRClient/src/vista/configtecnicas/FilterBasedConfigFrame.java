@@ -1,6 +1,7 @@
 package vista.configtecnicas;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -38,7 +39,15 @@ import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import vista.componentes.FrameEstandar;
 import controlador.ControlTecnicas;
+import java.awt.Color;
+import javax.swing.border.EtchedBorder;
+import javax.swing.BoxLayout;
+import java.awt.GridLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
 
+@SuppressWarnings("serial")
 public class FilterBasedConfigFrame extends FrameEstandar {
 
 	private JPanel contentPane;
@@ -48,6 +57,7 @@ public class FilterBasedConfigFrame extends FrameEstandar {
 	private final List<JTextField> textFields;
 	private final List<JComboBox> comboBoxes;
 	private List<String> atbos;
+	
 
 	/**
 	 * Crea el frame.
@@ -55,7 +65,7 @@ public class FilterBasedConfigFrame extends FrameEstandar {
 	public FilterBasedConfigFrame(final Tecnica t, TipoCaso tc, final JFrame padre) {
 		super(padre);me=this;
 		
-		setBounds(100, 100, 438, 300);
+		setBounds(100, 100, 450, 300);
 		setTitle("Filter based retrieval");
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -66,6 +76,8 @@ public class FilterBasedConfigFrame extends FrameEstandar {
 		contentPane.add(lblPredicados, BorderLayout.NORTH);
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel.setBackground(Color.GRAY);
 		contentPane.add(panel, BorderLayout.SOUTH);
 		
 		JButton btnOk = new JButton(b.getString("ok"));
@@ -124,52 +136,43 @@ public class FilterBasedConfigFrame extends FrameEstandar {
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		JPanel panel_1 = new JPanel();
 		scrollPane.setViewportView(panel_1);
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 		
-		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{0, 0, 263, 92, 0};
-		gbl_panel_1.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		panel_1.setLayout(gbl_panel_1);
 		
 	
 		
-		int i=0;
+	
 		textFields = new ArrayList<JTextField>(tc.getAtbos().size());
 		comboBoxes = new ArrayList<JComboBox>(tc.getAtbos().size());
 		atbos = new ArrayList<String>(tc.getAtbos().size());
 		for (Atributo a : tc.getAtbos().values()) {
 			if (a.getEsProblema()) {
 				atbos.add(a.getNombre());
-
-				JSeparator separator = new JSeparator();
-				GridBagConstraints gbc_separator = new GridBagConstraints();
-				gbc_separator.insets = new Insets(0, 0, 5, 5);
-				gbc_separator.gridx = 0;
-				gbc_separator.gridy = i;
-				panel_1.add(separator, gbc_separator);
-
-				i++;
+				//Añadimos cada componente al panel interno panelAt
+				JPanel panelAt = new JPanel();
+				panelAt.setBorder(new EtchedBorder());
+				panelAt.setMaximumSize(new Dimension(418, 50));
+				panel_1.add(panelAt);
+				panelAt.setLayout(new FormLayout(new ColumnSpec[] {
+						ColumnSpec.decode("109px"),
+						ColumnSpec.decode("170px"),
+						ColumnSpec.decode("139px"),},
+					new RowSpec[] {
+						RowSpec.decode("50px"),}));
+	
 
 				JLabel lblAtbo = new JLabel(a.getNombre());
-				GridBagConstraints gbc_lblAtbo = new GridBagConstraints();
-				gbc_lblAtbo.anchor = GridBagConstraints.EAST;
-				gbc_lblAtbo.insets = new Insets(0, 0, 0, 5);
-				gbc_lblAtbo.gridx = 1;
-				gbc_lblAtbo.gridy = i;
-				panel_1.add(lblAtbo, gbc_lblAtbo);
+				
+				panelAt.add(lblAtbo, "1, 1, center, center");
 
 				JComboBox comboBox = new JComboBox();
-				GridBagConstraints gbc_comboBox = new GridBagConstraints();
-				gbc_comboBox.insets = new Insets(0, 0, 0, 5);
-				gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-				gbc_comboBox.gridx = 2;
-				gbc_comboBox.gridy = i;
+				
 				comboBox.addItem("["+b.getString("none")+"]");
 				for (String predicado : ControlTecnicas.getFilterPredicates()) {
 					comboBox.addItem(predicado);
 				}
-				panel_1.add(comboBox, gbc_comboBox);
+				panelAt.add(comboBox, "2, 1, fill, center");
+				
 				comboBox.addItemListener(new ItemListener() {
 					public void itemStateChanged(ItemEvent arg0) {
 						int i = comboBoxes.indexOf(arg0.getSource());
@@ -184,11 +187,8 @@ public class FilterBasedConfigFrame extends FrameEstandar {
 
 				JFormattedTextField tff = new JFormattedTextField();
 				tff.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat())));
-				GridBagConstraints gbc_textField = new GridBagConstraints();
-				gbc_textField.anchor = GridBagConstraints.EAST;
-				gbc_textField.gridx = 3;
-				gbc_textField.gridy = i;
-				panel_1.add(tff, gbc_textField);
+				
+				panelAt.add(tff, "3, 1, center, center");
 				tff.setColumns(10);
 				tff.setEnabled(false);
 				textFields.add(tff);
@@ -206,9 +206,10 @@ public class FilterBasedConfigFrame extends FrameEstandar {
 					}
 				}
 
-				i++;
+				
 			}
 		}
+		setLocationRelativeTo(padre);
 	}
 
 }

@@ -19,6 +19,8 @@ import servidorcbr.modelo.Usuario;
 import vista.componentes.FrameEstandar;
 import vista.panels.ListaUsuarios;
 import controlador.ControlUsuarios;
+import java.awt.Color;
+import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class GestionUsuariosFrame extends FrameEstandar {
@@ -60,6 +62,8 @@ public class GestionUsuariosFrame extends FrameEstandar {
 		scrollPane.setViewportView(list);
 
 		JPanel panel = new JPanel();
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel.setBackground(Color.GRAY);
 		contentPane.add(panel, BorderLayout.SOUTH);
 
 		JButton btnVer = new JButton(new ImageIcon("res/search_32.png"));
@@ -132,6 +136,7 @@ public class GestionUsuariosFrame extends FrameEstandar {
 		});
 		btnEliminar.setToolTipText(b.getString("deluser"));
 		panel.add(btnEliminar);
+		setLocationRelativeTo(padre);
 	}
 
 	@Override

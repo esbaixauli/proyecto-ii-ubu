@@ -1,12 +1,15 @@
 package vista;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import javax.swing.DefaultComboBoxModel;
@@ -24,6 +27,9 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
+import com.jtattoo.plaf.AbstractTheme;
+
+
 import servidorcbr.modelo.Usuario;
 import controlador.ControlConexion;
 import controlador.ControlLogin;
@@ -39,7 +45,9 @@ public class LoginFrame extends JFrame {
 	private JTextField ipTextField;
 	private JTextField puertoTextField;
 	private JComboBox<String> comboBox;
+	
 
+	
 	/**
 	 * Lanza la aplicación.
 	 */
@@ -48,7 +56,7 @@ public class LoginFrame extends JFrame {
 			public void run() {
 				try {
 					try {
-					
+						
 						UIManager
 								.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 
@@ -75,7 +83,7 @@ public class LoginFrame extends JFrame {
 	 * Crea el frame.
 	 */
 	public LoginFrame() {
-
+		setUndecorated(true);
 		setResizable(false);
 		setTitle(bundle.getString("login"));
 		setIconImage(new ImageIcon("res/logocbr.png").getImage());
@@ -254,6 +262,17 @@ public class LoginFrame extends JFrame {
 		gbc_btnAcceso.gridx = 3;
 		gbc_btnAcceso.gridy = 6;
 		contentPane.add(btnAcceso, gbc_btnAcceso);
+		centrar();
+	}
+	
+	/**
+	 * Centra la ventana en pantalla.
+	 */
+	private void centrar() {
+	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+	    int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+	    setLocation(x, y);
 	}
 
 }

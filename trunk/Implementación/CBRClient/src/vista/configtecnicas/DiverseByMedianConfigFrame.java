@@ -1,6 +1,8 @@
 package vista.configtecnicas;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -31,6 +33,13 @@ import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import vista.componentes.FrameEstandar;
+import javax.swing.BoxLayout;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
+import java.awt.GridLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
 
 @SuppressWarnings("serial")
 public class DiverseByMedianConfigFrame extends FrameEstandar {
@@ -62,14 +71,11 @@ public class DiverseByMedianConfigFrame extends FrameEstandar {
 		contentPane.add(scrollPane, BorderLayout.CENTER);
 		JPanel panel = new JPanel();
 		scrollPane.setViewportView(panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 18, 166, 0};
-		gbl_panel.rowHeights = new int[]{0, 0, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		panel.setLayout(gbl_panel);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.GRAY);
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		
 		JButton btnOk = new JButton(b.getString("ok"));
@@ -118,31 +124,29 @@ public class DiverseByMedianConfigFrame extends FrameEstandar {
 			if (a.getEsProblema()) {
 				atbos.add(a.getNombre());
 
-				JSeparator separator = new JSeparator();
-				GridBagConstraints gbc_separator = new GridBagConstraints();
-				gbc_separator.insets = new Insets(0, 0, 5, 5);
-				gbc_separator.gridx = 0;
-				gbc_separator.gridy = i;
-				panel.add(separator, gbc_separator);
 
+				JPanel panelAt = new JPanel();
+				panelAt.setBorder(new EtchedBorder());
+				panelAt.setMaximumSize(new Dimension(328, 50));
+				
+				panelAt.setLayout(new FormLayout(new ColumnSpec[] {
+						ColumnSpec.decode("164px"),
+						ColumnSpec.decode("164px"),},
+					new RowSpec[] {
+						RowSpec.decode("50px"),}));
 				i++;
 
-				JLabel lblAtbo = new JLabel(a.getNombre()+":");
-				GridBagConstraints gbc_lblAtbo = new GridBagConstraints();
-				gbc_lblAtbo.insets = new Insets(0, 0, 0, 5);
-				gbc_lblAtbo.anchor = GridBagConstraints.EAST;
-				gbc_lblAtbo.gridx = 1;
-				gbc_lblAtbo.gridy = i;
-				panel.add(lblAtbo, gbc_lblAtbo);
+				JLabel lblAtbo = new JLabel(a.getNombre()+": ");
+			
+				panelAt.add(lblAtbo, "1, 1, right, fill");
 
 				JFormattedTextField tff = new JFormattedTextField();
 				tff.setFormatterFactory(new DefaultFormatterFactory(new NumberFormatter(new DecimalFormat())));
-				GridBagConstraints gbc_textField = new GridBagConstraints();
-				gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-				gbc_textField.gridx = 2;
-				gbc_textField.gridy = i;
-				panel.add(tff, gbc_textField);
+				
+				panelAt.add(tff, "2, 1, left, center");
 				tff.setColumns(10);
+				panel.add(panelAt);
+
 				textFields.add(tff);
 				if (t.getParams() == null) {
 					tff.setText("1");
@@ -160,6 +164,7 @@ public class DiverseByMedianConfigFrame extends FrameEstandar {
 				i++;
 			}
 		}
+		setLocationRelativeTo(padre);
 	}
 
 }

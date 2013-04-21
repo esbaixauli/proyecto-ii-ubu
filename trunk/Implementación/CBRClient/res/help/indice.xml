@@ -19,7 +19,8 @@
 		<indexitem text="Recuperación:K-NN (K vecinos más cercanos)"    target="NNConfigFrame"/>
 		<indexitem text="Revisión:Direct copy (Copia de atributos)"  target="NumOrCopyConfigFrame"/>	
 		<indexitem text="Revisión:Numeric proportion" target="NumOrCopyConfigFrame"/>
-		<indexitem text="Revisión:Combine Query and Cases" target="NumOrCopyConfigFrame"/>			
+		<indexitem text="Revisión:Combine Query and Cases" target="NumOrCopyConfigFrame"/>
+		<indexitem text="Estadísticas"    target="EstadisticasFrame"/>			
 </index>
 
 

@@ -29,22 +29,24 @@ import vista.componentes.FrameEstandar;
 import vista.panels.PanelAtributos;
 import vista.panels.ScrollPanelAtbo;
 import controlador.ControlTipos;
+import javax.swing.BoxLayout;
+import java.awt.BorderLayout;
+import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class NuevoTipoFrame extends FrameEstandar {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JButton btnTecnicas;
-
-	private JToolBar toolBar;
 	private ScrollPanelAtbo panelProblema;
 	private ScrollPanelAtbo panelSolucion;
-	private JSeparator separator;
-	private JSeparator separator_1;
-	private JSeparator separator_2;
 	JButton btnGuardar;
 
 	protected TipoCaso tc;
+	private JPanel panel;
+	private JPanel panel_1;
+	private JPanel panel_2;
+	private JPanel panel_3;
 
 	/**
 	 * Create the frame.
@@ -57,183 +59,147 @@ public class NuevoTipoFrame extends FrameEstandar {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		GridBagLayout gbl_contentPane = new GridBagLayout();
-		gbl_contentPane.columnWidths = new int[] { 136, 120, 139, 0, 350, 0 };
-		gbl_contentPane.rowHeights = new int[] { 0, 0, 20, 115, 111, 23, 9, 0,
-				0 };
-		gbl_contentPane.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
-				Double.MIN_VALUE };
-		gbl_contentPane.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
-				0.0, 0.0, 0.0, Double.MIN_VALUE };
-		contentPane.setLayout(gbl_contentPane);
-
-		separator = new JSeparator();
-		GridBagConstraints gbc_separator = new GridBagConstraints();
-		gbc_separator.insets = new Insets(0, 0, 5, 5);
-		gbc_separator.gridx = 0;
-		gbc_separator.gridy = 0;
-		contentPane.add(separator, gbc_separator);
-
-		separator_2 = new JSeparator();
-		GridBagConstraints gbc_separator_2 = new GridBagConstraints();
-		gbc_separator_2.insets = new Insets(0, 0, 5, 5);
-		gbc_separator_2.gridx = 0;
-		gbc_separator_2.gridy = 1;
-		contentPane.add(separator_2, gbc_separator_2);
-
-		JLabel lblNombretipo = new JLabel(b.getString("atname") + ":");
-		GridBagConstraints gbc_lblNombretipo = new GridBagConstraints();
-		gbc_lblNombretipo.anchor = GridBagConstraints.EAST;
-		gbc_lblNombretipo.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNombretipo.gridx = 0;
-		gbc_lblNombretipo.gridy = 2;
-		contentPane.add(lblNombretipo, gbc_lblNombretipo);
-
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.anchor = GridBagConstraints.NORTH;
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 2;
-		contentPane.add(textField, gbc_textField);
-		textField.setColumns(10);
-
-		panelProblema = new ScrollPanelAtbo(b.getString("problem"), Color.RED,true);
-		GridBagConstraints gbc_panelProblema = new GridBagConstraints();
-		gbc_panelProblema.fill = GridBagConstraints.BOTH;
-		gbc_panelProblema.insets = new Insets(0, 0, 5, 0);
-		gbc_panelProblema.gridwidth = 5;
-		gbc_panelProblema.gridx = 0;
-		gbc_panelProblema.gridy = 3;
-		contentPane.add(panelProblema, gbc_panelProblema);
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		contentPane.add(panel, BorderLayout.NORTH);
+				
+						JLabel lblNombretipo = new JLabel(b.getString("atname") + ":");
+						lblNombretipo.setForeground(Color.WHITE);
+						panel.add(lblNombretipo);
+		
+				textField = new JTextField();
+				panel.add(textField);
+				textField.setColumns(10);
+		
+		panel_1 = new JPanel();
+		contentPane.add(panel_1, BorderLayout.CENTER);
+				panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
+		
+				panelProblema = new ScrollPanelAtbo(b.getString("problem"), Color.RED,true);
+				panel_1.add(panelProblema);
 
 		panelSolucion = new ScrollPanelAtbo(b.getString("solution"), Color.BLUE,false);
-		GridBagConstraints gbc_panelSolucion = new GridBagConstraints();
-		gbc_panelSolucion.fill = GridBagConstraints.BOTH;
-		gbc_panelSolucion.insets = new Insets(0, 0, 5, 0);
-		gbc_panelSolucion.gridwidth = 5;
-		gbc_panelSolucion.gridx = 0;
-		gbc_panelSolucion.gridy = 4;
-		contentPane.add(panelSolucion, gbc_panelSolucion);
+		panel_1.add(panelSolucion);
+		
+		panel_2 = new JPanel();
+		contentPane.add(panel_2, BorderLayout.SOUTH);
+				GridBagLayout gbl_panel_2 = new GridBagLayout();
+				gbl_panel_2.columnWidths = new int[]{745, 0};
+				gbl_panel_2.rowHeights = new int[]{23, 50, 0};
+				gbl_panel_2.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+				gbl_panel_2.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+				panel_2.setLayout(gbl_panel_2);
+				
+						btnTecnicas = new JButton(b.getString("managemethods"));
+						GridBagConstraints gbc_btnTecnicas = new GridBagConstraints();
+						gbc_btnTecnicas.fill = GridBagConstraints.HORIZONTAL;
+						gbc_btnTecnicas.insets = new Insets(0, 0, 5, 0);
+						gbc_btnTecnicas.gridx = 0;
+						gbc_btnTecnicas.gridy = 0;
+						panel_2.add(btnTecnicas, gbc_btnTecnicas);
+						btnTecnicas.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								if (comprobarPaneles()) {
+									rellenaTC();
+									JFrame f = new GestionTecnicasFrame(tc, me);
+									f.setVisible(true);
+									me.setEnabled(false);
+									
+								}
+							}
+						});
+				
+				panel_3 = new JPanel();
+				panel_3.setBackground(Color.GRAY);
+				panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+				GridBagConstraints gbc_panel_3 = new GridBagConstraints();
+				gbc_panel_3.fill = GridBagConstraints.HORIZONTAL;
+				gbc_panel_3.gridx = 0;
+				gbc_panel_3.gridy = 1;
+				panel_2.add(panel_3, gbc_panel_3);
+						
+								btnGuardar = new JButton(new ImageIcon("res/save_32.png"));
+								panel_3.add(btnGuardar);
+								btnGuardar.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										if( tc.getTecnicasRecuperacion()==null){
+											JOptionPane.showMessageDialog(null,
+													b.getString("notconfigured"), "Error",
+													JOptionPane.ERROR_MESSAGE);
+											return;
+										}
+										if (comprobarTextField() && comprobarPaneles() ) {
+											HashMap<String, Atributo> atbos = new HashMap<String,Atributo>();
+											//Obtengo los atributos del problema
+											for (int i = 0; i < panelProblema.getPanelAtbo()
+													.getComponentCount(); i++) {
+												Atributo actual = ((PanelAtributos) panelProblema
+														.getPanelAtbo().getComponent(i)).getAtributo();
+												actual.setEsProblema(true);
+												atbos.put(actual.getNombre(),actual);
+											}
+											//Obtengo los atributos de la solución
+											for (int i = 0; i < panelSolucion.getPanelAtbo()
+													.getComponentCount(); i++) {
+												Atributo actual = ((PanelAtributos) panelSolucion
+														.getPanelAtbo().getComponent(i)).getAtributo();
+												actual.setEsProblema(false);
+												atbos.put(actual.getNombre(),actual);
+											}
+											//Establezco los atributos y el nombre del tipo de caso
+											tc.setAtbos(atbos);
+											tc.setNombre(textField.getText().trim());
+											try{
+											//Inserto el tipo de caso
+											ControlTipos.addTipo(tc);
+											}catch(java.io.IOException exc){
+												JOptionPane.showMessageDialog(null,
+														b.getString("inserterror"), "Error",
+														JOptionPane.ERROR_MESSAGE);
+												exc.printStackTrace();
+											}
+											//Activo al padre y cierro la ventana actual
+											padre.setEnabled(true);
+											me.dispose();
+										}
+									}
 
-		btnTecnicas = new JButton(b.getString("managemethods"));
-		btnTecnicas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comprobarPaneles()) {
-					rellenaTC();
-					JFrame f = new GestionTecnicasFrame(tc, me);
-					f.setVisible(true);
-					me.setEnabled(false);
-					
-				}
-			}
-		});
-		GridBagConstraints gbc_btnTecnicas = new GridBagConstraints();
-		gbc_btnTecnicas.anchor = GridBagConstraints.NORTH;
-		gbc_btnTecnicas.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnTecnicas.insets = new Insets(0, 0, 5, 0);
-		gbc_btnTecnicas.gridwidth = 5;
-		gbc_btnTecnicas.gridx = 0;
-		gbc_btnTecnicas.gridy = 5;
-		contentPane.add(btnTecnicas, gbc_btnTecnicas);
+									private boolean comprobarTextField() {
+										String texto = textField.getText();
+										if (texto.isEmpty()) {
+											JOptionPane.showMessageDialog(null,
+													b.getString("incorrectformat"), "Error",
+													JOptionPane.ERROR_MESSAGE);
+											return false;
+										}
+										for (int i = 0; i < texto.length(); i++) {
+											if (!Character.isLetterOrDigit(texto.charAt(i))) {
+												JOptionPane.showMessageDialog(null,
+														b.getString("incorrectformat"), "Error",
+														JOptionPane.ERROR_MESSAGE);
+												return false;
+											}
+										}
+										return true;
+									}
+								});
+						JButton btnSalir = new JButton(new ImageIcon("res/left_32.png"));
+						panel_3.add(btnSalir);
+						btnSalir.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
 
-		toolBar = new JToolBar();
-		toolBar.setFloatable(false);
-		toolBar.setBorder(BorderFactory.createEtchedBorder() );
-		GridBagConstraints gbc_toolBar = new GridBagConstraints();
-		gbc_toolBar.insets = new Insets(0, 0, 5, 0);
-		gbc_toolBar.gridwidth = 5;
-		gbc_toolBar.gridx = 0;
-		gbc_toolBar.gridy = 6;
-		contentPane.add(toolBar, gbc_toolBar);
-
-		btnGuardar = new JButton(new ImageIcon("res/save_32.png"));
-		btnGuardar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if( tc.getTecnicasRecuperacion()==null){
-					JOptionPane.showMessageDialog(null,
-							b.getString("notconfigured"), "Error",
-							JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-				if (comprobarTextField() && comprobarPaneles() ) {
-					HashMap<String, Atributo> atbos = new HashMap<String,Atributo>();
-					//Obtengo los atributos del problema
-					for (int i = 0; i < panelProblema.getPanelAtbo()
-							.getComponentCount(); i++) {
-						Atributo actual = ((PanelAtributos) panelProblema
-								.getPanelAtbo().getComponent(i)).getAtributo();
-						actual.setEsProblema(true);
-						atbos.put(actual.getNombre(),actual);
-					}
-					//Obtengo los atributos de la solución
-					for (int i = 0; i < panelSolucion.getPanelAtbo()
-							.getComponentCount(); i++) {
-						Atributo actual = ((PanelAtributos) panelSolucion
-								.getPanelAtbo().getComponent(i)).getAtributo();
-						actual.setEsProblema(false);
-						atbos.put(actual.getNombre(),actual);
-					}
-					//Establezco los atributos y el nombre del tipo de caso
-					tc.setAtbos(atbos);
-					tc.setNombre(textField.getText().trim());
-					try{
-					//Inserto el tipo de caso
-					ControlTipos.addTipo(tc);
-					}catch(java.io.IOException exc){
-						JOptionPane.showMessageDialog(null,
-								b.getString("inserterror"), "Error",
-								JOptionPane.ERROR_MESSAGE);
-						exc.printStackTrace();
-					}
-					//Activo al padre y cierro la ventana actual
-					padre.setEnabled(true);
-					me.dispose();
-				}
-			}
-
-			private boolean comprobarTextField() {
-				String texto = textField.getText();
-				if (texto.isEmpty()) {
-					JOptionPane.showMessageDialog(null,
-							b.getString("incorrectformat"), "Error",
-							JOptionPane.ERROR_MESSAGE);
-					return false;
-				}
-				for (int i = 0; i < texto.length(); i++) {
-					if (!Character.isLetterOrDigit(texto.charAt(i))) {
-						JOptionPane.showMessageDialog(null,
-								b.getString("incorrectformat"), "Error",
-								JOptionPane.ERROR_MESSAGE);
-						return false;
-					}
-				}
-				return true;
-			}
-		});
-		toolBar.add(btnGuardar);
-		JButton btnSalir = new JButton(new ImageIcon("res/left_32.png"));
-		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				if (JOptionPane.showConfirmDialog(null,
-						b.getString("exitnosave"), b.getString("exitnosave"),
-						JOptionPane.YES_NO_OPTION) == 0) {
-					padre.setEnabled(true);
-					padre.setVisible(true);
-					me.dispose();
-				}
-			}
-		});
-		toolBar.add(btnSalir);
-
-		separator_1 = new JSeparator();
-		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
-		gbc_separator_1.insets = new Insets(0, 0, 0, 5);
-		gbc_separator_1.gridx = 3;
-		gbc_separator_1.gridy = 7;
-		contentPane.add(separator_1, gbc_separator_1);
+								if (JOptionPane.showConfirmDialog(null,
+										b.getString("exitnosave"), b.getString("exitnosave"),
+										JOptionPane.YES_NO_OPTION) == 0) {
+									padre.setEnabled(true);
+									padre.setVisible(true);
+									me.dispose();
+								}
+							}
+						});
 
 		removeWindowListener(getWindowListeners()[0]);
 		addWindowListener(new java.awt.event.WindowAdapter() {
@@ -247,6 +213,7 @@ public class NuevoTipoFrame extends FrameEstandar {
 				}
 			}
 		});
+		setLocationRelativeTo(padre);
 	}
 
 	private boolean comprobarPaneles() {

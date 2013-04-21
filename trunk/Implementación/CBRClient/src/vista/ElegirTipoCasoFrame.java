@@ -77,7 +77,7 @@ public class ElegirTipoCasoFrame extends FrameEstandar {
 		ListaCasos l = new ListaCasos(datos);
 		establecerControlLista(l);
 		scrollPane.setViewportView(l);
-		cierreVentana();
+		setLocationRelativeTo(padre);
 	}
 
 	private void establecerControlLista(ListaCasos l) {
@@ -136,13 +136,5 @@ public class ElegirTipoCasoFrame extends FrameEstandar {
 	
 	
 
-	private void cierreVentana() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				padre.setEnabled(true);
-				me.dispose();
-			}
-		});
-	}
+	
 }

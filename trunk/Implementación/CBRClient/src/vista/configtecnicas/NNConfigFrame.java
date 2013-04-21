@@ -23,6 +23,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class NNConfigFrame extends FrameEstandar {
@@ -62,6 +64,8 @@ public class NNConfigFrame extends FrameEstandar {
 		contentPane.add(spinner, "2, 4");
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(panel, "2, 6, fill, fill");
 		
 		JButton btnOk = new JButton(b.getString("ok"));
@@ -90,6 +94,7 @@ public class NNConfigFrame extends FrameEstandar {
 			}
 		});
 		panel.add(btnCancel);
+		setLocationRelativeTo(padre);
 	}
 
 }

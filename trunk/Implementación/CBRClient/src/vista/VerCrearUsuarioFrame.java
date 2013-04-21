@@ -33,6 +33,8 @@ import servidorcbr.modelo.Usuario;
 import vista.componentes.FrameEstandar;
 import controlador.ControlTipos;
 import controlador.ControlUsuarios;
+import java.awt.Color;
+import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class VerCrearUsuarioFrame extends FrameEstandar {
@@ -175,6 +177,8 @@ public class VerCrearUsuarioFrame extends FrameEstandar {
 		}
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_1.setBackground(Color.GRAY);
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		
 		JButton btnOk = new JButton(b.getString("ok"));
@@ -267,6 +271,7 @@ public class VerCrearUsuarioFrame extends FrameEstandar {
 			}
 		});
 		panel_1.add(btnCancel);
+		
 	}
 
 }

@@ -46,6 +46,8 @@ import vista.configtecnicas.NumOrCopyConfigFrame;
 import vista.panels.PanelIntroducirValorAtbo;
 import controlador.ControlEstadisticas;
 import controlador.ControlTecnicas;
+import javax.swing.border.EtchedBorder;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class IntroducirConsultaCBRFrame extends FrameEstandar {
@@ -79,6 +81,10 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 	private JPanel panel_1;
 	private JLabel lblMediaCalidad;
 	private JButton btnPasoapaso;
+	private JPanel panel_2;
+	private JPanel panel_3;
+	private JPanel panel_4;
+	private JPanel panel_5;
 
 	/**
 	 * Create the frame.
@@ -89,7 +95,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 		this.tc = tic;
 		this.configurado = configurado;
 		setTitle("CBR: " + tc.getNombre());
-		setBounds(100, 100, 573, 466);
+		setBounds(100, 100, 573, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -112,21 +118,30 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 					TitledBorder.TOP, null, Color.BLUE));
 			contentPane.add(panelMet,BorderLayout.CENTER);
 			GridBagLayout gbl_panelMet = new GridBagLayout();
-			gbl_panelMet.columnWidths = new int[] { 90, 0, 145, 35, 87, 72, 0, 0 };
-			gbl_panelMet.rowHeights = new int[] { 10, 14, 23, 14, 23, 14, 23, 14,
-					23, 0, 0 };
+			gbl_panelMet.columnWidths = new int[] { 101, 0, 145, 35, 87, 72, 0, 0 };
+			gbl_panelMet.rowHeights = new int[] { 15, 14, 23, 14, 23, 14, 23, 14,
+					19, 92, 0 };
 			gbl_panelMet.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
 					0.0, 0.0, Double.MIN_VALUE };
 			gbl_panelMet.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-					0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+					0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
 			panelMet.setLayout(gbl_panelMet);
-
-			lblRec = new JLabel(b.getString("retrieval"));
-			GridBagConstraints gbc_lblRec = new GridBagConstraints();
-			gbc_lblRec.insets = new Insets(0, 0, 5, 5);
-			gbc_lblRec.gridx = 2;
-			gbc_lblRec.gridy = 1;
-			panelMet.add(lblRec, gbc_lblRec);
+			
+			panel_2 = new JPanel();
+			panel_2.setBackground(Color.GRAY);
+			panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+			gbc_panel_2.gridwidth = 5;
+			gbc_panel_2.insets = new Insets(0, 0, 5, 5);
+			gbc_panel_2.fill = GridBagConstraints.HORIZONTAL;
+			gbc_panel_2.gridx = 1;
+			gbc_panel_2.gridy = 1;
+			panelMet.add(panel_2, gbc_panel_2);
+			
+						lblRec = new JLabel(b.getString("retrieval"));
+						lblRec.setForeground(Color.WHITE);
+						lblRec.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+						panel_2.add(lblRec);
 
 			comboBoxRec = new JComboBox<String>();
 			GridBagConstraints gbc_comboBoxRec = new GridBagConstraints();
@@ -154,13 +169,22 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 								me.setEnabled(false);
 							}
 						});
-
-			lblReu = new JLabel(b.getString("reuse"));
-			GridBagConstraints gbc_lblReu = new GridBagConstraints();
-			gbc_lblReu.insets = new Insets(0, 0, 5, 5);
-			gbc_lblReu.gridx = 2;
-			gbc_lblReu.gridy = 3;
-			panelMet.add(lblReu, gbc_lblReu);
+			
+			panel_3 = new JPanel();
+			panel_3.setBackground(Color.GRAY);
+			panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			GridBagConstraints gbc_panel_3 = new GridBagConstraints();
+			gbc_panel_3.gridwidth = 5;
+			gbc_panel_3.insets = new Insets(0, 0, 5, 5);
+			gbc_panel_3.fill = GridBagConstraints.HORIZONTAL;
+			gbc_panel_3.gridx = 1;
+			gbc_panel_3.gridy = 3;
+			panelMet.add(panel_3, gbc_panel_3);
+			
+						lblReu = new JLabel(b.getString("reuse"));
+						lblReu.setForeground(Color.WHITE);
+						lblReu.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+						panel_3.add(lblReu);
 
 			comboBoxReu = new JComboBox<String>();
 			GridBagConstraints gbc_comboBoxReu = new GridBagConstraints();
@@ -188,13 +212,22 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 								me.setEnabled(false);
 							}
 						});
-
-			lblRev = new JLabel(b.getString("revise"));
-			GridBagConstraints gbc_lblRev = new GridBagConstraints();
-			gbc_lblRev.insets = new Insets(0, 0, 5, 5);
-			gbc_lblRev.gridx = 2;
-			gbc_lblRev.gridy = 5;
-			panelMet.add(lblRev, gbc_lblRev);
+			
+			panel_4 = new JPanel();
+			panel_4.setBackground(Color.GRAY);
+			panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			GridBagConstraints gbc_panel_4 = new GridBagConstraints();
+			gbc_panel_4.gridwidth = 5;
+			gbc_panel_4.insets = new Insets(0, 0, 5, 5);
+			gbc_panel_4.fill = GridBagConstraints.HORIZONTAL;
+			gbc_panel_4.gridx = 1;
+			gbc_panel_4.gridy = 5;
+			panelMet.add(panel_4, gbc_panel_4);
+			
+						lblRev = new JLabel(b.getString("revise"));
+						lblRev.setForeground(Color.WHITE);
+						lblRev.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+						panel_4.add(lblRev);
 
 			comboBoxRev = new JComboBox<String>();
 			GridBagConstraints gbc_comboBoxRev = new GridBagConstraints();
@@ -222,13 +255,22 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 								me.setEnabled(false);
 							}
 						});
-
-			lblRet = new JLabel(b.getString("retain"));
-			GridBagConstraints gbc_lblRet = new GridBagConstraints();
-			gbc_lblRet.insets = new Insets(0, 0, 5, 5);
-			gbc_lblRet.gridx = 2;
-			gbc_lblRet.gridy = 7;
-			panelMet.add(lblRet, gbc_lblRet);
+			
+			panel_5 = new JPanel();
+			panel_5.setBackground(Color.GRAY);
+			panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			GridBagConstraints gbc_panel_5 = new GridBagConstraints();
+			gbc_panel_5.gridwidth = 5;
+			gbc_panel_5.insets = new Insets(0, 0, 5, 5);
+			gbc_panel_5.fill = GridBagConstraints.HORIZONTAL;
+			gbc_panel_5.gridx = 1;
+			gbc_panel_5.gridy = 7;
+			panelMet.add(panel_5, gbc_panel_5);
+			
+						lblRet = new JLabel(b.getString("retain"));
+						lblRet.setForeground(Color.WHITE);
+						lblRet.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+						panel_5.add(lblRet);
 
 			comboBoxRet = new JComboBox<String>();
 			GridBagConstraints gbc_comboBoxRet = new GridBagConstraints();
@@ -274,6 +316,8 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 		panel_1.add(lblMediaCalidad);
 		
 		panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelEjec.add(panel);
 		btnEjecutarCiclo = new JButton(b.getString("executeCBR"));
 		panel.add(btnEjecutarCiclo);
@@ -337,6 +381,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 		}
 		
 		pedirEstadisticas();
+		setLocationRelativeTo(padre);
 	}
 	
 	private void pedirEstadisticas(){

@@ -82,6 +82,7 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 		panelCambiarCaso.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(Color.GRAY);
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelCambiarCaso.add(panel_3);
 		
@@ -128,6 +129,8 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 				});
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		
 		JButton btnContinuar = new JButton(b.getString("continue"));
@@ -166,6 +169,7 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 			panelProblema.add(new JLabel(b.getString("nocases")));
 		
 		}
+		setLocationRelativeTo(padre);
 	}
 	
 	/** Auxiliar. Muestra en pantalla el caso seleccionado con los botones anterior-siguiente o con la opción Ir.
