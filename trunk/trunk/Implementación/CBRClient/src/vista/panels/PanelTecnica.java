@@ -30,6 +30,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
 
 public class PanelTecnica extends JPanel {
 
@@ -115,6 +117,7 @@ public class PanelTecnica extends JPanel {
 		}
 		
 		JPanel defPanel = new JPanel();
+		defPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		add(defPanel, BorderLayout.SOUTH);
 		JLabel def = new JLabel(b.getString("default")+":");
 		defPanel.add(def);

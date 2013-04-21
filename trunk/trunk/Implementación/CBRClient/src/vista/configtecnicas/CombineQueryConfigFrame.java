@@ -16,6 +16,8 @@ import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
 import vista.componentes.FrameEstandar;
 import vista.panels.PanelPostAdaptacion;
+import java.awt.Color;
+import javax.swing.border.EtchedBorder;
 
 @SuppressWarnings("serial")
 public class CombineQueryConfigFrame extends FrameEstandar {
@@ -44,6 +46,8 @@ public class CombineQueryConfigFrame extends FrameEstandar {
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 		
 		JPanel panel = new JPanel();
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel.setBackground(Color.GRAY);
 		contentPane.add(panel,BorderLayout.SOUTH);
 		
 		
@@ -77,7 +81,7 @@ public class CombineQueryConfigFrame extends FrameEstandar {
 		
 		panelPostAdaptacion = new PanelPostAdaptacion();
 		contentPane.add(panelPostAdaptacion, BorderLayout.CENTER);
-		
+		setLocationRelativeTo(padre);
 	}
 
 }

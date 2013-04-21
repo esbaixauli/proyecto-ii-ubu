@@ -41,6 +41,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JTextField;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class InsertarCasoFrame extends FrameEstandar {
@@ -62,7 +63,7 @@ public class InsertarCasoFrame extends FrameEstandar {
 	public InsertarCasoFrame(final TipoCaso tc, final JFrame padre) {
 		super(padre);me=this;
 		setTitle(b.getString("insertcases"));
-		setBounds(100, 100, 573, 426);
+		setBounds(100, 100, 610, 440);
 		this.tc=tc;
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -76,6 +77,8 @@ public class InsertarCasoFrame extends FrameEstandar {
 		
 		JPanel panelFichero = new JPanel();
 		pickerFichero = new JFilePicker("",b.getString("open"),JFilePicker.MODE_OPEN);
+		pickerFichero.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		pickerFichero.setBackground(Color.GRAY);
 		panelFichero.setBorder(new TitledBorder(null,b.getString("loadfromfile") , TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panelFichero = new GridBagConstraints();
 		gbc_panelFichero.anchor = GridBagConstraints.NORTH;
@@ -126,6 +129,8 @@ public class InsertarCasoFrame extends FrameEstandar {
 		scrollPane_1.setColumnHeaderView(label);
 		
 		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_2.setBackground(Color.GRAY);
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
 		gbc_panel_2.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
@@ -134,6 +139,7 @@ public class InsertarCasoFrame extends FrameEstandar {
 		contentPane.add(panel_2, gbc_panel_2);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.LIGHT_GRAY);
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_2.add(panel);
 		
@@ -165,6 +171,7 @@ public class InsertarCasoFrame extends FrameEstandar {
 		panel.add(btnFilter);
 		
 		lblCargadas = new JLabel(b.getString("loadedcases")+0);
+		lblCargadas.setForeground(Color.WHITE);
 		panel_2.add(lblCargadas);
 		
 		JButton btnInsertFichero = new JButton(b.getString("insertcases"));
@@ -181,6 +188,7 @@ public class InsertarCasoFrame extends FrameEstandar {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridheight = 2;
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane.gridx = 0;
@@ -193,7 +201,18 @@ public class InsertarCasoFrame extends FrameEstandar {
 		scrollPane.setViewportView(panelManual);
 		panelManual.setLayout(new BoxLayout(panelManual, BoxLayout.Y_AXIS));
 		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_1.setBackground(Color.GRAY);
+		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.anchor = GridBagConstraints.NORTH;
+		gbc_panel_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel_1.gridx = 0;
+		gbc_panel_1.gridy = 5;
+		contentPane.add(panel_1, gbc_panel_1);
+		
 		JButton btnInsManual = new JButton(b.getString("manualinsert"));
+		panel_1.add(btnInsManual);
 		btnInsManual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				List<HashMap<String,Object>> casos = new ArrayList<HashMap<String,Object>>();
@@ -214,19 +233,6 @@ public class InsertarCasoFrame extends FrameEstandar {
 				insertarCasos(casos);
 			}
 		});
-		GridBagConstraints gbc_btnInsManual = new GridBagConstraints();
-		gbc_btnInsManual.insets = new Insets(0, 0, 5, 0);
-		gbc_btnInsManual.gridx = 0;
-		gbc_btnInsManual.gridy = 4;
-		contentPane.add(btnInsManual, gbc_btnInsManual);
-		
-		JPanel panel_1 = new JPanel();
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.anchor = GridBagConstraints.NORTH;
-		gbc_panel_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel_1.gridx = 0;
-		gbc_panel_1.gridy = 5;
-		contentPane.add(panel_1, gbc_panel_1);
 		
 		
 		for(Atributo at : tc.getAtbos().values()){
@@ -238,7 +244,7 @@ public class InsertarCasoFrame extends FrameEstandar {
 		calidad.setTipo("D");
 		calidad.setMetrica("equal");
 		panelManual.add(new PanelIntroducirValorAtbo(calidad, false, this));
-		
+		setLocationRelativeTo(padre);
 	}
 	
 	private void insertarCasos(List<HashMap<String,Object>> lcasos){

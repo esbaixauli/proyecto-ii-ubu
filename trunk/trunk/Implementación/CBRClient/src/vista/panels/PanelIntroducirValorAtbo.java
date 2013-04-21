@@ -27,6 +27,10 @@ import javax.swing.text.NumberFormatter;
 
 import servidorcbr.modelo.Atributo;
 import vista.TraductorTipos;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.RowSpec;
 
 /*Panel que permite introducir el valor de la Query para un atributo*/
 @SuppressWarnings("serial")
@@ -50,12 +54,6 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		this.a = a;
 		this.configurado = configurado;
 		setPreferredSize(new Dimension(531, 86));
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{30, 84, 81, 116, 81, 55, 50, 0, 0};
-		gridBagLayout.rowHeights = new int[]{12, 0, 20, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
 		
 		comboBox = new JComboBox<String>();
 		comboBox.addItemListener(new ItemListener() {
@@ -67,72 +65,92 @@ public class PanelIntroducirValorAtbo extends JPanel {
 				}
 			}
 		});
+		setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("max(29dlu;default)"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("52px"),
+				ColumnSpec.decode("59px"),
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("61px"),
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("74px"),
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("212px"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,},
+			new RowSpec[] {
+				FormFactory.PARAGRAPH_GAP_ROWSPEC,
+				RowSpec.decode("20px"),
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("20px"),}));
 		
 		JLabel lblNombre = new JLabel(a.getNombre() + " ("
 				+ b.getString(TraductorTipos.persistenciaAVista(a.getTipo()))
 				+ "):");
-		GridBagConstraints gbc_lblNombre = new GridBagConstraints();
-		gbc_lblNombre.gridwidth = 2;
-		gbc_lblNombre.anchor = GridBagConstraints.EAST;
-		gbc_lblNombre.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNombre.gridx = 1;
-		gbc_lblNombre.gridy = 1;
-		add(lblNombre, gbc_lblNombre);
+		//Si el nombre del atributo es muy largo, pon puntos suspensivos.
+		if(lblNombre.getText().length()>25){
+			lblNombre.setText(lblNombre.getText().substring(0,22)+"...):");
+		}
+		add(lblNombre, "1, 2, 6, 1, right, center");
 		textField= establecerComponentesTipo();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.anchor = GridBagConstraints.NORTH;
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 3;
-		gbc_textField.gridy = 1;
-		add(textField, gbc_textField);
+		add(textField, "8, 2, fill, center");
 		textField.setColumns(10);
+		
+		JPanel panelPeso = new JPanel();
+		add(panelPeso, "10, 2, fill, center");
+		GridBagLayout gbl_panelPeso = new GridBagLayout();
+		gbl_panelPeso.columnWidths = new int[]{150, 22, 0};
+		gbl_panelPeso.rowHeights = new int[]{20, 0};
+		gbl_panelPeso.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelPeso.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panelPeso.setLayout(gbl_panelPeso);
 		
 		JLabel lblNewLabel = new JLabel(b.getString("atweight"));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 4;
-		gbc_lblNewLabel.gridy = 1;
-		add(lblNewLabel, gbc_lblNewLabel);
+		gbc_lblNewLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNewLabel.gridx = 0;
+		gbc_lblNewLabel.gridy = 0;
+		panelPeso.add(lblNewLabel, gbc_lblNewLabel);
 		
 		textFieldPeso = new JFormattedTextField(new DefaultFormatterFactory(
 				new NumberFormatter(new DecimalFormat()) ));
 		GridBagConstraints gbc_textFieldPeso = new GridBagConstraints();
-		gbc_textFieldPeso.insets = new Insets(0, 0, 5, 5);
-		gbc_textFieldPeso.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldPeso.gridx = 5;
-		gbc_textFieldPeso.gridy = 1;
-		add(textFieldPeso, gbc_textFieldPeso);
-		textFieldPeso.setColumns(10);
+		gbc_textFieldPeso.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textFieldPeso.gridx = 1;
+		gbc_textFieldPeso.gridy = 0;
+		panelPeso.add(textFieldPeso, gbc_textFieldPeso);
+		textFieldPeso.setColumns(2);
 		
 		
 		
 		JLabel lblMetrica = new JLabel(b.getString("atmetric"));
-		GridBagConstraints gbc_lblMetrica = new GridBagConstraints();
-		gbc_lblMetrica.anchor = GridBagConstraints.EAST;
-		gbc_lblMetrica.insets = new Insets(0, 0, 0, 5);
-		gbc_lblMetrica.gridx = 1;
-		gbc_lblMetrica.gridy = 2;
-		add(lblMetrica, gbc_lblMetrica);
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.gridwidth = 2;
-		gbc_comboBox.anchor = GridBagConstraints.NORTH;
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.insets = new Insets(0, 0, 0, 5);
-		gbc_comboBox.gridx = 2;
-		gbc_comboBox.gridy = 2;
-		add(comboBox, gbc_comboBox);
+		add(lblMetrica, "4, 4, right, center");
+		add(comboBox, "6, 4, 3, 1, fill, center");
+		
+		JPanel panelParamMet = new JPanel();
+		add(panelParamMet, "10, 4, fill, fill");
+		GridBagLayout gbl_panelParamMet = new GridBagLayout();
+		gbl_panelParamMet.columnWidths = new int[]{150, 22, 0};
+		gbl_panelParamMet.rowHeights = new int[]{20, 0};
+		gbl_panelParamMet.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelParamMet.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panelParamMet.setLayout(gbl_panelParamMet);
 		
 
 		
 		JLabel lblMParam = new JLabel(b.getString("atmetricparam"));
 		GridBagConstraints gbc_lblMParam = new GridBagConstraints();
-		gbc_lblMParam.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblMParam.anchor = GridBagConstraints.EAST;
 		gbc_lblMParam.insets = new Insets(0, 0, 0, 5);
-		gbc_lblMParam.gridx = 4;
-		gbc_lblMParam.gridy = 2;
-		add(lblMParam, gbc_lblMParam);
+		gbc_lblMParam.gridx = 0;
+		gbc_lblMParam.gridy = 0;
+		panelParamMet.add(lblMParam, gbc_lblMParam);
+		GridBagConstraints gbc_textFieldParam = new GridBagConstraints();
+		gbc_textFieldParam.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textFieldParam.gridx = 1;
+		gbc_textFieldParam.gridy = 0;
+		panelParamMet.add(textFieldParam, gbc_textFieldParam);
 		
 		
 		textFieldParam.addFocusListener(new FocusAdapter() {
@@ -143,19 +161,13 @@ public class PanelIntroducirValorAtbo extends JPanel {
 				}
 			}
 		});
-		GridBagConstraints gbc_textFieldParam = new GridBagConstraints();
-		gbc_textFieldParam.insets = new Insets(0, 0, 0, 5);
-		gbc_textFieldParam.anchor = GridBagConstraints.NORTH;
-		gbc_textFieldParam.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textFieldParam.gridx = 5;
-		gbc_textFieldParam.gridy = 2;
-		add(textFieldParam, gbc_textFieldParam);
-		textFieldParam.setColumns(5);
+		textFieldParam.setColumns(2);
 		
 		if(!configurado){
 			comboBox.setVisible(false);
 			lblMetrica.setVisible(false);
 			lblMParam.setVisible(false);
+			panelParamMet.setVisible(false);
 			textFieldParam.setVisible(false);
 			textFieldPeso.setVisible(false);
 			lblNewLabel.setVisible(false);

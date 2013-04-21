@@ -23,6 +23,8 @@ import vista.panels.PanelPostAdaptacion;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class NumOrCopyConfigFrame extends FrameEstandar {
@@ -57,6 +59,8 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.Y_AXIS));
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.GRAY);
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_2.add(panel_1);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{120, 59, 120, 0};
@@ -66,6 +70,7 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 		panel_1.setLayout(gbl_panel_1);
 		
 		JLabel lblSource = new JLabel(b.getString("source")+":");
+		lblSource.setForeground(Color.WHITE);
 		GridBagConstraints gbc_lblSource = new GridBagConstraints();
 		gbc_lblSource.anchor = GridBagConstraints.EAST;
 		gbc_lblSource.insets = new Insets(0, 0, 0, 5);
@@ -81,6 +86,8 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 				panel_1.add(comboBoxOrigen, gbc_comboBoxOrigen);
 		
 		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(Color.GRAY);
+		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panel_2.add(panel_3);
 		GridBagLayout gbl_panel_3 = new GridBagLayout();
 		gbl_panel_3.columnWidths = new int[]{120, 59, 120, 0};
@@ -90,6 +97,7 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 		panel_3.setLayout(gbl_panel_3);
 		
 		JLabel lblDestination = new JLabel(b.getString("destination")+":");
+		lblDestination.setForeground(Color.WHITE);
 		GridBagConstraints gbc_lblDestination = new GridBagConstraints();
 		gbc_lblDestination.anchor = GridBagConstraints.EAST;
 		gbc_lblDestination.insets = new Insets(0, 0, 0, 5);
@@ -105,6 +113,8 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 		panel_3.add(comboBoxDestino, gbc_comboBoxDestino);
 		
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(panel,BorderLayout.SOUTH);
 		
 		
@@ -165,6 +175,7 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 				}
 			}
 		}
+		setLocationRelativeTo(padre);
 	}
 
 }

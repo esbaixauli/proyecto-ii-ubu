@@ -22,6 +22,7 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class AcercaDeJFrame extends JFrame {
@@ -55,6 +56,7 @@ public class AcercaDeJFrame extends JFrame {
 		panel.add(lblLogoUBU);
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.GRAY);
 		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		
@@ -156,6 +158,7 @@ public class AcercaDeJFrame extends JFrame {
 		panel_2.add(lblTutores, "3, 9, center, center");
 
 		cierreVentana();
+		setLocationRelativeTo(padre);
 	}
 	
 	/**

@@ -44,6 +44,7 @@ public class FrameEstandar extends JFrame {
 		super();
 		me=this;
 		this.padre=padre;
+
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setIconImage(new ImageIcon("res/logocbr.png").getImage());

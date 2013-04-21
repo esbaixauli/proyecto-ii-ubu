@@ -21,6 +21,7 @@ topicimage="ItemIco"-->
 			<tocitem text="Making a query"    target="IntroducirConsultaCBRFrame"/>
 			<tocitem text="Creating a new case type"    target="NuevoTipoFrame"/>
 			<tocitem text="Modifying case types"    target="VerTipoFrame"/>	
+			<tocitem text="Statistics"    target="EstadisticasFrame"/>	
         </tocitem>
 	
 </toc>

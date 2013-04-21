@@ -2,14 +2,17 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,6 +25,12 @@ import javax.swing.border.EtchedBorder;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import vista.estadisticas.EstadisticasFrame;
+import java.awt.Font;
+import java.awt.GridLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import java.awt.FlowLayout;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame{
@@ -53,7 +62,7 @@ public class MainFrame extends JFrame{
 		setTitle(bundle.getString("mainmenu"));
 		setIconImage(new javax.swing.ImageIcon("res/logocbr.png").getImage());
 		setResizable(false);
-		setBounds(100, 100, 449, 208);
+		setBounds(100, 100, 468, 210);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -65,15 +74,31 @@ public class MainFrame extends JFrame{
 		
 		JPanel panel_adm = new JPanel();
 		tabbedpane.addTab( bundle.getString("admin"), panel_adm);
-		GridBagLayout gbl_panel_adm = new GridBagLayout();
-		gbl_panel_adm.columnWidths = new int[]{54, 147, 35, 152, 0, 0};
-		gbl_panel_adm.rowHeights = new int[]{31, 58, 28, 0};
-		gbl_panel_adm.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_adm.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_adm.setLayout(gbl_panel_adm);
+		panel_adm.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panelGestionarTipos = new JPanel();
+		panel_adm.add(panelGestionarTipos);
+		panelGestionarTipos.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("228px"),},
+			new RowSpec[] {
+				RowSpec.decode("100px"),
+				RowSpec.decode("50px"),}));
 		
 		JButton btnGestionarTipos = new JButton((new ImageIcon("res/gear_64.png")));
+		btnGestionarTipos.setPreferredSize(new Dimension(150, btnGestionarTipos.getPreferredSize().height));
+		panelGestionarTipos.add(btnGestionarTipos, "1, 1, center, bottom");
 		btnGestionarTipos.setToolTipText(bundle.getString("managecasetypes"));
+		
+		JPanel panel = new JPanel();
+		panelGestionarTipos.add(panel, "1, 2, center, center");
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel.setBackground(Color.GRAY);
+		
+		JLabel lblManage = new JLabel(bundle.getString("managecasetypes"));
+		lblManage.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblManage.setForeground(Color.WHITE);
+		panel.add(lblManage);
+		lblManage.setHorizontalAlignment(SwingConstants.CENTER);
 		btnGestionarTipos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GestionTiposFrame gestion = new GestionTiposFrame(u,me);
@@ -81,15 +106,29 @@ public class MainFrame extends JFrame{
 				me.setEnabled(false);
 			}
 		});
-		GridBagConstraints gbc_btnGestionarTipos = new GridBagConstraints();
-		gbc_btnGestionarTipos.fill = GridBagConstraints.BOTH;
-		gbc_btnGestionarTipos.insets = new Insets(0, 0, 5, 5);
-		gbc_btnGestionarTipos.gridx = 1;
-		gbc_btnGestionarTipos.gridy = 1;
-		panel_adm.add(btnGestionarTipos, gbc_btnGestionarTipos);
+		
+		JPanel panelUsuarios = new JPanel();
+		panel_adm.add(panelUsuarios);
+		panelUsuarios.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("228px"),},
+			new RowSpec[] {
+				RowSpec.decode("100px"),
+				RowSpec.decode("50px"),}));
 		
 		JButton btnGestionarusuarios = new JButton((new ImageIcon("res/user_64.png")));
+		btnGestionarusuarios.setPreferredSize(new Dimension(150, btnGestionarusuarios.getPreferredSize().height));
+		panelUsuarios.add(btnGestionarusuarios, "1, 1, center, bottom");
 		btnGestionarusuarios.setToolTipText(bundle.getString("manageusers"));
+		
+		JPanel panel_1 = new JPanel();
+		panelUsuarios.add(panel_1, "1, 2, center, center");
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_1.setBackground(Color.GRAY);
+		
+		JLabel lblMngusers = new JLabel(bundle.getString("manageusers"));
+		lblMngusers.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblMngusers.setForeground(Color.WHITE);
+		panel_1.add(lblMngusers);
 		
 		btnGestionarusuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -98,51 +137,33 @@ public class MainFrame extends JFrame{
 				me.setEnabled(false);
 			}
 		});
-		GridBagConstraints gbc_btnGestionarusuarios = new GridBagConstraints();
-		gbc_btnGestionarusuarios.fill = GridBagConstraints.BOTH;
-		gbc_btnGestionarusuarios.insets = new Insets(0, 0, 5, 5);
-		gbc_btnGestionarusuarios.gridx = 3;
-		gbc_btnGestionarusuarios.gridy = 1;
-		panel_adm.add(btnGestionarusuarios, gbc_btnGestionarusuarios);
-		
-		JPanel panel = new JPanel();
-		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel.setBackground(new Color(224, 255, 255));
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.insets = new Insets(0, 0, 0, 5);
-		gbc_panel.gridx = 1;
-		gbc_panel.gridy = 2;
-		panel_adm.add(panel, gbc_panel);
-		
-		JLabel lblManage = new JLabel(bundle.getString("managecasetypes"));
-		panel.add(lblManage);
-		lblManage.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBackground(new Color(224, 255, 255));
-		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
-		gbc_panel_1.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_1.fill = GridBagConstraints.BOTH;
-		gbc_panel_1.gridx = 3;
-		gbc_panel_1.gridy = 2;
-		panel_adm.add(panel_1, gbc_panel_1);
-		
-		JLabel lblMngusers = new JLabel(bundle.getString("manageusers"));
-		panel_1.add(lblMngusers);
 		
 		JPanel panel_cbr = new JPanel();
 		tabbedpane.addTab("CBR",panel_cbr);
-		GridBagLayout gbl_panel_cbr = new GridBagLayout();
-		gbl_panel_cbr.columnWidths = new int[]{54, 147, 35, 152, 0, 0};
-		gbl_panel_cbr.rowHeights = new int[]{31, 58, 28, 0};
-		gbl_panel_cbr.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_cbr.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_cbr.setLayout(gbl_panel_cbr);
+		panel_cbr.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panelCicloCo = new JPanel();
+		panel_cbr.add(panelCicloCo);
+		panelCicloCo.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("228px"),},
+			new RowSpec[] {
+				RowSpec.decode("100px"),
+				RowSpec.decode("50px"),}));
 		
 		JButton btnCicloConfigurado = new JButton(new ImageIcon("res/cbr_configurado_64.png"));
+		btnCicloConfigurado.setPreferredSize(new Dimension(150, btnCicloConfigurado.getPreferredSize().height));
+		panelCicloCo.add(btnCicloConfigurado, "1, 1, center, bottom");
 		btnCicloConfigurado.setToolTipText(bundle.getString("configuredcycle"));
+		
+		JPanel panel_lblconf = new JPanel();
+		panelCicloCo.add(panel_lblconf, "1, 2, center, center");
+		panel_lblconf.setBackground(Color.GRAY);
+		panel_lblconf.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		
+		JLabel lblCbrco = new JLabel(bundle.getString("configuredcycle"));
+		lblCbrco.setForeground(Color.WHITE);
+		lblCbrco.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		panel_lblconf.add(lblCbrco);
 		btnCicloConfigurado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ElegirTipoCasoFrame f = new ElegirTipoCasoFrame(u, me,ElegirTipoCasoFrame.CICLO_CONFIGURADO);
@@ -150,14 +171,30 @@ public class MainFrame extends JFrame{
 				me.setEnabled(false);
 			}
 		});
-		GridBagConstraints gbc_btnCicloConfigurado = new GridBagConstraints();
-		gbc_btnCicloConfigurado.fill = GridBagConstraints.BOTH;
-		gbc_btnCicloConfigurado.insets = new Insets(0, 0, 5, 5);
-		gbc_btnCicloConfigurado.gridx = 1;
-		gbc_btnCicloConfigurado.gridy = 1;
-		panel_cbr.add(btnCicloConfigurado, gbc_btnCicloConfigurado);
+	
+		
+		
+		JPanel panelCicloBas = new JPanel();
+		panel_cbr.add(panelCicloBas);
+		
+		String spec = "100px";
+		//TODO
+				if(u.getTipo().equals(TipoUsuario.UBASICO)){
+					panel_cbr.setLayout(new FlowLayout());
+					panel_cbr.removeAll();
+					panel_cbr.add(panelCicloBas);
+					spec ="90px";
+				}
+				
+				panelCicloBas.setLayout(new FormLayout(new ColumnSpec[] {
+						ColumnSpec.decode("228px"),},
+					new RowSpec[] {
+						RowSpec.decode(spec),
+						RowSpec.decode("50px"),}));
 		
 		JButton btnCicloPorDefecto = new JButton(new ImageIcon("res/cbr_basico_64.png"));
+		btnCicloPorDefecto.setPreferredSize(new Dimension(150, btnCicloPorDefecto.getPreferredSize().height));
+		panelCicloBas.add(btnCicloPorDefecto, "1, 1, center, bottom");
 		btnCicloPorDefecto.setToolTipText(bundle.getString("defaultcycle"));
 		btnCicloPorDefecto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -166,115 +203,77 @@ public class MainFrame extends JFrame{
 				me.setEnabled(false);
 			}
 		});
-		GridBagConstraints gbc_btnCicloPorDefecto = new GridBagConstraints();
-		gbc_btnCicloPorDefecto.gridx = 2;
-		gbc_btnCicloPorDefecto.fill = GridBagConstraints.BOTH;
-		gbc_btnCicloPorDefecto.insets = new Insets(0, 0, 5, 5);
-		if(u.getTipo().equals(TipoUsuario.UBASICO)){
-			//Centro el boton para los usuarios basicos
-			gbc_btnCicloPorDefecto.gridx = 2;	
-		}else{
-			gbc_btnCicloPorDefecto.gridx = 3;	
-		}
-		gbc_btnCicloPorDefecto.gridy = 1;
-		panel_cbr.add(btnCicloPorDefecto, gbc_btnCicloPorDefecto);
-		
-		JPanel panel_lblconf = new JPanel();
-		panel_lblconf.setBackground(new Color(224, 255, 255));
-		panel_lblconf.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		GridBagConstraints gbc_panel_lblconf = new GridBagConstraints();
-		gbc_panel_lblconf.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_lblconf.fill = GridBagConstraints.BOTH;
-		gbc_panel_lblconf.gridx = 1;
-		gbc_panel_lblconf.gridy = 2;
-		panel_cbr.add(panel_lblconf, gbc_panel_lblconf);
-		
-		JLabel lblCbrco = new JLabel(bundle.getString("configuredcycle"));
-		panel_lblconf.add(lblCbrco);
 		
 		JPanel panel_cbrpordefecto = new JPanel();
-		panel_cbrpordefecto.setBackground(new Color(224, 255, 255));
+		panelCicloBas.add(panel_cbrpordefecto, "1, 2, center, center");
+		panel_cbrpordefecto.setBackground(Color.GRAY);
 		panel_cbrpordefecto.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		GridBagConstraints gbc_panel_cbrpordefecto = new GridBagConstraints();
-		gbc_panel_cbrpordefecto.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_cbrpordefecto.gridx = 2;
-		gbc_panel_cbrpordefecto.fill = GridBagConstraints.BOTH;
-		
-		if(u.getTipo().equals(TipoUsuario.UBASICO)){
-			//Centro el panel para los usuarios basicos
-			gbc_panel_cbrpordefecto.gridx = 2;
-		}else{
-			gbc_panel_cbrpordefecto.gridx = 3;	
-		}
-		gbc_panel_cbrpordefecto.gridy = 2;
-		panel_cbr.add(panel_cbrpordefecto, gbc_panel_cbrpordefecto);
 		
 		JLabel lblCbr = new JLabel(bundle.getString("defaultcycle"));
+		lblCbr.setForeground(Color.WHITE);
+		lblCbr.setFont(new Font("Tahoma", Font.ITALIC, 11));
 		panel_cbrpordefecto.add(lblCbr);
 		
 		JPanel panel_casebase = new JPanel();
 		tabbedpane.addTab(bundle.getString("casebases"),panel_casebase);
-		GridBagLayout gbl_panel_casebase = new GridBagLayout();
-		gbl_panel_casebase.columnWidths = new int[]{54, 147, 35, 152, 0, 0};
-		gbl_panel_casebase.rowHeights = new int[]{31, 58, 28, 0};
-		gbl_panel_casebase.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_casebase.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_casebase.setLayout(gbl_panel_casebase);
+		panel_casebase.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panelEst = new JPanel();
+		panel_casebase.add(panelEst);
+		panelEst.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("228px"),},
+			new RowSpec[] {
+				RowSpec.decode("100px"),
+				RowSpec.decode("50px"),}));
 		
 		JButton btnEstadisticas = new JButton(new ImageIcon("res/statistics_64.png"));
+		btnEstadisticas.setPreferredSize(new Dimension(150, btnEstadisticas.getPreferredSize().height));
+		panelEst.add(btnEstadisticas, "1, 1, center, bottom");
 		btnEstadisticas.setToolTipText(bundle.getString("stats"));
-		GridBagConstraints gbc_btnEstadisticas = new GridBagConstraints();
-		gbc_btnEstadisticas.fill = GridBagConstraints.BOTH;
-		gbc_btnEstadisticas.insets = new Insets(0, 0, 5, 5);
-		gbc_btnEstadisticas.gridx = 1;
-		gbc_btnEstadisticas.gridy = 1;
-		panel_casebase.add(btnEstadisticas, gbc_btnEstadisticas);
-		
-		JButton btnIntroducir = new JButton(new ImageIcon("res/importar_64.png"));
-		btnIntroducir.setToolTipText(bundle.getString("insertcases"));
-		GridBagConstraints gbc_btnIntroducir = new GridBagConstraints();
-		gbc_btnIntroducir.fill = GridBagConstraints.BOTH;
-		gbc_btnIntroducir.insets = new Insets(0, 0, 5, 5);
-		gbc_btnIntroducir.gridx = 3;
-		gbc_btnIntroducir.gridy = 1;
-		panel_casebase.add(btnIntroducir, gbc_btnIntroducir);
-		btnIntroducir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ElegirTipoCasoFrame f = new ElegirTipoCasoFrame(u, me, ElegirTipoCasoFrame.INTRODUCIR_MANUAL);
-				f.setVisible(true);
-				me.setEnabled(false);
-			}
-		});
 		
 		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(new Color(224, 255, 255));
+		panelEst.add(panel_4, "1, 2, center, center");
+		panel_4.setBackground(Color.GRAY);
 		panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
-		gbc_panel_4.fill = GridBagConstraints.BOTH;
-		gbc_panel_4.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_4.gridx = 1;
-		gbc_panel_4.gridy = 2;
-		panel_casebase.add(panel_4, gbc_panel_4);
 		
 		JLabel lblEstadisticas = new JLabel(bundle.getString("stats"));
+		lblEstadisticas.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblEstadisticas.setForeground(Color.WHITE);
 		panel_4.add(lblEstadisticas);
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(new Color(224, 255, 255));
-		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		GridBagConstraints gbc_panel_5 = new GridBagConstraints();
-		gbc_panel_5.fill = GridBagConstraints.BOTH;
-		gbc_panel_5.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_5.gridx = 3;
-		gbc_panel_5.gridy = 2;
-		panel_casebase.add(panel_5, gbc_panel_5);
-		
-		JLabel lblInsertar = new JLabel(bundle.getString("insertcases"));
-		panel_5.add(lblInsertar);
 		btnEstadisticas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFrame est= new EstadisticasFrame(u, me);
 				est.setVisible(true);
+				me.setEnabled(false);
+			}
+		});
+		
+		JPanel panelIntro = new JPanel();
+		panel_casebase.add(panelIntro);
+		panelIntro.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("228px"),},
+			new RowSpec[] {
+				RowSpec.decode("100px"),
+				RowSpec.decode("50px"),}));
+		
+		JButton btnIntroducir = new JButton(new ImageIcon("res/importar_64.png"));
+		btnIntroducir.setPreferredSize(new Dimension(150, btnIntroducir.getPreferredSize().height));
+		panelIntro.add(btnIntroducir, "1, 1, center, bottom");
+		btnIntroducir.setToolTipText(bundle.getString("insertcases"));
+		
+		JPanel panel_5 = new JPanel();
+		panelIntro.add(panel_5, "1, 2, center, center");
+		panel_5.setBackground(Color.GRAY);
+		panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		
+		JLabel lblInsertar = new JLabel(bundle.getString("insertcases"));
+		lblInsertar.setFont(new Font("Tahoma", Font.ITALIC, 11));
+		lblInsertar.setForeground(Color.WHITE);
+		panel_5.add(lblInsertar);
+		btnIntroducir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ElegirTipoCasoFrame f = new ElegirTipoCasoFrame(u, me, ElegirTipoCasoFrame.INTRODUCIR_MANUAL);
+				f.setVisible(true);
 				me.setEnabled(false);
 			}
 		});
@@ -289,6 +288,16 @@ public class MainFrame extends JFrame{
 			}
 			
 		}
-		
+		centrar();
+	}
+	
+	/**
+	 * Centra la ventana en pantalla.
+	 */
+	private void centrar() {
+	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int) ((dimension.getWidth() - getWidth()) / 2);
+	    int y = (int) ((dimension.getHeight() - getHeight()) / 2);
+	    setLocation(x, y);
 	}
 }

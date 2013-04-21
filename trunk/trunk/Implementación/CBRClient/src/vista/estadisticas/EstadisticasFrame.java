@@ -59,6 +59,7 @@ public class EstadisticasFrame extends FrameEstandar {
 		}
 		
 		crearOpcionExportar();
+		setLocationRelativeTo(padre);
 	}
 	
 	private void crearOpcionExportar(){

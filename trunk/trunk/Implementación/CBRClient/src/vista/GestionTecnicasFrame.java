@@ -16,6 +16,8 @@ import servidorcbr.modelo.TipoCaso;
 import vista.componentes.FrameEstandar;
 import vista.panels.PanelTecnica;
 import controlador.ControlTecnicas;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class GestionTecnicasFrame extends FrameEstandar {
@@ -55,26 +57,28 @@ public class GestionTecnicasFrame extends FrameEstandar {
 				b.getString("retrieval"), tecnicasRec, tc.getDefaultRec(), tc,
 				this);
 		gbc_panel.gridy = 0;
-		contentPane.add(panelRec, gbc_panel);
+		contentPane.add(panelRec, gbc_panel.clone());
 
 		final PanelTecnica panelReu = new PanelTecnica(b.getString("reuse"),
 				tecnicasReu, tc.getDefaultReu(), tc, this);
 		gbc_panel.gridy = 1;
-		contentPane.add(panelReu, gbc_panel);
+		contentPane.add(panelReu, gbc_panel.clone());
 
 		final PanelTecnica panelRev = new PanelTecnica(b.getString("revise"),
 				tecnicasRev, tc.getDefaultRev(), tc, this);
 		gbc_panel.gridy = 2;
-		contentPane.add(panelRev, gbc_panel);
+		contentPane.add(panelRev, gbc_panel.clone());
 
 		final PanelTecnica panelRet = new PanelTecnica(b.getString("retain"),
 				tecnicasRet, tc.getDefaultRet(), tc, this);
 		gbc_panel.gridy = 3;
-		contentPane.add(panelRet, gbc_panel);
+		contentPane.add(panelRet, gbc_panel.clone());
 
 		JPanel btnsPanel = new JPanel();
+		btnsPanel.setBackground(Color.GRAY);
+		btnsPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		gbc_panel.gridy = 4;
-		contentPane.add(btnsPanel, gbc_panel);
+		contentPane.add(btnsPanel, gbc_panel.clone());
 
 		JButton btnAceptar = new JButton(b.getString("ok"));
 		btnAceptar.addActionListener(new ActionListener() {
@@ -110,6 +114,7 @@ public class GestionTecnicasFrame extends FrameEstandar {
 			}
 		});
 		btnsPanel.add(btnCancelar);
+		setLocationRelativeTo(padre);
 	}
 
 	private void marcaTecnicasEnabled(List<Tecnica> entera,List<Tecnica> marcada){

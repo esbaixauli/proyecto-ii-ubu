@@ -20,7 +20,8 @@ topicimage="ItemIco"-->
 			<tocitem text="Importación de casos"    target="InsertarCasoFrame"/>
 			<tocitem text="Realizar una consulta"    target="IntroducirConsultaCBRFrame"/>
 			<tocitem text="Crear un nuevo tipo de caso"    target="NuevoTipoFrame"/>
-			<tocitem text="Modificar tipos de caso"    target="VerTipoFrame"/>	
+			<tocitem text="Modificar tipos de caso"    target="VerTipoFrame"/>
+			<tocitem text="Estadísticas"    target="EstadisticasFrame"/>				
         </tocitem>
 	
 </toc>

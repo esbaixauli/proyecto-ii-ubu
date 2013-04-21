@@ -17,7 +17,9 @@ PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN"
 		<mapID target="DiverseByMedianConfigFrame" url="html_en/DiverseByMedianConfigFrame.html"/>	
 		<mapID target="FilterBasedConfigFrame" url="html_en/FilterBasedConfigFrame.html"/>	
 		<mapID target="NNConfigFrame" url="html_en/NNConfigFrame.html"/>
-		<mapID target="NumOrCopyConfigFrame" url="html_en/NumOrCopyConfigFrame.html"/>		
+		<mapID target="NumOrCopyConfigFrame" url="html_en/NumOrCopyConfigFrame.html"/>
+		<mapID target="CombineQueryConfigFrame" url="html_en/NumOrCopyConfigFrame.html"/>
+		<mapID target="EstadisticasFrame" url="html_en/EstadisticasFrame.html"/>			
 </map>
 
 	
