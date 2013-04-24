@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import jcolibri.cbrcore.CBRCase;
 import servidorcbr.controlador.ControladorCasos;
 import servidorcbr.controlador.ControladorTipos;
 import servidorcbr.controlador.cicloCBR.LanzadorCBR;
+import servidorcbr.controlador.generadorClases.RellenadorClases;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
@@ -73,7 +75,11 @@ public class ServletCBR extends HttpServlet {
 				e.printStackTrace();
 			}
 			Collection<CBRCase> casos = lanzador.retrieve(tc, query);
-			oos.writeBoolean(true);
+			List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
+			for (CBRCase caso : casos) {
+				casosH.add(RellenadorClases.rellenarHash(tc, caso));
+			}
+			oos.writeObject(casosH);
 		}/* else if (tipo.equals("getCasos")) {
 				Usuario u = null;
 				try {

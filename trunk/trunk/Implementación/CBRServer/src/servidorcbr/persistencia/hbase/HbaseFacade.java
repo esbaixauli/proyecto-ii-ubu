@@ -1,6 +1,7 @@
 package servidorcbr.persistencia.hbase;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +21,9 @@ import org.apache.hadoop.hbase.client.HConnection;
 import org.apache.hadoop.hbase.client.HConnectionManager;
 import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import servidorcbr.modelo.Atributo;
@@ -31,6 +35,7 @@ public class HbaseFacade {
 	private static HbaseFacade instance = null;
 	private HConnection conn = null;
 	private Configuration conf = null;
+	private final byte[] cf = Bytes.toBytes("campos");
 
 	private HbaseFacade() throws PersistenciaException {
 		conf = HBaseConfiguration.create();
@@ -81,12 +86,16 @@ public class HbaseFacade {
 		}
 		return true;
 	}
-
+	
 	public boolean dropTable(TipoCaso tc) throws PersistenciaException {
+		return dropTable(tc.getNombre());
+	}
+
+	public boolean dropTable(String nombre) throws PersistenciaException {
 		try {
 			HBaseAdmin hba = new HBaseAdmin(conn);
-			hba.disableTable(tc.getNombre());
-			hba.deleteTable(tc.getNombre());
+			hba.disableTable(nombre);
+			hba.deleteTable(nombre);
 			hba.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -173,6 +182,37 @@ public class HbaseFacade {
 			e.printStackTrace();
 			throw new PersistenciaException(e);
 		}
+	}
+	
+	public List<HashMap<String,Serializable>> getResults(TipoCaso tc, String tableName) throws PersistenciaException {
+		List<HashMap<String,Serializable>> lista = new ArrayList<HashMap<String,Serializable>>();
+		try {
+			HTable table = new HTable(conf, tableName);
+			Scan s = new Scan();
+			s.addFamily(cf);
+		    ResultScanner scanner = table.getScanner(s);
+		    for (Result r : scanner) {
+		    	HashMap<String,Serializable> h = new HashMap<String,Serializable>();
+		    	for (Atributo a : tc.getAtbos().values()) {
+		    		switch (a.getTipo()) {
+		    		case "I":
+		    			h.put(a.getNombre(), Bytes.toInt(r.getValue(cf, Bytes.toBytes(a.getNombre()))));
+		    			break;
+		    		case "D":
+		    			h.put(a.getNombre(), Bytes.toDouble(r.getValue(cf, Bytes.toBytes(a.getNombre()))));
+		    			break;
+		    		case "S":
+		    			h.put(a.getNombre(), Bytes.toString(r.getValue(cf, Bytes.toBytes(a.getNombre()))));
+		    			break;
+		    		}
+		    	}
+		    	lista.add(h);
+		    }
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new PersistenciaException(e);
+		}
+		return lista;
 	}
 
 }

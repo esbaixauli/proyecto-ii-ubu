@@ -66,10 +66,11 @@ public class ReducerRetrieval extends
 				ids.add(i, row.getRow());
 				i++;
 			}
+			System.out.println("Reducer ejecutandse, nº de casos: "+casos.size());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		casos = ejecutarRetrieval(casos, query, tc);
+		casos = EjecutorTecnicaRetrieval.ejecutarRetrieval(casos, query, tc);
 		int i = 0;
 		for (CBRCase caso : casos) {
 			Put put = new Put(ids.get(i++));
@@ -163,6 +164,12 @@ public class ReducerRetrieval extends
 		return caso;
 	}
 
+	/**
+	 * Carga el objeto TipoCaso serializado en la carpeta "tcs/" de HDFS.
+	 * @param fs FileSystem que representa a HDFS.
+	 * @param nombreCaso Nombre del caso, que coincide con el nombre del fichero (con extensión .tc).
+	 * @return El TipoCaso encontrado.
+	 */
 	private TipoCaso cargarTipoCaso(FileSystem fs, String nombreCaso) {
 		TipoCaso tc = null;
 		try {
@@ -178,6 +185,13 @@ public class ReducerRetrieval extends
 		return tc;
 	}
 	
+	/**
+	 * Carga el query serializado como HashMap en HDFS y lo convierte a CBRQuery.
+	 * @param fs FileSystem que representa a HDFS.
+	 * @param tc Tipo de caso que modela el query.
+	 * @param nombreFichero Nombre del fichero donde está serializado (dentro de "queries/").
+	 * @return El CBRQuery obtenido.
+	 */
 	private CBRQuery cargarQuery (FileSystem fs, TipoCaso tc, String nombreFichero) {
 		HashMap<String,Serializable> h = null;
 		try {
@@ -192,27 +206,4 @@ public class ReducerRetrieval extends
 		} catch (ClassNotFoundException e) { }
 		return RellenadorClases.rellenarQuery(tc, h);
 	}
-
-	private Collection<CBRCase> ejecutarRetrieval(Collection<CBRCase> casos,
-			CBRQuery query, TipoCaso tc) {
-		EjecutorTecnicaRetrieval ejecutor = null;
-		switch (tc.getDefaultRec().getNombre()) {
-		case "DiverseByMedianRetrieval":
-			ejecutor = new EjecutorDiverseByMedian(tc);
-			break;
-		case "NNretrieval":
-			ejecutor = new EjecutorKNN(tc);
-			break;
-		case "FilterBasedRetrieval":
-			ejecutor = new EjecutorFilterBased(tc);
-			break;
-		}
-		try {
-			casos = ejecutor.ejecutar(casos, query);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return casos;
-	}
-
 }
