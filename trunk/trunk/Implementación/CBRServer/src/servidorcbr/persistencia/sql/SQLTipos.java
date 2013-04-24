@@ -358,7 +358,7 @@ public class SQLTipos {
 			for(int i=0;i<usuarios.size();i++){
 				psUsuarios = conn.prepareStatement("Insert into caso_usuario (id_caso,id_usuario," +
 						"ejecTotales,mediacalidad,ejecSatisfactorias,ejecInusables,fechaUltima,calidadUltima)" +
-						" values (?,?,?,?,?,?,?)");
+						" values (?,?,?,?,?,?,?,?)");
 				psUsuarios.setInt(1, id);
 				psUsuarios.setInt(2, usuarios.get(i));
 				psUsuarios.setLong(3, estadisticas.get(i).getEjecTotales());

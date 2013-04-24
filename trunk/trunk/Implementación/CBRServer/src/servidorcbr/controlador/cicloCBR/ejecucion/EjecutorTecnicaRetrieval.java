@@ -10,6 +10,7 @@ import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRQuery;
 import jcolibri.method.retrieve.RetrievalResult;
 import jcolibri.method.retrieve.NNretrieval.NNConfig;
+import jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
 
 public abstract class EjecutorTecnicaRetrieval {
 	protected TipoCaso tc;
@@ -39,6 +40,7 @@ public abstract class EjecutorTecnicaRetrieval {
 				config.setWeight(at, actual.getPeso());
 			}
 		}
+		config.setDescriptionSimFunction(new Average());
 		return config;
 	}
 	

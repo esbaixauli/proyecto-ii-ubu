@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import jcolibri.cbrcore.Attribute;
 import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRQuery;
 import jcolibri.cbrcore.CaseComponent;
@@ -61,7 +62,7 @@ public class ReducerRetrieval extends
 			int i = 0;
 			for (Result row : values) {
 				CBRCase caso;
-				caso = obtenerCaso(tc, row, cdesc, csolution);
+				caso = obtenerCaso(tc, key, row, cdesc, csolution);
 				casos.add(caso);
 				ids.add(i, row.getRow());
 				i++;
@@ -76,32 +77,36 @@ public class ReducerRetrieval extends
 			Put put = new Put(ids.get(i++));
 			HashMap<String,Serializable> campos = RellenadorClases.rellenarHash(tc, caso);
 			for (Entry<String,Serializable> par : campos.entrySet()) {
-				switch (tc.getAtbos().get(par.getKey()).getTipo()) {
-				case "I":
-					int valorI = (Integer) par.getValue();
-					put.add(cf, Bytes.toBytes(par.getKey()), Bytes.toBytes(valorI));
-					break;
-				case "D":
-					double valorD = (Double) par.getValue();
-					put.add(cf, Bytes.toBytes(par.getKey()), Bytes.toBytes(valorD));
-					break;
-				case "S":
-					String valorS = (String) par.getValue();
-					put.add(cf, Bytes.toBytes(par.getKey()), Bytes.toBytes(valorS));
-					break;
+				if (par.getKey().equals("META_ID")) {
+					//put.add(cf, Bytes.toBytes("META_ID"), Bytes.toBytes((Long) campos.get("META_ID")));
+				} else {
+					switch (tc.getAtbos().get(par.getKey()).getTipo()) {
+					case "I":
+						int valorI = (Integer) par.getValue();
+						put.add(cf, Bytes.toBytes(par.getKey()), Bytes.toBytes(valorI));
+						break;
+					case "D":
+						double valorD = (Double) par.getValue();
+						put.add(cf, Bytes.toBytes(par.getKey()), Bytes.toBytes(valorD));
+						break;
+					case "S":
+						String valorS = (String) par.getValue();
+						put.add(cf, Bytes.toBytes(par.getKey()), Bytes.toBytes(valorS));
+						break;
+					}
 				}
-				try {
-					context.write(null, put);
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			}
+			try {
+				context.write(null, put);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 
-	private CBRCase obtenerCaso(TipoCaso tc, Result row, Class<? extends CaseComponent> cdesc, Class<? extends CaseComponent> csol)
+	private CBRCase obtenerCaso(TipoCaso tc, ImmutableBytesWritable key, Result row, Class<? extends CaseComponent> cdesc, Class<? extends CaseComponent> csol)
 			throws ClassNotFoundException {
 		CaseComponent desc = null, solution = null;
 		try {
@@ -113,16 +118,14 @@ public class ReducerRetrieval extends
 			e.printStackTrace();
 		}
 		for (Atributo atb : tc.getAtbos().values()) {
-			byte[] val = null;
+			byte[] val = row.getValue(cf, Bytes.toBytes(atb.getNombre()));;
 			Class<?> tipo = null, clase = null;;
 			Object valor = null;
 			CaseComponent cc = null;
 			if (atb.getEsProblema()) {
-				val = row.getValue(Bytes.toBytes("problema"), Bytes.toBytes(atb.getNombre()));
 				clase = cdesc;
 				cc = desc;
 			} else {
-				val = row.getValue(Bytes.toBytes("solucion"), Bytes.toBytes(atb.getNombre()));
 				clase = csol;
 				cc = solution;
 			}
@@ -148,16 +151,20 @@ public class ReducerRetrieval extends
 			try {
 				Method m = clase.getMethod(mName, tipo);
 				m.invoke(cc, valor);
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
 			}
 		}
+		
+		// Asignamos el ID de la fila al ID del caso
+		try {
+			cdesc.getDeclaredMethod("setMETA_ID", Long.class).invoke(desc,
+					new Long(Bytes.toLong(key.copyBytes())));
+			cdesc.getDeclaredMethod("setIdAttribute", Attribute.class).invoke(desc,
+					new Attribute("META_ID", cdesc));
+		} catch (Exception e) {
+		}
+
+		
 		CBRCase caso = new CBRCase();
 		caso.setDescription(desc);
 		caso.setSolution(solution);

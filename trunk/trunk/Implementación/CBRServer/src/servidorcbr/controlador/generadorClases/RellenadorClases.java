@@ -81,17 +81,20 @@ public class RellenadorClases {
 		} catch (IllegalAccessException e) {
 		}
 		for (Entry<String,Serializable> par : query.entrySet()) {
-			Atributo a = tc.getAtbos().get(par.getKey());
-			tipo = getTipoClass(a);
-			try {
-				desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
-						a.getNombre().substring(1),tipo).invoke(instanciaDesc,par.getValue());
-			} catch (IllegalAccessException e) {
-			} catch (IllegalArgumentException e) {
-			} catch (InvocationTargetException e) {
-			} catch (NoSuchMethodException e) {
-			} catch (SecurityException e) {
+			if (!par.getKey().equals("META_QUALITY")) {
+				Atributo a = tc.getAtbos().get(par.getKey());
+				tipo = getTipoClass(a);
+				try {
+					desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
+								a.getNombre().substring(1),tipo).invoke(instanciaDesc,par.getValue());
+				} catch (Exception e) {
+				}
 			}
+		}
+		try {
+			//desc.getDeclaredMethod("setMETA_ID", Long.class).invoke(instanciaDesc, 1);
+			desc.getDeclaredMethod("setIdAttribute", Attribute.class).invoke(instanciaDesc, new Attribute("META_ID", desc));
+		} catch (Exception e) {
 		}
 		q.setDescription(instanciaDesc);
 		return q;
@@ -120,39 +123,54 @@ public class RellenadorClases {
 			}
 			campos.put(a.getNombre(), s);
 		}
+		try {
+			//campos.put("META_ID", new Long((long) caso.getDescription().getClass()
+			//		.getMethod("getMETA_ID", (Class<?>[]) null)
+			//		.invoke(caso.getDescription(), (Object[]) null)));
+			campos.put("META_ID", 0);
+		} catch (Exception e) {
+		}
 		return campos;
 	}
 	
-	private static CBRCase obtenerCaso(TipoCaso tc, HashMap<String, Serializable> caso, Class<? extends CaseComponent>desc, Class<? extends CaseComponent>sol) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	private static CBRCase obtenerCaso(TipoCaso tc, HashMap<String, Serializable> caso, Class<? extends CaseComponent>desc, Class<? extends CaseComponent>sol) {
 		//Creo una instancia del problema y de la solucion
-		CaseComponent instanciaDesc = desc.newInstance();
-		CaseComponent instanciaSol = sol.newInstance();
+		CaseComponent instanciaDesc = null;
+		CaseComponent instanciaSol = null;
+		try {
+			instanciaDesc = desc.newInstance();
+			instanciaSol = sol.newInstance();
+		} catch (InstantiationException e1) {
+		} catch (IllegalAccessException e1) {
+		}
 		Class<?> tipo;
 		//Por cada par atributo-valor
 		for(Entry<String, Serializable> par  :caso.entrySet()){
 			//Si dicho atributo esta contenido en el tipo de caso
 			if(tc.getAtbos().containsKey(par.getKey())){
-				Atributo a = tc.getAtbos().get(par.getKey());
-				tipo = getTipoClass(a);
-				//Si es un problema invoca al setter de dicho atributo en la clase del problema
-				if(a.getEsProblema()){
-					desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
-							a.getNombre().substring(1),tipo).invoke(instanciaDesc,par.getValue());
-					//Si además es el id del componente
-					if(a.getNombre().equals("id")){	
-						desc.getDeclaredMethod("setIdAttribute",Attribute.class)
-						.invoke(instanciaDesc,new Attribute("id", instanciaDesc.getClass()));
+				if (par.getKey().equals("META_ID")) {
+					try {
+						//desc.getDeclaredMethod("setMETA_ID", Long.class).invoke(instanciaDesc, par.getValue());
+						desc.getDeclaredMethod("setIdAttribute", Attribute.class)
+							.invoke(instanciaDesc, new Attribute("META_ID", desc));
+					} catch (Exception e) {
 					}
-					//Si no en la de la solución
-				}else{
-					sol.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
-							a.getNombre().substring(1),tipo).invoke(instanciaSol,par.getValue());
-					if(a.getNombre().equals("id")){
-						sol.getDeclaredMethod("setIdAttribute",Attribute.class).
-						invoke(instanciaSol,new Attribute("id", instanciaSol.getClass()));
+					
+				} else {
+					Atributo a = tc.getAtbos().get(par.getKey());
+					tipo = getTipoClass(a);
+					//Si es un problema invoca al setter de dicho atributo en la clase del problema
+					try {
+						if(a.getEsProblema()){
+							desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
+									a.getNombre().substring(1),tipo).invoke(instanciaDesc,par.getValue());
+						}else{
+							sol.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
+									a.getNombre().substring(1),tipo).invoke(instanciaSol,par.getValue());
+						}
+					} catch (Exception e) {
 					}
 				}
-			
 			}
 		}
 		//Añado el caso a la lista

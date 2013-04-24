@@ -21,7 +21,6 @@ public class EjecutorKNN extends EjecutorTecnicaRetrieval {
 	@Override
 	public Collection<CBRCase> ejecutar(Collection<CBRCase> casos, CBRQuery query) throws ClassNotFoundException {
 		NNConfig simConfig = getSimilaridadGlobalConfig();
-		simConfig.setDescriptionSimFunction(new Average());
 		Collection<RetrievalResult> cr = NNScoringMethod.evaluateSimilarity(casos,query,simConfig);
 		return SelectCases.selectTopK(cr,(int) tc.getDefaultRec().getParams().get(0).getValor());
 	}
