@@ -53,7 +53,7 @@ public class LanzadorCBR implements StandardCBRApplication {
 		return null;
 	}
 
-	public Collection<CBRCase> retrieve (TipoCaso tc, HashMap<String,Serializable> query) throws IOException {
+	public Collection<CBRCase> retrieve (TipoCaso tc, HashMap<String,Serializable> query) {
 		// create a configuration
 		Configuration conf = new Configuration();
 	    conf.addResource(new Path("/etc/hadoop/core-site.xml"));
@@ -79,23 +79,32 @@ public class LanzadorCBR implements StandardCBRApplication {
 		System.out.println("Tabla de salida del reducer: "+outputTable);
 		
 		// create a new job based on the configuration
-		Job job = new Job(conf);
+		Job job = null;
+		try {
+			job = new Job(conf);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		
 		Scan scan = new Scan();
 		scan.setCaching(500);        // 1 is the default in Scan, which will be bad for MapReduce jobs
 		scan.setCacheBlocks(false);  // don't set to true for MR jobs
 
-		TableMapReduceUtil.initTableMapperJob(
-				tc.getNombre(),        			// input HBase table name
-				scan,             // Scan instance to control CF and attribute selection
-				MapperRetrieval.class,
-				ImmutableBytesWritable.class,   // mapper output key
-				Result.class,             		// mapper output value
-				job);
-		TableMapReduceUtil.initTableReducerJob(
-				outputTable, 
-				ReducerRetrieval.class, 
-				job);
+		try {
+			TableMapReduceUtil.initTableMapperJob(
+					tc.getNombre(),        			// input HBase table name
+					scan,             // Scan instance to control CF and attribute selection
+					MapperRetrieval.class,
+					ImmutableBytesWritable.class,   // mapper output key
+					Result.class,             		// mapper output value
+					job);
+			TableMapReduceUtil.initTableReducerJob(
+					outputTable, 
+					ReducerRetrieval.class, 
+					job);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 
 		// here you have to set the jar which is containing your 
 		// map/reduce class, so you can use the mapper class
@@ -118,17 +127,21 @@ public class LanzadorCBR implements StandardCBRApplication {
 		
 		List<HashMap<String,Serializable>> resultadoHash = null;
 		try {
+			System.out.println("i0");
 			HbaseFacade hbf = HbaseFacade.getInstance();
+			System.out.println("i-r0");
 			resultadoHash = hbf.getResults(tc, outputTable);
+			System.out.println("r-d0");
 			hbf.dropTable(outputTable);
+			System.out.println("d");
 		} catch (PersistenciaException e) {
 			e.printStackTrace();
-			return null;
+			return new ArrayList<CBRCase>();
 		}
 		
 		List<CBRCase> resultado = new ArrayList<CBRCase>(resultadoHash.size());
 		for (HashMap<String,Serializable> caso : resultadoHash) {
-			System.out.println("age: "+caso.get("age")+", class: "+caso.get("class")+", sex: "+caso.get("sex")+", surv: "+caso.get("survived"));
+			System.out.println("ID: "+caso.get("META_ID")+", age: "+caso.get("age")+", class: "+caso.get("class")+", sex: "+caso.get("sex")+", surv: "+caso.get("survived"));
 			try {
 				resultado.add(RellenadorClases.rellenarCaso(tc, caso));
 			} catch (ClassNotFoundException e) {

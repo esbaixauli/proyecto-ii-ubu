@@ -55,18 +55,7 @@ public class HbaseFacade {
 	}
 
 	public boolean createTable(TipoCaso tc) throws PersistenciaException {
-		HTableDescriptor ht = new HTableDescriptor(tc.getNombre());
-		ht.addFamily(new HColumnDescriptor("problema"));
-		ht.addFamily(new HColumnDescriptor("solucion"));
-		try {
-			HBaseAdmin hba = new HBaseAdmin(conn);
-			hba.createTable(ht);
-			hba.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new PersistenciaException(e);
-		}
-		return true;
+		return createTable(tc.getNombre());
 	}
 	
 	public boolean createTable(String nombre) throws PersistenciaException {
@@ -112,9 +101,16 @@ public class HbaseFacade {
 			List<Put> puts = new ArrayList<Put>(casos.size());
 			for (HashMap<String, Object> caso : casos) {
 				Put p = new Put(Bytes.toBytes(id++));
-				for (Map.Entry<String, Object> atb : caso.entrySet()) {
-					Atributo a = tc.getAtbos().get(atb.getKey());
-					addAtributo(p, atb, a);
+				for (Map.Entry<String, Object> par : caso.entrySet()) {
+					System.out.println("Insertando caso "+id+", atbo "+par.getKey());
+					if (par.getKey().equals("META_QUALITY")) {
+					//	p.add(cf, 
+					//			Bytes.toBytes("AAAAAA"), 
+					//TODO		Bytes.toBytes((Double) par.getValue()));
+					} else {
+						Atributo a = tc.getAtbos().get(par.getKey());
+						addAtributo(p, par, a);
+					}
 				}
 				puts.add(p);
 			}
@@ -129,25 +125,19 @@ public class HbaseFacade {
 	}
 
 	private void addAtributo(Put p, Map.Entry<String, Object> atb, Atributo a) {
-		String familia;
-		if (a.getEsProblema()) {
-			familia = "problema";
-		} else {
-			familia = "solucion";
-		}
 		switch (a.getTipo()) {
 		case "S":
-			p.add(Bytes.toBytes(familia),
+			p.add(cf,
 					Bytes.toBytes(a.getNombre()),
 					Bytes.toBytes((String) atb.getValue()));
 			break;
 		case "I":
-			p.add(Bytes.toBytes(familia),
+			p.add(cf,
 					Bytes.toBytes(a.getNombre()),
 					Bytes.toBytes((Integer) atb.getValue()));
 			break;
 		case "D":
-			p.add(Bytes.toBytes(familia),
+			p.add(cf,
 					Bytes.toBytes(a.getNombre()),
 					Bytes.toBytes((Double) atb.getValue()));
 		}
@@ -206,6 +196,8 @@ public class HbaseFacade {
 		    			break;
 		    		}
 		    	}
+		    	//h.put("META_ID", Bytes.toLong(r.getValue(cf, Bytes.toBytes("META_ID"))));
+		    	h.put("META_ID", 0);
 		    	lista.add(h);
 		    }
 		} catch (IOException e) {
