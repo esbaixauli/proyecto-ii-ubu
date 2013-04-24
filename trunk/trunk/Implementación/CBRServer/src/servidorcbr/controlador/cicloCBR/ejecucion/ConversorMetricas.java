@@ -13,10 +13,10 @@ public class ConversorMetricas {
 	
 	public static LocalSimilarityFunction obtenerMetrica(Atributo at){
 		switch(at.getMetrica()){
-			case "equalignorecase":return new EqualsStringIgnoreCase();
-			case "substring": return new MaxString();
-			case "interval": return new Interval(at.getParamMetrica());
-			case "threshold": return new Threshold(at.getParamMetrica());
+			case "equalignorecase":return new EqualsStringIgnoreCase();break;
+			case "substring": return new MaxString();break;
+			case "interval": return new Interval(at.getParamMetrica());break;
+			case "threshold": return new Threshold(at.getParamMetrica());break;
 			default: return new Equal();
 		}
 	}
