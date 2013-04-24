@@ -145,10 +145,10 @@ public class RellenadorClases {
 					}
 					//Si no en la de la solución
 				}else{
-					desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
+					sol.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
 							a.getNombre().substring(1),tipo).invoke(instanciaSol,par.getValue());
 					if(a.getNombre().equals("id")){
-						desc.getDeclaredMethod("setIdAttribute",Attribute.class).
+						sol.getDeclaredMethod("setIdAttribute",Attribute.class).
 						invoke(instanciaSol,new Attribute("id", instanciaSol.getClass()));
 					}
 				}

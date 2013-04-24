@@ -41,4 +41,27 @@ public abstract class EjecutorTecnicaRetrieval {
 		}
 		return config;
 	}
+	
+	public static Collection<CBRCase> ejecutarRetrieval(Collection<CBRCase> casos,
+			CBRQuery query, TipoCaso tc) {
+		EjecutorTecnicaRetrieval ejecutor = null;
+		switch (tc.getDefaultRec().getNombre()) {
+		case "DiverseByMedianRetrieval":
+			ejecutor = new EjecutorDiverseByMedian(tc);
+			break;
+		case "NNretrieval":
+			ejecutor = new EjecutorKNN(tc);
+			break;
+		case "FilterBasedRetrieval":
+			ejecutor = new EjecutorFilterBased(tc);
+			break;
+		}
+		try {
+			casos = ejecutor.ejecutar(casos, query);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return casos;
+	}
+
 }
