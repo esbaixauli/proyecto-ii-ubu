@@ -100,7 +100,7 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 				spinner.setModel(new SpinnerNumberModel(1, 1,tam, 1));
 				
 						
-						JLabel lblnumero = new JLabel("/"+Math.max(tam-1,0));
+						JLabel lblnumero = new JLabel("/"+Math.max(tam,0));
 						panel_2.add(lblnumero);
 						
 						JButton btnGo = new JButton(b.getString("go"));
@@ -202,12 +202,15 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 				}
 			}
 		}else{
-			for(Entry<String, Serializable> atbo: casos.get(i).entrySet()){
-				JPanel pa = new PanelMostrarAtbo(atbo.getKey(),atbo.getValue());
-				if(tc.getAtbos().get(atbo.getKey()).getEsProblema()){
-					panelProblema.add(pa);
-				}else{
-					panelSol.add(pa);
+			for(Entry<String, Serializable> par: casos.get(i).entrySet()){
+				JPanel pa = new PanelMostrarAtbo(par.getKey(),par.getValue());
+				if (!par.getKey().equals("META_QUALITY")
+						&& !par.getKey().equals("META_ID")) {
+					if(tc.getAtbos().get(par.getKey()).getEsProblema()){
+						panelProblema.add(pa);
+					}else{
+						panelSol.add(pa);
+					}
 				}
 			}
 		}
