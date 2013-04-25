@@ -38,6 +38,8 @@ public abstract class EjecutorTecnicaRetrieval {
 				at = new Attribute(actual.getNombre(),clase);//Nombre del atbo, *.class al que pertenece
 				config.addMapping(at,ConversorMetricas.obtenerMetrica(actual));
 				config.setWeight(at, actual.getPeso());
+				Attribute a = new Attribute(actual.getNombre(), clase);
+				System.out.println("Sim function(etr): "+a.hashCode()+", "+config.getLocalSimilFunction(a));
 			}
 		}
 		config.setDescriptionSimFunction(new Average());
