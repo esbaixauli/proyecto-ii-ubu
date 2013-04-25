@@ -127,13 +127,9 @@ public class LanzadorCBR implements StandardCBRApplication {
 		
 		List<HashMap<String,Serializable>> resultadoHash = null;
 		try {
-			System.out.println("i0");
 			HbaseFacade hbf = HbaseFacade.getInstance();
-			System.out.println("i-r0");
 			resultadoHash = hbf.getResults(tc, outputTable);
-			System.out.println("r-d0");
 			hbf.dropTable(outputTable);
-			System.out.println("d");
 		} catch (PersistenciaException e) {
 			e.printStackTrace();
 			return new ArrayList<CBRCase>();
