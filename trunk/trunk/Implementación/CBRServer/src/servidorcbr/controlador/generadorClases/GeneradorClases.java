@@ -21,6 +21,7 @@ import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -165,20 +166,35 @@ public class GeneradorClases {
 		String desc = Type.getDescriptor(jcolibri.cbrcore.Attribute.class);
 		// Modificadores de acceso, nombre, descriptor del tipo, genericidad,
 		// modificador final
-		cw.visitField(Opcodes.ACC_PUBLIC, "id", desc, null, null);
-
 		
-		/*mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "setIdAttribute", "(" + desc
-				+ ")V", null, null);
-		crearSetter(mv, nombre, "id", desc);*/
+		MethodVisitor
+		mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "getIdAttribute", "()Ljcolibri/cbrcore/Attribute;", null, null);
+		mv.visitCode();
+		Label l0 = new Label();
+		mv.visitLabel(l0);
+		mv.visitLineNumber(20, l0);
+		mv.visitTypeInsn(Opcodes.NEW, "jcolibri/cbrcore/Attribute");
+		mv.visitInsn(Opcodes.DUP);
+		mv.visitLdcInsn("META_ID");
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Object", "getClass", "()Ljava/lang/Class;");
+		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "jcolibri/cbrcore/Attribute", "<init>", "(Ljava/lang/String;Ljava/lang/Class;)V");
+		mv.visitInsn(Opcodes.ARETURN);
+		Label l1 = new Label();
+		mv.visitLabel(l1);
+		mv.visitLocalVariable("this", "Lgeneradas/"+nombre+";", null, l0, l1, 0);
+		mv.visitMaxs(4, 1);
+		mv.visitEnd();
 		
+		//Creo getter
 		desc = Type.getDescriptor(Long.class);
 		cw.visitField(Opcodes.ACC_PUBLIC, "META_ID", desc, null, null);
+		
 		MethodVisitor mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "setMETA_ID", 
 				"(" + desc + ")V", null, null);
 		crearSetter(mv2, nombre, "META_ID", desc);
 		
-		MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "getIdAttribute",
+		mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "getMETA_ID",
 				"()" + desc, null, null);
 		crearGetter(mv, nombre, "META_ID", desc);
 	}
