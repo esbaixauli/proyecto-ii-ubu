@@ -46,12 +46,13 @@ public class ControlCBR {
 	 * @return Casos adaptados.
 	 * @throws IOException
 	 */
-	public static List<HashMap<String,Serializable>> reuse(TipoCaso tc,List<HashMap<String, Serializable>> casos) throws IOException{
+	public static List<HashMap<String,Serializable>> reuse(TipoCaso tc, HashMap<String,Serializable> query, List<HashMap<String, Serializable>> casos) throws IOException{
 		URLConnection con = ControlConexion.getServletCon("ServletCBR");
 		OutputStream outputStream = con.getOutputStream();
 	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
 	    oos.writeObject("reuse");
 	    oos.writeObject(tc);
+	    oos.writeObject(query);
 	    oos.writeObject(casos);
 	    InputStream inputStream = con.getInputStream();
 	    ObjectInputStream inputDelServlet = new ObjectInputStream(inputStream);
