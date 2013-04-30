@@ -31,7 +31,7 @@ public class RellenadorClases {
 		List<CBRCase> lista = new ArrayList<CBRCase>();
 		//Cargo las clases del problema y la solucion
 		Class<? extends CaseComponent> desc=CargadorClases.cargarClaseProblema(tc.getNombre());
-		Class<? extends CaseComponent> sol=CargadorClases.cargarClaseProblema(tc.getNombre());
+		Class<? extends CaseComponent> sol=CargadorClases.cargarClaseSolucion(tc.getNombre());
 		try{
 			//Por cada instancia de caso
 			for(HashMap<String, Serializable> caso:c){
@@ -123,13 +123,7 @@ public class RellenadorClases {
 			}
 			campos.put(a.getNombre(), s);
 		}
-		try {
-			//campos.put("META_ID", new Long((long) caso.getDescription().getClass()
-			//		.getMethod("getMETA_ID", (Class<?>[]) null)
-			//		.invoke(caso.getDescription(), (Object[]) null)));
-			campos.put("META_ID", 0);
-		} catch (Exception e) {
-		}
+		campos.put("META_ID", 0);
 		return campos;
 	}
 	

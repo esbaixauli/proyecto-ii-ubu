@@ -35,6 +35,9 @@ public class EjecutorKNN extends EjecutorTecnicaRetrieval {
 			}
 		}
 		Collection<RetrievalResult> cr = NNScoringMethod.evaluateSimilarity(casos,query,simConfig);
+		if (tc.getDefaultRec().getParams().isEmpty()) {
+			return SelectCases.selectTopK(cr, 5);
+		}
 		return SelectCases.selectTopK(cr,(int) tc.getDefaultRec().getParams().get(0).getValor());
 	}
 	

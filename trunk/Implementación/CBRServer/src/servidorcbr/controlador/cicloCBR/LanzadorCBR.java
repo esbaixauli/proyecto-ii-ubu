@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import jcolibri.cbraplications.StandardCBRApplication;
+import jcolibri.cbrcore.Attribute;
 import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRCaseBase;
 import jcolibri.cbrcore.CBRQuery;
@@ -25,6 +26,7 @@ import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.mapreduce.Job;
 
 import servidorcbr.controlador.cicloCBR.ejecucion.EjecutorTecnicaRetrieval;
+import servidorcbr.controlador.cicloCBR.ejecucion.EjecutorTecnicaReuse;
 import servidorcbr.controlador.generadorClases.RellenadorClases;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.excepciones.PersistenciaException;
@@ -149,6 +151,27 @@ public class LanzadorCBR implements StandardCBRApplication {
 		Collection<CBRCase> result = EjecutorTecnicaRetrieval.ejecutarRetrieval(resultado, RellenadorClases.rellenarQuery(tc, query), tc);
 		
 		return result;
+	}
+	
+	public Collection<CBRCase> reuse (TipoCaso tc, Collection<CBRCase> casos, CBRQuery query) {
+		EjecutorTecnicaReuse etr = new EjecutorTecnicaReuse(tc);
+		try {
+			casos = etr.ejecutar(casos, query);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return casos;
+	}
+	
+	public Collection<CBRCase> reuse (TipoCaso tc, List<HashMap<String,Serializable>> casos, HashMap<String,Serializable> query) {
+		Collection<CBRCase> casosCBR = null;
+		try {
+			casosCBR = RellenadorClases.rellenarLista(tc, casos);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		CBRQuery queryCBR = RellenadorClases.rellenarQuery(tc, query);
+		return reuse(tc, casosCBR, queryCBR);
 	}
 	
 	/**
