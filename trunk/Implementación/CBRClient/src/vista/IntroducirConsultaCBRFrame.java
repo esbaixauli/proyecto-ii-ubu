@@ -337,7 +337,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			
 				try {
 					List<HashMap<String,Serializable>> ret = ControlCBR.retrieve(tc, query);
-					JFrame res = new ResultadosConsultaFrame(padre, ret, ResultadosConsultaFrame.RETRIEVE, tc);
+					JFrame res = new ResultadosConsultaFrame(padre, ret, ResultadosConsultaFrame.RETRIEVE, tc, query);
 					res.setVisible(true);
 					me.setVisible(false);
 					me.dispose();

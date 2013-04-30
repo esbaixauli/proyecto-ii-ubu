@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -33,6 +35,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
+import controlador.ControlCBR;
+
 @SuppressWarnings("serial")
 public class ResultadosConsultaFrame extends FrameEstandar {
 	private JFrame me;
@@ -42,6 +46,7 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 	private JPanel panelSol;
 	private int etapa;
 	private TipoCaso tc;
+	private HashMap<String,Serializable> query;
 	
 	public final static int RETRIEVE=0,REVISE=1,REUSE=2;
 	/**
@@ -57,13 +62,14 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 	 * Correspondiente a las constantes de este frame RETRIEVAL,REUSE,REVISE.
 	 * @param tipo El tipo de caso al que pertenecen los casos.
 	 */
-	public ResultadosConsultaFrame(JFrame padre,
-			List<HashMap<String, Serializable>> lcasos,int etapa, TipoCaso tc) {
+	public ResultadosConsultaFrame(final JFrame padre,
+			List<HashMap<String, Serializable>> lcasos,final int etapa, final TipoCaso tc,
+			HashMap<String,Serializable> hquery) {
 		super(padre);me = this;
 		setSize(1060, 350); setLocationRelativeTo(null);
 		this.tc=tc;
 		this.etapa=etapa;
-
+		query = hquery;
 		this.casos=lcasos;
 		getContentPane().setLayout(new BorderLayout());
 		switch(etapa){
@@ -134,6 +140,24 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		
 		JButton btnContinuar = new JButton(b.getString("continue"));
+		btnContinuar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				switch (etapa) {
+				case RETRIEVE:
+					try {
+						casos = ControlCBR.reuse(tc, query, casos);
+						JFrame reuse = new ResultadosConsultaFrame(padre, casos, REUSE, tc, query);
+						reuse.setVisible(true);
+						me.setVisible(false);
+						me.dispose();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null,	b.getString("connecterror"), 
+								"Error",JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
 		panel.add(btnContinuar);
 		
 		JPanel panel_1 = new JPanel();
