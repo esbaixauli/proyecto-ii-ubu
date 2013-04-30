@@ -80,16 +80,24 @@ public class ServletCBR extends HttpServlet {
 				casosH.add(RellenadorClases.rellenarHash(tc, caso));
 			}
 			oos.writeObject(casosH);
-		}/* else if (tipo.equals("getCasos")) {
-				Usuario u = null;
-				try {
-					u = (Usuario) ois.readObject();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-				List<TipoCaso> l = ControladorTipos.getTipos(u);
-				oos.writeObject(l);
-			}*/
+		} else if (tipo.equals("reuse")) {
+			TipoCaso tc = null;
+			HashMap<String,Serializable> query = null;
+			List<HashMap<String,Serializable>> casos = null;
+			try {
+				tc = (TipoCaso) ois.readObject();
+				query = (HashMap<String,Serializable>) ois.readObject();
+				casos = (List<HashMap<String,Serializable>>) ois.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			Collection<CBRCase> result = lanzador.reuse(tc, casos, query);
+			List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
+			for (CBRCase caso : result) {
+				casosH.add(RellenadorClases.rellenarHash(tc, caso));
+			}
+			oos.writeObject(casosH);
+		}
 		oos.close();
 		sos.close();
 	}

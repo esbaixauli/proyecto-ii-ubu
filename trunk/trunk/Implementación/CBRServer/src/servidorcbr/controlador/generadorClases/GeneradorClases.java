@@ -167,18 +167,20 @@ public class GeneradorClases {
 		// modificador final
 		cw.visitField(Opcodes.ACC_PUBLIC, "id", desc, null, null);
 
-		MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "getIdAttribute",
-				"()" + desc, null, null);
-		crearGetter(mv, nombre, "id", desc);
-		mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "setIdAttribute", "(" + desc
+		
+		/*mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "setIdAttribute", "(" + desc
 				+ ")V", null, null);
-		crearSetter(mv, nombre, "id", desc);
+		crearSetter(mv, nombre, "id", desc);*/
 		
 		desc = Type.getDescriptor(Long.class);
 		cw.visitField(Opcodes.ACC_PUBLIC, "META_ID", desc, null, null);
 		MethodVisitor mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "setMETA_ID", 
 				"(" + desc + ")V", null, null);
 		crearSetter(mv2, nombre, "META_ID", desc);
+		
+		MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "getIdAttribute",
+				"()" + desc, null, null);
+		crearGetter(mv, nombre, "META_ID", desc);
 	}
 
 	// Crea un constructor vac�o para la clase
