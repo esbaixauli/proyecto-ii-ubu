@@ -60,7 +60,7 @@ public class HbaseFacade {
 	
 	public boolean createTable(String nombre) throws PersistenciaException {
 		HTableDescriptor ht = new HTableDescriptor(nombre);
-		ht.addFamily(new HColumnDescriptor("campos"));
+		ht.addFamily(new HColumnDescriptor(cf));
 		try {
 			HBaseAdmin hba = new HBaseAdmin(conn);
 			hba.createTable(ht);
@@ -96,17 +96,18 @@ public class HbaseFacade {
 	public boolean putCasos(TipoCaso tc, List<HashMap<String, Object>> casos)
 			throws PersistenciaException {
 		try {
+			System.out.println("insertando "+casos.size()+" casos...");
+			System.out.println("primero: "+casos.get(0));
 			HTable ht = new HTable(conf, tc.getNombre());
 			long id = new Date().getTime();
 			List<Put> puts = new ArrayList<Put>(casos.size());
 			for (HashMap<String, Object> caso : casos) {
 				Put p = new Put(Bytes.toBytes(id++));
 				for (Map.Entry<String, Object> par : caso.entrySet()) {
-					System.out.println("Insertando caso "+id+", atbo "+par.getKey());
 					if (par.getKey().equals("META_QUALITY")) {
-					//	p.add(cf, 
-					//			Bytes.toBytes("AAAAAA"), 
-					//TODO		Bytes.toBytes((Double) par.getValue()));
+						p.add(cf, 
+								Bytes.toBytes(par.getKey()), 
+								Bytes.toBytes((Double) par.getValue()));
 					} else {
 						Atributo a = tc.getAtbos().get(par.getKey());
 						addAtributo(p, par, a);
