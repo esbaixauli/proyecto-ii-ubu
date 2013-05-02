@@ -68,7 +68,7 @@ public class LectorCaso {
 			}
 			casos.get(i).put(nombre,o);
 		}else if(nombre.equalsIgnoreCase("META_QUALITY") && at.isNumeric() ){
-			casos.get(i).put("META_QUALITY",o);
+			casos.get(i).put("META_QUALITY", Double.parseDouble(o+""));
 		}
 	} 
 	
