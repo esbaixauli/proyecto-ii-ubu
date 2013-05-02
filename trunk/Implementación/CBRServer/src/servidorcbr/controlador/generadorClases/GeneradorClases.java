@@ -177,7 +177,7 @@ public class GeneradorClases {
 		// Creo getter
 		mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "getMETA_ID",
 				"()" + desc, null, null);
-		crearGetter(mv, nombre, "META_ID", desc);
+		crearGetter(mv2, nombre, "META_ID", desc);
 		
 		// Modificadores de acceso, nombre, descriptor del tipo, genericidad,
 		// modificador final
