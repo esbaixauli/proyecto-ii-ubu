@@ -164,6 +164,21 @@ public class GeneradorClases {
 	// Implementa atbos y m�todos para el interfaz CaseComponent
 	private static void implementarCaseComponent(ClassWriter cw, String nombre) {
 		String desc = Type.getDescriptor(jcolibri.cbrcore.Attribute.class);
+		
+		//Creo atributo META_ID
+		desc = Type.getDescriptor(Long.class);
+		cw.visitField(Opcodes.ACC_PUBLIC, "META_ID", desc, null, null);
+		
+		// Creo setter
+		MethodVisitor mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "setMETA_ID", 
+				"(" + desc + ")V", null, null);
+		crearSetter(mv2, nombre, "META_ID", desc);
+		
+		// Creo getter
+		mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "getMETA_ID",
+				"()" + desc, null, null);
+		crearGetter(mv, nombre, "META_ID", desc);
+		
 		// Modificadores de acceso, nombre, descriptor del tipo, genericidad,
 		// modificador final
 		
@@ -186,19 +201,7 @@ public class GeneradorClases {
 		mv.visitMaxs(4, 1);
 		mv.visitEnd();
 		
-		//Creo atributo META_ID
-		desc = Type.getDescriptor(Long.class);
-		cw.visitField(Opcodes.ACC_PUBLIC, "META_ID", desc, null, null);
 		
-		// Creo setter
-		MethodVisitor mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "setMETA_ID", 
-				"(" + desc + ")V", null, null);
-		crearSetter(mv2, nombre, "META_ID", desc);
-		
-		// Creo getter
-		mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "getMETA_ID",
-				"()" + desc, null, null);
-		crearGetter(mv, nombre, "META_ID", desc);
 	}
 
 	// Crea un constructor vac�o para la clase
