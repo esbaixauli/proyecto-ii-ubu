@@ -117,7 +117,7 @@ public class GeneradorClases {
 		out.close();
 	}
 
-	private static Class<?> crearClass(String nombre, byte[] clase)
+	/*private static Class<?> crearClass(String nombre, byte[] clase)
 			throws IOException, ClassNotFoundException {
 		File folder = new File("classes/generadas/");
 		if (!folder.exists())
@@ -134,7 +134,7 @@ public class GeneradorClases {
 				+ nombre);
 		classLoader.close();
 		return claseClass;
-	}
+	}*/
 
 	private static void crearAtbo(String nombre, ClassWriter cw, String tipo,
 			String atbo) {
@@ -186,14 +186,16 @@ public class GeneradorClases {
 		mv.visitMaxs(4, 1);
 		mv.visitEnd();
 		
-		//Creo getter
+		//Creo atributo META_ID
 		desc = Type.getDescriptor(Long.class);
 		cw.visitField(Opcodes.ACC_PUBLIC, "META_ID", desc, null, null);
 		
+		// Creo setter
 		MethodVisitor mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "setMETA_ID", 
 				"(" + desc + ")V", null, null);
 		crearSetter(mv2, nombre, "META_ID", desc);
 		
+		// Creo getter
 		mv2 = cw.visitMethod(Opcodes.ACC_PUBLIC, "getMETA_ID",
 				"()" + desc, null, null);
 		crearGetter(mv, nombre, "META_ID", desc);

@@ -52,8 +52,8 @@ public class RellenadorClases {
 	 * @throws ClassNotFoundException Si la clase correspondiente a ese tipo de caso no se halla en el sistema de ficheros.
 	 * @see {@link CBRCase}
 	 */
-	public static CBRCase rellenarCaso(TipoCaso tc, HashMap<String,Serializable> caso) throws ClassNotFoundException{
-	
+	public static CBRCase rellenarCaso(TipoCaso tc, HashMap<String,Serializable> caso)
+			throws ClassNotFoundException {
 		//Cargo las clases del problema y la solucion
 		Class<? extends CaseComponent> desc=CargadorClases.cargarClaseProblema(tc.getNombre());
 		Class<? extends CaseComponent> sol=CargadorClases.cargarClaseSolucion(tc.getNombre());
@@ -81,6 +81,7 @@ public class RellenadorClases {
 		} catch (IllegalAccessException e) {
 		}
 		for (Entry<String,Serializable> par : query.entrySet()) {
+			// Comprobación por si en el hashmap hay calidad: un query NO TIENE calidad
 			if (!par.getKey().equals("META_QUALITY")) {
 				Atributo a = tc.getAtbos().get(par.getKey());
 				tipo = getTipoClass(a);
@@ -90,11 +91,6 @@ public class RellenadorClases {
 				} catch (Exception e) {
 				}
 			}
-		}
-		try {
-			//desc.getDeclaredMethod("setMETA_ID", Long.class).invoke(instanciaDesc, 1);
-			desc.getDeclaredMethod("setIdAttribute", Attribute.class).invoke(instanciaDesc, new Attribute("META_ID", desc));
-		} catch (Exception e) {
 		}
 		q.setDescription(instanciaDesc);
 		return q;
@@ -123,7 +119,6 @@ public class RellenadorClases {
 			}
 			campos.put(a.getNombre(), s);
 		}
-		campos.put("META_ID", 0);
 		return campos;
 	}
 	
@@ -142,15 +137,9 @@ public class RellenadorClases {
 		for(Entry<String, Serializable> par  :caso.entrySet()){
 			//Si dicho atributo esta contenido en el tipo de caso
 			if(tc.getAtbos().containsKey(par.getKey())){
-				if (par.getKey().equals("META_ID")) {
-					try {
-						//desc.getDeclaredMethod("setMETA_ID", Long.class).invoke(instanciaDesc, par.getValue());
-						desc.getDeclaredMethod("setIdAttribute", Attribute.class)
-							.invoke(instanciaDesc, new Attribute("META_ID", desc));
-					} catch (Exception e) {
-					}
-					
-				} else {
+				// Al atributo META_ID no hay que hacerle nada, está ahí para cumplir la 
+				// especificación de jcolibri (pero su valor da igual)
+				if (!par.getKey().equals("META_ID")) {
 					Atributo a = tc.getAtbos().get(par.getKey());
 					tipo = getTipoClass(a);
 					//Si es un problema invoca al setter de dicho atributo en la clase del problema
