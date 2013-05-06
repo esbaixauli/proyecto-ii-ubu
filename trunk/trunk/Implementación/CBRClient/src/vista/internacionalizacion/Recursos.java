@@ -132,6 +132,8 @@ public class Recursos extends ListResourceBundle {
 		{"wishtodelete","Do you wish to clean the stats for user:"},
 		{"andcase"," and case type:"},
 		
+		{"method","Method"},
+		
 		{"sucshort","Successful"},
 		{"invshort","Unusable"},
 		{"other","Other"},
@@ -166,6 +168,7 @@ public class Recursos extends ListResourceBundle {
 		{"combinebymode","Combine by mode"},
 		{"combine","Combine results"},
 		{"nocases","No cases found for this query."},
+		{"qualityboundaries","META_QUALITY must be a value between 0 and 100."},
 		{"continue","Continue"}
 	};
 }

@@ -143,6 +143,8 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"export","Exportar"},
 		{"casebases","Bases de casos"},
 		
+		{"method","Técnica"},
+		
 		{"file","Archivo"},
 		{"help","Ayuda"},
 		{"about","Acerca de..."},
@@ -166,6 +168,7 @@ public class Recursos_es_ES extends ListResourceBundle {
 		{"combinebymode","Combinar por moda"},
 		{"combine","Combinar resultados"},
 		{"nocases","No se han encontrado casos para esta consulta."},
+		{"qualityboundaries","META_QUALITY debe estar comprendido entre 0 y 100."},
 		{"continue","Continuar"}
 	};
 }

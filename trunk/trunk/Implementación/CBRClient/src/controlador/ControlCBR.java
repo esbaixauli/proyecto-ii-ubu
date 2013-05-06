@@ -80,4 +80,17 @@ public class ControlCBR {
 		return inputDelServlet.readBoolean();   
 	}
 
+	public static boolean retain(TipoCaso tc, HashMap<String, Serializable> caso, Usuario u) throws IOException {
+		URLConnection con = ControlConexion.getServletCon("ServletCBR");
+		OutputStream outputStream = con.getOutputStream();
+	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+	    oos.writeObject("retain");
+	    oos.writeObject(tc);
+	    oos.writeObject(caso);
+	    oos.writeObject(u);
+	    InputStream inputStream = con.getInputStream();
+	    ObjectInputStream inputDelServlet = new ObjectInputStream(inputStream);
+		return inputDelServlet.readBoolean();
+	}
+
 }

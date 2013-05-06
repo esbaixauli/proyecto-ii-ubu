@@ -53,7 +53,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		this.a = a;
 		this.configurado = configurado;
-		setPreferredSize(new Dimension(531, 86));
+		setPreferredSize(new Dimension(572, 86));
 		
 		comboBox = new JComboBox<String>();
 		comboBox.addItemListener(new ItemListener() {
@@ -120,9 +120,13 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		gbc_textFieldPeso.gridx = 1;
 		gbc_textFieldPeso.gridy = 0;
 		panelPeso.add(textFieldPeso, gbc_textFieldPeso);
-		textFieldPeso.setColumns(2);
+		textFieldPeso.setColumns(5);
 		
-		
+		textFieldPeso.setText(a.getPeso()+"");
+		try {
+			textFieldPeso.commitEdit();
+		} catch (ParseException e) {
+		}
 		
 		JLabel lblMetrica = new JLabel(b.getString("atmetric"));
 		add(lblMetrica, "4, 4, right, center");
@@ -161,7 +165,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 				}
 			}
 		});
-		textFieldParam.setColumns(2);
+		textFieldParam.setColumns(5);
 		
 		if(!configurado){
 			comboBox.setVisible(false);

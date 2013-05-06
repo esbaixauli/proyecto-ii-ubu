@@ -28,6 +28,7 @@ public class ElegirTipoCasoFrame extends FrameEstandar {
 	private int tipo;
 	
 	private List<TipoCaso> datos;
+	private Usuario user;
 
 	public static final int CICLO_CONFIGURADO = 1;
 	public static final int CICLO_BASICO = 2;
@@ -40,7 +41,7 @@ public class ElegirTipoCasoFrame extends FrameEstandar {
 	 */
 	public ElegirTipoCasoFrame(Usuario u, JFrame padre, final int tipo) {
 		//Establezco referencias al padre y a la propia ventana
-		super(padre);me = this;
+		super(padre);me = this; user = u;
 		assert (tipo >= 1 && tipo <= 4);
 		
 		switch (tipo) {
@@ -91,7 +92,7 @@ public class ElegirTipoCasoFrame extends FrameEstandar {
 					JList list = (JList) arg0.getSource();
 					if (arg0.getClickCount() >= 2) {
 						JFrame f = new IntroducirConsultaCBRFrame(datos
-								.get(list.getSelectedIndex()), true, me);
+								.get(list.getSelectedIndex()), true, me, user);
 						f.setVisible(true);
 						me.setEnabled(false);
 					}
@@ -106,7 +107,7 @@ public class ElegirTipoCasoFrame extends FrameEstandar {
 					JList list = (JList) arg0.getSource();
 					if (arg0.getClickCount() >= 2) {
 						JFrame f = new IntroducirConsultaCBRFrame(datos
-								.get(list.getSelectedIndex()), false, me);
+								.get(list.getSelectedIndex()), false, me, user);
 						f.setVisible(true);
 						me.setEnabled(false);
 					}

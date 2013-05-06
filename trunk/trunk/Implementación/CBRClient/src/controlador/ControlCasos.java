@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import servidorcbr.modelo.Usuario;
 
 public class ControlCasos {
 	
-	public static boolean insertarCasos(TipoCaso tc, List<HashMap<String,Object>> casos) throws MalformedURLException, IOException{
+	public static boolean insertarCasos(TipoCaso tc, List<HashMap<String,Serializable>> casos) throws MalformedURLException, IOException{
 		URLConnection con = ControlConexion.getServletCon("ServletCaso");
 		OutputStream outputStream = con.getOutputStream();
 	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
