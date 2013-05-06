@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import servidorcbr.modelo.Estadistica;
 import servidorcbr.modelo.TipoCaso;
+import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 
@@ -133,6 +135,98 @@ public class SQLOtros {
 			throw new PersistenciaException(e);
 		}
 
+	}
+	
+	/** Actualiza las estadísticas de un usuario tras una ejecución del ciclo CBR.
+	 * @param u Usuario que realizó la ejecución.
+	 * @param tc Tipo de caso de la consulta.
+	 * @param calidad Calidad de la solución dada, evaluada por el usuario.
+	 * @throws PersistenciaException En caso de cualquier error en la conexión 
+	 * con la base de datos.
+	 */
+	public void updateEstadistica(Usuario u, TipoCaso tc,int calidad) throws PersistenciaException{
+		java.util.Date fecha = new Date();
+		try{
+		int idU= buscarId("usuario", u.getNombre());
+		int idC= buscarId("caso",tc.getNombre());
+		
+		//Si es un administrador y es su primera consulta, se le asocia al tipo de caso.
+		if(u.getTipo().equals(TipoUsuario.ADMINISTRADOR)
+				&& getEstadistica(u, tc).getEjecTotales()==0){
+			insertarEstadisticaAdmin(fecha, calidad, idU, idC);
+		}else{
+			modificarEstadistica(fecha, calidad, idU, idC);
+		}
+		}catch(SQLException ex){
+			ex.printStackTrace();
+			throw new PersistenciaException(ex);
+		}
+	}
+
+
+	/**Auxiliar. Actualiza una fila de la tabla 
+	 * de estadísticas con los valores indicados cuando se hace una nueva
+	 * ejecución del ciclo.
+	 * @param fecha La fecha de la nueva ejecución.
+	 * @param calidad La calidad de la solución dada.
+	 * @param idU El identificador del usuario que realizó la consulta.
+	 * @param idC El identificador del tipo de caso de la consulta.
+	 * @throws SQLException En caso de que no se consiga actualizar.
+	 */
+	private void modificarEstadistica(Date fecha, int calidad, int idU, int idC)
+			throws SQLException {
+		String cal="";
+		if(calidad>50){
+			cal="ejecSatisfactorias=ejecSatisfactorias+1,";
+		}else if(calidad == 0){
+			cal="ejecInusables=ejecInusables+1,";
+		}
+		String sql = "update caso_usuario set ejecTotales=ejecTotales+1," +
+				"mediacalidad=(mediacalidad+?)/ejecTotales+1,"+
+				cal+"fechaultima=?,calidadUltima=? where id_caso="+idC+
+				" and id_usuario="+idU+";";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setInt(1, calidad);
+		java.sql.Date sqlDate = new java.sql.Date(fecha.getTime());
+		ps.setDate(2, sqlDate);
+		ps.setLong(3, (long)calidad);
+		ps.executeUpdate();
+	}
+
+
+	/**Auxiliar. Inserta una nueva fila en la tabla caso_usuario correspondiente
+	 * a las estadísticas de un administrador para este caso. Se usa en caso
+	 * de que un administrador nunca haya usado un caso y por tanto no tenga
+	 * vinculación con él. (Ya que, a diferencia de los usuarios corrientes, los
+	 * administradores no se vinculan a los casos, sino que pueden verlos todos).
+	 * @param fecha La fecha de la ejecución causante de la estadística.
+	 * @param calidad calidad del caso ejecutado.
+	 * @param idU id del usuario (Que ha de ser un administrador).
+	 * @param idC id del caso.
+	 * @throws SQLException En caso de que falle la inserción.
+	 */
+	private void insertarEstadisticaAdmin(Date fecha, int calidad, int idU,
+			int idC) throws SQLException {
+		String cal;
+		if(calidad>50){
+			cal="1,0,";
+		}else if(calidad==0){
+			cal="0,1,";
+		}else{
+			cal="0,0,";
+		}
+		
+		String sql = "insert into caso_usuario (id_caso,id_usuario," +
+				"ejectotales,mediacalidad,ejecsatisfactorias," +
+			"ejecinusables,fechaultima,calidadultima) values "+
+				idC+","+idU+","+
+				"1,?,"+cal+"?,?";
+		PreparedStatement ps = conn.prepareStatement(sql);
+		ps.setDouble(1, (double) calidad);
+		java.sql.Date sqlDate = new java.sql.Date(fecha.getTime());
+		ps.setDate(2, sqlDate);
+		ps.setLong(3, (long)calidad);
+		ps.executeUpdate();
 	}
 	
 }
