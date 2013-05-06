@@ -92,5 +92,9 @@ public class SQLFacade {
 	public void limpiarEstadistica(Usuario u, TipoCaso tc) throws PersistenciaException{
 		sqlOtros.limpiarEstadistica(u,tc);
 	}
+
+	public void updateEstadistica(Usuario u, TipoCaso tc, int calidad) throws PersistenciaException {
+		sqlOtros.updateEstadistica(u, tc, calidad);
+	}
 	
 }

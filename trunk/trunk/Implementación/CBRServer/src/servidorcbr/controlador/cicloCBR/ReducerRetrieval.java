@@ -35,6 +35,7 @@ import servidorcbr.controlador.cicloCBR.ejecucion.EjecutorTecnicaRetrieval;
 import servidorcbr.controlador.generadorClases.CargadorClases;
 import servidorcbr.controlador.generadorClases.RellenadorClases;
 import servidorcbr.modelo.Atributo;
+import servidorcbr.modelo.Calidad;
 import servidorcbr.modelo.TipoCaso;
 
 public class ReducerRetrieval extends
@@ -118,7 +119,7 @@ public class ReducerRetrieval extends
 			e.printStackTrace();
 		}
 		for (Atributo atb : tc.getAtbos().values()) {
-			byte[] val = row.getValue(cf, Bytes.toBytes(atb.getNombre()));;
+			byte[] val = row.getValue(cf, Bytes.toBytes(atb.getNombre()));
 			Class<?> tipo = null, clase = null;;
 			Object valor = null;
 			CaseComponent cc = null;
@@ -163,11 +164,16 @@ public class ReducerRetrieval extends
 					new Attribute("META_ID", cdesc));
 		} catch (Exception e) {
 		}
-
+		
+		// Asignamos la calidad al caso
+		int cal = Bytes.toInt(row.getValue(cf, Bytes.toBytes("META_QUALITY")));
+		Calidad c = new Calidad();
+		c.setCalidad(cal);
 		
 		CBRCase caso = new CBRCase();
 		caso.setDescription(desc);
 		caso.setSolution(solution);
+		caso.setJustificationOfSolution(c);
 		return caso;
 	}
 

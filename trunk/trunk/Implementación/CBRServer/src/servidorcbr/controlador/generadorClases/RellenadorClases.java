@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.hadoop.hbase.util.Bytes;
+
 import servidorcbr.modelo.Atributo;
+import servidorcbr.modelo.Calidad;
 import servidorcbr.modelo.TipoCaso;
 
 import jcolibri.cbrcore.Attribute;
@@ -119,6 +122,10 @@ public class RellenadorClases {
 			}
 			campos.put(a.getNombre(), s);
 		}
+		Calidad cal = (Calidad) caso.getJustificationOfSolution();
+		if (cal != null) {
+			campos.put("META_QUALITY", cal.getCalidad());
+		}
 		return campos;
 	}
 	
@@ -133,6 +140,7 @@ public class RellenadorClases {
 		} catch (IllegalAccessException e1) {
 		}
 		Class<?> tipo;
+		CBRCase cbrCase = new CBRCase();
 		//Por cada par atributo-valor
 		for(Entry<String, Serializable> par  :caso.entrySet()){
 			//Si dicho atributo esta contenido en el tipo de caso
@@ -152,12 +160,16 @@ public class RellenadorClases {
 									a.getNombre().substring(1),tipo).invoke(instanciaSol,par.getValue());
 						}
 					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
+			} else if (par.getKey().equals("META_QUALITY")) {
+				Calidad cal = new Calidad();
+				cal.setCalidad((Integer) par.getValue());
+				cbrCase.setJustificationOfSolution(cal);
 			}
 		}
 		//Añado el caso a la lista
-		CBRCase cbrCase = new CBRCase();
 		cbrCase.setDescription(instanciaDesc);
 		cbrCase.setSolution(instanciaSol);
 		return cbrCase;

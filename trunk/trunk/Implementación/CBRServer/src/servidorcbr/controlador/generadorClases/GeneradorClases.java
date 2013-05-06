@@ -181,9 +181,9 @@ public class GeneradorClases {
 		
 		// Modificadores de acceso, nombre, descriptor del tipo, genericidad,
 		// modificador final
-		
+		desc = Type.getDescriptor(jcolibri.cbrcore.Attribute.class);
 		MethodVisitor
-		mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "getIdAttribute", "()Ljcolibri/cbrcore/Attribute;", null, null);
+		mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "getIdAttribute", "()" + desc, null, null);
 		mv.visitCode();
 		Label l0 = new Label();
 		mv.visitLabel(l0);

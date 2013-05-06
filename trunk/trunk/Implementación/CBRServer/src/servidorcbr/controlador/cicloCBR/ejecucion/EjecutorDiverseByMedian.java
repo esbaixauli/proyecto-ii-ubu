@@ -15,6 +15,7 @@ import jcolibri.method.retrieve.RetrievalResult;
 import jcolibri.method.retrieve.DiverseByMedianRetrieval.ExpertClerkMedianScoring;
 import jcolibri.method.retrieve.NNretrieval.NNConfig;
 import jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
+import jcolibri.method.retrieve.selection.SelectCases;
 
 public class EjecutorDiverseByMedian extends EjecutorTecnicaRetrieval{
 	
@@ -26,14 +27,11 @@ public class EjecutorDiverseByMedian extends EjecutorTecnicaRetrieval{
 	public Collection<CBRCase> ejecutar(Collection<CBRCase> casos,
 			CBRQuery query) throws ClassNotFoundException {
 		HashMap<Attribute,Double> umbrales=null; 
-		HashMap<String,Attribute> h=null;
-		Collection<CBRCase> filtrada = new ArrayList<CBRCase>();
+		HashMap<String,Attribute> h= new HashMap<String,Attribute>();
 		NNConfig simConfig = getSimilaridadGlobalConfig(h);
 		umbrales = getUmbrales(h);
 		simConfig.setDescriptionSimFunction(new Average());
-		for(RetrievalResult r: ExpertClerkMedianScoring.getDiverseByMedian(casos, simConfig, umbrales)){
-			filtrada.add(r.get_case());
-		}
+		Collection<CBRCase> filtrada = SelectCases.selectTopK(ExpertClerkMedianScoring.getDiverseByMedian(casos, simConfig, umbrales), 1);
 		return filtrada;
 	}
 	
@@ -50,9 +48,6 @@ public class EjecutorDiverseByMedian extends EjecutorTecnicaRetrieval{
 		NNConfig config = new NNConfig();
 		Attribute at;
 		Class<?> clase;
-		if(h==null){
-			h=new HashMap<String, Attribute>();
-		}
 		try {
 			clase = CargadorClases.cargarClaseProblema(tc.getNombre());
 		} catch (ClassNotFoundException e) {

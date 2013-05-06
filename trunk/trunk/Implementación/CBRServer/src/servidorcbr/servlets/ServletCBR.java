@@ -20,12 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 import jcolibri.cbrcore.CBRCase;
 
 import servidorcbr.controlador.ControladorCasos;
+import servidorcbr.controlador.ControladorEstadisticas;
 import servidorcbr.controlador.ControladorTipos;
 import servidorcbr.controlador.cicloCBR.LanzadorCBR;
 import servidorcbr.controlador.generadorClases.RellenadorClases;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
+import servidorcbr.persistencia.sql.SQLFacade;
 
 
 /**
@@ -97,6 +99,31 @@ public class ServletCBR extends HttpServlet {
 				casosH.add(RellenadorClases.rellenarHash(tc, caso));
 			}
 			oos.writeObject(casosH);
+		} else if (tipo.equals("retain")) {
+			TipoCaso tc = null;
+			HashMap<String,Serializable> caso = null;
+			Usuario u = null;
+			try {
+				tc = (TipoCaso) ois.readObject();
+				caso = (HashMap<String,Serializable>) ois.readObject();
+				u = (Usuario) ois.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			try {
+				System.out.println("Lanzamos retain");
+				boolean result = ControladorCasos.retain(tc, caso);
+				System.out.println("Result: "+result);
+				if (result) {
+					ControladorEstadisticas.updateEstadistica(u, tc, (Integer) caso.get("META_QUALITY"));
+					System.out.println("Estadisticas guardadas");
+				}
+				oos.writeBoolean(result);
+			} catch (PersistenciaException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
 		}
 		oos.close();
 		sos.close();

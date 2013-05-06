@@ -57,6 +57,7 @@ public class SQLOtros {
 		
 		es = rellenarEstadistica(rs);
 		}catch(SQLException ex){
+			ex.printStackTrace();
 			throw new PersistenciaException(ex);
 		}
 		return es;
@@ -77,8 +78,9 @@ public class SQLOtros {
 			es.setEjecInusables(rs.getLong(4));
 			es.setFechaUltima(rs.getDate(5));
 			//Busco la calidad correspondiente a esa fecha
-			ResultSet rs2= conn.prepareStatement("select max(calidadUltima) from caso_usuario where fechaUltima="
-			+rs.getDate(5)).executeQuery();
+			PreparedStatement ps = conn.prepareStatement("SELECT calidadUltima FROM caso_usuario WHERE fechaUltima=?");
+			ps.setDate(1, rs.getDate(5));
+			ResultSet rs2= ps.executeQuery();
 			while(rs2.next()){
 				es.setCalidadUltima(rs2.getLong(1));
 			}
@@ -182,7 +184,7 @@ public class SQLOtros {
 			cal="ejecInusables=ejecInusables+1,";
 		}
 		String sql = "update caso_usuario set ejecTotales=ejecTotales+1," +
-				"mediacalidad=(mediacalidad+?)/ejecTotales+1,"+
+				"mediacalidad=(mediacalidad+?)/(ejecTotales+1),"+
 				cal+"fechaultima=?,calidadUltima=? where id_caso="+idC+
 				" and id_usuario="+idU+";";
 		PreparedStatement ps = conn.prepareStatement(sql);
