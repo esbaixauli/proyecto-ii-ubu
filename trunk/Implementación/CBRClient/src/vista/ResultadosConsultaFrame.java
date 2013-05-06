@@ -2,12 +2,14 @@ package vista;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -25,6 +27,7 @@ import javax.swing.border.EtchedBorder;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
+import servidorcbr.modelo.Usuario;
 import vista.componentes.FrameEstandar;
 import vista.panels.PanelIntroducirValorAtbo;
 import vista.panels.PanelMostrarAtbo;
@@ -36,6 +39,7 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 import controlador.ControlCBR;
+import controlador.ControlCasos;
 
 @SuppressWarnings("serial")
 public class ResultadosConsultaFrame extends FrameEstandar {
@@ -47,6 +51,7 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 	private int etapa;
 	private TipoCaso tc;
 	private HashMap<String,Serializable> query;
+	private Usuario user;
 	
 	public final static int RETRIEVE=0,REVISE=1,REUSE=2;
 	/**
@@ -64,18 +69,33 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 	 */
 	public ResultadosConsultaFrame(final JFrame padre,
 			List<HashMap<String, Serializable>> lcasos,final int etapa, final TipoCaso tc,
-			HashMap<String,Serializable> hquery) {
+			HashMap<String,Serializable> hquery, Usuario u) {
 		super(padre);me = this;
 		setSize(1060, 350); setLocationRelativeTo(null);
 		this.tc=tc;
 		this.etapa=etapa;
 		query = hquery;
 		this.casos=lcasos;
+		user = u;
 		getContentPane().setLayout(new BorderLayout());
+		JLabel lblTc = new JLabel();
+		JButton btnContinuar = new JButton();
 		switch(etapa){
-			case RETRIEVE:setTitle(b.getString("retrieval"));break;
-			case REUSE:setTitle(b.getString("reuse"));break;
-			case REVISE:setTitle(b.getString("revise"));break;
+			case RETRIEVE:
+				setTitle(b.getString("retrieval"));
+				lblTc.setText(b.getString("method") + ": " + tc.getDefaultRec().getNombre());
+				btnContinuar.setText(b.getString("reuse"));
+				break;
+			case REUSE:
+				setTitle(b.getString("reuse"));
+				lblTc.setText(b.getString("method") + ": " + tc.getDefaultReu().getNombre());
+				btnContinuar.setText(b.getString("revise"));
+				break;
+			case REVISE:
+				setTitle(b.getString("revise"));
+				lblTc.setText(b.getString("method") + ": " + tc.getDefaultRev().getNombre());
+				btnContinuar.setText(b.getString("retain"));
+				break;
 		}
 		int tam=1;
 		if(casos!=null){
@@ -87,10 +107,14 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 		getContentPane().add(panelCambiarCaso, BorderLayout.NORTH);
 		panelCambiarCaso.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		JPanel panel_4 = new JPanel();
+		panelCambiarCaso.add(panel_4);
+		panel_4.setLayout(new BorderLayout(0, 0));
+		
 		JPanel panel_3 = new JPanel();
+		panel_4.add(panel_3, BorderLayout.SOUTH);
 		panel_3.setBackground(Color.GRAY);
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panelCambiarCaso.add(panel_3);
 		
 				JButton buttonAnterior = new JButton("<<");
 				panel_3.add(buttonAnterior);
@@ -103,7 +127,7 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 				spinner = new JSpinner();
 				panel_2.add(spinner);
 				spinner.setPreferredSize(new Dimension(35,(int) spinner.getPreferredSize().getHeight()));
-				spinner.setModel(new SpinnerNumberModel(1, 1,tam, 1));
+				spinner.setModel(new SpinnerNumberModel(1, 1,Math.max(tam, 1), 1));
 				
 						
 						JLabel lblnumero = new JLabel("/"+Math.max(tam,0));
@@ -114,6 +138,11 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 						
 								JButton buttonSiguiente = new JButton(">>");
 								panel_3.add(buttonSiguiente);
+								
+								JPanel panel_5 = new JPanel();
+								panel_4.add(panel_5, BorderLayout.NORTH);
+								
+								panel_5.add(lblTc);
 								buttonSiguiente.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent e) {
 										if(actual+1<casos.size()){
@@ -139,17 +168,55 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		
-		JButton btnContinuar = new JButton(b.getString("continue"));
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switch (etapa) {
 				case RETRIEVE:
 					try {
 						casos = ControlCBR.reuse(tc, query, casos);
-						JFrame reuse = new ResultadosConsultaFrame(padre, casos, REUSE, tc, query);
+						JFrame reuse = new ResultadosConsultaFrame(padre, casos, REUSE, tc, query, user);
 						reuse.setVisible(true);
 						me.setVisible(false);
 						me.dispose();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null,	b.getString("connecterror"), 
+								"Error",JOptionPane.ERROR_MESSAGE);
+					}
+					break;
+				case REUSE:
+					JFrame revise = new ResultadosConsultaFrame(padre, casos, REVISE, tc, query, user);
+					revise.setVisible(true);
+					me.setVisible(false);
+					me.dispose();
+					break;
+				case REVISE:
+					try {
+						HashMap<String,Serializable> caso = new HashMap<String,Serializable>();
+						for (Component c : panelProblema.getComponents()) {
+							PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) c;
+							caso.put(p.getKey(), p.getValue());
+						}
+						for (Component c : panelSol.getComponents()) {
+							PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) c;
+							caso.put(p.getKey(), p.getValue());
+						}
+						if ((Integer) caso.get("META_QUALITY") > 100
+								|| (Integer) caso.get("META_QUALITY") < 0) {
+							JOptionPane.showMessageDialog(null,	b.getString("opsuccess"), 
+									b.getString("opsuccess"),JOptionPane.INFORMATION_MESSAGE);
+						}
+						if (ControlCBR.retain(tc, caso, user)) {
+							JOptionPane.showMessageDialog(null,	b.getString("opsuccess"), 
+									b.getString("opsuccess"),JOptionPane.INFORMATION_MESSAGE);
+							padre.setEnabled(true);
+							padre.toFront();
+							me.setVisible(false);
+							me.dispose();
+						} else {
+							JOptionPane.showMessageDialog(null,	b.getString("opunsuccess"), 
+									b.getString("opunsuccess"),JOptionPane.ERROR_MESSAGE);
+						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null,	b.getString("connecterror"), 
@@ -225,6 +292,13 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 					panelSol.add(pa);
 				}
 			}
+			Atributo a = new Atributo();
+			a.setNombre("META_QUALITY");
+			a.setTipo("I");
+			a.setMetrica("equal");
+			PanelIntroducirValorAtbo pa = new PanelIntroducirValorAtbo(a, false, me);
+			pa.setValue(50);
+			panelSol.add(pa);
 		}else{
 			for(Entry<String, Serializable> par: casos.get(i).entrySet()){
 				JPanel pa = new PanelMostrarAtbo(par.getKey(),par.getValue());
@@ -237,6 +311,8 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 					}
 				}
 			}
+			JPanel pa = new PanelMostrarAtbo("META_QUALITY", casos.get(i).get("META_QUALITY"));
+			panelSol.add(pa);
 		}
 	}
 }

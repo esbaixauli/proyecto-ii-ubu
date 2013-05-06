@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +54,7 @@ public class InsertarCasoFrame extends FrameEstandar {
 	private JLabel lblCargadas;
 	private TipoCaso tc;
 	private JTable table;
-	private List<HashMap<String,Object>> casos;
+	private List<HashMap<String,Serializable>> casos;
 	private JTextField textFieldFilter;
 	
 
@@ -215,8 +216,8 @@ public class InsertarCasoFrame extends FrameEstandar {
 		panel_1.add(btnInsManual);
 		btnInsManual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				List<HashMap<String,Object>> casos = new ArrayList<HashMap<String,Object>>();
-				HashMap<String, Object> caso = new HashMap<String, Object>();
+				List<HashMap<String,Serializable>> casos = new ArrayList<HashMap<String,Serializable>>();
+				HashMap<String, Serializable> caso = new HashMap<String, Serializable>();
 				for(int i=0; i<panelManual.getComponentCount();i++){
 					PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) panelManual.getComponent(i);
 					Object valor = p.getValue();
@@ -241,13 +242,13 @@ public class InsertarCasoFrame extends FrameEstandar {
 		}
 		Atributo calidad= new Atributo();
 		calidad.setNombre("META_QUALITY");
-		calidad.setTipo("D");
+		calidad.setTipo("I");
 		calidad.setMetrica("equal");
 		panelManual.add(new PanelIntroducirValorAtbo(calidad, false, this));
 		setLocationRelativeTo(padre);
 	}
 	
-	private void insertarCasos(List<HashMap<String,Object>> lcasos){
+	private void insertarCasos(List<HashMap<String,Serializable>> lcasos){
 		try {
 			
 			if (lcasos!=null && !lcasos.isEmpty() && ControlCasos.insertarCasos(tc, lcasos)) {

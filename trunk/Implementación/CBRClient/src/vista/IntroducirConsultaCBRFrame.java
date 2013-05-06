@@ -15,6 +15,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -85,15 +86,17 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 	private JPanel panel_3;
 	private JPanel panel_4;
 	private JPanel panel_5;
+	private Usuario user;
 
 	/**
 	 * Create the frame.
 	 */
 	public IntroducirConsultaCBRFrame(TipoCaso tic, boolean configurado,
-			final JFrame padre) {
+			final JFrame padre, Usuario u) {
 		super(padre);me=this;
 		this.tc = tic;
 		this.configurado = configurado;
+		user = u;
 		setTitle("CBR: " + tc.getNombre());
 		setBounds(100, 100, 573, 525);
 		contentPane = new JPanel();
@@ -337,7 +340,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			
 				try {
 					List<HashMap<String,Serializable>> ret = ControlCBR.retrieve(tc, query);
-					JFrame res = new ResultadosConsultaFrame(padre, ret, ResultadosConsultaFrame.RETRIEVE, tc, query);
+					JFrame res = new ResultadosConsultaFrame(padre, ret, ResultadosConsultaFrame.RETRIEVE, tc, query, user);
 					res.setVisible(true);
 					me.setVisible(false);
 					me.dispose();
@@ -395,8 +398,10 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			JOptionPane.showMessageDialog(null,
 					b.getString("connecterror"), "Error",JOptionPane.ERROR_MESSAGE);
 		}if(e!=null){
+			DecimalFormat df = new DecimalFormat();
+			df.setMaximumFractionDigits(2);
 			lblEjecTotales.setText(b.getString("totalexec")+":"+e.getEjecTotales());
-			lblMediaCalidad.setText(b.getString("avgquality")+":"+e.getMediaCalidad());
+			lblMediaCalidad.setText(b.getString("avgquality")+":"+df.format(e.getMediaCalidad()));
 		}
 	}
 
@@ -516,18 +521,18 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 		for (Tecnica t : tc.getTecnicasRecuperacion()) {
 			comboBoxRec.addItem(t.getNombre());
 		}
-		comboBoxRec.setSelectedItem(tc.getDefaultRec().toString());
+		comboBoxRec.setSelectedItem(tc.getDefaultRec().getNombre());
 		for (Tecnica t : tc.getTecnicasReutilizacion()) {
 			comboBoxReu.addItem(t.getNombre());
 		}
-		comboBoxReu.setSelectedItem(tc.getDefaultReu().toString());
+		comboBoxReu.setSelectedItem(tc.getDefaultReu().getNombre());
 		for (Tecnica t : tc.getTecnicasRevision()) {
 			comboBoxRev.addItem(t.getNombre());
 		}
-		comboBoxRev.setSelectedItem(tc.getDefaultRev().toString());
+		comboBoxRev.setSelectedItem(tc.getDefaultRev().getNombre());
 		for (Tecnica t : tc.getTecnicasRetencion()) {
 			comboBoxRet.addItem(t.getNombre());
 		}
-		comboBoxRet.setSelectedItem(tc.getDefaultRet().toString());
+		comboBoxRet.setSelectedItem(tc.getDefaultRet().getNombre());
 	}
 }
