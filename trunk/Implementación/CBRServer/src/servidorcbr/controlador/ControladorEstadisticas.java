@@ -16,4 +16,8 @@ public class ControladorEstadisticas {
 	public static void limpiarEstadistica(Usuario u, TipoCaso tc) throws PersistenciaException{
 		SQLFacade.getInstance().limpiarEstadistica(u,tc);
 	}
+	
+	public static void updateEstadistica(Usuario u, TipoCaso tc, int calidad) throws PersistenciaException {
+		SQLFacade.getInstance().updateEstadistica(u, tc, calidad);
+	}
 }

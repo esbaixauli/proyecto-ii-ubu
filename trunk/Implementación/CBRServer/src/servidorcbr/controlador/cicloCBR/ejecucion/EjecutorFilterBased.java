@@ -1,5 +1,6 @@
 package servidorcbr.controlador.cicloCBR.ejecucion;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 
 import jcolibri.cbrcore.Attribute;
@@ -30,34 +31,35 @@ public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 	@Override
 	public Collection<CBRCase> ejecutar(Collection<CBRCase> casos,
 			CBRQuery query) throws ClassNotFoundException {
-		FilterConfig simConfig=getFiltros();
+		FilterConfig simConfig=getFiltros(query);
 		
-		return FilterBasedRetrievalMethod.filterCases(casos, query, simConfig);
+		return FilterBased.filterCases(casos, query, simConfig);
 	}
 	
-	private FilterConfig getFiltros() throws ClassNotFoundException{
+	private FilterConfig getFiltros(CBRQuery query) {
 		FilterConfig config = new FilterConfig();
-		Attribute at;
-		Class<?> clase;
-		try {
-			clase = CargadorClases.cargarClaseProblema(tc.getNombre());
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		for(Parametro p: tc.getDefaultRec().getParams() ){
+		Class<?> clase = query.getDescription().getClass();
+		for(Parametro p : tc.getDefaultRec().getParams()){
 			Atributo actual = tc.getAtbos().get(p.getNombre());
+			Field f = null;
 			if(actual.getEsProblema()){
-				at = new Attribute(actual.getNombre(),clase);//Nombre del atbo, *.class al que pertenece
+				try {
+					f = query.getDescription().getClass().getDeclaredField(actual.getNombre());
+				} catch (NoSuchFieldException e) {
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				}
+				Attribute at = new Attribute(f);
 				config.addPredicate(at, getFilterPredicate(p.getValor()));
+				System.out.println("Predicado para: " + at.getName() + "(hc "+at.hashCode()+")" + config.getPredicate(at));
 			}
 		}
-		
 		return config;
 	}
 
 	/** Auxiliar. Traduce un predicado de su representación interna a su clase correspondiente.
-	 * * 0: Equal
+	 * 0: Equal
 	 * 1: NotEqual
 	 * 2: OntologyCompatible
 	 * 3: QueryLess

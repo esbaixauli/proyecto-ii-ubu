@@ -3,6 +3,7 @@ package servidorcbr.servlets;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,10 +61,10 @@ public class ServletCaso extends HttpServlet {
 			}
 			if (tipo.equals("putCasos")) {
 				TipoCaso tc = null;
-				List<HashMap<String,Object>> casos = null;
+				List<HashMap<String,Serializable>> casos = null;
 				try {
 					tc = (TipoCaso) ois.readObject();
-					casos = (List<HashMap<String,Object>>) ois.readObject();
+					casos = (List<HashMap<String,Serializable>>) ois.readObject();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}

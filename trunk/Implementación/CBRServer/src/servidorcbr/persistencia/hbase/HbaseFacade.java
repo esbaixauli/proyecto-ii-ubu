@@ -93,21 +93,19 @@ public class HbaseFacade {
 		return true;
 	}
 
-	public boolean putCasos(TipoCaso tc, List<HashMap<String, Object>> casos)
+	public boolean putCasos(TipoCaso tc, List<HashMap<String, Serializable>> casos)
 			throws PersistenciaException {
 		try {
-			System.out.println("insertando "+casos.size()+" casos...");
-			System.out.println("primero: "+casos.get(0));
 			HTable ht = new HTable(conf, tc.getNombre());
 			long id = new Date().getTime();
 			List<Put> puts = new ArrayList<Put>(casos.size());
-			for (HashMap<String, Object> caso : casos) {
+			for (HashMap<String, Serializable> caso : casos) {
 				Put p = new Put(Bytes.toBytes(id++));
-				for (Map.Entry<String, Object> par : caso.entrySet()) {
+				for (Map.Entry<String, Serializable> par : caso.entrySet()) {
 					if (par.getKey().equals("META_QUALITY")) {
 						p.add(cf, 
 								Bytes.toBytes(par.getKey()), 
-								Bytes.toBytes((Double) par.getValue()));
+								Bytes.toBytes((Integer) par.getValue()));
 					} else {
 						Atributo a = tc.getAtbos().get(par.getKey());
 						addAtributo(p, par, a);
@@ -119,13 +117,14 @@ public class HbaseFacade {
 			ht.flushCommits();
 			ht.close();
 		} catch (IOException e) {
+			System.out.println(e.getMessage());
 			e.printStackTrace();
 			throw new PersistenciaException(e);
 		}
 		return true;
 	}
 
-	private void addAtributo(Put p, Map.Entry<String, Object> atb, Atributo a) {
+	private void addAtributo(Put p, Map.Entry<String, Serializable> atb, Atributo a) {
 		switch (a.getTipo()) {
 		case "S":
 			p.add(cf,
