@@ -62,13 +62,11 @@ public class ReducerRetrieval extends
 			Class<? extends CaseComponent> csolution = CargadorClases.cargarClaseSolucion(tc.getNombre());
 			int i = 0;
 			for (Result row : values) {
-				CBRCase caso;
-				caso = obtenerCaso(tc, key, row, cdesc, csolution);
+				CBRCase caso = obtenerCaso(tc, key, row, cdesc, csolution);
 				casos.add(caso);
 				ids.add(i, row.getRow());
 				i++;
 			}
-			System.out.println("Reducer ejecutandse, nº de casos: "+casos.size());
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -78,8 +76,8 @@ public class ReducerRetrieval extends
 			Put put = new Put(ids.get(i++));
 			HashMap<String,Serializable> campos = RellenadorClases.rellenarHash(tc, caso);
 			for (Entry<String,Serializable> par : campos.entrySet()) {
-				if (par.getKey().equals("META_ID")) {
-					//put.add(cf, Bytes.toBytes("META_ID"), Bytes.toBytes((Long) campos.get("META_ID")));
+				if (par.getKey().equals("META_QUALITY")) {
+					put.add(cf, Bytes.toBytes("META_QUALITY"), Bytes.toBytes((Integer) campos.get("META_QUALITY")));
 				} else {
 					switch (tc.getAtbos().get(par.getKey()).getTipo()) {
 					case "I":
@@ -160,15 +158,18 @@ public class ReducerRetrieval extends
 		try {
 			cdesc.getDeclaredMethod("setMETA_ID", Long.class).invoke(desc,
 					new Long(Bytes.toLong(key.copyBytes())));
-			cdesc.getDeclaredMethod("setIdAttribute", Attribute.class).invoke(desc,
-					new Attribute("META_ID", cdesc));
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
-		// Asignamos la calidad al caso
-		int cal = Bytes.toInt(row.getValue(cf, Bytes.toBytes("META_QUALITY")));
 		Calidad c = new Calidad();
-		c.setCalidad(cal);
+		try {
+			// Asignamos la calidad al caso
+			int cal = Bytes.toInt(row.getValue(cf, Bytes.toBytes("META_QUALITY")));
+			c.setCalidad(cal);
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+		}
 		
 		CBRCase caso = new CBRCase();
 		caso.setDescription(desc);
