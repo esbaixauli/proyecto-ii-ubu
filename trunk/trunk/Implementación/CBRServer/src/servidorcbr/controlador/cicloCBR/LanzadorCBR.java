@@ -139,7 +139,7 @@ public class LanzadorCBR implements StandardCBRApplication {
 		
 		List<CBRCase> resultado = new ArrayList<CBRCase>(resultadoHash.size());
 		for (HashMap<String,Serializable> caso : resultadoHash) {
-			System.out.println("ID: "+caso.get("META_ID")+", age: "+caso.get("age")+", class: "+caso.get("class")+", sex: "+caso.get("sex")+", surv: "+caso.get("survived"));
+			System.out.println("ID: "+caso.get("META_ID")+", age: "+caso.get("age")+", class: "+caso.get("classe")+", sex: "+caso.get("sex")+", surv: "+caso.get("survived") + ", cal: "+caso.get("META_QUALITY"));
 			try {
 				resultado.add(RellenadorClases.rellenarCaso(tc, caso));
 			} catch (ClassNotFoundException e) {
