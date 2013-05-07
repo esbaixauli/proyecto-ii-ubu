@@ -51,7 +51,7 @@ public class ListaCasos extends JList<TipoCaso> {
 			setEnabled(true);
 		}
 	}
-
+/*
 	class AltCellRenderer extends DefaultListCellRenderer {
 
 		public AltCellRenderer() {
@@ -78,5 +78,5 @@ public class ListaCasos extends JList<TipoCaso> {
 			return c;
 		}
 	}
-
+*/
 }

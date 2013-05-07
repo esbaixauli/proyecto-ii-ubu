@@ -32,13 +32,11 @@ public class WorkerEspera<T,V> extends SwingWorker<List<HashMap<String,Serializa
 	private HashMap<String,Serializable> query;
 	
 	/** Constructor. Crea un worker para gestionar la espera del retrieval.
-	 * @param s Splash que se muestra durante la espera.
 	 * @param f Frame al que se vuelve al terminar la espera.
 	 * @param tic Tipo de caso del retrieval.
 	 * @param q Consulta realizada en el retrieval.
 	 */
-	public WorkerEspera(Splash s, JFrame f, TipoCaso tic,HashMap<String,Serializable> q){
-		splash=s;
+	public WorkerEspera(JFrame f, TipoCaso tic,HashMap<String,Serializable> q) {
 		frame=f;
 		tc=tic;
 		query=q;
@@ -46,11 +44,15 @@ public class WorkerEspera<T,V> extends SwingWorker<List<HashMap<String,Serializa
 	
 	@Override
 	protected List<HashMap<String, Serializable>> doInBackground() throws Exception {
+		splash = new Splash();
+		splash.setLocationRelativeTo(frame);
+		splash.setVisible(true);
 		return ControlCBR.retrieve(tc, query);
 	}
 	
 	@Override
 	public void done(){
+		splash.setVisible(false);
 		splash.dispose();
 		frame.setEnabled(true);
 		frame.toFront();
