@@ -196,8 +196,7 @@ public class HbaseFacade {
 		    			break;
 		    		}
 		    	}
-		    	//h.put("META_ID", Bytes.toLong(r.getValue(cf, Bytes.toBytes("META_ID"))));
-		    	h.put("META_ID", 0);
+		    	h.put("META_QUALITY", Bytes.toInt(r.getValue(cf, Bytes.toBytes("META_QUALITY"))));
 		    	lista.add(h);
 		    }
 		} catch (IOException e) {
@@ -205,6 +204,10 @@ public class HbaseFacade {
 			throw new PersistenciaException(e);
 		}
 		return lista;
+	}
+
+}
+turn lista;
 	}
 
 }

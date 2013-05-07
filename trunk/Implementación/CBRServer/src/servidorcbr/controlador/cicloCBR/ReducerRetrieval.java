@@ -162,9 +162,9 @@ public class ReducerRetrieval extends
 			e.printStackTrace();
 		}
 		
+		// Asignamos la calidad al caso
 		Calidad c = new Calidad();
 		try {
-			// Asignamos la calidad al caso
 			int cal = Bytes.toInt(row.getValue(cf, Bytes.toBytes("META_QUALITY")));
 			c.setCalidad(cal);
 		} catch (NullPointerException e) {
@@ -220,4 +220,4 @@ public class ReducerRetrieval extends
 		} catch (ClassNotFoundException e) { }
 		return RellenadorClases.rellenarQuery(tc, h);
 	}
-}
+}}

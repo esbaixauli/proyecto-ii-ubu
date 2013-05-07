@@ -1,14 +1,11 @@
 package servidorcbr.modelo;
 
-import java.io.Serializable;
-
 import jcolibri.cbrcore.Attribute;
 import jcolibri.cbrcore.CaseComponent;
 
-public class Calidad implements Serializable, CaseComponent {
+public class Calidad implements CaseComponent {
 
-	private static final long serialVersionUID = 1L;
-	private int calidad;
+	public int calidad;
 	
 	public int getCalidad() {
 		return calidad;
@@ -19,6 +16,12 @@ public class Calidad implements Serializable, CaseComponent {
 	}
 	
 	@Override
+	public Attribute getIdAttribute() {
+		return new Attribute("calidad", getClass());
+	}
+
+}
+ride
 	public Attribute getIdAttribute() {
 		return new Attribute("calidad", getClass());
 	}
