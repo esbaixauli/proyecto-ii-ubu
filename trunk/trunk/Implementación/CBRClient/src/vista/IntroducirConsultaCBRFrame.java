@@ -39,6 +39,8 @@ import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import vista.componentes.FrameEstandar;
+import vista.componentes.Splash;
+import vista.componentes.WorkerEspera;
 import vista.configtecnicas.CombineQueryConfigFrame;
 import vista.configtecnicas.DiverseByMedianConfigFrame;
 import vista.configtecnicas.FilterBasedConfigFrame;
@@ -154,11 +156,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			gbc_comboBoxRec.gridx = 1;
 			gbc_comboBoxRec.gridy = 2;
 			panelMet.add(comboBoxRec, gbc_comboBoxRec);
-			comboBoxRec.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent arg0) {
-					estableceFrameTecRec();
-				}
-			});
+			
 			
 						btnConfigRec = new JButton(b.getString("configure"));
 						GridBagConstraints gbc_btnConfigRec = new GridBagConstraints();
@@ -197,11 +195,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			gbc_comboBoxReu.gridx = 1;
 			gbc_comboBoxReu.gridy = 4;
 			panelMet.add(comboBoxReu, gbc_comboBoxReu);
-			comboBoxReu.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent arg0) {
-					estableceFrameTecReu();
-				}
-			});
+		
 			
 						btnConfigReu = new JButton(b.getString("configure"));
 						GridBagConstraints gbc_btnConfigReu = new GridBagConstraints();
@@ -240,11 +234,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			gbc_comboBoxRev.gridx = 1;
 			gbc_comboBoxRev.gridy = 6;
 			panelMet.add(comboBoxRev, gbc_comboBoxRev);
-			comboBoxRev.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent arg0) {
-					estableceFrameTecRev();
-				}
-			});
+			
 			
 						btnConfigRev = new JButton(b.getString("configure"));
 						GridBagConstraints gbc_btnConfigRev = new GridBagConstraints();
@@ -283,11 +273,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			gbc_comboBoxRet.gridx = 1;
 			gbc_comboBoxRet.gridy = 8;
 			panelMet.add(comboBoxRet, gbc_comboBoxRet);
-			comboBoxRet.addItemListener(new ItemListener() {
-				public void itemStateChanged(ItemEvent arg0) {
-					estableceFrameTecRet();
-				}
-			});
+			
 			
 						btnConfigRet = new JButton(b.getString("configure"));
 						GridBagConstraints gbc_btnConfigRet = new GridBagConstraints();
@@ -339,14 +325,32 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 				}
 			
 				try {
-					List<HashMap<String,Serializable>> ret = ControlCBR.retrieve(tc, query);
+					//Momentaneamente el l&f se vuelve el estándar para mostrar el splash.
+					cambiarLookAndFeel(false);
+					//Creo un splash (Imagen de espera)
+					Splash s = new Splash();
+					
+					WorkerEspera<List<HashMap<String,Serializable>>,String> we = 
+					new WorkerEspera<List<HashMap<String,Serializable>>,String>
+					(s, me, tc, query);
+					
+					s.setLocationRelativeTo(me);
+					s.setVisible(true);
+					me.setEnabled(false);	
+					//Los controles quedan deshabilitados hasta que se haya ejecutado
+					//la operación.
+					List<HashMap<String,Serializable>> ret = we.get();
 					JFrame res = new ResultadosConsultaFrame(padre, ret, ResultadosConsultaFrame.RETRIEVE, tc, query, user);
 					res.setVisible(true);
+					
 					me.setVisible(false);
 					me.dispose();
-				} catch (IOException e1) {
+				} catch (Exception e1) {
+					cambiarLookAndFeel(true);
+					me.setEnabled(true);
 					JOptionPane.showMessageDialog(null,
 							b.getString("connecterror"), "Error",JOptionPane.ERROR_MESSAGE);
+				
 				}
 			}
 		});
@@ -379,6 +383,31 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			estableceFrameTecRet();
 			estableceFrameTecReu();
 			estableceFrameTecRev();
+			
+			
+			comboBoxReu.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent arg0) {
+					estableceFrameTecReu();
+				}
+			});
+			
+			comboBoxRev.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent arg0) {
+					estableceFrameTecRev();
+				}
+			});
+			
+			comboBoxRec.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent arg0) {
+					estableceFrameTecRec();
+				}
+			});
+			
+			comboBoxRet.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent arg0) {
+					estableceFrameTecRet();
+				}
+			});
 		} else {
 			me.setBounds(me.getX(), me.getY(),me.getWidth(), scrollPane.getPreferredSize().height+150);
 		}
@@ -534,5 +563,21 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 			comboBoxRet.addItem(t.getNombre());
 		}
 		comboBoxRet.setSelectedItem(tc.getDefaultRet().getNombre());
+	}
+	
+	
+	/**Cambia momentaneamente el look and feel para mostrar un splash.
+	 * @param acryl
+	 */
+	private void cambiarLookAndFeel(boolean acryl){
+		try{
+		if(acryl){
+			UIManager
+					.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+		}else{
+			UIManager
+					.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			
+		}}catch(Exception ex){}
 	}
 }
