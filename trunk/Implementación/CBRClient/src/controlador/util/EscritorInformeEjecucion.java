@@ -2,6 +2,7 @@ package controlador.util;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -18,36 +19,38 @@ public class EscritorInformeEjecucion {
 
 	public static boolean escribirInforme(String ruta, Usuario u, TipoCaso tc){
 		try{
+			
 		ResourceBundle b = ResourceBundle.getBundle(
 				"vista.internacionalizacion.Recursos", Locale.getDefault());
 		boolean exito=false;
-		FileWriter fw = new FileWriter(ruta);
-		fw.write(b.getString("executionreport"));
-		fw.write("--------");
-		fw.write(b.getString("name") +": "+ u.getNombre());
-		fw.write(tc.getNombre());
-		fw.write("--------");
-		fw.write("");
-		fw.write(b.getString("retrieval"));
-		fw.write(b.getString("method")+":"+tc.getDefaultRec());
-		escribirParametros(tc.getDefaultRec(), fw);
-		fw.write(b.getString("reuse"));
-		fw.write(b.getString("method")+":"+tc.getDefaultReu());
-		escribirParametros(tc.getDefaultReu(), fw);
-		fw.write(b.getString("revise"));
-		fw.write(b.getString("method")+":"+tc.getDefaultRev());
-		escribirParametros(tc.getDefaultRev(), fw);
-		fw.write(b.getString("retain"));
-		fw.write(b.getString("method")+":"+tc.getDefaultRet());
-		escribirParametros(tc.getDefaultRet(), fw);
+		PrintWriter pw = new PrintWriter(ruta);
+		pw.println(b.getString("executionreport"));
+	
+		pw.println("--------");
+		pw.println(b.getString("name") +": "+ u.getNombre());
+		pw.println(tc.getNombre());
+		pw.println("--------");
+		pw.println("");
+		pw.println(b.getString("retrieval"));
+		pw.println(b.getString("method")+":"+tc.getDefaultRec().getNombre());
+		escribirParametros(tc.getDefaultRec(), pw);
+		pw.println(b.getString("reuse"));
+		pw.println(b.getString("method")+":"+tc.getDefaultReu().getNombre());
+		escribirParametros(tc.getDefaultReu(), pw);
+		pw.println(b.getString("revise"));
+		pw.println(b.getString("method")+":"+tc.getDefaultRev().getNombre());
+		escribirParametros(tc.getDefaultRev(), pw);
+		pw.println(b.getString("retain"));
+		pw.println(b.getString("method")+":"+tc.getDefaultRet().getNombre());
+		escribirParametros(tc.getDefaultRet(), pw);
 		
-		fw.close();
+		pw.close();
 		return true;
 		}catch(IOException ex){}
 		return false;
 	}
 	
-	private static void escribirParametros(Tecnica t, FileWriter fw) throws IOException{
+	private static void escribirParametros(Tecnica t, PrintWriter fw) throws IOException{
 		for(Parametro p: t.getParams()){
 			fw.write("["+p.getNombre()+","+p.getValor()+"]");
 		}
