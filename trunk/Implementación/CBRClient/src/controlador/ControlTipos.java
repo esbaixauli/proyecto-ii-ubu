@@ -32,30 +32,30 @@ public class ControlTipos {
 		List<TipoCaso> casos=null;
 		URLConnection con = ControlConexion.getServletCon("ServletTipo");
 		OutputStream outputStream = con.getOutputStream();
-	    ObjectOutputStream oos = new ObjectOutputStream(outputStream);
-	    String tipo;
+		ObjectOutputStream oos = new ObjectOutputStream(outputStream);
+		String tipo;
 		if(u==null || u.getTipo().equals(TipoUsuario.ADMINISTRADOR)){
-		     tipo = "getTipos";
-				oos.writeObject(tipo);
+			tipo = "getTipos";
+			oos.writeObject(tipo);
 		}else{
-			 tipo = "getTiposU";
-				oos.writeObject(tipo);
-				oos.writeObject(u);
+			tipo = "getTiposU";
+			oos.writeObject(tipo);
+			oos.writeObject(u);
 		}
-	     InputStream inputStream = con.getInputStream();
-	      ObjectInputStream inputDelServlet = new ObjectInputStream(
-	          inputStream);
-	      try{
-	      casos = (List<TipoCaso>) inputDelServlet.readObject();
-	      }catch(ClassNotFoundException e){
-	    	  
-	      }
-	      inputDelServlet.close();
-	      inputStream.close();	
-	      
+		InputStream inputStream = con.getInputStream();
+		ObjectInputStream inputDelServlet = new ObjectInputStream(
+				inputStream);
+		try{
+			casos = (List<TipoCaso>) inputDelServlet.readObject();
+		}catch(ClassNotFoundException e){
+
+		}
+		inputDelServlet.close();
+		inputStream.close();	
+
 		return casos;
 	}
-	
+
 	public static boolean addTipo (TipoCaso tc) throws MalformedURLException, IOException {
 		return enviarTipo("newTipo",tc);
 	}

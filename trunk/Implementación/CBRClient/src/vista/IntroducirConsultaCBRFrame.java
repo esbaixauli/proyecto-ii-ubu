@@ -327,25 +327,31 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 				try {
 					//Momentaneamente el l&f se vuelve el estándar para mostrar el splash.
 					cambiarLookAndFeel(false);
-					//Creo un splash (Imagen de espera)
-					Splash s = new Splash();
-					
-					WorkerEspera<List<HashMap<String,Serializable>>,String> we = 
+
+					/*WorkerEspera<List<HashMap<String,Serializable>>,String> we = 
 					new WorkerEspera<List<HashMap<String,Serializable>>,String>
-					(s, me, tc, query);
+					(me, tc, query);*/
 					
+					me.setEnabled(false);
+					Splash s = new Splash();
 					s.setLocationRelativeTo(me);
 					s.setVisible(true);
-					me.setEnabled(false);	
+					List<HashMap<String,Serializable>> ret = s.retrieve(tc, query);
+					s.setVisible(false);
+					s.dispose();
+					
 					//Los controles quedan deshabilitados hasta que se haya ejecutado
 					//la operación.
-					List<HashMap<String,Serializable>> ret = we.get();
+					//we.execute();
+					//List<HashMap<String,Serializable>> ret = we.get();
+					cambiarLookAndFeel(true);
 					JFrame res = new ResultadosConsultaFrame(padre, ret, ResultadosConsultaFrame.RETRIEVE, tc, query, user);
 					res.setVisible(true);
 					
 					me.setVisible(false);
 					me.dispose();
 				} catch (Exception e1) {
+					e1.printStackTrace();
 					cambiarLookAndFeel(true);
 					me.setEnabled(true);
 					JOptionPane.showMessageDialog(null,

@@ -12,9 +12,18 @@ import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+
+import servidorcbr.modelo.TipoCaso;
+
+import controlador.ControlCBR;
+
 import java.awt.FlowLayout;
+import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class Splash extends JFrame {
@@ -29,7 +38,9 @@ public class Splash extends JFrame {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getRootPane().setWindowDecorationStyle(JRootPane.NONE);
-		setOpacity(0.8f);
+		try {
+			setOpacity(0.8f);
+		} catch (UnsupportedOperationException uoe) {}
 		setBounds(100, 100, 195, 195);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -40,6 +51,8 @@ public class Splash extends JFrame {
 		contentPane.add(label);
 	}
 	
-
+	public List<HashMap<String,Serializable>> retrieve(TipoCaso tc, HashMap<String,Serializable> q) throws IOException {
+		return ControlCBR.retrieve(tc, q);
+	}
 
 }
