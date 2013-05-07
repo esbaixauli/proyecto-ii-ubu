@@ -169,6 +169,8 @@ public class Recursos extends ListResourceBundle {
 		{"combine","Combine results"},
 		{"nocases","No cases found for this query."},
 		{"qualityboundaries","META_QUALITY must be a value between 0 and 100."},
-		{"continue","Continue"}
+		{"continue","Continue"},
+		
+		{"executionreport","Execution report"}
 	};
 }
