@@ -116,7 +116,8 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		textFieldPeso = new JFormattedTextField(new DefaultFormatterFactory(
 				new NumberFormatter(new DecimalFormat()) ));
 		GridBagConstraints gbc_textFieldPeso = new GridBagConstraints();
-		gbc_textFieldPeso.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textFieldPeso.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldPeso.anchor = GridBagConstraints.NORTH;
 		gbc_textFieldPeso.gridx = 1;
 		gbc_textFieldPeso.gridy = 0;
 		panelPeso.add(textFieldPeso, gbc_textFieldPeso);
@@ -151,7 +152,8 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		gbc_lblMParam.gridy = 0;
 		panelParamMet.add(lblMParam, gbc_lblMParam);
 		GridBagConstraints gbc_textFieldParam = new GridBagConstraints();
-		gbc_textFieldParam.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textFieldParam.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldParam.anchor = GridBagConstraints.NORTH;
 		gbc_textFieldParam.gridx = 1;
 		gbc_textFieldParam.gridy = 0;
 		panelParamMet.add(textFieldParam, gbc_textFieldParam);
@@ -240,7 +242,7 @@ public class PanelIntroducirValorAtbo extends JPanel {
 	}
 
 	public Serializable getValue() {
-		if(textField.getText().equals("")){
+		if (textField.getText().equals("")) {
 			return null;
 		}
 		if (a.getTipo().equals("S")) {

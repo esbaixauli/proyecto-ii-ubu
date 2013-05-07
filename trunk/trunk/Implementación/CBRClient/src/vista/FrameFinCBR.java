@@ -33,6 +33,7 @@ public class FrameFinCBR extends FrameEstandar {
 
 	public FrameFinCBR(final JFrame padre,final TipoCaso tc, final Usuario u) {
 		super(padre);
+		setSize(315, 130);
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblExito = new JLabel(b.getString("opsuccess"));

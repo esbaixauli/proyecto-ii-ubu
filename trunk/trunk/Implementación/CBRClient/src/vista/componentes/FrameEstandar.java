@@ -89,6 +89,13 @@ public class FrameEstandar extends JFrame {
 		});
 	}
 	
+	/**
+	 * Devuelve el padre del frame actual.
+	 */
+	public JFrame getPadre() {
+		return padre;
+	}
+	
 
 	protected final void refrescar(){
 		try {			
