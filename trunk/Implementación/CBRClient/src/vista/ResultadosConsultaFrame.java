@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,6 +41,8 @@ import javax.swing.border.LineBorder;
 
 import controlador.ControlCBR;
 import controlador.ControlCasos;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 @SuppressWarnings("serial")
 public class ResultadosConsultaFrame extends FrameEstandar {
@@ -125,6 +128,11 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 				panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 				
 				spinner = new JSpinner();
+				spinner.addChangeListener(new ChangeListener() {
+					public void stateChanged(ChangeEvent e) {
+						cambiarDeCaso( ((int)spinner.getValue()) -1);
+					}
+				});
 				panel_2.add(spinner);
 				spinner.setPreferredSize(new Dimension(35,(int) spinner.getPreferredSize().getHeight()));
 				spinner.setModel(new SpinnerNumberModel(1, 1,Math.max(tam, 1), 1));
@@ -132,9 +140,6 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 						
 						JLabel lblnumero = new JLabel("/"+Math.max(tam,0));
 						panel_2.add(lblnumero);
-						
-						JButton btnGo = new JButton(b.getString("go"));
-						panel_2.add(btnGo);
 						
 								JButton buttonSiguiente = new JButton(">>");
 								panel_3.add(buttonSiguiente);
@@ -150,11 +155,6 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 										}
 									}
 								});
-						btnGo.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-								cambiarDeCaso( ((int)spinner.getValue()) -1);
-							}
-						});
 				buttonAnterior.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						if(actual-1 >= 0){
@@ -203,14 +203,12 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 						}
 						if ((Integer) caso.get("META_QUALITY") > 100
 								|| (Integer) caso.get("META_QUALITY") < 0) {
-							JOptionPane.showMessageDialog(null,	b.getString("opsuccess"), 
-									b.getString("opsuccess"),JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(null,	b.getString("emptyfield"), 
+									b.getString("emptyfield"),JOptionPane.ERROR_MESSAGE);
 						}
 						if (ControlCBR.retain(tc, caso, user)) {
-							JOptionPane.showMessageDialog(null,	b.getString("opsuccess"), 
-									b.getString("opsuccess"),JOptionPane.INFORMATION_MESSAGE);
-							padre.setEnabled(true);
-							padre.toFront();
+							JFrame fin = new FrameFinCBR(padre, tc, user);
+							fin.setVisible(true);
 							me.setVisible(false);
 							me.dispose();
 						} else {
@@ -253,7 +251,6 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 		}else{
 			panelProblema.setLayout(new FlowLayout());
 			btnContinuar.setEnabled(false);
-			btnGo.setEnabled(false);
 			buttonAnterior.setEnabled(false);
 			buttonSiguiente.setEnabled(false);
 			spinner.setEnabled(false);
@@ -314,5 +311,9 @@ public class ResultadosConsultaFrame extends FrameEstandar {
 			JPanel pa = new PanelMostrarAtbo("META_QUALITY", casos.get(i).get("META_QUALITY"));
 			panelSol.add(pa);
 		}
+	}
+	
+	public void setCasos (List<HashMap<String,Serializable>> c) {
+		casos = c;
 	}
 }

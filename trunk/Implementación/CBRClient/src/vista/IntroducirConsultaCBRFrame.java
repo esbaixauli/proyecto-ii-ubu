@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -89,6 +90,7 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 	private JPanel panel_4;
 	private JPanel panel_5;
 	private Usuario user;
+	private JLabel lblIcon;
 
 	/**
 	 * Create the frame.
@@ -325,31 +327,18 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 				}
 			
 				try {
+					lblIcon.setVisible(true);
 					//Momentaneamente el l&f se vuelve el estándar para mostrar el splash.
-					cambiarLookAndFeel(false);
+					//cambiarLookAndFeel(false);
+					//Splash s = new Splash();
 
-					/*WorkerEspera<List<HashMap<String,Serializable>>,String> we = 
-					new WorkerEspera<List<HashMap<String,Serializable>>,String>
-					(me, tc, query);*/
-					
-					me.setEnabled(false);
-					Splash s = new Splash();
-					s.setLocationRelativeTo(me);
-					s.setVisible(true);
-					List<HashMap<String,Serializable>> ret = s.retrieve(tc, query);
-					s.setVisible(false);
-					s.dispose();
-					
+					WorkerEspera we = new WorkerEspera(me, tc, query, user);
 					//Los controles quedan deshabilitados hasta que se haya ejecutado
 					//la operación.
-					//we.execute();
-					//List<HashMap<String,Serializable>> ret = we.get();
-					cambiarLookAndFeel(true);
-					JFrame res = new ResultadosConsultaFrame(padre, ret, ResultadosConsultaFrame.RETRIEVE, tc, query, user);
-					res.setVisible(true);
-					
-					me.setVisible(false);
-					me.dispose();
+					me.setEnabled(false);
+					//s.setLocationRelativeTo(me);
+					//s.setVisible(true);
+					we.execute();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					cambiarLookAndFeel(true);
@@ -360,7 +349,13 @@ public class IntroducirConsultaCBRFrame extends FrameEstandar {
 				}
 			}
 		});
+		
+		lblIcon = new JLabel("");
+		lblIcon.setIcon(new ImageIcon("res/espera.gif"));
+		lblIcon.setVisible(false);
+		panel.add(lblIcon);
 		panel.add(btnPasoapaso);
+		
 		btnEjecutarCiclo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				HashMap<String,Serializable> query = new HashMap<String,Serializable>();

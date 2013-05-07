@@ -52,7 +52,7 @@ public class EscritorInformeEjecucion {
 	
 	private static void escribirParametros(Tecnica t, PrintWriter fw) throws IOException{
 		for(Parametro p: t.getParams()){
-			fw.write("["+p.getNombre()+","+p.getValor()+"]");
+			fw.println("["+p.getNombre()+","+p.getValor()+"]");
 		}
 	}
 	
