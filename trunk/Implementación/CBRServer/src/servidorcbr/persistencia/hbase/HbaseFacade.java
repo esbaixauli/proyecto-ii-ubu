@@ -207,7 +207,3 @@ public class HbaseFacade {
 	}
 
 }
-turn lista;
-	}
-
-}
