@@ -365,7 +365,11 @@ public class SQLTipos {
 				psUsuarios.setDouble(4, estadisticas.get(i).getMediaCalidad());
 				psUsuarios.setLong(5, estadisticas.get(i).getEjecSatisfactorias());
 				psUsuarios.setLong(6,  estadisticas.get(i).getEjecInusables());
-				psUsuarios.setDate(7,  new java.sql.Date (estadisticas.get(i).getFechaUltima().getTime()));
+				if(estadisticas.get(i).getFechaUltima()!=null){
+					psUsuarios.setDate(7,  new java.sql.Date (estadisticas.get(i).getFechaUltima().getTime()));
+				}else{
+					psUsuarios.setNull(7, java.sql.Types.DATE); 
+				}
 				psUsuarios.setLong(8,  estadisticas.get(i).getCalidadUltima());
 				psUsuarios.executeUpdate();
 			}
