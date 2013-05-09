@@ -21,9 +21,3 @@ public class Calidad implements CaseComponent {
 	}
 
 }
-ride
-	public Attribute getIdAttribute() {
-		return new Attribute("calidad", getClass());
-	}
-
-}
