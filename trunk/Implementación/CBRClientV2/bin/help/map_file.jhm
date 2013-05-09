@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<!DOCTYPE map
+PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN"
+"http://java.sun.com/products/javahelp/map_2_0.dtd">
+<map version="1.0">
+		<mapID target="ConceptosBasicos" url="html/ConceptosBasicos.html"/>	
+		<mapID target="MainFrame" url="html/MainFrame.html"/>
+		<mapID target="ElegirTipoCasoFrame" url="html/ElegirTipoCasoFrame.html"/>
+		<mapID target="GestionTecnicasPanel" url="html/GestionTecnicasFrame.html"/>
+		<mapID target="GestionTiposFrame" url="html/GestionTiposFrame.html"/>
+		<mapID target="GestionUsuariosFrame" url="html/GestionUsuariosFrame.html"/>
+		<mapID target="InsertarCasoPanel" url="html/InsertarCasoFrame.html"/>
+		<mapID target="IntroducirConsultaCBRPanel" url="html/IntroducirConsultaCBRFrame.html"/>
+		<mapID target="NuevoTipoPanel" url="html/NuevoTipoFrame.html"/>
+		<mapID target="VerCrearUsuarioPanel" url="html/VerCrearUsuarioFrame.html"/>
+		<mapID target="VerTipoPanel" url="html/VerTipoFrame.html"/>		
+		<mapID target="DiverseByMedianConfigFrame" url="html/DiverseByMedianConfigFrame.html"/>	
+		<mapID target="FilterBasedConfigFrame" url="html/FilterBasedConfigFrame.html"/>	
+		<mapID target="NNConfigFrame" url="html/NNConfigFrame.html"/>
+		<mapID target="NumOrCopyConfigFrame" url="html/NumOrCopyConfigFrame.html"/>
+		<mapID target="CombineQueryConfigFrame" url="html/NumOrCopyConfigFrame.html"/>
+		<mapID target="EstadisticasPanel" url="html/EstadisticasFrame.html"/>	
+</map>
+
+	
