@@ -1,0 +1,649 @@
+package vista.cicloCBR;
+
+import controlador.ControlCBR;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.IOException;
+import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+
+import servidorcbr.modelo.Atributo;
+import servidorcbr.modelo.Estadistica;
+import servidorcbr.modelo.Tecnica;
+import servidorcbr.modelo.TipoCaso;
+import servidorcbr.modelo.TipoUsuario;
+import servidorcbr.modelo.Usuario;
+import vista.MainFrame;
+import vista.componentesGenericos.FrameEstandar;
+import vista.componentesGenericos.PanelEstandar;
+import vista.panels.PanelIntroducirValorAtbo;
+import vista.tipos.configtecnicas.CombineQueryConfigFrame;
+import vista.tipos.configtecnicas.DiverseByMedianConfigFrame;
+import vista.tipos.configtecnicas.FilterBasedConfigFrame;
+import vista.tipos.configtecnicas.NNConfigFrame;
+import vista.tipos.configtecnicas.NumOrCopyConfigFrame;
+import controlador.ControlEstadisticas;
+import controlador.ControlTecnicas;
+import javax.swing.border.EtchedBorder;
+import java.awt.Font;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JSeparator;
+
+@SuppressWarnings("serial")
+public class IntroducirConsultaCBRPanel extends PanelEstandar {
+
+	private JFrame cRec, cReu, cRev, cRet;
+
+	private TipoCaso tc;
+	private boolean configurado;
+	private JComboBox<String> comboBoxRec;
+	private JButton btnConfigRec;
+	private JComboBox<String> comboBoxReu;
+	private JButton btnConfigReu;
+	private JButton btnConfigRev;
+	private JButton btnConfigRet;
+	private JComboBox<String> comboBoxRev;
+	private JComboBox<String> comboBoxRet;
+	private JLabel lblRec;
+	private JLabel lblReu;
+	private JLabel lblRev;
+	private JLabel lblRet;
+	private JButton btnEjecutarCiclo;
+	private JPanel panelAtbos;
+	private JScrollPane scrollPane;
+	private JPanel panelMet;
+	private JPanel panelEjec;
+	private JPanel panel;
+	private JLabel lblEjecTotales;
+	private JPanel panelEstad;
+	private JLabel lblMediaCalidad;
+
+	private JButton btnPasoapaso;
+	private JPanel panel_2;
+	private JPanel panel_3;
+	private JPanel panel_4;
+	private JPanel panel_5;
+	private Usuario user;
+	private JLabel lblIcon;
+	private JPanel panel_6;
+	private JPanel panelPrincipal;
+	private JLabel lblUltimaej;
+	private JLabel lblDefret;
+	private JSeparator separator;
+	private JLabel lblRecuDef;
+	private JLabel lblReuDef;
+	private JLabel lblRevDef;
+	private JLabel lblRetDef;
+	private JLabel lblStat;
+
+	/**
+	 * Create the frame.
+	 */
+	public IntroducirConsultaCBRPanel(TipoCaso tic, boolean configurado,
+			final MainFrame padre, Usuario u) {
+		super(padre);
+		me = this;
+
+		setLayout(new BorderLayout(0, 0));
+		panelPrincipal = new JPanel();
+		panelPrincipal.setLayout(new BorderLayout(0, 0));
+		add(panelPrincipal, BorderLayout.CENTER);
+
+		this.tc = tic;
+		this.configurado = configurado;
+		user = u;
+		scrollPane = new JScrollPane();
+		setName("CBR:" + tc.getNombre());
+		setBounds(100, 100, 573, 525);
+
+		// El panel de tecnicas solo existe en un ciclo configurado
+		if (configurado) {
+			panel_6 = new JPanel();
+			panelPrincipal.add(panel_6, BorderLayout.CENTER);
+			panelMet = new JPanel();
+			panel_6.add(panelMet);
+			panelMet.setBorder(new TitledBorder(UIManager
+					.getBorder("TitledBorder.border"), b
+					.getString("managemethods"), TitledBorder.CENTER,
+					TitledBorder.TOP, null, Color.BLUE));
+
+			GridBagLayout gbl_panelMet = new GridBagLayout();
+			gbl_panelMet.columnWidths = new int[] { 0, 145, 35, 87, 72, 0 };
+			gbl_panelMet.rowHeights = new int[] { 15, 14, 23, 14, 23, 14, 23,
+					14, 19, 0 };
+			gbl_panelMet.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0,
+					0.0, Double.MIN_VALUE };
+			gbl_panelMet.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0,
+					0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+			panelMet.setLayout(gbl_panelMet);
+
+			panel_2 = new JPanel();
+			panel_2.setBackground(Color.GRAY);
+			panel_2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			GridBagConstraints gbc_panel_2 = new GridBagConstraints();
+			gbc_panel_2.gridwidth = 5;
+			gbc_panel_2.insets = new Insets(0, 0, 5, 0);
+			gbc_panel_2.fill = GridBagConstraints.HORIZONTAL;
+			gbc_panel_2.gridx = 0;
+			gbc_panel_2.gridy = 1;
+			panelMet.add(panel_2, gbc_panel_2);
+
+			lblRec = new JLabel(b.getString("retrieval"));
+			lblRec.setForeground(Color.WHITE);
+			lblRec.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+			panel_2.add(lblRec);
+
+			comboBoxRec = new JComboBox<String>();
+			GridBagConstraints gbc_comboBoxRec = new GridBagConstraints();
+			gbc_comboBoxRec.gridwidth = 4;
+			gbc_comboBoxRec.fill = GridBagConstraints.HORIZONTAL;
+			gbc_comboBoxRec.insets = new Insets(0, 0, 5, 5);
+			gbc_comboBoxRec.gridx = 0;
+			gbc_comboBoxRec.gridy = 2;
+			panelMet.add(comboBoxRec, gbc_comboBoxRec);
+
+			btnConfigRec = new JButton(b.getString("configure"));
+			GridBagConstraints gbc_btnConfigRec = new GridBagConstraints();
+			gbc_btnConfigRec.insets = new Insets(0, 0, 5, 0);
+			gbc_btnConfigRec.gridx = 4;
+			gbc_btnConfigRec.gridy = 2;
+			panelMet.add(btnConfigRec, gbc_btnConfigRec);
+			btnConfigRec.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					cRec.setVisible(true);
+					me.setEnabled(false);
+				}
+			});
+
+			panel_3 = new JPanel();
+			panel_3.setBackground(Color.GRAY);
+			panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			GridBagConstraints gbc_panel_3 = new GridBagConstraints();
+			gbc_panel_3.gridwidth = 5;
+			gbc_panel_3.insets = new Insets(0, 0, 5, 0);
+			gbc_panel_3.fill = GridBagConstraints.HORIZONTAL;
+			gbc_panel_3.gridx = 0;
+			gbc_panel_3.gridy = 3;
+			panelMet.add(panel_3, gbc_panel_3);
+
+			lblReu = new JLabel(b.getString("reuse"));
+			lblReu.setForeground(Color.WHITE);
+			lblReu.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+			panel_3.add(lblReu);
+
+			comboBoxReu = new JComboBox<String>();
+			GridBagConstraints gbc_comboBoxReu = new GridBagConstraints();
+			gbc_comboBoxReu.gridwidth = 4;
+			gbc_comboBoxReu.fill = GridBagConstraints.HORIZONTAL;
+			gbc_comboBoxReu.insets = new Insets(0, 0, 5, 5);
+			gbc_comboBoxReu.gridx = 0;
+			gbc_comboBoxReu.gridy = 4;
+			panelMet.add(comboBoxReu, gbc_comboBoxReu);
+
+			btnConfigReu = new JButton(b.getString("configure"));
+			GridBagConstraints gbc_btnConfigReu = new GridBagConstraints();
+			gbc_btnConfigReu.insets = new Insets(0, 0, 5, 0);
+			gbc_btnConfigReu.gridx = 4;
+			gbc_btnConfigReu.gridy = 4;
+			panelMet.add(btnConfigReu, gbc_btnConfigReu);
+			btnConfigReu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					cReu.setVisible(true);
+					me.setEnabled(false);
+				}
+			});
+
+			panel_4 = new JPanel();
+			panel_4.setBackground(Color.GRAY);
+			panel_4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			GridBagConstraints gbc_panel_4 = new GridBagConstraints();
+			gbc_panel_4.gridwidth = 5;
+			gbc_panel_4.insets = new Insets(0, 0, 5, 0);
+			gbc_panel_4.fill = GridBagConstraints.HORIZONTAL;
+			gbc_panel_4.gridx = 0;
+			gbc_panel_4.gridy = 5;
+			panelMet.add(panel_4, gbc_panel_4);
+
+			lblRev = new JLabel(b.getString("revise"));
+			lblRev.setForeground(Color.WHITE);
+			lblRev.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+			panel_4.add(lblRev);
+
+			comboBoxRev = new JComboBox<String>();
+			GridBagConstraints gbc_comboBoxRev = new GridBagConstraints();
+			gbc_comboBoxRev.gridwidth = 4;
+			gbc_comboBoxRev.fill = GridBagConstraints.HORIZONTAL;
+			gbc_comboBoxRev.insets = new Insets(0, 0, 5, 5);
+			gbc_comboBoxRev.gridx = 0;
+			gbc_comboBoxRev.gridy = 6;
+			panelMet.add(comboBoxRev, gbc_comboBoxRev);
+
+			btnConfigRev = new JButton(b.getString("configure"));
+			GridBagConstraints gbc_btnConfigRev = new GridBagConstraints();
+			gbc_btnConfigRev.insets = new Insets(0, 0, 5, 0);
+			gbc_btnConfigRev.gridx = 4;
+			gbc_btnConfigRev.gridy = 6;
+			panelMet.add(btnConfigRev, gbc_btnConfigRev);
+			btnConfigRev.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					cRev.setVisible(true);
+					me.setEnabled(false);
+				}
+			});
+
+			panel_5 = new JPanel();
+			panel_5.setBackground(Color.GRAY);
+			panel_5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+			GridBagConstraints gbc_panel_5 = new GridBagConstraints();
+			gbc_panel_5.gridwidth = 5;
+			gbc_panel_5.insets = new Insets(0, 0, 5, 0);
+			gbc_panel_5.fill = GridBagConstraints.HORIZONTAL;
+			gbc_panel_5.gridx = 0;
+			gbc_panel_5.gridy = 7;
+			panelMet.add(panel_5, gbc_panel_5);
+
+			lblRet = new JLabel(b.getString("retain"));
+			lblRet.setForeground(Color.WHITE);
+			lblRet.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+			panel_5.add(lblRet);
+
+			comboBoxRet = new JComboBox<String>();
+			GridBagConstraints gbc_comboBoxRet = new GridBagConstraints();
+			gbc_comboBoxRet.gridwidth = 4;
+			gbc_comboBoxRet.fill = GridBagConstraints.HORIZONTAL;
+			gbc_comboBoxRet.insets = new Insets(0, 0, 0, 5);
+			gbc_comboBoxRet.gridx = 0;
+			gbc_comboBoxRet.gridy = 8;
+			panelMet.add(comboBoxRet, gbc_comboBoxRet);
+
+			btnConfigRet = new JButton(b.getString("configure"));
+			GridBagConstraints gbc_btnConfigRet = new GridBagConstraints();
+			gbc_btnConfigRet.gridx = 4;
+			gbc_btnConfigRet.gridy = 8;
+			panelMet.add(btnConfigRet, gbc_btnConfigRet);
+			btnConfigRet.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					cRet.setVisible(true);
+					me.setEnabled(false);
+				}
+			});
+
+			scrollPane.setPreferredSize(new Dimension(100, 150));
+			panelPrincipal.add(scrollPane, BorderLayout.NORTH);
+		} else {
+			panelPrincipal.add(scrollPane, BorderLayout.CENTER);
+		}
+
+		panelEjec = new JPanel();
+		panelPrincipal.add(panelEjec, BorderLayout.SOUTH);
+		panelEjec.setLayout(new BoxLayout(panelEjec, BoxLayout.Y_AXIS));
+
+		panel = new JPanel();
+		panel.setBackground(Color.GRAY);
+		panel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panelEjec.add(panel);
+		btnEjecutarCiclo = new JButton(b.getString("executeCBR"));
+		panel.add(btnEjecutarCiclo);
+
+		btnPasoapaso = new JButton(b.getString("stepbystep"));
+		btnPasoapaso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HashMap<String, Serializable> query = new HashMap<String, Serializable>();
+				for (Component c : panelAtbos.getComponents()) {
+					PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) c;
+					query.put(p.getKey(), p.getValue());
+					Atributo a = tc.getAtbos().get(p.getKey());
+					a.setMetrica(p.getMetrica());
+					a.setParamMetrica(p.getParamMetrica());
+					a.setPeso(p.getPeso());
+				}
+
+				try {
+					lblIcon.setVisible(true);
+					WorkerEspera we = new WorkerEspera(me, tc, query, user);
+					padre.setEnabled(false);
+
+					we.execute();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					padre.setEnabled(true);
+					JOptionPane.showMessageDialog(null,
+							b.getString("connecterror"), "Error",
+							JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+		});
+
+		lblIcon = new JLabel("");
+		lblIcon.setIcon(new ImageIcon("res/espera.gif"));
+		lblIcon.setVisible(false);
+		panel.add(lblIcon);
+		panel.add(btnPasoapaso);
+
+		panelEstad = new JPanel();
+		panelEstad.setBackground(new Color(176, 196, 222));
+		add(panelEstad, BorderLayout.WEST);
+		panelEstad.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), b.getString("quickstats"),
+				TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0,
+						128)));
+		panelEstad.setLayout(new FormLayout(
+				new ColumnSpec[] { FormFactory.UNRELATED_GAP_COLSPEC,
+						ColumnSpec.decode("275px"), }, new RowSpec[] {
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("14px"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						RowSpec.decode("14px"),
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC,
+						FormFactory.RELATED_GAP_ROWSPEC,
+						FormFactory.DEFAULT_ROWSPEC, }));
+
+		lblStat = new JLabel(b.getString("stats") + ":");
+		lblStat.setForeground(new Color(0, 0, 128));
+		lblStat.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		panelEstad.add(lblStat, "2, 3, left, default");
+
+		lblEjecTotales = new JLabel(b.getString("totalexec") + ":");
+		panelEstad.add(lblEjecTotales, "2, 5, left, center");
+
+		lblUltimaej = new JLabel(b.getString("lastexec") + ":");
+		panelEstad.add(lblUltimaej, "2, 7, fill, top");
+
+		lblMediaCalidad = new JLabel(b.getString("avgquality") + ":");
+		panelEstad.add(lblMediaCalidad, "2, 9, left, center");
+
+		separator = new JSeparator();
+		panelEstad.add(separator, "2, 13");
+
+		lblDefret = new JLabel(b.getString("defaultmethods"));
+		lblDefret.setForeground(new Color(0, 0, 128));
+		lblDefret.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 11));
+		panelEstad.add(lblDefret, "2, 17, left, default");
+
+		lblRecuDef = new JLabel(b.getString("retrieval") + ": "
+				+ tc.getDefaultRec().getNombre());
+		panelEstad.add(lblRecuDef, "2, 19");
+
+		lblReuDef = new JLabel(b.getString("reuse") + ": "
+				+ tc.getDefaultReu().getNombre());
+		panelEstad.add(lblReuDef, "2, 21");
+
+		lblRevDef = new JLabel(b.getString("revise") + ": "
+				+ tc.getDefaultRev().getNombre());
+		panelEstad.add(lblRevDef, "2, 23");
+
+		lblRetDef = new JLabel(b.getString("retain") + ": "
+				+ tc.getDefaultRet().getNombre());
+		panelEstad.add(lblRetDef, "2, 25");
+
+		btnEjecutarCiclo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				HashMap<String, Serializable> query = new HashMap<String, Serializable>();
+				for (Component c : panelAtbos.getComponents()) {
+					PanelIntroducirValorAtbo p = (PanelIntroducirValorAtbo) c;
+					query.put(p.getKey(), p.getValue());
+					Atributo a = tc.getAtbos().get(p.getKey());
+					a.setMetrica(p.getMetrica());
+					a.setParamMetrica(p.getParamMetrica());
+				}
+
+				try {
+					ControlCBR.retrieve(tc, query);
+					// TODO: Ir al panel de resultados
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(null,
+							b.getString("connecterror"), "Error",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		scrollPane
+				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+		panelAtbos = new JPanel();
+
+		panelAtbos.setBackground(Color.LIGHT_GRAY);
+		scrollPane.setViewportView(panelAtbos);
+		panelAtbos.setLayout(new BoxLayout(panelAtbos, BoxLayout.Y_AXIS));
+		rellenarAtributos();
+		if (configurado) {
+
+			rellenarListas();
+			estableceFrameTecRec();
+			estableceFrameTecRet();
+			estableceFrameTecReu();
+			estableceFrameTecRev();
+
+			comboBoxReu.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent arg0) {
+					estableceFrameTecReu();
+				}
+			});
+
+			comboBoxRev.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent arg0) {
+					estableceFrameTecRev();
+				}
+			});
+
+			comboBoxRec.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent arg0) {
+					estableceFrameTecRec();
+				}
+			});
+
+			comboBoxRet.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent arg0) {
+					estableceFrameTecRet();
+				}
+			});
+		}
+		pedirEstadisticas();
+
+	}
+
+	private void pedirEstadisticas() {
+		Estadistica e = null;
+		Usuario us = new Usuario();
+		us.setNombre("ver todos");
+		us.setTipo(TipoUsuario.ADMINISTRADOR);
+		try {
+			e = ControlEstadisticas.getEstadistica(us, tc);
+		} catch (IOException e1) {
+			JOptionPane.showMessageDialog(null, b.getString("connecterror"),
+					"Error", JOptionPane.ERROR_MESSAGE);
+		}
+		if (e != null) {
+			DecimalFormat df = new DecimalFormat();
+			df.setMaximumFractionDigits(2);
+			lblEjecTotales.setText(b.getString("totalexec") + ":"
+					+ e.getEjecTotales());
+			lblMediaCalidad.setText(b.getString("avgquality") + ":"
+					+ df.format(e.getMediaCalidad()));
+			if (e.getFechaUltima() != null) {
+				lblUltimaej.setText(b.getString("lastexec") + ":"
+						+ e.getFechaUltima());
+			}
+		}
+	}
+
+	private void estableceFrameTecRec() {
+
+		String tec = (String) comboBoxRec.getSelectedItem();
+		asignaTecnicaCB(tec, "rec");
+		Tecnica t = tc.getDefaultRec();
+
+		switch (tec) {
+		case "DiverseByMedianRetrieval":
+			cRec = new DiverseByMedianConfigFrame(t, tc, padre);
+			;
+			break;
+		case "FilterBasedRetrieval":
+			cRec = new FilterBasedConfigFrame(t, tc, padre);
+			;
+			break;
+		case "NNretrieval":
+			cRec = new NNConfigFrame(t, padre);
+			;
+			break;
+		default:
+			btnConfigRec.setEnabled(false);
+			;
+		}
+	}
+
+	private void estableceFrameTecReu() {
+		String tec = (String) comboBoxReu.getSelectedItem();
+		asignaTecnicaCB(tec, "reu");
+		Tecnica t = tc.getDefaultReu();
+		// Decido qué frame se abre según la técnica
+		switch (tec) {
+		case "DirectAttributeCopyMethod":
+			cReu = new NumOrCopyConfigFrame(true, t, tc, padre);
+			;
+			break;
+		case "NumericDirectProportionMethod":
+			cReu = new NumOrCopyConfigFrame(false, t, tc, padre);
+			;
+			break;
+		case "CombineQueryAndCasesMethod":
+			cReu = new CombineQueryConfigFrame(t, padre);
+			;
+			break;
+		default:
+			btnConfigReu.setEnabled(false);
+			;
+		}
+
+	}
+
+	private void estableceFrameTecRev() {
+		String tec = (String) comboBoxRev.getSelectedItem();
+		asignaTecnicaCB(tec, "rev");
+		// En caso de crear nuevas técnicas,se debe seguir el switch de
+		// estableceFrameTecRec
+		btnConfigRev.setEnabled(false);
+	}
+
+	private void estableceFrameTecRet() {
+		String tec = (String) comboBoxRet.getSelectedItem();
+		asignaTecnicaCB(tec, "ret");
+		// En caso de crear nuevas técnicas,se debe seguir el switch de
+		// estableceFrameTecRec
+		btnConfigRet.setEnabled(false);
+	}
+
+	private void rellenarAtributos() {
+		for (Atributo at : tc.getAtbos().values()) {
+			if (at.getEsProblema()) {
+				JPanel p = new PanelIntroducirValorAtbo(at, configurado);
+				p.setMaximumSize(new Dimension(620, p.getPreferredSize().height));
+				panelAtbos.add(p);
+			}
+		}
+	}
+
+	// Auxiliar. Asigna la técnica de un combobox como técnica por defecto del
+	// tipo de caso.
+	private void asignaTecnicaCB(String tecnicaCB, String tipoTec) {
+		List<Tecnica> disponibles = null;
+		switch (tipoTec) {
+		case "rec":
+			disponibles = tc.getTecnicasRecuperacion();
+			break;
+		case "rev":
+			disponibles = tc.getTecnicasRevision();
+			break;
+		case "reu":
+			disponibles = tc.getTecnicasReutilizacion();
+			break;
+		case "ret":
+			disponibles = tc.getTecnicasRetencion();
+			break;
+		}
+		Tecnica t = ControlTecnicas.buscaTecnica(disponibles, tecnicaCB);
+		switch (tipoTec) {
+		case "rec":
+			tc.setDefaultRec(t);
+			break;
+		case "rev":
+			tc.setDefaultRev(t);
+			break;
+		case "reu":
+			tc.setDefaultReu(t);
+			break;
+		case "ret":
+			tc.setDefaultRet(t);
+			break;
+		}
+	}
+
+	private void rellenarListas() {
+		for (Tecnica t : tc.getTecnicasRecuperacion()) {
+			comboBoxRec.addItem(t.getNombre());
+		}
+		comboBoxRec.setSelectedItem(tc.getDefaultRec().getNombre());
+		for (Tecnica t : tc.getTecnicasReutilizacion()) {
+			comboBoxReu.addItem(t.getNombre());
+		}
+		comboBoxReu.setSelectedItem(tc.getDefaultReu().getNombre());
+		for (Tecnica t : tc.getTecnicasRevision()) {
+			comboBoxRev.addItem(t.getNombre());
+		}
+		comboBoxRev.setSelectedItem(tc.getDefaultRev().getNombre());
+		for (Tecnica t : tc.getTecnicasRetencion()) {
+			comboBoxRet.addItem(t.getNombre());
+		}
+		comboBoxRet.setSelectedItem(tc.getDefaultRet().getNombre());
+	}
+
+}

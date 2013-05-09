@@ -1,0 +1,21 @@
+﻿<html>
+<head>
+	<title>Retrieval:Diverse By Median</title>
+</head>
+<body>
+	<h1>Retrieval:Diverse By Median</h1>
+	<p>In Diverse by Median retrieval the median for each attribute of the case type, between all the cases stored, is calculated.  
+	 After that, each case is evaluated in the following fashion:<br/>
+	 Each attribute in the case is compared to its median. If its difference relative to the median exceeds a threshold (In excess or defect),
+	 defined for each attribute, the case 'score' is added 1.
+	 Finally, the case with a lesser score is retrieved (The first found in case of a tie).<br/>
+	<b>Note</b>: This version of diverse by median only returns the most similar case (It's not configurable).
+	</p>
+	<h2> Example:</h2>
+	<p>Assume a case base whose case type has the attributes A,B,C and SOLUTION. The attribute's medians for this case type are 0,1,2,3 (Calculated as
+	the median of each attribute for each case stored in the program).
+	 Suppose that the threshold for all the attributes is 0.5. Then, a case 'x' stored in the program with values 1,0,2.2,3
+	 would obtain a score of 2 (Because its attributes A and B are separated to their medians by more than 0.5), while a case 'y' of values 0,1,1.5,3.1
+	 would receive a score of 1 (Because of its attribute 2). Then, the case y would be returned as the retrieval result.</p>
+</body>
+</html>

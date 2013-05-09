@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<toc version="1.0"> <!--  categoryclosedimage="FolderClosed" categoryopenimage="FolderOpened"  
+topicimage="ItemIco"-->
+        <tocitem text="Temas de ayuda">
+			<tocitem text="Conceptos Basicos"    target="ConceptosBasicos"/>	
+			<tocitem text="Acciones en la ventana principal"    target="MainFrame"/>
+			<tocitem text="Escogiendo un tipo de caso"    target="ElegirTipoCasoFrame"/>
+			<tocitem text="Técnicas de un tipo de caso"    target="GestionTecnicasPanel">
+				<tocitem text="Recuperación:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigFrame"/>	
+				<tocitem text="Recuperación:Filter Based (Por predicados)"    target="FilterBasedConfigFrame"/>	
+				<tocitem text="Recuperación:K-NN (K vecinos más cercanos)"    target="NNConfigFrame"/>
+				<tocitem text="Revisión:Direct copy (Copia de atributos)" target="NumOrCopyConfigFrame"/>	
+				<tocitem text="Revisión:Numeric proportion" target="NumOrCopyConfigFrame"/>	
+				<tocitem text="Revisión:Combine Query and Cases" target="NumOrCopyConfigFrame"/>	
+			</tocitem>
+			<tocitem text="Tipos de caso"    target="GestionTiposFrame"/>
+			<tocitem text="Usuarios"    target="GestionUsuariosFrame">
+				<tocitem text="Crear y modificar usuarios"    target="VerCrearUsuarioPanel"/>
+			</tocitem>
+			<tocitem text="Importación de casos"    target="InsertarCasoPanel"/>
+			<tocitem text="Realizar una consulta"    target="IntroducirConsultaCBRPanel"/>
+			<tocitem text="Crear un nuevo tipo de caso"    target="NuevoTipoPanel"/>
+			<tocitem text="Modificar tipos de caso"    target="VerTipoPanel"/>
+			<tocitem text="Estadísticas"    target="EstadisticasPanel"/>				
+        </tocitem>
+	
+</toc>
