@@ -28,6 +28,8 @@ public class EjecutorTecnicaReuse {
 		this.tc=tc;
 	}
 	
+	private String origen, destino;
+	
 	/** Ejecuta la técnica de adaptación por defecto para este tipo de caso.
 	 * @param casos La lista de casos para los que se ejecuta la técnica.
 	 * @param query La consulta a realizar.
@@ -35,56 +37,44 @@ public class EjecutorTecnicaReuse {
 	 * @throws ClassNotFoundException si no existe el tipo de caso 
 	 * (Ha sido borrado por otro usuario mientras se hacia la consulta).
 	 */
-	public  Collection<CBRCase> ejecutar(Collection<CBRCase> casos, CBRQuery query) throws ClassNotFoundException{
+	public Collection<CBRCase> ejecutar(Collection<CBRCase> casos, CBRQuery query) throws ClassNotFoundException{
 
 		if(tc.getDefaultReu().getNombre().equalsIgnoreCase("CombineQueryAndCasesMethod")){
+			// TODO: hay que ver si toca combinar los casos despues de adaptarlos
 			return CombineQueryAndCasesMethod.combine(query, casos);
 		}else{
-
+			//Esta tecnica requiere un atbo origen y un atbo destino
+			setOrigenYDestino();
+			if (origen == null || destino == null) {
+				return casos;
+			}
+			System.out.println("Origen: "+origen+", destino: "+destino);
 			if(tc.getDefaultReu().getNombre().equalsIgnoreCase("DirectAttributeCopyMethod")){
-				//Esta tecnica requiere un atbo origen y un atbo destino
-				String origen=null,destino=null;
-				setOrigenYDestino(origen,destino);
 				DirectAttributeCopyMethod.copyAttribute(
-						new Attribute(origen,CargadorClases.cargarClaseProblema(tc.getNombre()))
-						, new Attribute(destino,CargadorClases.cargarClaseProblema(tc.getNombre())) 
+						new Attribute(origen,query.getDescription().getClass())
+						, new Attribute(destino,query.getDescription().getClass()) 
 						, query, casos);
 			}else if(tc.getDefaultReu().getNombre().equalsIgnoreCase("NumericDirectProportionMethod")){
-				//Esta tecnica requiere un atbo origen y un atbo destino
-				String origen=null,destino=null;
-				setOrigenYDestino(origen,destino);
-				NumericDirectProportionMethod.directProportion(new Attribute(origen,
-						CargadorClases.cargarClaseProblema(tc.getNombre())),
-						new Attribute(destino,CargadorClases.cargarClaseSolucion(tc.getNombre()))
-						, query, casos);
+				NumericDirectProportionMethod.directProportion(
+						new Attribute(origen, query.getDescription().getClass()),
+						new Attribute(destino, casos.iterator().next().getSolution().getClass()),
+						query, casos);
 			}	
-		}	
-		
+		}			
 		return casos;
 	}
 
 	
 	/** Auxiliar. Para las técnicas que requieren copiar un atributo a otro,
 	 *  busca qué atributo se debe copiar a cual.
-	 * @param origen Se rellena con el nombre del atributo que será origen.
-	 * @param destino Se rellena con el nombre del atributo que será destino.
 	 */
-	private void setOrigenYDestino(String origen,String destino) {
-		Parametro p1 = tc.getDefaultReu().getParams().get(0);
-	
+	private void setOrigenYDestino() {
+		Parametro p1 = tc.getDefaultReu().getParams().get(0);	
 		//Un valor de 0 en la configuración indica que la técnica no está configurada.
 		if(p1.getValor()==0){
-		  if(tc.getDefaultReu().getNombre().equalsIgnoreCase("DirectAttributeCopyMethod")){
-			  //En la tecnica directattributecopy se copia un atributo problema del query
-			  //a su equivalente en los casos obtenidos del retrieval
-			  origen=getAtboAleatorio(true);
-			  destino=origen;
-		  }else{
-			  //En la tecnica numeric proportion se requiere un origen (atbo del problema) y
-			  //un destino (atbo de la solución)
-			  origen=getAtboAleatorio(true);
-			  destino=getAtboAleatorio(false);
-		  }
+			// Si no está configurado, no hace nada
+			origen = null;
+			return;
 		}else{
 			Parametro p2 = tc.getDefaultReu().getParams().get(1);
 			// Si el parametro 1 es el origen (y el 2 el destino)
@@ -240,6 +230,36 @@ public class EjecutorTecnicaReuse {
 	}
 	
 	/**Auxiliar. Calcula la media aritmética de un conjunto de doubles.
+	 * @param values Los valores del conjunto.
+	 * @return Media aritmética del conjunto
+	 */
+	private double media(List<Double> values){
+		double suma=0, den=0;
+		for(Double v:values){
+			suma+=v;
+			den++;
+		}
+		return suma/den;
+	}
+	
+	/**Auxiliar. Calcula la moda de un conjunto de doubles.
+	 * @param values Los valores del conjunto.
+	 * @return Moda del conjunto
+	 */
+	private String moda(List<String> values){
+		int max=0;
+		String val=values.get(0);
+		for(String a:values){
+			if(max< Collections.frequency(values, a)){
+				val=a;
+			}
+		}
+		return val;
+	}
+	
+}
+
+de un conjunto de doubles.
 	 * @param values Los valores del conjunto.
 	 * @return Media aritmética del conjunto
 	 */

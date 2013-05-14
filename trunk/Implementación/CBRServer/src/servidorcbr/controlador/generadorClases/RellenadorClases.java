@@ -29,11 +29,11 @@ public class RellenadorClases {
 	 * @throws ClassNotFoundException Si la clase correspondiente a ese tipo de caso no se halla en el sistema de ficheros.
 	 * @see {@link CBRCase}
 	 */
-	public static List<CBRCase>	rellenarLista(TipoCaso tc,List<HashMap<String,Serializable>> c)
+	public static List<CBRCase>	rellenarLista(TipoCaso tc,List<HashMap<String,Serializable>> c, CBRQuery q)
 			throws ClassNotFoundException{
 		List<CBRCase> lista = new ArrayList<CBRCase>();
 		//Cargo las clases del problema y la solucion
-		Class<? extends CaseComponent> desc=CargadorClases.cargarClaseProblema(tc.getNombre());
+		Class<? extends CaseComponent> desc = q.getDescription().getClass();
 		Class<? extends CaseComponent> sol=CargadorClases.cargarClaseSolucion(tc.getNombre());
 		try{
 			//Por cada instancia de caso
@@ -84,15 +84,18 @@ public class RellenadorClases {
 		} catch (IllegalAccessException e) {
 		}
 		for (Entry<String,Serializable> par : query.entrySet()) {
-			// Comprobación por si en el hashmap hay calidad: un query NO TIENE calidad
-			if (!par.getKey().equals("META_QUALITY")) {
-				Atributo a = tc.getAtbos().get(par.getKey());
-				tipo = getTipoClass(a);
-				try {
+			Atributo a = tc.getAtbos().get(par.getKey());
+			tipo = getTipoClass(a);
+			try {
+				if (a.getTipo().equals("I")) {
 					desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
-								a.getNombre().substring(1),tipo).invoke(instanciaDesc,par.getValue());
-				} catch (Exception e) {
+							a.getNombre().substring(1),tipo).invoke(instanciaDesc,Integer.parseInt(par.getValue().toString()));
+				} else { 
+					desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
+						a.getNombre().substring(1),tipo).invoke(instanciaDesc,par.getValue());
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		q.setDescription(instanciaDesc);
@@ -145,23 +148,19 @@ public class RellenadorClases {
 		for(Entry<String, Serializable> par  :caso.entrySet()){
 			//Si dicho atributo esta contenido en el tipo de caso
 			if(tc.getAtbos().containsKey(par.getKey())){
-				// Al atributo META_ID no hay que hacerle nada, está ahí para cumplir la 
-				// especificación de jcolibri (pero su valor da igual)
-				if (!par.getKey().equals("META_ID")) {
-					Atributo a = tc.getAtbos().get(par.getKey());
-					tipo = getTipoClass(a);
-					//Si es un problema invoca al setter de dicho atributo en la clase del problema
-					try {
-						if(a.getEsProblema()){
-							desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
-									a.getNombre().substring(1),tipo).invoke(instanciaDesc,par.getValue());
-						}else{
-							sol.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
-									a.getNombre().substring(1),tipo).invoke(instanciaSol,par.getValue());
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
+				Atributo a = tc.getAtbos().get(par.getKey());
+				tipo = getTipoClass(a);
+				//Si es un problema invoca al setter de dicho atributo en la clase del problema
+				try {
+					if(a.getEsProblema()){
+						desc.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
+								a.getNombre().substring(1),tipo).invoke(instanciaDesc,par.getValue());
+					}else{
+						sol.getDeclaredMethod("set"+a.getNombre().substring(0,1).toUpperCase()+
+								a.getNombre().substring(1),tipo).invoke(instanciaSol,par.getValue());
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			} else if (par.getKey().equals("META_QUALITY")) {
 				Calidad cal = new Calidad();
@@ -181,6 +180,13 @@ public class RellenadorClases {
 			case "S":tipo=String.class;break;
 			case "I":tipo=Integer.class;break;
 			case "D":tipo=Double.class;break;
+			default:tipo=String.class;
+		}
+		return tipo;
+	}
+	
+}
+o=Double.class;break;
 			default:tipo=String.class;
 		}
 		return tipo;

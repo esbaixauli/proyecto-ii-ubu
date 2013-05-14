@@ -165,12 +165,12 @@ public class LanzadorCBR implements StandardCBRApplication {
 	
 	public Collection<CBRCase> reuse (TipoCaso tc, List<HashMap<String,Serializable>> casos, HashMap<String,Serializable> query) {
 		Collection<CBRCase> casosCBR = null;
+		CBRQuery queryCBR = RellenadorClases.rellenarQuery(tc, query);
 		try {
-			casosCBR = RellenadorClases.rellenarLista(tc, casos);
+			casosCBR = RellenadorClases.rellenarLista(tc, casos, queryCBR);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		CBRQuery queryCBR = RellenadorClases.rellenarQuery(tc, query);
 		return reuse(tc, casosCBR, queryCBR);
 	}
 	
