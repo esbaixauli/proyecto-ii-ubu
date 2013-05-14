@@ -65,6 +65,9 @@ public class FrameFinCBR extends JFrame {
 		
 		getContentPane().add(btnNewButton);
 		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
 		JMenuBar barra = getJMenuBar();
 		JMenu menuEx = new JMenu(b.getString("file"));
 		JMenuItem itemEx = new JMenuItem(b.getString("executionreport"));

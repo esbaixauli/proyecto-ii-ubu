@@ -61,7 +61,7 @@ public class VerCrearUsuarioPanel extends PanelEstandar {
 		}
 
 		setBorder(new TitledBorder(null, title, TitledBorder.CENTER, TitledBorder.TOP, null, null));
-		setSize(300,290);
+		setSize(320,290);
 		setBounds(100, 100, 300, 290);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

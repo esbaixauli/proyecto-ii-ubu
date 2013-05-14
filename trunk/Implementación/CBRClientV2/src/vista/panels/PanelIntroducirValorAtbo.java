@@ -254,11 +254,8 @@ public class PanelIntroducirValorAtbo extends JPanel {
 			if (a.getTipo().equals("S")) {
 				return textField.getText();
 			} else if (a.getTipo().equals("I")) {
-
-				return NumberFormat.getIntegerInstance().parse(
-						textField.getText());
+				return new Integer(NumberFormat.getIntegerInstance().parse(textField.getText()).intValue());
 			} else {
-
 				return NumberFormat.getNumberInstance().parse(
 						textField.getText()).doubleValue();
 

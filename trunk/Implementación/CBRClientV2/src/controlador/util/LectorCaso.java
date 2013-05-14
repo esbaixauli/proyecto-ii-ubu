@@ -61,9 +61,10 @@ public class LectorCaso {
 					String tipoCaso = tic.getAtbos().get(nombre).getTipo();
 					s =Double.parseDouble(valor);
 					if(tipoCaso.equals("I")){
-						s=Math.round((Double) s);
+						s = new Integer((int) Math.round((Double) s));
 					}
 				}catch(NumberFormatException ex){
+					ex.printStackTrace();
 					return;
 				}
 			}
