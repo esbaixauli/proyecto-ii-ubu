@@ -128,7 +128,11 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 				p1.setValor(1);
 				//campo de destino
 				Parametro p2 = new Parametro();
-				p2.setNombre(comboBoxDestino.getSelectedItem()+"");
+				if (comboBoxDestino.isEnabled()) {
+					p2.setNombre(comboBoxDestino.getSelectedItem()+"");
+				} else {
+					p2.setNombre(p1.getNombre());
+				}
 				p2.setValor(2);
 				//Combinar o no, y qué tipo de combinación
 				Parametro p3 = new Parametro();

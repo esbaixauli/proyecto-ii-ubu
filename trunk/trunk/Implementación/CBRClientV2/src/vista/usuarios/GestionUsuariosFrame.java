@@ -43,7 +43,7 @@ public class GestionUsuariosFrame extends FrameEstandar {
 	public GestionUsuariosFrame(final MainFrame padre) {
 		super(padre);me=this;
 		setTitle(b.getString("manageusers"));
-		setBounds(100, 100, 622, 379);
+		setBounds(100, 100, 690, 464);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -51,10 +51,10 @@ public class GestionUsuariosFrame extends FrameEstandar {
 		contentPane.setLayout(new FormLayout(new ColumnSpec[] {
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("233px"),
-				ColumnSpec.decode("348px"),},
+				ColumnSpec.decode("438px"),},
 			new RowSpec[] {
 				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("308px"),}));
+				RowSpec.decode("394px"),}));
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, "2, 2, fill, fill");
