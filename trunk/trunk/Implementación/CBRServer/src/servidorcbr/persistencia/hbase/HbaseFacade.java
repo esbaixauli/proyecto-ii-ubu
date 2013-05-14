@@ -117,7 +117,6 @@ public class HbaseFacade {
 			ht.flushCommits();
 			ht.close();
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 			throw new PersistenciaException(e);
 		}
@@ -202,6 +201,12 @@ public class HbaseFacade {
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new PersistenciaException(e);
+		}
+		return lista;
+	}
+
+}
+ion(e);
 		}
 		return lista;
 	}
