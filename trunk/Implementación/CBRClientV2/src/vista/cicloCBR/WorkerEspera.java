@@ -54,7 +54,7 @@ public class WorkerEspera extends SwingWorker<List<HashMap<String,Serializable>>
 	@Override
 	public void done(){
 		panel.getPadre().addPanel(new ResultadosConsultaPanel(panel.getPadre(), result,
-				ResultadosConsultaPanel.RETRIEVE, tc, query, user));
+				ResultadosConsultaPanel.RETRIEVE, tc, query, user, null));
 		panel.getPadre().removePanel(panel.getName());
 	}
 

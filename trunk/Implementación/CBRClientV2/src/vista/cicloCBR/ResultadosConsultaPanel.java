@@ -48,7 +48,7 @@ import javax.swing.event.ChangeEvent;
 
 @SuppressWarnings("serial")
 public class ResultadosConsultaPanel extends PanelEstandar {
-	private PanelEstandar me;
+	private ResultadosConsultaPanel me, previo, siguiente;
 	private JSpinner spinner;
 	private List<HashMap<String, Serializable>> casos;
 	private JPanel panelProblema;
@@ -74,9 +74,10 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 	 */
 	public ResultadosConsultaPanel(final MainFrame padre,
 			List<HashMap<String, Serializable>> lcasos,final int etapa, final TipoCaso tc,
-			HashMap<String,Serializable> hquery, Usuario u) {
+			HashMap<String,Serializable> hquery, Usuario u, ResultadosConsultaPanel pprevio) {
 		super(padre);me = this;
 		setSize(1060, 350); 
+		previo = pprevio;
 		this.tc=tc;
 		this.etapa=etapa;
 		query = hquery;
@@ -84,7 +85,7 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 		user = u;
 		setLayout(new BorderLayout());
 		JLabel lblTc = new JLabel();
-		JButton btnContinuar = new JButton();
+		final JButton btnContinuar = new JButton();
 		switch(etapa){
 			case RETRIEVE:
 				setName("CBR-"+b.getString("retrieval")+": "+tc.getNombre());
@@ -110,7 +111,7 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 		JPanel panelCambiarCaso = new JPanel();
 		panelCambiarCaso.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		add(panelCambiarCaso, BorderLayout.NORTH);
-		panelCambiarCaso.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panelCambiarCaso.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_4 = new JPanel();
 		panelCambiarCaso.add(panel_4);
@@ -121,8 +122,8 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 		panel_3.setBackground(Color.GRAY);
 		panel_3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		
-				JButton buttonAnterior = new JButton("<<");
-				panel_3.add(buttonAnterior);
+				JButton buttonPrimero = new JButton("|<");
+				panel_3.add(buttonPrimero);
 				
 				JPanel panel_2 = new JPanel();
 				panel_2.setBackground(Color.LIGHT_GRAY);
@@ -143,25 +144,67 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 						JLabel lblnumero = new JLabel("/"+Math.max(tam,0));
 						panel_2.add(lblnumero);
 						
-								JButton buttonSiguiente = new JButton(">>");
-								panel_3.add(buttonSiguiente);
+								JButton buttonUltimo = new JButton(">|");
+								panel_3.add(buttonUltimo);
 								
 								JPanel panel_5 = new JPanel();
 								panel_4.add(panel_5, BorderLayout.NORTH);
 								
 								panel_5.add(lblTc);
-								buttonSiguiente.addActionListener(new ActionListener() {
+								
+								JPanel panel_6 = new JPanel();
+								panelCambiarCaso.add(panel_6, BorderLayout.WEST);
+								panel_6.setLayout(new BoxLayout(panel_6, BoxLayout.Y_AXIS));
+								
+								JPanel panel_8 = new JPanel();
+								panel_6.add(panel_8);
+								
+								final JButton btnAnteriorpanel = new JButton("AnteriorPanel");
+								if (previo == null) {
+									btnAnteriorpanel.setEnabled(false);
+								}
+								btnAnteriorpanel.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent e) {
-										if(actual+1<casos.size()){
-											cambiarDeCaso(actual+1);
-										}
+										me.setVisible(false);
+										padre.removePanel(getName());
+										padre.addPanel(previo);
+										previo.setVisible(true);
 									}
 								});
-				buttonAnterior.addActionListener(new ActionListener() {
+								panel_6.add(btnAnteriorpanel);
+								
+								JPanel panel_9 = new JPanel();
+								panel_6.add(panel_9);
+								
+								JPanel panel_7 = new JPanel();
+								panelCambiarCaso.add(panel_7, BorderLayout.EAST);
+								panel_7.setLayout(new BoxLayout(panel_7, BoxLayout.Y_AXIS));
+								
+								JPanel panel_11 = new JPanel();
+								panel_7.add(panel_11);
+								
+								final JButton btnSiguientepanel = new JButton("SiguientePanel");
+								btnSiguientepanel.setEnabled(false);
+								btnSiguientepanel.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										me.setVisible(false);
+										padre.removePanel(getName());
+										padre.addPanel(siguiente);
+										siguiente.setVisible(false);
+									}
+								});
+								panel_7.add(btnSiguientepanel);
+								
+								JPanel panel_10 = new JPanel();
+								panel_7.add(panel_10);
+								buttonUltimo.addActionListener(new ActionListener() {
+									public void actionPerformed(ActionEvent e) {
+										cambiarDeCaso(casos.size()-1);
+									}
+								});
+				buttonPrimero.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						if(actual-1 >= 0){
-							cambiarDeCaso(actual-1);
-						}
+						cambiarDeCaso(0);
 					}
 				});
 		
@@ -172,11 +215,14 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 		
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				btnContinuar.setEnabled(false);
+				btnSiguientepanel.setEnabled(true);
 				switch (etapa) {
 				case RETRIEVE:
 					try {
 						casos = ControlCBR.reuse(tc, query, casos);
-						padre.addPanel(new ResultadosConsultaPanel(padre, casos, REUSE, tc, query, user));
+						siguiente = new ResultadosConsultaPanel(padre, casos, REUSE, tc, query, user, me);
+						padre.addPanel(siguiente);
 						me.setVisible(false);
 						padre.removePanel(getName());
 					} catch (IOException e1) {
@@ -186,7 +232,8 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 					}
 					break;
 				case REUSE:
-					padre.addPanel(new ResultadosConsultaPanel(padre, casos, REVISE, tc, query, user));
+					siguiente = new ResultadosConsultaPanel(padre, casos, REVISE, tc, query, user, me);
+					padre.addPanel(siguiente);
 					me.setVisible(false);
 					padre.removePanel(getName());
 					break;
@@ -252,8 +299,8 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 		}else{
 			panelProblema.setLayout(new FlowLayout());
 			btnContinuar.setEnabled(false);
-			buttonAnterior.setEnabled(false);
-			buttonSiguiente.setEnabled(false);
+			buttonPrimero.setEnabled(false);
+			buttonUltimo.setEnabled(false);
 			spinner.setEnabled(false);
 			panelProblema.add(new JLabel(b.getString("nocases")));
 		

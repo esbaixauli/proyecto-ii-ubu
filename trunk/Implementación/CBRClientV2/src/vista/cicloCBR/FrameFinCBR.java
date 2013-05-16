@@ -46,6 +46,7 @@ public class FrameFinCBR extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.padre=padre;
 		setSize(315, 130);
+		setLocationRelativeTo(padre);
 		getContentPane().setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		setTitle(b.getString("opsuccess"));
 		JLabel lblExito = new JLabel(b.getString("opsuccess"));

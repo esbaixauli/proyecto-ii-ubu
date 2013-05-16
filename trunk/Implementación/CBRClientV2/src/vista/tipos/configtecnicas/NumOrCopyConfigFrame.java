@@ -164,8 +164,7 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 		contentPane.add(panelPostAdaptacion, BorderLayout.CENTER);
 		//Relleno el combobox con los atributos del problema
 		for(Atributo a : tc.getAtbos().values()){
-			if(a.getEsProblema() && (esCopyMethod ||
-					(a.getTipo().equals("D")||a.getTipo().equals("I") ))){
+			if(a.getEsProblema()){
 				comboBoxOrigen.addItem(a.getNombre());
 			}
 		}
@@ -175,7 +174,16 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 			lblDestination.setEnabled(false);
 		}else{	//Si estoy configurando Numeric proportion, el atributo destino es de la solución.
 			for(Atributo a : tc.getAtbos().values()){
-				if(!a.getEsProblema() && (a.getTipo().equals("D") || a.getTipo().equals("I"))){
+				if(!a.getEsProblema()){
+					comboBoxDestino.addItem(a.getNombre());
+				}
+			}
+		}
+		setLocationRelativeTo(padre);
+	}
+
+}
+ a.getTipo().equals("I"))){
 					comboBoxDestino.addItem(a.getNombre());
 				}
 			}
