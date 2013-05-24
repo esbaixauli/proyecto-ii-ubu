@@ -68,20 +68,7 @@ public class ServletCBR extends HttpServlet {
 			e1.printStackTrace();
 		}
 		if (tipo.equals("retrieve")) {
-			TipoCaso tc = null;
-			HashMap<String,Serializable> query = null;
-			try {
-				tc = (TipoCaso) ois.readObject();
-				query = (HashMap<String,Serializable>) ois.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			Collection<CBRCase> casos = lanzador.retrieve(tc, query);
-			List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
-			for (CBRCase caso : casos) {
-				casosH.add(RellenadorClases.rellenarHash(tc, caso));
-			}
-			oos.writeObject(casosH);
+			iniciaRetrieval(oos, ois);
 		} else if (tipo.equals("reuse")) {
 			TipoCaso tc = null;
 			HashMap<String,Serializable> query = null;
@@ -124,9 +111,48 @@ public class ServletCBR extends HttpServlet {
 				e.printStackTrace();
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
+		}else if(tipo.equals("completo")){
+				TipoCaso tc = null;
+				HashMap<String,Serializable> query = null;
+			try {
+				tc = (TipoCaso) ois.readObject();
+				query = (HashMap<String,Serializable>) ois.readObject();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			Collection<CBRCase> casos = lanzador.reuse(tc,lanzador.retrieve(tc, query), query);
+			List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
+			for (CBRCase caso : casos) {
+				casosH.add(RellenadorClases.rellenarHash(tc, caso));
+			}
+			oos.writeObject(casosH);
 		}
 		oos.close();
 		sos.close();
+	}
+
+	/**Inicia la fase de retrieval a petición del cliente.
+	 * @param oos Outputstream de este servlet.
+	 * @param ois Inputstream de este servlet.
+	 * @throws IOException Si se produce un error de conexión con el cliente.
+	 */
+	private void iniciaRetrieval(ObjectOutputStream oos, ObjectInputStream ois)
+			throws IOException {
+		TipoCaso tc = null;
+		HashMap<String,Serializable> query = null;
+		try {
+			tc = (TipoCaso) ois.readObject();
+			query = (HashMap<String,Serializable>) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		Collection<CBRCase> casos = lanzador.retrieve(tc, query);
+		List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
+		for (CBRCase caso : casos) {
+			casosH.add(RellenadorClases.rellenarHash(tc, caso));
+		}
+		oos.writeObject(casosH);
 	}
 
 }
