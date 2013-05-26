@@ -1,31 +1,29 @@
 ﻿<html>
 <head>
-	<title>Reutilización: Técnicas</title>
+	<title>Reuse: Methods</title>
 </head>
 <body>
 	<h1>Numeric Proportion</h1>
-	<p>La técnica Numeric Proportion realiza una proporción entre un atributo del problema y uno de la solución (Sólo para atributos numéricos).
-	 Calcula la diferencia entre el atributo de la consulta y el atributo encontrado en un caso recuperado y altera la solución
-	 en la misma proporción. Por ejemplo, supongamos una consulta de un tipo de caso con atributos numéricos A,B,C y SOLUCION.
-	 La consulta realizada por el usuario es {1,2,3}.<br/>
-	 Supongamos que un caso devuelto de la fase de recuperación es {{2,2,3},SOLUCION = 8} y la técnica de adaptación es Numeric Proportion 
-	 entre el atributo A y el atributo SOLUCION. Entonces, como en la consulta del usuario A valía 1 y en el caso recuperado vale 2,
-	 calculamos (A de la consulta / A del caso recuperado) = 1/2. SOLUCION por tanto, será multiplicado por 1/2, y el caso adaptado devuelto
-	 será {{2,2,3},SOLUCION = 4}
+
+	 <p>The Numeric proportion method performs a proportion between a pair of problem and solution attributes (Only for numeric attributes).
+	 It calculates the difference between the query attribute and the attribute found in a retrieved case and alters the original query in that
+	 proportion. For example, suppose there is a query of a case type which has number attributes A,B,C and SOLUTION. Suppose as well that a retrieved
+	 case (from the retrieval step) is {{2,2,3},SOLUTION = 8} and the method is numeric proportion between A and SOLUTION.
+	 The user query is {1,2,3}. Then, since in the user query A had a value of 1 and the retrieved case shows a value of 2, we calculate
+	 (Query A/Retrieved case A) = 1/2. SOLUTION will, then, multiplied by 1/2, and the retrieved adapted case will be {{2,2,3},SOLUTION = 4}
 	 </p>
 	<h1>Direct Copy</h1>
-	<p>La técnica Direct Copy simplemente copia un atributo de la consulta realizada por el usuario en el caso devuelto por la recuperación.
-	 Por ejemplo, supongamos una consulta de un tipo de caso con atributos numéricos A,B,C y SOLUCION.
-	 La consulta realizada por el usuario es {1,2,3}.<br/>
-	 Supongamos que un caso devuelto de la fase de recuperación es {{2,2,3},SOLUCION = 8} y la técnica de adaptación es Direct Copy para
-	 el atributo A. Entonces, el atributo A de la consulta (1) es copiado en el atributo A del caso recuperado, y el caso adaptado
-	 devuelto será {{1,2,3},SOLUCION = 8}.</p>
+	 <p>Direct Copy method simply copies an attribute from a query performed by the user in the case returned by the retrieval.
+	 For example, suppose a query of a case type which has number attributes A,B,C and SOLUTION.
+	 The user query is {1,2,3}.  Suppose as well that a retrieved case (from the retrieval step) is {{2,2,3},SOLUTION = 8} and
+	 the adaptation method is Direct Copy for the A attribute. Then, the attribute A from the query (1) is copied into the retrieved case's attribute A,
+	 and the adapted case will be {{1,2,3},SOLUTION = 8}.</p>
 	 <h1>Combine Query and Cases </h1>
-	 <p>Esta técnica no precisa configuración. Simplemente copia los atributos de la consulta del usuario en sus equivalentes en el caso recuperado.<br/>
-	 Por ejemplo, supongamos una consulta de un tipo de caso con atributos numéricos A,B,C y SOLUCION.
-	 La consulta realizada por el usuario es {1,7,7}.<br/>
-	 Supongamos que un caso devuelto de la fase de recuperación es {{2,2,3},SOLUCION = 8} y la técnica de adaptación es Combine Query and Cases.
-	 Entonces, el caso adaptado devuelto será {{1,7,7},SOLUCION=8}. 
+	 <p>This method does not require configuration. It simply copies the attributes from a user query over its equivalents in the retrieved case.<br/>
+	 For example, suppose a query of a case type which has number attributes A,B,C and SOLUTION.
+	 The user query is {1,7,7}.<br/>
+	 Suppose as well that a retrieved case (from the retrieval step) is {{2,2,3},SOLUTION = 8} and the selected method is Combine Query and Cases.
+	 Then, the adapted case will be {{1,7,7},SOLUTION=8}. 
 	 </p>
 </body>
 </html>
