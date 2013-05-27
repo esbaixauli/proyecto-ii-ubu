@@ -33,7 +33,7 @@ public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 			CBRQuery query) throws ClassNotFoundException {
 		FilterConfig simConfig=getFiltros(query);
 		
-		return FilterBased.filterCases(casos, query, simConfig);
+		return FilterBasedRetrievalMethod.filterCases(casos, query, simConfig);
 	}
 	
 	private FilterConfig getFiltros(CBRQuery query) {
@@ -52,7 +52,6 @@ public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 				}
 				Attribute at = new Attribute(f);
 				config.addPredicate(at, getFilterPredicate(p.getValor()));
-				System.out.println("Predicado para: " + at.getName() + "(hc "+at.hashCode()+")" + config.getPredicate(at));
 			}
 		}
 		return config;
@@ -82,6 +81,15 @@ public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 			case 6:fp=new QueryMoreOrEqual();break;
 		}
 		if(valor>=7){
+			double param = valor - 7;
+			fp=new Threshold(param);
+		}
+		
+		return fp;
+	}
+	
+}
+=7){
 			double param = valor - 7;
 			fp=new Threshold(param);
 		}
