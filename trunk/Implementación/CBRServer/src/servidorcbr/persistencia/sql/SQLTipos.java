@@ -211,28 +211,73 @@ public class SQLTipos {
 		ArrayList<Tecnica> lRev = new ArrayList<Tecnica>();
 		ArrayList<Tecnica> lRet = new ArrayList<Tecnica>();
 		Tecnica t = null;
+		boolean repe = false;
 		while (rsTec.next()) {
 			switch (rsTec.getString("tipo")) {
-			case "rec":	t = addTecnicaParametros(lRec, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRec"));
-						if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRec")) {
-							tc.setDefaultRec(t);
-						}
-						break;
-			case "reu":	t = addTecnicaParametros(lReu, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultReu"));
-						if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultReu")) {
-							tc.setDefaultReu(t);
-						}
-						break;
-			case "rev":	t = addTecnicaParametros(lRev, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRev"));
-						if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRev")) {
-							tc.setDefaultRev(t);
-						}
-						break;
-			case "ret":	t = addTecnicaParametros(lRet, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRet"));
-						if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRet")) {
-							tc.setDefaultRet(t);
-						}
-						break;
+			case "rec":
+				for (Tecnica tGuardada : lRec) {
+					if (tGuardada.getNombre().equals(rsTec.getString("tecnica.nombre"))) {
+						addParametroTecnica(tGuardada, rsTec.getInt("caso_tecnica_parametro.id_parametro"));
+						repe = true;
+					}
+				}
+				if (!repe) {
+					t = addTecnicaParametros(lRec, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRec"));
+					if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRec")) {
+						tc.setDefaultRec(t);
+					}
+				} else {
+					repe = false;
+				}
+				break;
+			case "reu":
+				for (Tecnica tGuardada : lReu) {
+					if (tGuardada.getNombre().equals(rsTec.getString("tecnica.nombre"))) {
+						addParametroTecnica(tGuardada, rsTec.getInt("caso_tecnica_parametro.id_parametro"));
+						repe = true;
+					}
+				}
+				if (!repe) {
+					t = addTecnicaParametros(lReu, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultReu"));
+					if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultReu")) {
+						tc.setDefaultReu(t);
+					}
+				} else {
+					repe = false;
+				}
+				break;
+			case "rev":
+				for (Tecnica tGuardada : lRev) {
+					if (tGuardada.getNombre().equals(rsTec.getString("tecnica.nombre"))) {
+						addParametroTecnica(tGuardada, rsTec.getInt("caso_tecnica_parametro.id_parametro"));
+						repe = true;
+					}
+				}
+				if (!repe) {
+					t = addTecnicaParametros(lRev, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRev"));
+					if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRev")) {
+						tc.setDefaultRev(t);
+					}
+				} else {
+					repe = false;
+				}
+				break;
+			case "ret":	
+				for (Tecnica tGuardada : lRet) {
+					if (tGuardada.getNombre().equals(rsTec.getString("tecnica.nombre"))) {
+						addParametroTecnica(tGuardada, rsTec.getInt("caso_tecnica_parametro.id_parametro"));
+						repe = true;
+					}
+				}
+				if (!repe) {
+					t = addTecnicaParametros(lRet, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRet"));
+					if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRet")) {
+						tc.setDefaultRet(t);
+					}
+				} else {
+					repe = false;
+				}
+				break;
 			default:	
 			}
 		}
@@ -242,6 +287,24 @@ public class SQLTipos {
 		tc.setTecnicasRetencion(lRet);
 	}
 	
+	/**
+	 * Añade un parámetro a una técnica ya guardada en la lista correspondiente.
+	 * @param tGuardada La técnica a la que añadir el parámetro.
+	 * @param idParam Id del parámetro en la base de datos.
+	 * @throws SQLException 
+	 */
+	private void addParametroTecnica(Tecnica tGuardada, int idParam) throws SQLException {
+		PreparedStatement ps = conn.prepareStatement("SELECT * FROM parametro WHERE id=?;");
+		ps.setInt(1, idParam);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			Parametro p = new Parametro();
+			p.setNombre(rs.getString("nombre"));
+			p.setValor(rs.getDouble("valor"));
+			tGuardada.getParams().add(p);
+		}
+	}
+
 	// Auxiliar. Añade una tecnica con todos sus parámetros a la lista de técnicas de su tipo
 	private Tecnica addTecnicaParametros(List<Tecnica> lista, int idCaso, int idTecnica, String nomTecnica, int defaultTec) throws SQLException {
 		Tecnica t = new Tecnica();

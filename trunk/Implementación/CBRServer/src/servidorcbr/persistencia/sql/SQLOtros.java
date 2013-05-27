@@ -31,31 +31,31 @@ public class SQLOtros {
 	 */
 	public Estadistica getEstadistica(Usuario u, TipoCaso tc) throws PersistenciaException{
 		String consulta= "Select sum(ejecTotales),sum(mediacalidad*ejecTotales)/coalesce(nullif(sum(ejecTotales),0),1)," +
-				"sum(ejecSatisfactorias),sum(ejecInusables),max(fechaUltima)"+
-							"from caso_usuario";
+				"sum(ejecSatisfactorias),sum(ejecInusables),max(fechaUltima) "+
+				"from caso_usuario";
 		Estadistica es=null;
 		try{
-		//Si se pide para un usuario en concreto
-		if(! u.getNombre().equals("ver todos")){
-			//Busco el id de ese usuario
-			int idU = buscarId("usuario",u.getNombre());
-			//No necesito usar las funciones de (?) de preparedstatement porque el dato ha sido obtenido de forma interna
-			//(No hay riesgo de inyección SQL)
-			consulta+=" where id_usuario="+idU;
-			//Si se pide tanto un usuario como un tipo de caso concretos
-			if(!tc.getNombre().equals("ver todos")){
+			//Si se pide para un usuario en concreto
+			if(! u.getNombre().equals("ver todos")){
+				//Busco el id de ese usuario
+				int idU = buscarId("usuario",u.getNombre());
+				//No necesito usar las funciones de (?) de preparedstatement porque el dato ha sido obtenido de forma interna
+				//(No hay riesgo de inyección SQL)
+				consulta+=" where id_usuario="+idU;
+				//Si se pide tanto un usuario como un tipo de caso concretos
+				if(!tc.getNombre().equals("ver todos")){
+					int idc= buscarId("caso",tc.getNombre());
+					consulta+=" and id_caso="+idc;
+				}
+				//Si se pide para todos los usuarios, pero un tipo de caso concreto
+			}else if(!tc.getNombre().equals("ver todos")){
 				int idc= buscarId("caso",tc.getNombre());
-				consulta+=" and id_caso="+idc;
+				consulta+=" where id_caso="+idc;
 			}
-		//Si se pide para todos los usuarios, pero un tipo de caso concreto
-		}else if(!tc.getNombre().equals("ver todos")){
-			int idc= buscarId("caso",tc.getNombre());
-			consulta+=" where id_caso="+idc;
-		}
-		PreparedStatement ps = conn.prepareStatement(consulta);
-		ResultSet rs = ps.executeQuery();
-		
-		es = rellenarEstadistica(rs);
+			PreparedStatement ps = conn.prepareStatement(consulta);
+			ResultSet rs = ps.executeQuery();
+
+			es = rellenarEstadistica(rs);
 		}catch(SQLException ex){
 			ex.printStackTrace();
 			throw new PersistenciaException(ex);
@@ -78,8 +78,12 @@ public class SQLOtros {
 			es.setEjecInusables(rs.getLong(4));
 			es.setFechaUltima(rs.getDate(5));
 			//Busco la calidad correspondiente a esa fecha
-			PreparedStatement ps = conn.prepareStatement("SELECT calidadUltima FROM caso_usuario WHERE fechaUltima=?");
+			// ERROR: hsqldb no devuelve la fecha todo lo precisa que debería: tanto rs.getDate(5)
+			// como es.getFechaUltima() contienen la fecha correcta pero a las 2:00 am, por lo que
+			// no encuentra ninguna calidadUltima en esa fecha (está almacenada la fecha correcta)
+			PreparedStatement ps = conn.prepareStatement("SELECT calidadUltima FROM caso_usuario WHERE fechaUltima=?;");
 			ps.setDate(1, rs.getDate(5));
+			//ps.setDate(1, new java.sql.Date(es.getFechaUltima().getTime()));
 			ResultSet rs2= ps.executeQuery();
 			while(rs2.next()){
 				es.setCalidadUltima(rs2.getLong(1));
@@ -149,20 +153,41 @@ public class SQLOtros {
 	public void updateEstadistica(Usuario u, TipoCaso tc,int calidad) throws PersistenciaException{
 		java.util.Date fecha = new Date();
 		try{
-		int idU= buscarId("usuario", u.getNombre());
-		int idC= buscarId("caso",tc.getNombre());
-		
-		//Si es un administrador y es su primera consulta, se le asocia al tipo de caso.
-		if(u.getTipo().equals(TipoUsuario.ADMINISTRADOR)
-				&& getEstadistica(u, tc).getEjecTotales()==0){
-			insertarEstadisticaAdmin(fecha, calidad, idU, idC);
-		}else{
-			modificarEstadistica(fecha, calidad, idU, idC);
-		}
+			int idU= buscarId("usuario", u.getNombre());
+			int idC= buscarId("caso",tc.getNombre());
+
+			//Si es un administrador y es su primera consulta, se le asocia al tipo de caso.
+			if(u.getTipo().equals(TipoUsuario.ADMINISTRADOR)
+					&& !existeEstadistica(idU, idC)) {
+				insertarEstadisticaAdmin(fecha, calidad, idU, idC);
+			}else{
+				modificarEstadistica(fecha, calidad, idU, idC);
+			}
 		}catch(SQLException ex){
 			ex.printStackTrace();
 			throw new PersistenciaException(ex);
 		}
+	}
+
+
+	/**
+	 * Comprueba que exista la fila de caso_usuario para saber si tiene que insertar o
+	 * modificar.
+	 * @param idU El id del usuario para el que se comprueba si existe la fila.
+	 * @param idC El id del tipo de caso para el que se comprueba si existe la fila.
+	 * @return true si existe, false si no
+	 * @throws SQLException 
+	 */
+	private boolean existeEstadistica(int idU, int idC) throws SQLException {
+		PreparedStatement ps = conn.prepareStatement("SELECT * FROM caso_usuario WHERE id_caso=? AND id_usuario=?");
+		ps.setInt(1, idC);
+		ps.setInt(2, idU);
+		ResultSet rs = ps.executeQuery();
+		int n = 0;
+		while (rs.next()) {
+			n++;
+		}
+		return (n == 1);
 	}
 
 
@@ -188,7 +213,7 @@ public class SQLOtros {
 				cal+"fechaultima=?,calidadUltima=? where id_caso="+idC+
 				" and id_usuario="+idU+";";
 		PreparedStatement ps = conn.prepareStatement(sql);
-		ps.setInt(1, calidad);
+		ps.setLong(1, (long) calidad);
 		java.sql.Date sqlDate = new java.sql.Date(fecha.getTime());
 		ps.setDate(2, sqlDate);
 		ps.setLong(3, (long)calidad);

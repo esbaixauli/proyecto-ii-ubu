@@ -121,7 +121,7 @@ public class ServletCBR extends HttpServlet {
 				e.printStackTrace();
 			}
 			
-			Collection<CBRCase> casos = lanzador.reuse(tc,lanzador.retrieve(tc, query), query);
+			Collection<CBRCase> casos = lanzador.reuse(tc,lanzador.retrieve(tc, query));
 			List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
 			for (CBRCase caso : casos) {
 				casosH.add(RellenadorClases.rellenarHash(tc, caso));
@@ -154,5 +154,8 @@ public class ServletCBR extends HttpServlet {
 		}
 		oos.writeObject(casosH);
 	}
+
+}
+
 
 }

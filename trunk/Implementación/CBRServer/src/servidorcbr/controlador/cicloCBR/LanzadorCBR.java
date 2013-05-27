@@ -33,6 +33,8 @@ import servidorcbr.modelo.excepciones.PersistenciaException;
 import servidorcbr.persistencia.hbase.HbaseFacade;
 
 public class LanzadorCBR implements StandardCBRApplication {
+	
+	private CBRQuery query = null;
 
 	@Override
 	public void configure() throws ExecutionException {
@@ -137,18 +139,16 @@ public class LanzadorCBR implements StandardCBRApplication {
 			return new ArrayList<CBRCase>();
 		}
 		
-		List<CBRCase> resultado = new ArrayList<CBRCase>(resultadoHash.size());
-		for (HashMap<String,Serializable> caso : resultadoHash) {
-			System.out.println("ID: "+caso.get("META_ID")+", age: "+caso.get("age")+", class: "+caso.get("classe")+", sex: "+caso.get("sex")+", surv: "+caso.get("survived") + ", cal: "+caso.get("META_QUALITY"));
-			try {
-				resultado.add(RellenadorClases.rellenarCaso(tc, caso));
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+		this.query = RellenadorClases.rellenarQuery(tc, query);
+		List<CBRCase> resultado = null;
+		try {
+			resultado = RellenadorClases.rellenarLista(tc, resultadoHash, this.query);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
 		
 		// Hay que ejecutar otra vez el método de retrieval para combinar los resultados de los reducers
-		Collection<CBRCase> result = EjecutorTecnicaRetrieval.ejecutarRetrieval(resultado, RellenadorClases.rellenarQuery(tc, query), tc);
+		Collection<CBRCase> result = EjecutorTecnicaRetrieval.ejecutarRetrieval(resultado, this.query, tc);
 		
 		return result;
 	}
@@ -259,6 +259,19 @@ public class LanzadorCBR implements StandardCBRApplication {
 		FSDataOutputStream outfs = fs.create(outFile, true);
 		ObjectOutputStream oos = new ObjectOutputStream(outfs);
 		oos.writeObject(s);
+		oos.flush();
+		oos.close();
+		outfs.close();
+	}
+
+	public Collection<CBRCase> reuse(TipoCaso tc, Collection<CBRCase> casos) {
+		if (query == null) {
+			return null;
+		}
+		return reuse(tc, casos, query);
+	}
+}
+bject(s);
 		oos.flush();
 		oos.close();
 		outfs.close();

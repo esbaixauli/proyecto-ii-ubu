@@ -110,7 +110,7 @@ public class TestSQLUsuarios {
 			int tam2 = SQLFacade.getInstance().getUsuarios().size();
 			u=null;
 			
-			assertTrue("Borrar usuario:"+"Error al borrar,el usuario aun existe",tam +1 == tam2);
+			assertTrue("Borrar usuario:"+"Error al borrar,el usuario aun existe",tam == tam2+1);
 		} catch (PersistenciaException e) {}
 	
 	}
@@ -150,3 +150,4 @@ public class TestSQLUsuarios {
 	}
 	
 }
+

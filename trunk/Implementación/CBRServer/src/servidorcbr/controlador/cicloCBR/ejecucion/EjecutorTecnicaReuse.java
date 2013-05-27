@@ -44,7 +44,6 @@ public class EjecutorTecnicaReuse {
 			casos = CombineQueryAndCasesMethod.combine(query, casos);
 			if (tc.getDefaultReu().getParams().size() > 0
 					&& tc.getDefaultReu().getParams().get(0).getValor() == 3) {
-				System.out.println("Llamo a combinar");
 				return combinar(casos);
 			}
 			return casos;
@@ -67,7 +66,6 @@ public class EjecutorTecnicaReuse {
 			}
 			if (tc.getDefaultReu().getParams().size() > 2
 					&& !tc.getDefaultReu().getParams().get(2).equals("NOCOMBINAR")) {
-				System.out.println("Llamo a combinar");
 				return combinar(casos);
 			}
 		}
@@ -171,7 +169,7 @@ public class EjecutorTecnicaReuse {
 						Double media = media(values);
 						if(a.getTipo().equals("I")){
 							//lo inserto en un hashmap {"NombreAtbo",valor}
-							calculos.put(a.getNombre(),media.intValue());
+							calculos.put(a.getNombre(),new Long(Math.round(media)).intValue());
 						}else{
 							calculos.put(a.getNombre(), media);
 						}
@@ -270,6 +268,15 @@ public class EjecutorTecnicaReuse {
 		String val=values.get(0);
 		for(String a:values){
 			if(max< Collections.frequency(values, a)){
+				val=a;
+			}
+		}
+		return val;
+	}
+	
+}
+
+ncy(values, a)){
 				val=a;
 			}
 		}

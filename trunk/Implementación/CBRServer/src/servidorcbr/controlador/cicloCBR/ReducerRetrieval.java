@@ -58,7 +58,7 @@ public class ReducerRetrieval extends
 		TipoCaso tc = cargarTipoCaso(fs, conf.get("tipocaso"));
 		CBRQuery query = cargarQuery(fs, tc, conf.get("query"));
 		try {
-			Class<? extends CaseComponent> cdesc = CargadorClases.cargarClaseProblema(tc.getNombre());
+			Class<? extends CaseComponent> cdesc = query.getDescription().getClass();
 			Class<? extends CaseComponent> csolution = CargadorClases.cargarClaseSolucion(tc.getNombre());
 			int i = 0;
 			for (Result row : values) {
@@ -219,5 +219,7 @@ public class ReducerRetrieval extends
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) { }
 		return RellenadorClases.rellenarQuery(tc, h);
+	}
+}ry(tc, h);
 	}
 }
