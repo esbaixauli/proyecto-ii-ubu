@@ -1,44 +1,39 @@
 package vista.estadisticas;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.border.EmptyBorder;
-
-import com.jtattoo.plaf.hifi.HiFiBorders.TabbedPaneBorder;
-
-import controlador.ControlEstadisticas;
 
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
-import vista.AcercaDeJFrame;
 import vista.MainFrame;
-import vista.componentesGenericos.FrameEstandar;
 import vista.componentesGenericos.PanelEstandar;
-import weka.gui.ExtensionFileFilter;
-import javax.swing.JToolBar;
 
+/**Panel de estadísticas de uso de los tipos de caso en CBR.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class EstadisticasPanel extends PanelEstandar {
 	EnumEstadisticas tipoEst;
+	/**
+	 * Usuario que pide consultar las estadísticas. Se guarda para
+	 * que se muestren sus estadísticas cuando escoge la opción "Propias".
+	 */
 	Usuario u;
+	
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
 	
-	/**
-	 * Crea el frame.
+	
+	/**Constructor del panel de estadísticas.
+	 * @param u Usuario que pide ver estadísticas.
+	 * @param padre Ventana padre de este panel.
 	 */
 	public EstadisticasPanel(Usuario u,MainFrame padre) {
 		super(padre);me=this;

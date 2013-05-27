@@ -59,34 +59,109 @@ import controlador.ControlEstadisticas;
 import controlador.ControlTipos;
 import controlador.ControlUsuarios;
 
+/**Panel que muestra las estadísticas, genérico para la opción de usuario y caso o para 
+ * ver las estadísticas propias.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
+@SuppressWarnings("serial")
 public class PanelEstadisticasInterior extends JPanel {
 
+	/**
+	 * Lista de casos seleccionables para ver sus estadísticas.
+	 */
 	private ListaCasos listaC = null;
+	/**
+	 * Lista de usuarios seleccionables para ver sus estadísticas.
+	 */
 	private ListaUsuarios listaU = null;
+	/**
+	 * Tipo de estadísticas a visualizar.
+	 */
 	private EnumEstadisticas tipo;
+	/**
+	 * Estadística mostrada en cada momento.
+	 */
 	private Estadistica est;
+	/**
+	 * Usuario que pide ver las estadísticas.
+	 */
 	private Usuario u;
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
+	/**
+	 * Layout interno.
+	 */
 	private SpringLayout springLayout;
+	/**
+	 * Panel interno que contiene la representación visual de las estadísticas.
+	 */
 	private JPanel panelEstInterno;
+	/**
+	 * Panel que contiene las listas seleccionables de casos y usuarios.
+	 */
 	private final JPanel panel_listas;
 
 	// Componentes de las estadisticas (labels y gráficos)
 
+	/**
+	 * Label de la estadística Ejecuciones totales.
+	 */
 	private JLabel lblEjecucionestotales;
+	/**
+	 * Label de la estadística Ejecuciones totales.
+	 */
 	private JLabel lblMediaCalidad;
+	/**
+	 * Label de la estadística Ejecuciones totales.
+	 */
 	private JLabel lblUltimaej;
+	/**
+	 * Label de la estadística Calidad de la última ejecución.
+	 */
 	private JLabel lblCalidadultima;
+	/**
+	 * Label de la estadística Ejecuciones satisfactorias.
+	 */
 	private JLabel lblEjecsatis;
+	/**
+	 * Label de la estadística Porcentaje de Ejecuciones satisfactorias.
+	 */
 	private JLabel lblPctjesatis;
+	/**
+	 * Label de la estadística Ejecuciones inusables.
+	 */
 	private JLabel lblEjecinusables;
+	/**
+	 * Label de la estadística Porcentaje de Ejecuciones inusables.
+	 */
 	private JLabel lblPctjeinusables;
+	/**
+	 * Panel que contiene un gráfico en cada momento.
+	 */
 	private JPanel panelInuExitoTotal;
+	/**
+	 * Tabbedpane para las pestañas de cada gráfico.
+	 */
 	private JTabbedPane tabbedPaneGraficos;
+	/**
+	 * Panel de media de calidad.
+	 */
 	private JPanel panelMediaCalidad;
+	/**
+	 * Barra de herramientas para guardar gráficos, borrar estadísticas, etc.
+	 */
 	private JPanel toolBarPanel;
+	/**
+	 * Botón de limpiar estadísticas.
+	 */
 	private JButton btnLimpiar;
+	/**
+	 * Botón de exportar gráfico como png.
+	 */
 	private JButton btnExportarImg;
 
 	/**
@@ -97,12 +172,23 @@ public class PanelEstadisticasInterior extends JPanel {
 	 * Altura de los graficos al exportarlos.
 	 */
 	private static final int ALTOCHART = 250;
+	/**
+	 * Panel con los labels de estadísticas (Informe).
+	 */
 	private JPanel panelInforme;
+	/**
+	 * Panel con el título del panel de estadísticas.
+	 */
 	private JPanel panelTitulo;
+	/**
+	 * Panel de la sección de gráficos.
+	 */
 	private JPanel panelGraf;
 
-	/**
-	 * Crea el panel.
+	
+	/** Constructor del panel de estadísticas.
+	 * @param tipo Tipo de estadísticas a mostrar: Propias o con selección usuario-caso.
+	 * @param usuario Usuario que realiza la petición de ver estadísticas.
 	 */
 	public PanelEstadisticasInterior(EnumEstadisticas tipo, Usuario usuario) {
 		this.u = usuario;
@@ -125,7 +211,7 @@ public class PanelEstadisticasInterior extends JPanel {
 		add(panelEstInterno);
 		panelEstInterno.setLayout(new BorderLayout(0, 0));
 		
-		
+		//Panel de título
 
 		panelTitulo = new JPanel();
 		panelTitulo.setBackground(Color.GRAY);
@@ -411,7 +497,7 @@ public class PanelEstadisticasInterior extends JPanel {
 		if (listaC != null) {
 			listaC.addMouseListener(new MouseAdapter() {
 
-				@SuppressWarnings("unchecked")
+				@SuppressWarnings({ "unchecked", "unused" }) //controlado.
 				public void mouseClicked(MouseEvent arg0) {
 					JList<TipoCaso> listaC = (JList<TipoCaso>) arg0.getSource();
 					TipoCaso caso = listaC.getSelectedValue();
@@ -499,9 +585,8 @@ public class PanelEstadisticasInterior extends JPanel {
 
 	/**
 	 * Permite refrescar las etiquetas con los valores de las estadisticas.
-	 * 
-	 * @param est
-	 *            Nuevos valores para las estadisticas.
+	 * @param est Nuevos valores para las estadisticas.
+	 *            
 	 */
 	private void refrescarEstadisticas(Estadistica est) {
 		lblEjecucionestotales.setText(b.getString("totalexec") + ":"
@@ -544,10 +629,10 @@ public class PanelEstadisticasInterior extends JPanel {
 
 	/**
 	 * Refresca los gráficos cuando se actualizan las estadísticas al elegir una
-	 * nueva. Invocado desde refrescarEstadisticas.ç
+	 * nueva. Invocado desde refrescarEstadisticas
 	 * 
-	 * @param est
-	 *            Estadisticas actualizadas
+	 * @param est Estadisticas actualizadas
+	 *            
 	 */
 	private void refrescarGraficos(Estadistica est) {
 		// Grafico de tipo circular
@@ -559,9 +644,8 @@ public class PanelEstadisticasInterior extends JPanel {
 
 	/**
 	 * Refresca el gráfico de barras cuando cambian las estadísticas.
-	 * 
-	 * @param est
-	 *            Estadisticas actualizadas
+	 * @param est Estadisticas actualizadas
+	 *            
 	 */
 	private void refrescarGraficoBarras(Estadistica est) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -587,9 +671,7 @@ public class PanelEstadisticasInterior extends JPanel {
 
 	/**
 	 * Refresca el gráfico circular cuando cambian las estadísticas.
-	 * 
-	 * @param est
-	 *            Estadisticas actualizadas
+	 * @param est Estadisticas actualizadas  
 	 */
 	private void refrescarGraficoCircular(Estadistica est) {
 
@@ -620,7 +702,6 @@ public class PanelEstadisticasInterior extends JPanel {
 
 	/**
 	 * Obtiene el texto de las estadisticas que se estan mostrando.
-	 * 
 	 * @return Lista de cadenas de texto con las estadisticas mostradas.
 	 */
 	public List<String> getTexto() {
@@ -647,7 +728,6 @@ public class PanelEstadisticasInterior extends JPanel {
 
 	/**
 	 * Obtiene los graficos correspondientes a las estadisticas mostradas.
-	 * 
 	 * @return Lista de imagenes de los graficos mostrados.
 	 */
 	public List<Image> getGraficos() {

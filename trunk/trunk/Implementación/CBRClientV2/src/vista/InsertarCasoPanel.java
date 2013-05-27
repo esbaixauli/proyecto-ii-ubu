@@ -1,5 +1,6 @@
 package vista;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -19,20 +20,21 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.TableRowSorter;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
-import vista.componentesGenericos.FrameEstandar;
 import vista.componentesGenericos.PanelEstandar;
 import vista.panels.JFilePicker;
 import vista.panels.PanelIntroducirValorAtbo;
@@ -40,30 +42,59 @@ import vista.tablas.CasosTableCellRenderer;
 import vista.tablas.CasosTableModel;
 import controlador.ControlCasos;
 import controlador.util.LectorCaso;
-import javax.swing.border.EtchedBorder;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-import javax.swing.JTextField;
-import java.awt.Color;
 
+/**Panel para introducir casos manualmente.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class InsertarCasoPanel extends PanelEstandar {
 
+	/**
+	 * File picker para escoger un fichero a cargar.
+	 */
 	private JFilePicker pickerFichero;
+	/**
+	 * Contentpane interno al panel.
+	 */
 	private JPanel contentPane;
 
+	/**
+	 * Panel para introducir datos manuales.
+	 */
 	private JPanel panelManual;
+	/**
+	 * Etiqueta de casos cargados.
+	 */
 	private JLabel lblCargadas;
+	/**
+	 * Tipo de caso al que se insertarán casos.
+	 */
 	private TipoCaso tc;
+	/**
+	 * Tabla de casos.
+	 */
 	private JTable table;
+	/**
+	 * Casos a insertar. Se actualiza automáticamente según lo que se
+	 * introduzca en la tabla.
+	 */
 	private List<HashMap<String,Serializable>> casos;
+	/**
+	 * Textfield para filtrar casos.
+	 */
 	private JTextField textFieldFilter;
 	
+	/**
+	 * Panel de filtrado de casos.
+	 */
 	private JPanel panelFiltro;
 	
 
-	/**
-	 * Crea el frame.
+
+	/** Constructor del panel.
+	 * @param tc Tipo de caso para el que el usuario insertará casos.
+	 * @param padre Frame padre del panel.
 	 */
 	public InsertarCasoPanel(final TipoCaso tc, final MainFrame padre) {
 		super(padre);me=this;
@@ -147,6 +178,7 @@ public class InsertarCasoPanel extends PanelEstandar {
 		btnFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String cadenaBusqueda = textFieldFilter.getText();
+				@SuppressWarnings("unchecked") //Sabemos que es ese tipo de sorter.
 				TableRowSorter<CasosTableModel> sorter = (TableRowSorter<CasosTableModel>)
 						table.getRowSorter();
 				if(! cadenaBusqueda.isEmpty()){
@@ -264,6 +296,10 @@ public class InsertarCasoPanel extends PanelEstandar {
 		
 	}
 	
+	/** Inserta la lista de casos enviándola al servidor.
+	 * @param lcasos Lista de casos. Cada caso es un mapa clave valor de tipo:
+	 * {"nombre del atributo", valor}
+	 */
 	private void insertarCasos(List<HashMap<String,Serializable>> lcasos){
 		try {
 			

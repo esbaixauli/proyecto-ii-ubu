@@ -14,6 +14,11 @@ import java.util.List;
 import servidorcbr.modelo.TipoCaso;
 
 
+/**Controlador de casos. Permite realizar operaciones sobre
+ * los casos (no los tipos) en los sistemas del servidor.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class ControlCasos {
 	
 	/** Inserta casos en la base de casos del servidor.

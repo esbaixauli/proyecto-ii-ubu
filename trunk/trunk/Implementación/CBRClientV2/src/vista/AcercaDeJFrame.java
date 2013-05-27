@@ -24,16 +24,35 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import java.awt.Color;
 
+/**Frame de 'Acerca de...'
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class AcercaDeJFrame extends JFrame {
 
+	/**
+	 * Content pane del frame.
+	 */
 	private JPanel contentPane;
-	private JFrame me=this,padre;
+	/**
+	 * Referencia al frame.
+	 */
+	private JFrame me=this;
+	
+	/**
+	 * Referencia al padre del frame. 
+	 */
+	private JFrame padre;
+	/**
+	 * Bundle de localización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
 
-	/**
-	 * Crea el frame.
+	
+	/**Crea el frame.
+	 * @param padre Padre de este frame.
 	 */
 	public AcercaDeJFrame(JFrame padre) {
 		this.padre=padre;me=this;

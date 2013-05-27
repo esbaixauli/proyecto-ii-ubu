@@ -1,11 +1,10 @@
 package vista.cicloCBR;
 
-import controlador.ControlCBR;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -28,9 +27,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.Atributo;
@@ -40,7 +40,6 @@ import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import vista.MainFrame;
-import vista.componentesGenericos.FrameEstandar;
 import vista.componentesGenericos.PanelEstandar;
 import vista.panels.PanelIntroducirValorAtbo;
 import vista.tipos.configtecnicas.CombineQueryConfigFrame;
@@ -48,65 +47,203 @@ import vista.tipos.configtecnicas.DiverseByMedianConfigFrame;
 import vista.tipos.configtecnicas.FilterBasedConfigFrame;
 import vista.tipos.configtecnicas.NNConfigFrame;
 import vista.tipos.configtecnicas.NumOrCopyConfigFrame;
+
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
+
+import controlador.ControlCBR;
 import controlador.ControlEstadisticas;
 import controlador.ControlTecnicas;
-import javax.swing.border.EtchedBorder;
-import java.awt.Font;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.JSeparator;
 
+/** Panel para introducir consultas CBR.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
+/**
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class IntroducirConsultaCBRPanel extends PanelEstandar {
 
+	/**
+	 * Frame para configurar las técnicas de una etapa del ciclo.
+	 */
 	private JFrame cRec, cReu, cRev, cRet;
 
+	/**
+	 * Tipo de caso de la consulta.
+	 */
 	private TipoCaso tc;
+	/**
+	 * Cierto si es un ciclo configurado.
+	 */
 	private boolean configurado;
+	/**
+	 * Combobox de técnicas de recuperación.
+	 */
 	private JComboBox<String> comboBoxRec;
+	/**
+	 * Botón de configurar la técnica de recuperación.
+	 */
 	private JButton btnConfigRec;
+	/**
+	 * Combobox de técnicas de reutilización.
+	 */
 	private JComboBox<String> comboBoxReu;
+	/**
+	 * Botón de configurar la técnica de reutilización.
+	 */
 	private JButton btnConfigReu;
+	/**
+	 * Botón de configurar la técnica de revisión.
+	 */
 	private JButton btnConfigRev;
+	/**
+	 * Botón de configurar la técnica de retención.
+	 */
 	private JButton btnConfigRet;
+	/**
+	 * Combobox de técnicas de revisión.
+	 */
 	private JComboBox<String> comboBoxRev;
+	/**
+	 * Combobox de técnicas de retención.
+	 */
 	private JComboBox<String> comboBoxRet;
+	/**
+	 * Label con el texto internacionalizado de recuperación.
+	 */
 	private JLabel lblRec;
+	/**
+	 * Label con el texto internacionalizado de reutilización.
+	 */
 	private JLabel lblReu;
+	/**
+	 * Label con el texto internacionalizado de revisión.
+	 */
 	private JLabel lblRev;
+
+	 /**
+	 * Label con el texto internacionalizado de retención.
+	 */	
 	private JLabel lblRet;
+	/**
+	 * Botón que ejecuta el ciclo.
+	 */
 	private JButton btnEjecutarCiclo;
+	/**
+	 * Panel de atributos.
+	 */
 	private JPanel panelAtbos;
+	/**
+	 * ScrollPane en el que se introduce la consulta
+	 */
 	private JScrollPane scrollPane;
+	/**
+	 * Panel de técnicas en el ciclo configurado.
+	 */
 	private JPanel panelMet;
+	
+	/**
+	 * Panel de ejecución. Es en el que se muestran las opciones de ejecución. 
+	 */
 	private JPanel panelEjec;
+	/**
+	 * Panel principal interno al de ejecución.
+	 */
 	private JPanel panel;
+	/**
+	 * Etiqueta de ejecuciones totales CBR.
+	 */
 	private JLabel lblEjecTotales;
+	/**
+	 * Panel de estadísticas del tipo de caso.
+	 */
 	private JPanel panelEstad;
+	/**
+	 * Etiqueta con la media de calidad. 
+	 */
 	private JLabel lblMediaCalidad;
 
+	/**
+	 * Botón de ciclo paso a paso.
+	 */
 	private JButton btnPasoapaso;
+	/**
+	 * Panel interno en el ciclo configurado. (Para el correcto funcionamiento del layout).
+	 */
 	private JPanel panel_2;
+	/**
+	 * Panel interno en el ciclo configurado. (Para el correcto funcionamiento del layout).
+	 */
 	private JPanel panel_3;
+	/**
+	 * Panel interno en el ciclo configurado. (Para el correcto funcionamiento del layout).
+	 */
 	private JPanel panel_4;
+	/**
+	 * Panel interno en el ciclo configurado. (Para el correcto funcionamiento del layout).
+	 */
 	private JPanel panel_5;
+	
+	/**
+	 * Usuario que ejecuta la consulta.
+	 */
 	private Usuario user;
+	/**
+	 * Etiqueta con el icono que indica una ejecución en curso.
+	 */
 	private JLabel lblIcon;
+	/**
+	 * Panel interno en el ciclo configurado. (Para el correcto funcionamiento del layout).
+	 */
 	private JPanel panel_6;
+	/**
+	 * Panel principal de la ventana.
+	 */
 	private JPanel panelPrincipal;
+	/**
+	 * Etiqueta que muestra la última ejecución del caso.
+	 */
 	private JLabel lblUltimaej;
+	/**
+	 * Etiqueta que muestra la técnica de retención por defecto del tipo de caso.
+	 */
 	private JLabel lblDefret;
+	/**
+	 * Separador.
+	 */
 	private JSeparator separator;
+	/**
+	 * Etiqueta que muestra la técnica de recuperación por defecto del tipo de caso.
+	 */
 	private JLabel lblRecuDef;
+	/**
+	 * Etiqueta que muestra la técnica de reutilización por defecto del tipo de caso.
+	 */
 	private JLabel lblReuDef;
+	/**
+	 * Etiqueta que muestra la técnica de revisión por defecto del tipo de caso.
+	 */
 	private JLabel lblRevDef;
+	/**
+	 * Etiqueta que muestra la técnica de retención por defecto del tipo de caso.
+	 */
 	private JLabel lblRetDef;
+	/**
+	 * Label con el texto 'Estadísticas' internacionalizado.
+	 */
 	private JLabel lblStat;
 
-	/**
-	 * Create the frame.
+
+	/** Constructor del panel de consulta CBR.
+	 * @param tic Tipo de caso de la consulta.
+	 * @param configurado true si es un ciclo configurado, false si no.
+	 * @param padre Frame principal de la aplicación.
+	 * @param u Usuario que ejecuta el ciclo.
 	 */
 	public IntroducirConsultaCBRPanel(TipoCaso tic, boolean configurado,
 			final MainFrame padre, Usuario u) {
@@ -494,6 +631,9 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 
 	}
 
+	/**
+	 *Método interno para pedir las estadísticas del caso al servidor. 
+	 */
 	private void pedirEstadisticas() {
 		Estadistica e = null;
 		Usuario us = new Usuario();
@@ -519,6 +659,10 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 		}
 	}
 
+	/**
+	 * Auxiliar. Establece los botones de configurar técnicas de recuperación 
+	 * en un ciclo configurado.
+	 */
 	private void estableceFrameTecRec() {
 
 		String tec = (String) comboBoxRec.getSelectedItem();
@@ -544,6 +688,10 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 		}
 	}
 
+	/**
+	 * Auxiliar. Establece los botones de configurar técnicas de reutilización
+	 * en un ciclo configurado.
+	 */
 	private void estableceFrameTecReu() {
 		String tec = (String) comboBoxReu.getSelectedItem();
 		asignaTecnicaCB(tec, "reu");
@@ -569,6 +717,10 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 
 	}
 
+	/**
+	 * Auxiliar. Establece los botones de configurar técnicas de revisión
+	 * en un ciclo configurado.
+	 */
 	private void estableceFrameTecRev() {
 		String tec = (String) comboBoxRev.getSelectedItem();
 		asignaTecnicaCB(tec, "rev");
@@ -576,7 +728,11 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 		// estableceFrameTecRec
 		btnConfigRev.setEnabled(false);
 	}
-
+	
+	/**
+	 * Auxiliar. Establece los botones de configurar técnicas de retención 
+	 * en un ciclo configurado.
+	 */
 	private void estableceFrameTecRet() {
 		String tec = (String) comboBoxRet.getSelectedItem();
 		asignaTecnicaCB(tec, "ret");
@@ -585,6 +741,10 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 		btnConfigRet.setEnabled(false);
 	}
 
+	/**
+	 * Pinta los paneles que muestran el campo a rellenar de cada atributo en
+	 * la consulta.
+	 */
 	private void rellenarAtributos() {
 		for (Atributo at : tc.getAtbos().values()) {
 			if (at.getEsProblema()) {
@@ -595,8 +755,13 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 		}
 	}
 
-	// Auxiliar. Asigna la técnica de un combobox como técnica por defecto del
-	// tipo de caso.
+	
+	/**Auxiliar. Asigna la técnica de un combobox como técnica por defecto del
+	 * tipo de caso.
+	 * @param tecnicaCB tecnica.
+	 * @param tipoTec "rec","rev","reu","ret" según la etapa del ciclo al que pertenece
+	 * la técnica.
+	 */
 	private void asignaTecnicaCB(String tecnicaCB, String tipoTec) {
 		List<Tecnica> disponibles = null;
 		switch (tipoTec) {
@@ -630,6 +795,9 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 		}
 	}
 
+	/**
+	 * Rellena los desplegables de técnicas en un ciclo configurado.
+	 */
 	private void rellenarListas() {
 		for (Tecnica t : tc.getTecnicasRecuperacion()) {
 			comboBoxRec.addItem(t.getNombre());

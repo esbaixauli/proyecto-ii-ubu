@@ -12,6 +12,11 @@ import java.util.List;
 
 import servidorcbr.modelo.Usuario;
 
+/**Controlador de usuarios en el cliente. Permite enviar peticiones al servidor
+ * relativas a los usuarios.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class ControlUsuarios {
 	
 	/** Obtiene la lista completa de usuarios del servidor.

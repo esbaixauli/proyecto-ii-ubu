@@ -14,11 +14,28 @@ import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
 
+/** Clase de utillería para leer casos de ficheros WEKA arff.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class LectorCaso {
 	
+	/**
+	 * Lista de casos leidos actualmente.
+	 */
 	private static List<HashMap<String,Serializable>> casos;
+	/**
+	 * Tipo de caso asociado al lector.
+	 */
 	private static TipoCaso tic;
 	
+	/** Lee los casos de un tipo de caso concreto, procedentes de un fichero arff de WEKA.
+	 * @param f Referencia al fichero del que leer.
+	 * @param tc Tipo de caso del que se quieren leer casos.
+	 * @return Lista de casos leídos. Cada caso se encapsula en un mapa clave-valor del tipo
+	 * {"Nombre del atributo",valor del atributo}.
+	 * @throws IOException En caso de error de lectura del fichero.
+	 */
 	public static List<HashMap<String,Serializable>> leerCaso(File f,TipoCaso tc) throws IOException {
 		BufferedReader reader = new BufferedReader(
                 new FileReader(f));

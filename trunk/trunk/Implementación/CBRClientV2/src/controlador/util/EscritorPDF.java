@@ -12,6 +12,10 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+/**Clase de utillería para escribir informes de estadísticas en formato pdf.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class EscritorPDF {
 	  
 	/**

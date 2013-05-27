@@ -2,12 +2,12 @@ package vista;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
+
 import java.io.IOException;
 import java.util.List;
 
 import javax.swing.BoxLayout;
-import javax.swing.JFrame;
+
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,23 +21,61 @@ import vista.componentesGenericos.FrameEstandar;
 import vista.panels.ListaCasos;
 import controlador.ControlTipos;
 
+/** Frame genérico para escoger un tipo de caso de una lista. Reutilizable,
+ * ya que un valor estático indica qué acción se realizará al escoger
+ * un elemento.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class ElegirTipoCasoFrame extends FrameEstandar {
 
+	/**
+	 * Contentpane del panel
+	 */
 	private JPanel contentPane;
+	/**
+	 * Tipo de acción a realizar. Debe tener como valor una de las
+	 * siguientes constantes:
+	 * CICLO_CONFIGURADO,CICLO_BASICO,INTRODUCIR_MANUAL,VER_ESTADISTICAS.
+	 */
 	private int tipo;
 	
+	/**
+	 * Casos disponibles para mostrar.
+	 */
 	private List<TipoCaso> datos;
+	
+	/**
+	 * Usuario que consulta los casos. 
+	 */
 	private Usuario user;
 
+	/**
+	 * Constante para ciclo configurado.
+	 */
 	public static final int CICLO_CONFIGURADO = 1;
+	/**
+	 * Constante para ciclo básico.
+	 */
 	public static final int CICLO_BASICO = 2;
+	/**
+	 * Constante para introducir manualmente.
+	 */
 	public static final int INTRODUCIR_MANUAL = 3;
+	/**
+	 * Constante para ver las estadísticas.
+	 */
 	public static final int VER_ESTADISTICAS = 4;
 
 	
-	/**
-	 * Crea el frame.
+	
+	/**Constructor del frame.
+	 * @param u Usuario que está escogiendo un tipo de caso.
+	 * @param padre Frame padre de este.
+	 * @param tipo Tipo de acción a realizar.Debe tener como valor una de las
+	 * siguientes constantes, disponibles en esta clase:
+	 * CICLO_CONFIGURADO,CICLO_BASICO,INTRODUCIR_MANUAL,VER_ESTADISTICAS.
 	 */
 	public ElegirTipoCasoFrame(Usuario u, MainFrame padre, final int tipo) {
 		//Establezco referencias al padre y a la propia ventana
@@ -81,6 +119,9 @@ public class ElegirTipoCasoFrame extends FrameEstandar {
 		setLocationRelativeTo(padre);
 	}
 
+	/**Establece la acción a realizar por la lista al elegir un elemento.
+	 * @param l Lista de casos.
+	 */
 	private void establecerControlLista(ListaCasos l) {
 
 		switch (tipo) {

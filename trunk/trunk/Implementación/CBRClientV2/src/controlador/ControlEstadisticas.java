@@ -21,6 +21,13 @@ import servidorcbr.modelo.Usuario;
 public class ControlEstadisticas {
 
 	
+	/** Obtiene las estadisticas de un usuario para un tipo de caso.
+	 * @param u Usuario. Existe un usuario especial, llamado 'ver todos' si la estadística es global.
+	 * @param tc Tipo de caso. Existe un tipo especial, llamado 'ver todos' si la estadística es global.
+	 * @return las estadísticas pedidas.
+	 * @throws MalformedURLException Si no se puede conectar al servlet (dirección equivocada).
+	 * @throws IOException Si no se puede conectar al servlet.
+	 */
 	public static Estadistica getEstadistica(Usuario u,TipoCaso tc) throws MalformedURLException, IOException {
 		Estadistica est =null;
 		URLConnection con = ControlConexion.getServletCon("ServletEstadisticas");
@@ -39,6 +46,12 @@ public class ControlEstadisticas {
 		return est;
 	}
 	
+	/** Borra las estadisticas de un usuario para un tipo de caso.
+	 * @param u Usuario. Existe un usuario especial, llamado 'ver todos' si la estadística es global.
+	 * @param tc Tipo de caso. Existe un tipo especial, llamado 'ver todos' si la estadística es global.
+	 * @throws MalformedURLException Si no se puede conectar al servlet (dirección equivocada).
+	 * @throws IOException Si no se puede conectar al servlet.
+	 */
 	public static void limpiarEstadistica(Usuario u, TipoCaso tc) throws MalformedURLException, IOException{
 		URLConnection con = ControlConexion.getServletCon("ServletEstadisticas");
 		OutputStream outputStream = con.getOutputStream();

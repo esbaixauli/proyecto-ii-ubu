@@ -1,25 +1,24 @@
 package vista.componentesGenericos;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JTabbedPane;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.BoxLayout;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+/**Panel genérico que forma la cabecera de una pestaña en el 
+ * tabbedpane de la ventana principal. Permite que la pestaña al que
+ * está asociado tenga un botón de cerrar.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
+@SuppressWarnings("serial")
 public class PanelTitulo extends JPanel {
 	private JTabbedPane pane;
 	private Component contained;

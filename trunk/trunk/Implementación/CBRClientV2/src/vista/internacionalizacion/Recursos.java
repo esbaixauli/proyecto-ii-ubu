@@ -2,12 +2,19 @@ package vista.internacionalizacion;
 
 import java.util.ListResourceBundle;
 
+/** Bundle de recursos para el idioma por defecto (En inglés).
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class Recursos extends ListResourceBundle {
 
 	@Override
 	protected Object[][] getContents() {
 		return contents;
 	}
+	/**
+	 * Cadenas de internacionalización del bundle.
+	 */
 	static final Object[][] contents = {
 		{"name", "Username:"}, 
 		{"password", "Password:"},

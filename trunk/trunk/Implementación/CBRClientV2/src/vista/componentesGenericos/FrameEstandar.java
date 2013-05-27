@@ -1,46 +1,72 @@
 package vista.componentesGenericos;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
-import javax.help.HelpSetException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import vista.AcercaDeJFrame;
 import vista.MainFrame;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.net.URL;
-
+/**Componente genérico. Representa un frame reutilizable en cualquier ventana
+ * de la aplicación. Su utilidad reside en que establece automáticamente el
+ * comportamiento de cierre, la internacionalización y la ayuda del frame, sin
+ * escribir el código en cada ventana.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class FrameEstandar extends JFrame {
 
+	/**
+	 * Referencia al propio frame.
+	 */
 	protected FrameEstandar me;
+	/**
+	 * Referencia al frame padre (Ventana principal, generalmente).
+	 */
 	protected MainFrame padre;
+	/**
+	 * Bundle de internacionalización.
+	 */
 	protected ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
 	
+	/**
+	 * Helpbroker de la ayuda.
+	 */
 	private HelpBroker hb;
+    /**
+     * Helpset de la ayuda.
+     */
     private HelpSet helpset;
 	
+	/**
+	 * Barra de menú genérica. Por defecto contiene la opción de ayuda.
+	 */
 	private JMenuBar menuBar;
+	/**
+	 * Item de menú de ayuda.
+	 */
 	private JMenuItem mntmHelp;
 	
+	/**Constructor del frame.
+	 * @param padre Ventana padre de esta.
+	 */
 	public FrameEstandar(MainFrame padre){
 		super();
 		me=this;
@@ -98,6 +124,9 @@ public class FrameEstandar extends JFrame {
 	}
 	
 
+	/**
+	 * Refresca la ayuda.
+	 */
 	protected final void refrescar(){
 		try {			
 			// Carga el fichero de ayuda
