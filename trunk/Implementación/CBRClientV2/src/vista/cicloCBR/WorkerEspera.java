@@ -1,6 +1,5 @@
 package vista.cicloCBR;
 
-import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -12,6 +11,11 @@ import vista.componentesGenericos.PanelEstandar;
 
 import controlador.ControlCBR;
 
+/**Swingworker que realiza la consulta CBR. Esta consulta se realiza en un hilo
+ * separado por ser muy pesada y bloquear el interfaz si se hiciera en el hilo del GUI.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ * @see javax.swing.SwingWorker
+ */
 public class WorkerEspera extends SwingWorker<List<HashMap<String,Serializable>>, String> {
 
 
@@ -31,6 +35,9 @@ public class WorkerEspera extends SwingWorker<List<HashMap<String,Serializable>>
 	private HashMap<String,Serializable> query;
 	
 	private List<HashMap<String,Serializable>> result;
+	/**
+	 * Usuario que realiza la petición.
+	 */
 	private Usuario user;
 	
 	/** Constructor. Crea un worker para gestionar la espera del retrieval.

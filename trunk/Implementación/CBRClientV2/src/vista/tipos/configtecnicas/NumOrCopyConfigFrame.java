@@ -182,13 +182,5 @@ public class NumOrCopyConfigFrame extends FrameEstandar {
 		setLocationRelativeTo(padre);
 	}
 
-}
- a.getTipo().equals("I"))){
-					comboBoxDestino.addItem(a.getNombre());
-				}
-			}
-		}
-		setLocationRelativeTo(padre);
-	}
 
 }

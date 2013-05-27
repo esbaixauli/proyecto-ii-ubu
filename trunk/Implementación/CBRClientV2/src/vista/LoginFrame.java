@@ -27,7 +27,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
-import com.jtattoo.plaf.AbstractTheme;
 import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
 
 
@@ -35,22 +34,47 @@ import servidorcbr.modelo.Usuario;
 import controlador.ControlConexion;
 import controlador.ControlLogin;
 
+/**Frame de login de la aplicación. Constituye el punto de arranque de la misma.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class LoginFrame extends JFrame {
 
+	/**
+	 * Contentpane del frame.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Textfield para el nombre.
+	 */
 	private JTextField textFieldNombre;
+	/**
+	 * Textfield para la contraseña.
+	 */
 	private JTextField textFieldPass;
+	/**
+	 * Bundle de internacionalización.
+	 */
 	ResourceBundle bundle = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", getLocale());
+	/**
+	 * Textfield de IP.
+	 */
 	private JTextField ipTextField;
+	/**
+	 * Textfield de puerto.
+	 */
 	private JTextField puertoTextField;
+	/**
+	 * Combobox de idioma.
+	 */
 	private JComboBox<String> comboBox;
 	
 
 	
-	/**
-	 * Lanza la aplicación.
+	/**Lanza la aplicación.
+	 * @param args Argumentos (vacío).
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -91,7 +115,13 @@ public class LoginFrame extends JFrame {
 		}
 	}
 
+	/**
+	 * Referencia al frame.
+	 */
 	private final LoginFrame me = this;
+	/**
+	 * Label de la imagen de logo.
+	 */
 	private JLabel lblImagen;
 
 	/**

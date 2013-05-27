@@ -2,12 +2,19 @@ package vista.internacionalizacion;
 
 import java.util.ListResourceBundle;
 
+/**Bundle de recursos de idioma para el lenguaje Español de España.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class Recursos_es_ES extends ListResourceBundle {
 
 	@Override
 	protected Object[][] getContents() {
 		return contents;
 	}
+	/**
+	 * Cadenas de internacionalización del bundle.
+	 */
 	static final Object[][] contents = {
 		{"name", "Usuario:"}, 
 		{"password", "Contraseña:"},

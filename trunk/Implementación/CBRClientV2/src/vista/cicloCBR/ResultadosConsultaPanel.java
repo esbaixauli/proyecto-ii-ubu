@@ -9,13 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,45 +21,75 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 import vista.MainFrame;
-import vista.componentesGenericos.FrameEstandar;
 import vista.componentesGenericos.PanelEstandar;
 import vista.panels.PanelIntroducirValorAtbo;
 import vista.panels.PanelMostrarAtbo;
-import javax.swing.border.TitledBorder;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
-
 import controlador.ControlCBR;
-import controlador.ControlCasos;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ChangeEvent;
 
+/**Panel de resultados de una etapa del ciclo CBR. Genérico para
+ * cualquier etapa que lo requiera.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class ResultadosConsultaPanel extends PanelEstandar {
+	/**
+	 * Referencia a los paneles para moverse por ellos.
+	 */
 	private ResultadosConsultaPanel me, previo, siguiente;
+	/**
+	 * Spinner para elegir ir a un tipo de caso directamente.
+	 */
 	private JSpinner spinner;
+	/**
+	 * Casos a mostrar.
+	 */
 	private List<HashMap<String, Serializable>> casos;
+	/**
+	 * Panel de atributos del problema.
+	 */
 	private JPanel panelProblema;
+	/**
+	 * Panel de atributos de la solución.
+	 */
 	private JPanel panelSol;
+	/**
+	 * Etapa del ciclo.
+	 */
 	private int etapa;
+	/**
+	 * Tipo de caso de la consulta CBR.
+	 */
 	private TipoCaso tc;
+	/**
+	 * Consulta realizada por el usuario, en formato mapa con clave-valor
+	 * de tipo {"nombre de atributo",valor}
+	 */
 	private HashMap<String,Serializable> query;
+	/**
+	 * Usuario que ejecutó la consulta.
+	 */
 	private Usuario user;
 	
+	/**
+	 * Constante para mostrar los datos de una etapa del ciclo concreta.
+	 */
 	public final static int RETRIEVE=0,REVISE=1,REUSE=2;
 	/**
 	 * Posición en la lista de casos del caso en el que nos encontramos actualmente. Inicialmente 0.
 	 */
+	@SuppressWarnings("unused") //Necesario si se desea implementar botones de anterior/siguiente.
 	private int actual=0;
 	
 	/** Este frame muestra los resultados de una consulta, ya sea en la etapa de retrieval o en la
@@ -361,6 +389,9 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 		}
 	}
 	
+	/**Establece los casos a mostrar en el panel.
+	 * @param c Lista de casos. Cada caso es un mapa de la forma {"nombre de atributo",valor}
+	 */
 	public void setCasos (List<HashMap<String,Serializable>> c) {
 		casos = c;
 	}

@@ -1,61 +1,100 @@
 package vista.panels;
 
 import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JFormattedTextField;
-import javax.swing.JComboBox;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
-import javax.swing.JButton;
 
 import servidorcbr.modelo.Atributo;
 import vista.TraductorTipos;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
+/**Panel que muestra un atributo, permitiéndo escoger métrica, tipo de datos, peso y
+ * parámetro de métrica.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
+@SuppressWarnings("serial")
 public class PanelAtributos extends JPanel {
+	/**
+	 * Textfield del nombre de este atributo.
+	 */
 	private JTextField textFieldNombre;
+	/**
+	 * Referencia al panel.
+	 */
 	private JPanel me = this;
+	/**
+	 * Número de atributo.
+	 */
+	@SuppressWarnings("unused") //Es necesario para mostrarse en un momento dado.
 	private int numero;
+	/**
+	 * Textfield de peso del atributo.
+	 */
 	private JFormattedTextField formattedTextFieldPeso;
+	/**
+	 * Textfield del parámetro de la métrica del atributo.
+	 */
 	private JFormattedTextField formattedTextFieldParam;
+	/**
+	 * Desplegable para escoger una métrica para el atributo.
+	 */
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboBoxMetricas;
+	/**
+	 * Desplegable para el tipo de atributo.
+	 */
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboBoxTipo;
+	/**
+	 * Etiqueta de parámetros.
+	 */
 	private JLabel lblParmetro;
+	/**
+	 * Scroll para el panel.
+	 */
+	@SuppressWarnings("unused") //Puede ser usado si se desea que haya scroll. Se
+	//Considera que es mejor dejarlo para posteriores cambios al no alterar la estructura.
 	private Container scroll;
 
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
-	private Container padre;
-	
+	/**
+	 * Etiqueta para borrar este atributo, si es posible (El atributo 0 del problema
+	 * o de la solución es imborrable).
+	 */
 	private JLabel lblBorrar= new JLabel("");
 	
-	/**
-	 * @wbp.parser.constructor
+	/** Constructor del panel.
+	 * @param numero Numero del atributo. Este número es sólo una indicación visual
+	 * al usuario, no es almacenado de ningún modo en el sistema.
+	 * @param padre Contenedor donde se halla este panel.
+	 * @param scroll Scrollpane si existe, donde ubicar el panel.
+	 * @param a Atributo a mostrar.
 	 */
 	public PanelAtributos(final int numero, final Container padre, final Container scroll,
 			Atributo a){
@@ -63,10 +102,18 @@ public class PanelAtributos extends JPanel {
 		setAtributo(a, true);
 	}
 
+	/** Constructor del panel.
+	 * @param numero Numero del atributo. Este número es sólo una indicación visual
+	 * al usuario, no es almacenado de ningún modo en el sistema.
+	 * @param padre Contenedor donde se halla este panel.
+	 * @param scroll Scrollpane si existe, donde ubicar el panel.
+	 * @param problema true si el atributo a representar es del problema, 
+	 * false si es de la solución.
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public PanelAtributos(final int numero, final Container padre, final Container scroll, boolean problema) {
 		super();
 		this.scroll =scroll;
-		this.padre = padre;
 		this.numero = numero;
 		TitledBorder titled = BorderFactory.createTitledBorder(	BorderFactory.createEtchedBorder(), 
 				b.getString("attribute") +" "+ numero,TitledBorder.CENTER,TitledBorder.TOP);
@@ -237,12 +284,19 @@ public class PanelAtributos extends JPanel {
 				rellenarMetricas(comboBoxMetricas,"");
 	}
 
+	/**Rellena los tipos de datos del combobox.
+	 * @param comboBox Combobox de tipo de datos.
+	 */
 	private void rellenarTipos(JComboBox<String> comboBox) {
 		comboBox.addItem(b.getString("integer"));
 		comboBox.addItem(b.getString("string"));
 		comboBox.addItem(b.getString("decimal"));
 	}
 
+	/**Rellena las métricas disponibles para un tipo de datos de un atributo.
+	 * @param comboBox Combobox de métricas a rellenar.
+	 * @param tipo Tipo de datos del atributo.
+	 */
 	private void rellenarMetricas(JComboBox<String> comboBox, String tipo) {
 		comboBox.removeAllItems();
 		comboBox.addItem(b.getString("equal"));
@@ -256,9 +310,12 @@ public class PanelAtributos extends JPanel {
 		comboBox.setSelectedIndex(0);
 	}
 
-	/* Comprueba que todos los campos esten llenos. El de los parametros de
+	/**Comprueba que todos los campos esten llenos. El de los parametros de
 	metricas puede no estarlo si no se requieren parametros.
-	El de los pesos puede no estarlo si es una solución y por tanto está deshabilitado*/
+	El de los pesos puede no estarlo si es una solución y por tanto está deshabilitado.
+	También soluciona problemas como nombres con espacios o tabuladores.
+	 * @return true si todos los campos son válidos en cuanto a estar llenos, false si no.
+	 */
 	public boolean comprobarLleno() {
 		String cadNombre = textFieldNombre.getText().replaceAll("//s","");
 		if(cadNombre.equals(" ")){
@@ -270,6 +327,10 @@ public class PanelAtributos extends JPanel {
 				.isEnabled() && formattedTextFieldParam.getText().isEmpty()));
 	}
 	
+	/**Obtiene un objeto Atributo correspondiente con lo mostrado en pantalla.
+	 * @return null si el panel no puede construir un atributo válido (Hay campos vacíos),
+	 * o un objeto Atributo si es posible.
+	 */
 	public Atributo getAtributo() {
 		if (!comprobarLleno())
 			return null;
@@ -282,16 +343,19 @@ public class PanelAtributos extends JPanel {
 	
 		try {
 			a.setPeso(NumberFormat.getInstance(b.getLocale()).parse(formattedTextFieldPeso.getText()).doubleValue() );
-		
+		//Si hay parámetro para la métrica.
 		if (!formattedTextFieldParam.getText().isEmpty())
 			a.setParamMetrica(NumberFormat.getInstance(b.getLocale()).parse(formattedTextFieldParam.getText()).doubleValue() );
 		}catch (ParseException e) {}
 		return a;
 	}
 	
-	//rellena el panel con un atributo.
-	//@param a atributo con el que se rellena.
-	//@param desactivar permite desactivar o no las partes del panel no modificables (tipo,nombre, etc).
+	/**
+	 * Rellena el panel con un atributo.
+	 * @param a atributo con el que se rellena.
+	 * @param desactivar permite desactivar o no las partes del panel no modificables (tipo,nombre, etc).
+	 */
+	@SuppressWarnings("unchecked")
 	public void setAtributo(Atributo a, boolean desactivar){
 		textFieldNombre.setText(a.getNombre());
 		comboBoxTipo.setSelectedItem(b.getString(TraductorTipos.persistenciaAVista(a.getTipo())));
@@ -303,10 +367,6 @@ public class PanelAtributos extends JPanel {
 			textFieldNombre.setEnabled(false);
 			comboBoxTipo.setEnabled(false);
 			lblBorrar.setVisible(false);
-		}
-	
-		
-		
-		
+		}	
 	}
 }

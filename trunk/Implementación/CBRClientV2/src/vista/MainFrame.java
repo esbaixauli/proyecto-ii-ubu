@@ -4,17 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.util.Locale;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.ResourceBundle;
-
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
@@ -24,48 +20,83 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
-import vista.componentesGenericos.PanelTitulo;
 import vista.componentesGenericos.TabbedPaneCerrable;
 import vista.estadisticas.EstadisticasPanel;
 import vista.tipos.GestionTiposFrame;
 import vista.usuarios.GestionUsuariosFrame;
 
-import javax.swing.JToolBar;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-
+/**Frame principal de la aplicación. Permite acceder al resto
+ * de opciones del programa.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame{
 
 	
+	/**
+	 * Referencia al propio frame.
+	 */
 	private final MainFrame me = this;
 
+	/**
+	 * Usuario logueado en la aplicación.
+	 */
 	private final Usuario u;
 
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b;
 	
+	/**
+	 * Helpbroker de la ayuda.
+	 */
 	private HelpBroker hb;
+    /**
+     * Helpset de la ayuda.
+     */
     private HelpSet helpset;
     
+    /**
+     * Item de menú de la ayuda.
+     */
     private JMenuItem mntmHelp;
+    /**
+     * Item de menú del ciclo configurado.
+     */
     private JMenuItem mntmCicloconfigurado;
     
+    /**
+     * Menú de administración.
+     */
     private JMenu mnAdmin;
+    /**
+     * Menú de ciclo CBR.
+     */
     private JMenu mnCBr;
+    /**
+     * Menú de gestión de las bases de casos.
+     */
     private JMenu mnBasescasos;
 	
+    /**
+     * Tabbed pane principal. Define el área de trabajo común de la aplicación.
+     */
     private TabbedPaneCerrable tabbedPanePrincipal;
     
    
 
 
-	/**
-	 * Create the application.
+
+	/**Constructor del frame.
+	 * @param usuario Usuario con el que se ha hecho login.
 	 */
 	public MainFrame(Usuario usuario) {
 		this.u=usuario;
@@ -309,6 +340,9 @@ public class MainFrame extends JFrame{
 		me.setEnabled(true);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.Component#setEnabled(boolean)
+	 */
 	@Override
 	public void setEnabled(boolean b) {
 		super.setEnabled(b);

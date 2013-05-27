@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import servidorcbr.modelo.Tecnica;
 
+/** Controlador para las técnicas de un tipo de caso. Ofrece métodos
+ * para recuperar los tipos y buscarlos.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class ControlTecnicas {
 
+	/**Obtiene las técnicas de recuperación.
+	 * @return lista de técnicas.
+	 */
 	public static List<Tecnica> getTecnicasRec () {
 		List<Tecnica> lista = new ArrayList<Tecnica>();
 		lista.add(new Tecnica("DiverseByMedianRetrieval"));
@@ -13,7 +21,9 @@ public class ControlTecnicas {
 		lista.add(new Tecnica("NNretrieval"));
 		return lista;
 	}
-
+	/**Obtiene las técnicas de reutilización.
+	 * @return lista de técnicas.
+	 */
 	public static List<Tecnica> getTecnicasReu () {
 		List<Tecnica> lista = new ArrayList<Tecnica>();
 		lista.add(new Tecnica("CombineQueryAndCasesMethod"));
@@ -21,13 +31,17 @@ public class ControlTecnicas {
 		lista.add(new Tecnica("NumericDirectProportionMethod"));
 		return lista;
 	}
-
+	/**Obtiene las técnicas de revisión.
+	 * @return lista de técnicas.
+	 */
 	public static List<Tecnica> getTecnicasRev () {
 		List<Tecnica> lista = new ArrayList<Tecnica>();
 		lista.add(new Tecnica("DefineNewIdsMethod"));
 		return lista;
 	}
-
+	/**Obtiene las técnicas de retención.
+	 * @return lista de técnicas.
+	 */
 	public static List<Tecnica> getTecnicasRet () {
 		List<Tecnica> lista = new ArrayList<Tecnica>();
 		lista.add(new Tecnica("StoreCasesMethod"));
@@ -60,6 +74,11 @@ public class ControlTecnicas {
 		return lista;
 	}
 	
+	/** Busca si una técnica está presente en un conjunto de técnicas.
+	 * @param ltc Lista de técnicas.
+	 * @param buscada Nombre de la técnica buscada.
+	 * @return La técnica si se encontró, o null si no.
+	 */
 	public static Tecnica buscaTecnica(List<Tecnica> ltc, String buscada){
 		for(Tecnica t :ltc){
 			if(t.getNombre().equals(buscada)){

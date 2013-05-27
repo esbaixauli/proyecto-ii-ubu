@@ -13,6 +13,13 @@ public class ControlLogin {
 
 	
 	
+	/** Valida el login de usuario.
+	 * @param nombre Nombre del usuario a buscar.
+	 * @param password password del supuesto usuario.
+	 * @return el usuario, si existe, o null, si no.
+	 * @throws IOException En caso de error al conectar con el servidor.
+	 * @throws ClassNotFoundException -
+	 */
 	public static Usuario validarLogin( String nombre, String password) throws IOException, ClassNotFoundException{
 		URLConnection con = ControlConexion.getServletCon("ServletLogin");
 		 OutputStream outputStream = con.getOutputStream();

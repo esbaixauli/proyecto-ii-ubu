@@ -1,30 +1,41 @@
 package vista.componentesGenericos;
 
 import java.awt.Component;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.Icon;
 import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import org.jfree.base.log.PadMessage;
-
+/**Tabbedpane que permite que sus pestañas se cierren pulsando un botón en
+ * sus cabeceras.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class TabbedPaneCerrable extends JTabbedPane {
 	
 	
+	/**
+	 * Constructor del tabbedpane.
+	 */
 	public TabbedPaneCerrable() {
 		super();
 		cambiarElementos();
 	}
 
+	/**Constructor del tabbedpane.
+	 * @param tabPlacement
+	 * @param tabLayoutPolicy
+	 */
 	public TabbedPaneCerrable(int tabPlacement, int tabLayoutPolicy) {
 		super(tabPlacement, tabLayoutPolicy);
 		cambiarElementos();
 	}
 
+	/**Constructor del tabbedpane.
+	 * @param tabPlacement
+	 */
 	public TabbedPaneCerrable(int tabPlacement) {
 		super(tabPlacement);
 		cambiarElementos();

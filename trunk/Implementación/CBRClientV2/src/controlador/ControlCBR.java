@@ -14,6 +14,11 @@ import java.util.List;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 
+/**Controlador del ciclo CBR. Permite la comunicación con el servidor para
+ * ejecutar ciclos CBR y recibir los resultados, paso a paso o de una vez.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class ControlCBR {
 	
 	/**Envía la petición de recuperar. Usado en un ciclo paso a paso.
@@ -23,7 +28,6 @@ public class ControlCBR {
 	 * @throws MalformedURLException Servlet incorrecto.
 	 * @throws IOException Error de conexión con el servlet.
 	 */
-	@SuppressWarnings("unchecked")
 	public static List<HashMap<String,Serializable>> retrieve(TipoCaso tc, HashMap<String,Serializable> query) throws MalformedURLException, IOException{
 		return enviarMensajeInicio(tc, query, "retrieve");
 	}
@@ -109,6 +113,7 @@ public class ControlCBR {
 	 * @throws MalformedURLException -
 	 * @throws IOException Producida al conectar con el servlet.
 	 */
+	@SuppressWarnings("unchecked")
 	private static List<HashMap<String, Serializable>> enviarMensajeInicio(
 			TipoCaso tc, HashMap<String, Serializable> query, String mensaje)
 			throws MalformedURLException, IOException {

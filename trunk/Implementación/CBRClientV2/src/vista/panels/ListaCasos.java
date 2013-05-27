@@ -1,25 +1,38 @@
 package vista.panels;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.SystemColor;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.TipoCaso;
 
+/** Lista de casos. Se usa en varias partes del programa, pero
+ * no es un componente totalmente independiente del contexto.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
+@SuppressWarnings("serial")
 public class ListaCasos extends JList<TipoCaso> {
 
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle bundle = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
+	/**
+	 * Variable interna para controlar que se indique que no hay tipos de caso
+	 * visibles si la lista de casos está vacía.
+	 */
 	private int filas = 1;
 
+	/**Constructor de la lista.
+	 * @param datos Tipos de caso a mostrar al usuario por la lista.
+	 */
 	public ListaCasos(List<TipoCaso> datos) {
 		super();
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -34,8 +47,9 @@ public class ListaCasos extends JList<TipoCaso> {
 		setBackground(SystemColor.controlHighlight);
 	}
 
-	// Refresca los datos de la lista con los valores que se le pasan por
-	// parámetro.
+	/**Refresca los datos de la lista con los valores que se le pasan por parámetro.
+	 * @param datos Lista de tipos de caso a mostrar.
+	 */
 	public void refrescarDatos(List<TipoCaso> datos) {
 		if (datos == null || datos.isEmpty()) {
 			TipoCaso vacio[] = new TipoCaso[filas];

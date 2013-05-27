@@ -1,7 +1,16 @@
 package vista.cicloCBR;
 
+import java.awt.Dialog.ModalExclusionType;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -11,36 +20,35 @@ import javax.swing.UIManager;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 import vista.MainFrame;
-import vista.componentesGenericos.FrameEstandar;
-import vista.estadisticas.PanelEstadisticasInterior;
 import weka.gui.ExtensionFileFilter;
-
-import java.awt.BorderLayout;
-import java.awt.Component;
-
-import javax.swing.JLabel;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Locale;
-import java.util.ResourceBundle;
-
-import javax.swing.JButton;
-import javax.swing.BoxLayout;
-
-import controlador.ControlEstadisticas;
 import controlador.util.EscritorInformeEjecucion;
-import java.awt.Dialog.ModalExclusionType;
 
+/**Frame que indica el fin del ciclo. Permite obtener un informe
+ * de resultados.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class FrameFinCBR extends JFrame {
 
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
 	
+	/**
+	 * Referencia al padre del frame.
+	 */
+	@SuppressWarnings("unused") //Futuros usos.
 	private MainFrame padre;
+	/**
+	 * Referencia al propio frame. 
+	 */
 	private JFrame me=this;
 	
+	/**Constructor del frame.
+	 * @param padre Frame principal de la aplicación.
+	 * @param tc Tipo de caso para el que se ejecutó el ciclo.
+	 * @param u Usuario que ejecutó el ciclo.
+	 */
 	public FrameFinCBR(final MainFrame padre,final TipoCaso tc, final Usuario u) {
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

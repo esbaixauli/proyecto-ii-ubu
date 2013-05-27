@@ -3,7 +3,6 @@ package vista.panels;
 import java.awt.SystemColor;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -12,16 +11,35 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 
-import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 
+/** Lista de usuarios. Se usa en varias partes del programa, pero
+ * no es un componente totalmente independiente del contexto.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
+@SuppressWarnings("serial")
 public class ListaUsuarios extends JList<Usuario> {
 
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
+	/**
+	 * Variable interna para controlar que se indique que no hay tipos de caso
+	 * visibles si la lista de casos está vacía.
+	 */
 	private int filas = 1;
+	/**
+	 * Vector interno de usuarios a mostrar.
+	 */
 	private Usuario[] listData;
 	
+	/**Constructor de la lista.
+	 * @param datos Usuarios a mostrar por la lista. Mapa de clave "Nombre de usuario"
+	 * y valor Objeto de tipo usuario.
+	 */
 	public ListaUsuarios(HashMap<String,Usuario> datos) {
 		super();
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -36,8 +54,9 @@ public class ListaUsuarios extends JList<Usuario> {
 		setBackground(SystemColor.controlHighlight);
 	}
 	
-	// Refresca los datos de la lista con los valores que se le pasan por
-	// parámetro.
+	/**Refresca los datos de la lista con los valores que se le pasan por parámetro.
+	 * @param datos Mapa de usuarios. Clave: Nombre de usuario. Valor:Objeto de usuario.
+	 */
 	public void refrescarDatos(HashMap<String,Usuario> datos) {
 		if (datos == null || datos.isEmpty()) {
 			Usuario vacio[] = new Usuario[filas];
