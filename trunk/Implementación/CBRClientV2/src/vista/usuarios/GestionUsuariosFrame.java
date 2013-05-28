@@ -1,6 +1,7 @@
 package vista.usuarios;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -9,36 +10,53 @@ import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import servidorcbr.modelo.Usuario;
 import vista.MainFrame;
 import vista.componentesGenericos.FrameEstandar;
 import vista.panels.ListaUsuarios;
-import controlador.ControlUsuarios;
-import java.awt.Color;
-import javax.swing.border.EtchedBorder;
-import javax.swing.BoxLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
+
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
+import controlador.ControlUsuarios;
+
+/**Frame que controla todas las operaciones de gestión de usuarios, permitiendo
+ * seleccionarlos, crear,modificar y borrar.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class GestionUsuariosFrame extends FrameEstandar {
 
+	/**
+	 * Contentpane del frame.
+	 */
 	private JPanel contentPane;
 
+	/**
+	 * Mapa de usuarios. Claves:String con el nombre de usuario. Valores:Objeto usuario.
+	 */
 	private HashMap<String, Usuario> users = null;
+	/**
+	 * JList de usuarios a mostrar.
+	 */
 	protected ListaUsuarios list;
 	
-	private JPanel panelVerCrearUsuario;
 	/**
-	 * Create the frame.
+	 * Panel de ver y crear usuarios. Gestiona estas operaciones.
+	 */
+	private JPanel panelVerCrearUsuario;
+	
+	/**Crea el frame.
+	 * @param padre Frame padre de este.
 	 */
 	public GestionUsuariosFrame(final MainFrame padre) {
 		super(padre);me=this;
@@ -154,7 +172,9 @@ public class GestionUsuariosFrame extends FrameEstandar {
 	}
 
 	/**Obtiene los datos del servidor al refrescar
-	 * @return 
+	 * @return Mapa de usuarios devuelto por el servidor. Puede ser nulo si hay
+	 * un error en la operación.
+	 * Claves:String con el nombre de usuario. Valores:Objeto usuario.
 	 */
 	protected HashMap<String, Usuario> obtenerDatosServidor() {
 		try {

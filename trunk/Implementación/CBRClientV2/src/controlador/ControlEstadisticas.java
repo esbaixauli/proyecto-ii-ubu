@@ -18,6 +18,12 @@ import servidorcbr.modelo.Estadistica;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.Usuario;
 
+/**Controlador de estadísticas. Permite enviar al servidor
+ * diversas peticiones sobre las estadísticas, como pedir las estadísticas de un usuario 
+ * o eliminar estadísticas.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class ControlEstadisticas {
 
 	

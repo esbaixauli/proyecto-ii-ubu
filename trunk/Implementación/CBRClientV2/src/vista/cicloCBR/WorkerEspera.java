@@ -18,8 +18,6 @@ import controlador.ControlCBR;
  */
 public class WorkerEspera extends SwingWorker<List<HashMap<String,Serializable>>, String> {
 
-
-	
 	/**
 	 * Panel al que se vuelve al terminar la espera. 
 	 */
@@ -41,7 +39,7 @@ public class WorkerEspera extends SwingWorker<List<HashMap<String,Serializable>>
 	private Usuario user;
 	
 	/** Constructor. Crea un worker para gestionar la espera del retrieval.
-	 * @param f Frame al que se vuelve al terminar la espera.
+	 * @param p Panel al que se vuelve al terminar la espera.
 	 * @param tic Tipo de caso del retrieval.
 	 * @param q Consulta realizada en el retrieval.
 	 */

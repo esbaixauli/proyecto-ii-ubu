@@ -1,6 +1,7 @@
 package vista.usuarios;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -12,11 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,31 +24,57 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import vista.MainFrame;
-import vista.componentesGenericos.FrameEstandar;
 import vista.componentesGenericos.PanelEstandar;
 import controlador.ControlTipos;
 import controlador.ControlUsuarios;
-import java.awt.Color;
-import javax.swing.border.EtchedBorder;
 
+/** Panel de ver y crear usuarios. Gestiona estas operaciones.
+ * Esta clase se encarga de mostrar los desplegables, campos de texto, etc. necesarios
+ * para crear un usuario o modificar uno ya existente. También permite asociar los 
+ * tipos de caso de un usuario.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class VerCrearUsuarioPanel extends PanelEstandar {
 
+	/**
+	 * Contentpane del panel.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Campo de texto con el nombre del usuario a añadir/modificar.
+	 */
 	private JTextField nombreTextField;
+	/**
+	 * Campo de texto cifrado con la contraseña del usuario a añadir/modificar.
+	 */
 	private JPasswordField passwordField;
+	/**
+	 * Usuario que se está creando/modificando.
+	 */
 	private Usuario user;
 
 	
-	private HashMap<String,JCheckBox> asociaciones = new HashMap<String,JCheckBox>();
 	/**
-	 * Crea el frame.
+	 * Asociaciones de este usuario con cada tipo de caso. Se presentan en un mapa de
+	 * claves: 'Nombre del tipo de caso' y valores:Checkbox para marcar si el usuario
+	 * puede acceder a esta técnica o no.
+	 */
+	private HashMap<String,JCheckBox> asociaciones = new HashMap<String,JCheckBox>();
+
+	/**Crea el frame.
+	 * @param u Usuario a añadir o modificar. Null si se desea añadir un usuario nuevo,
+	 * o un objeto Usuario correspondiente al usuario a modificar.
+	 * @param padre Frame padre de este (Ventana principal).
+	 * @param frameUsuarios Frame al que pertenece este panel (Frame de usuarios).
 	 */
 	public VerCrearUsuarioPanel(Usuario u, final MainFrame padre,final GestionUsuariosFrame frameUsuarios) {
 		super(padre);

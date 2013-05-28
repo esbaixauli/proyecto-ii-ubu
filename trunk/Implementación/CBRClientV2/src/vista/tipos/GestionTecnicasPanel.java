@@ -1,43 +1,71 @@
 package vista.tipos;
 
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import vista.MainFrame;
-import vista.componentesGenericos.FrameEstandar;
 import vista.componentesGenericos.PanelEstandar;
 import vista.panels.PanelTecnica;
 import controlador.ControlTecnicas;
 import controlador.ControlTipos;
 
-import javax.swing.border.EtchedBorder;
-import java.awt.Color;
-import java.io.IOException;
-
+/** Panel general de gestión dew técnicas.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class GestionTecnicasPanel extends PanelEstandar {
 
+	/**
+	 * Contentpane del panel.
+	 */
 	private JPanel contentPane;
 	
+	/**
+	 * Lista de técnicas de recuperación de este tipo de caso. Su contenido será
+	 * cambiado dinámicamente en este panel
+	 */
 	private List<Tecnica> tecnicasRec;
+	/**
+	 * Lista de técnicas de reutilización de este tipo de caso. Su contenido será
+	 * cambiado dinámicamente en este panel
+	 */
 	private List<Tecnica> tecnicasReu;
+	/**
+	 * Lista de técnicas de revisión de este tipo de caso. Su contenido será
+	 * cambiado dinámicamente en este panel
+	 */
 	private List<Tecnica> tecnicasRev;
+	/**
+	 * Lista de técnicas de retención de este tipo de caso. Su contenido será
+	 * cambiado dinámicamente en este panel
+	 */
 	private List<Tecnica> tecnicasRet;
 
-	private boolean nuevocaso;
 	/**
-	 * Create the frame.
+	 * Cierto si es un tipo de caso nuevo (Aún no insertado en el servidor).
+	 */
+	private boolean nuevocaso;
+
+	/**Crea el panel. Requiere un tipo de caso al que se asocian las técnicas aquí
+	 * configuradas.
+	 * @param tc Tipo de caso asociado a este panel
+	 * @param padre Ventana padre de este panel.
+	 * @param nuevo Cierto si el tipo de caso aún no está registrado en el servidor.
+	 * (Caso nuevo).
 	 */
 	public GestionTecnicasPanel(final TipoCaso tc, final MainFrame padre, boolean nuevo) {
 		//Establezco referencias al padre y al propio panel
@@ -88,9 +116,11 @@ public class GestionTecnicasPanel extends PanelEstandar {
 		gbc_panel.gridy = 4;
 		contentPane.add(btnsPanel, gbc_panel.clone());
 
+		//Establece la configuración de técnicas final al aceptar.
 		JButton btnAceptar = new JButton(b.getString("ok"));
 		btnAceptar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Actualiza las técnicas para cada etapa.
 				panelRec.actualizaLista();
 				tc.setTecnicasRecuperacion(tecnicasRec);
 				tc.setDefaultRec(panelRec.getDefaultTecnica());
@@ -129,8 +159,9 @@ public class GestionTecnicasPanel extends PanelEstandar {
 						ex.printStackTrace();
 					}
 				}
-
+				//Reactiva la ventana padre si es necesario.
 				padre.setEnabled(true);
+				//Y se elimina este panel del padre.
 				padre.removePanel(getName());
 			}
 		});
@@ -148,6 +179,11 @@ public class GestionTecnicasPanel extends PanelEstandar {
 	
 	}
 
+	/**Marca qué técnicas han de estar habilitadas, de acuerdo con lista de técnicas
+	 * suministrada.
+	 * @param entera Lista completa de técnicas.
+	 * @param marcada Lista de técnicas marcadas como habilitadas.
+	 */
 	private void marcaTecnicasEnabled(List<Tecnica> entera,List<Tecnica> marcada){
 		for (Tecnica ac : entera) {
 			for (Tecnica t : marcada) {
@@ -162,6 +198,10 @@ public class GestionTecnicasPanel extends PanelEstandar {
 		}
 	}
 	
+	/**Inicializa las listas para un tipo de caso concreto, obteniendo la lista
+	 * de técnicas en cada etapa para este tipo de caso.
+	 * @param tc Tipo de caso.
+	 */
 	private void inicializaListas(TipoCaso tc) {
 		tecnicasRec = ControlTecnicas.getTecnicasRec();
 		tecnicasReu = ControlTecnicas.getTecnicasReu();

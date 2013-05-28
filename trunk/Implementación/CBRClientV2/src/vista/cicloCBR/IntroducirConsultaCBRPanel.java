@@ -57,11 +57,10 @@ import controlador.ControlCBR;
 import controlador.ControlEstadisticas;
 import controlador.ControlTecnicas;
 
-/** Panel para introducir consultas CBR.
- * @author Rubén Antón García, Enrique Sainz Baixauli
- *
- */
-/**
+/** Panel para introducir consultas CBR. Permite introducir
+ * una consulta CBR configurada o no. En las configuradas se permite introducir
+ * pesos para los atributos de la consulta, métrica que usará cada atributo y
+ * escoger la técnica que se usará en cada etapa del ciclo.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */

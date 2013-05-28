@@ -1,16 +1,12 @@
 package vista.tipos.configtecnicas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -18,18 +14,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.swing.ImageIcon;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
@@ -39,30 +34,58 @@ import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import vista.MainFrame;
 import vista.componentesGenericos.FrameEstandar;
-import controlador.ControlTecnicas;
-import java.awt.Color;
-import javax.swing.border.EtchedBorder;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import com.jgoodies.forms.layout.FormLayout;
+
 import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
+import controlador.ControlTecnicas;
+
+/**Panel para configurar la técnica de recuperación filter based. Esta técnica escoge por
+ * predicados lógicos los casos que cumplen dichos predicados para cada atributo.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class FilterBasedConfigFrame extends FrameEstandar {
 
+	/**
+	 * Contentpane del frame.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
+	/**
+	 * Formateador de números dependiente del lenguaje (locale).
+	 */
 	private final NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+	/**
+	 * Lista de textfields para cada predicado lógico (AND,OR,etc.) en cada atributo.
+	 * Se usa porque algunos predicados lógicos requieren un parámetro.
+	 */
 	private final List<JTextField> textFields;
+	/**
+	 * Lista de desplegables para escoger un predicado lógico (AND,OR,etc.) 
+	 * para cada atributo.
+	 */
+	@SuppressWarnings("rawtypes") //Tipos.
 	private final List<JComboBox> comboBoxes;
+	/**
+	 * Lista de nombres de los atributos.
+	 */
 	private List<String> atbos;
 	
 
-	/**
-	 * Crea el frame.
+
+	/** Crea el frame.
+	 * @param t Objeto Técnica correspondiente al frame, que se actualizará.
+	 * @param tc Tipo de caso al que pertenece la técnica.
+	 * @param padre Frame padre de este.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" }) //Proceden de comboboxes autogenerados.
 	public FilterBasedConfigFrame(final Tecnica t, TipoCaso tc, final MainFrame padre) {
 		super(padre);me=this;
 		

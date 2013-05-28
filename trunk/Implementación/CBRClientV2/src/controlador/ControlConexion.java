@@ -6,6 +6,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**Controlador de conexión. Gestiona las operaciones de conexión 
+ * con el servidor.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class ControlConexion {
 	
 	/**

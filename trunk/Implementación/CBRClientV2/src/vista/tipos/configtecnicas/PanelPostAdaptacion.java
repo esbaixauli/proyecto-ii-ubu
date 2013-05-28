@@ -14,14 +14,36 @@ import java.awt.BorderLayout;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 
+/**Panel que permite decidir si se realiza post-adaptación. La post-adaptación
+ * se realiza tras la etapa de reutilización y consiste en combinar todos los casos
+ * adaptados en uno, por media (sólo numéricos) o por moda en cada atributo.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class PanelPostAdaptacion extends JPanel {
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
+	
+	/**
+	 * Radiobutton para combinar atributos numéricos por media.
+	 */
 	private JRadioButton  rdbtnCombineAvg;
+	/**
+	 * Radiobutton para combinar atributos numéricos por moda.
+	 */
 	private JRadioButton rdbtnCombineMode;
+	/**
+	 * Checkbox para decidir si se realiza post-adaptación o no.
+	 */
 	private JCheckBox chckbxCombine;
 	
+	/**
+	 * String que indica el modo de post-adaptación.
+	 */
 	private static final String COMBINARMEDIA="MEDIA"
 			,COMBINARMODA="MODA",NOCOMBINAR="NOCOMBINAR";
 	

@@ -17,7 +17,6 @@ import java.util.ResourceBundle;
 
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -27,31 +26,55 @@ import javax.swing.text.NumberFormatter;
 
 import servidorcbr.modelo.Atributo;
 import vista.TraductorTipos;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
+
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-/*Panel que permite introducir el valor de la Query para un atributo*/
+/**Panel que permite introducir el valor de la Query para un atributo, así como
+ * configurar su métrica/peso/parámetro en un ciclo configurado.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class PanelIntroducirValorAtbo extends JPanel {
+	/**
+	 * Atributo correspondiente al valor que va a ser rellenado por el panel.
+	 */
 	private Atributo a;
+	/**
+	 * Textfield con el valor a rellenar.
+	 */
 	private JTextField textField = new JTextField();
-	private boolean configurado;
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
 			"vista.internacionalizacion.Recursos", Locale.getDefault());
+	/**
+	 * Textfield de parámetro de la métrica para el ciclo configurado.
+	 */
 	private JTextField textFieldParam=new JFormattedTextField(new DefaultFormatterFactory(
 			new NumberFormatter(new DecimalFormat())));
+	/**
+	 * Desplegable de escoger métrica para el ciclo configurado.
+	 */
 	private JComboBox<String> comboBox;
+	/**
+	 * Textfield de peso del atributo para el ciclo configurado.
+	 */
 	private JFormattedTextField textFieldPeso;
 	
-	/**
-	 * Crea el panel.
+
+	/**Crea el panel.
+	 * @param a Atributo para el que se va a rellenar el panel.
+	 * @param configurado true si se pueden configurar valores como la métrica o 
+	 * el peso, false si no.
 	 */
 	public PanelIntroducirValorAtbo(final Atributo a, boolean configurado) {
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		this.a = a;
-		this.configurado = configurado;
 		setPreferredSize(new Dimension(572, 86));
 		
 		comboBox = new JComboBox<String>();
@@ -246,6 +269,9 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		return a.getNombre();
 	}
 
+	/**Obtiene el valor del campo rellenado en la query para este atributo.
+	 * @return El valor del campo rellenado.
+	 */
 	public Serializable getValue() {
 		try {
 			if (textField.getText().equals("")) {

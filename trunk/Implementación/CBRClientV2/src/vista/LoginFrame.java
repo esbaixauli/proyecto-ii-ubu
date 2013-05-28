@@ -35,6 +35,9 @@ import controlador.ControlConexion;
 import controlador.ControlLogin;
 
 /**Frame de login de la aplicación. Constituye el punto de arranque de la misma.
+ * Se pide nombre de usuario, contraseña,
+ * dirección IP y puerto. Además permite escoger el idioma (El idioma mostrado
+ * por defecto es el del entorno Java en que se ejecuta la aplicación).
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */
@@ -210,7 +213,7 @@ public class LoginFrame extends JFrame {
 							bundle.getString("connecterror"), "Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-				return u;
+				return u; //Devuelve el usuario si se pudo encontrar en el servidor.
 			}
 		});
 
@@ -257,7 +260,7 @@ public class LoginFrame extends JFrame {
 		gbc_lblIp.gridx = 3;
 		gbc_lblIp.gridy = 4;
 		contentPane.add(lblIp, gbc_lblIp);
-
+		//tf de ip
 		ipTextField = new JTextField();
 		ipTextField.setText("localhost");
 		GridBagConstraints gbc_ipTextField = new GridBagConstraints();
@@ -298,7 +301,8 @@ public class LoginFrame extends JFrame {
 		gbc_comboBox.gridx = 1;
 		gbc_comboBox.gridy = 6;
 		contentPane.add(comboBox, gbc_comboBox);
-
+		//Se establece como acción por defecto para la tecla 'enter' el
+		//acceso a la aplicación (intento de log in)
 		me.getRootPane().setDefaultButton(btnAcceso);
 		GridBagConstraints gbc_btnAcceso = new GridBagConstraints();
 		gbc_btnAcceso.insets = new Insets(0, 0, 5, 5);
