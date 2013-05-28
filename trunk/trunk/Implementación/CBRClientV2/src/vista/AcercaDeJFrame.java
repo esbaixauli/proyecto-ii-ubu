@@ -24,7 +24,10 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import java.awt.Color;
 
-/**Frame de 'Acerca de...'
+/**Frame de 'Acerca de...'.
+ * Muestra el logo de la universidad de Burgos, botones para
+ * acceder a la página de cada tecnología empleada e información
+ * sobre los autores y tutores del proyecto.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */
@@ -58,7 +61,7 @@ public class AcercaDeJFrame extends JFrame {
 		this.padre=padre;me=this;
 		setResizable(false);
 		setTitle(b.getString("about"));
-		setMenuBar(null);
+		setMenuBar(null); //Esta ventana no tiene ayuda ni barra de menú.
 		setIconImage(new ImageIcon("res/logocbr.png").getImage());
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 675, 300);
@@ -86,7 +89,7 @@ public class AcercaDeJFrame extends JFrame {
 			}
 		});
 		panel_1.add(btnHadoop);
-		
+		//jColibri
 		JButton btnJcolibri = new JButton(new ImageIcon("res/jcolibri_64.png"));
 		btnJcolibri.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -94,7 +97,7 @@ public class AcercaDeJFrame extends JFrame {
 			}
 		});
 		panel_1.add(btnJcolibri);
-		
+		//jFreeChart
 		JButton btnJfreechart = new JButton(new ImageIcon("res/jfreechart_64.png"));
 		btnJfreechart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -102,7 +105,7 @@ public class AcercaDeJFrame extends JFrame {
 			}
 		});
 		panel_1.add(btnJfreechart);
-		
+		//Weka
 		JButton btnWeka = new JButton(new ImageIcon("res/weka_64.png"));
 		btnWeka.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -110,7 +113,7 @@ public class AcercaDeJFrame extends JFrame {
 			}
 		});
 		panel_1.add(btnWeka);
-		
+		//jTattoo
 		JButton btnJtattoo = new JButton(new ImageIcon("res/jtattoo_64.png"));
 		btnJtattoo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -118,7 +121,7 @@ public class AcercaDeJFrame extends JFrame {
 			}
 		});
 		panel_1.add(btnJtattoo);
-		
+		//iText para pdf
 		JButton btnitext = new JButton(new ImageIcon("res/itext_64.png"));
 		btnitext.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -126,7 +129,7 @@ public class AcercaDeJFrame extends JFrame {
 			}
 		});
 		panel_1.add(btnitext);
-		
+		//Oxygen
 		JButton btnOxygen = new JButton(new ImageIcon("res/oxygen_64.png"));
 		btnOxygen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -160,22 +163,22 @@ public class AcercaDeJFrame extends JFrame {
 		
 		JSeparator separator = new JSeparator();
 		panel_2.add(separator, "1, 1, center, center");
-		
+		//Label del logo de ubu
 		JLabel lblUniversidadDeBurgos = new JLabel(b.getString("ubu"));
 		panel_2.add(lblUniversidadDeBurgos, "3, 3, center, center");
 		
 		JSeparator separator_1 = new JSeparator();
 		panel_2.add(separator_1, "1, 1, center, center");
-		
+		//Fecha de realización.
 		JLabel label = new JLabel("2012-2013");
 		panel_2.add(label, "3, 5, center, center");
-		
+		//Autores del proyecto.
 		JLabel lblAutores = new JLabel(b.getString("authors")+": Rubén Antón García, Enrique Sainz Baixauli");
 		panel_2.add(lblAutores, "3, 7, center, center");
-		
+		//Tutores del proyecto.
 		JLabel lblTutores = new JLabel(b.getString("tutors")+": Álvaro Herrero, Belén Vaquerizo");
 		panel_2.add(lblTutores, "3, 9, center, center");
-
+		//Cierre estándar de ventana.
 		cierreVentana();
 		setLocationRelativeTo(padre);
 	}

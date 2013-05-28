@@ -11,7 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/** Filepicker para escoger un fichero y mostrar su ruta.
+/** Filepicker para escoger un fichero y mostrar su ruta. Se muestra la ruta
+ * del fichero escogido en un campo de texto.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */

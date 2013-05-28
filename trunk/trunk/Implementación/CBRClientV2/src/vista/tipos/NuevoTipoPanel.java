@@ -1,53 +1,86 @@
 package vista.tipos;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 import vista.MainFrame;
-import vista.componentesGenericos.FrameEstandar;
 import vista.componentesGenericos.PanelEstandar;
 import vista.panels.PanelAtributos;
 import vista.panels.ScrollPanelAtbo;
-import controlador.ControlTipos;
-import javax.swing.BoxLayout;
-import java.awt.BorderLayout;
-import javax.swing.border.EtchedBorder;
 
+/**Panel general de nuevo tipo de caso. Contiene todos los subcomponentes
+ * necesarios para gestionar la creación de un nuevo tipo.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
+/**
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class NuevoTipoPanel extends PanelEstandar {
+	/**
+	 * Contentpane del panel.
+	 */
 	private JPanel contentPane;
-	private JTextField textField;
+	/**
+	 * Textfield del nombre del tipo.
+	 */
+	private JTextField textFieldN;
+	/**
+	 * Panel de atributos de problema.
+	 */
 	private ScrollPanelAtbo panelProblema;
+	/**
+	 * Panel de atributos de solución.
+	 */
 	private ScrollPanelAtbo panelSolucion;
+	/**
+	 * Botón de continuar con el trámite.
+	 */
 	JButton btnSiguiente;
 
+	/**
+	 * Tipo de caso que se está generando.
+	 */
 	protected TipoCaso tc;
+	/**
+	 * Subpanel para la mejor distribución visual del panel.
+	 */
 	private JPanel panel;
+	/**
+	 * Subpanel para la mejor distribución visual del panel.
+	 */
 	private JPanel panel_1;
+	/**
+	 * Subpanel para la mejor distribución visual del panel.
+	 */
 	private JPanel panel_2;
+	/**
+	 * Subpanel para la mejor distribución visual del panel.
+	 */
 	private JPanel panel_3;
+	/**
+	 * Subpanel para la mejor distribución visual del panel.
+	 */
 	private JPanel panel_4;
 
 	/**
@@ -72,9 +105,9 @@ public class NuevoTipoPanel extends PanelEstandar {
 						lblNombretipo.setForeground(Color.WHITE);
 						panel.add(lblNombretipo);
 		
-				textField = new JTextField();
-				panel.add(textField);
-				textField.setColumns(10);
+				textFieldN = new JTextField();
+				panel.add(textFieldN);
+				textFieldN.setColumns(10);
 		
 		panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
@@ -136,7 +169,7 @@ public class NuevoTipoPanel extends PanelEstandar {
 											}
 											//Establezco los atributos y el nombre del tipo de caso
 											tc.setAtbos(atbos);
-											tc.setNombre(textField.getText().trim());
+											tc.setNombre(textFieldN.getText().trim());
 											
 											rellenaTC();
 											//Configuro las tecnicas
@@ -148,8 +181,11 @@ public class NuevoTipoPanel extends PanelEstandar {
 										}
 									}
 
+									/** Comprueba si el textfield de nombre es válido.
+									 * @return true si es válido, false si no.
+									 */
 									private boolean comprobarTextField() {
-										String texto = textField.getText();
+										String texto = textFieldN.getText();
 										if (texto.isEmpty()) {
 											JOptionPane.showMessageDialog(null,
 													b.getString("incorrectformat"), "Error",
@@ -183,11 +219,19 @@ public class NuevoTipoPanel extends PanelEstandar {
 		
 	}
 
+	/**Comprueba la validez del contenido de los paneles de atributos de problema y 
+	 * solución.
+	 * @return true si ambos son válidos, false si no.
+	 */
 	private boolean comprobarPaneles() {
 		return comprobarPanel(panelProblema) && comprobarPanel(panelSolucion)
 				&& comprobarNombresRepetidos();
 	}
 
+	/**Comprueba si hay nombres de atributo repetidos.
+	 * @return true si NO hay nombres repetidos y por tanto todos los nombres son
+	 * válidos, false si alguno no es válido.
+	 */
 	private boolean comprobarNombresRepetidos() {
 		HashMap<String, String> h = new HashMap<String, String>();
 		PanelAtributos p;
@@ -217,6 +261,10 @@ public class NuevoTipoPanel extends PanelEstandar {
 		return true;
 	}
 
+	/** Comprueba que un panel (problema o solución) haya sido rellenado correctamente.
+	 * @param pan Panel de problema o solución a comprobar.
+	 * @return cierto si el panel ha sido bien rellenado, false si no.
+	 */
 	private boolean comprobarPanel(ScrollPanelAtbo pan) {
 		PanelAtributos p;
 		for (int i = 0; i < pan.getPanelAtbo().getComponentCount(); i++) {
@@ -230,8 +278,13 @@ public class NuevoTipoPanel extends PanelEstandar {
 		return true;
 	}
 
+	/**
+	 * Rellena el tipo de caso asociado a este panel. Asume que se ha comprobado
+	 * previamente que todos los componentes de este panel han sido rellenados por
+	 * el usuario correctamente.
+	 */
 	protected void rellenaTC() {
-		tc.setNombre(textField.getText().substring(0,Math.min(18,textField.getText().length())));
+		tc.setNombre(textFieldN.getText().substring(0,Math.min(18,textFieldN.getText().length())));
 		HashMap<String, Atributo> atbos = new HashMap<String, Atributo>();
 		for (Component c : panelProblema.getPanelAtbo().getComponents()) {
 			PanelAtributos p = (PanelAtributos) c;
@@ -248,14 +301,23 @@ public class NuevoTipoPanel extends PanelEstandar {
 		tc.setAtbos(atbos);
 	}
 
+	/**Obtiene el textfield de nombre del tipo.
+	 * @return Textfield de nombre de tipo de caso.
+	 */
 	protected JTextField getTextFieldNombre() {
-		return textField;
+		return textFieldN;
 	}
 
+	/**Obtiene el panel de atributos del problema.
+	 * @return Panel de atributos del problema.
+	 */
 	protected ScrollPanelAtbo getPanelProblema() {
 		return panelProblema;
 	}
 
+	/**Obtiene el panel de atributos de la solución.
+	 * @return Panel de atributos de la solución.
+	 */
 	protected ScrollPanelAtbo getPanelSolucion() {
 		return panelSolucion;
 	}

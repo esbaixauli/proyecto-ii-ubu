@@ -38,7 +38,8 @@ import vista.panels.PanelMostrarAtbo;
 import controlador.ControlCBR;
 
 /**Panel de resultados de una etapa del ciclo CBR. Genérico para
- * cualquier etapa que lo requiera.
+ * cualquier etapa que lo requiera. Muestra los casos tratados en esa
+ * etapa y permite navegar por ellos.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */
@@ -98,7 +99,12 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 	 * @param lcasos Los casos recuperados a mostrar.
 	 * @param etapa entero que depende de la etapa en que se usa el panel.
 	 * Correspondiente a las constantes de este frame RETRIEVAL,REUSE,REVISE.
-	 * @param tipo El tipo de caso al que pertenecen los casos.
+	 * @param tc El tipo de caso al que pertenecen los casos.
+	 * @param hquery Consulta introducida por el usuario. Mapa clave-valor de entradas 
+	 * {"nombre de atributo",valor}.
+	 * @param u Usuario que ejecutó la consulta.
+	 * @param pprevio Panel de la etapa previa en el ciclo. Puede ser null si es la 
+	 * primera etapa.
 	 */
 	public ResultadosConsultaPanel(final MainFrame padre,
 			List<HashMap<String, Serializable>> lcasos,final int etapa, final TipoCaso tc,

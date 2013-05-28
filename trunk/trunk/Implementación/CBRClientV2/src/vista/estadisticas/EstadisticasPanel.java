@@ -11,7 +11,9 @@ import servidorcbr.modelo.Usuario;
 import vista.MainFrame;
 import vista.componentesGenericos.PanelEstandar;
 
-/**Panel de estadísticas de uso de los tipos de caso en CBR.
+/**Panel de estadísticas de uso de los tipos de caso en CBR. Permite escoger
+ * el tipo de estadísticas (propias o por usuario y caso) que se desean ver y posee
+ * un panel interno que muestra dichas estadísticas.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */

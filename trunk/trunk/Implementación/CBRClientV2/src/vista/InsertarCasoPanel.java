@@ -43,7 +43,10 @@ import vista.tablas.CasosTableModel;
 import controlador.ControlCasos;
 import controlador.util.LectorCaso;
 
-/**Panel para introducir casos manualmente.
+/**Panel para introducir casos manualmente. Permite introducir cada
+ * uno de los atributos de forma manual con el subpanel inferior, o cargarlos
+ * desde un fichero WEKA .arff, editarlos en una tabla como se desee y finalmente
+ * introducirlos.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */
@@ -129,14 +132,15 @@ public class InsertarCasoPanel extends PanelEstandar {
 		JButton btnInsertar = new JButton(b.getString("loadfromfile"));
 		btnInsertar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
+				try {//Intenta leer una lista de casos de fichero
 					casos=
 					LectorCaso.leerCaso(new File(pickerFichero.getSelectedFilePath()), tc);
-					if(casos!=null){
+					if(casos!=null){ //Si se pudo, muéstralos en la tabla
 						table.setModel(new CasosTableModel(casos, tc));
 						lblCargadas.setText(b.getString("loadedcases")+casos.size());
 						table.setDefaultRenderer(Object.class, new CasosTableCellRenderer(tc));
-						panelFiltro.setVisible(true);
+						panelFiltro.setVisible(true); //Si hay datos, muestra el panel
+						//De filtro.
 					}else{
 						throw new IOException();
 					}
@@ -173,7 +177,7 @@ public class InsertarCasoPanel extends PanelEstandar {
 		textFieldFilter = new JTextField();
 		panelFiltro.add(textFieldFilter);
 		textFieldFilter.setColumns(10);
-		
+		//Filtra por expresión regular el contenido de la tabla.
 		JButton btnFilter = new JButton(new ImageIcon("res/search_16.png"));
 		btnFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -220,7 +224,7 @@ public class InsertarCasoPanel extends PanelEstandar {
 		lblCargadas = new JLabel(b.getString("loadedcases")+0);
 		lblCargadas.setForeground(Color.WHITE);
 		panel_2.add(lblCargadas);
-		
+		//Este botón termina la importación desde fichero.
 		JButton btnInsertFichero = new JButton(b.getString("insertcases"));
 		panel_2.add(btnInsertFichero);
 		btnInsertFichero.addActionListener(new ActionListener() {
@@ -230,7 +234,7 @@ public class InsertarCasoPanel extends PanelEstandar {
 			
 		});
 		
-		
+		//Scroll que contiene la inserción manual.
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setPreferredSize(new Dimension(scrollPane.getWidth(),120));
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -258,7 +262,7 @@ public class InsertarCasoPanel extends PanelEstandar {
 		gbc_panel_1.gridx = 0;
 		gbc_panel_1.gridy = 5;
 		contentPane.add(panel_1, gbc_panel_1);
-		
+		//Este botón inserta manualmente casos.
 		JButton btnInsManual = new JButton(b.getString("manualinsert"));
 		panel_1.add(btnInsManual);
 		btnInsManual.addActionListener(new ActionListener() {
@@ -282,15 +286,15 @@ public class InsertarCasoPanel extends PanelEstandar {
 			}
 		});
 		
-		
+		//Crea paneles para insertar un caso.
 		for(Atributo at : tc.getAtbos().values()){
 			JPanel p = new PanelIntroducirValorAtbo(at, false);
 			panelManual.add(p);
 		}
 		Atributo calidad= new Atributo();
-		calidad.setNombre("META_QUALITY");
-		calidad.setTipo("I");
-		calidad.setMetrica("equal");
+		calidad.setNombre("META_QUALITY"); //Calidad del caso.
+		calidad.setTipo("I"); //Entero.
+		calidad.setMetrica("equal"); //Igualdad.
 		panelManual.add(new PanelIntroducirValorAtbo(calidad, false));
 		
 		
@@ -302,7 +306,8 @@ public class InsertarCasoPanel extends PanelEstandar {
 	 */
 	private void insertarCasos(List<HashMap<String,Serializable>> lcasos){
 		try {
-			
+			//Comprueba la validez de la lista de casos antes de pedir insertar
+			//al servidor.
 			if (lcasos!=null && !lcasos.isEmpty() && ControlCasos.insertarCasos(tc, lcasos)) {
 				JOptionPane.showMessageDialog(null, 
 						b.getString("opsuccess"),b.getString("opsuccess"), JOptionPane.INFORMATION_MESSAGE);

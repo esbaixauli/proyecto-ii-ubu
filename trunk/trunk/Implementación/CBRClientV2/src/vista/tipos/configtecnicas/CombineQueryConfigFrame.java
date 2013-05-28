@@ -19,18 +19,32 @@ import vista.componentesGenericos.FrameEstandar;
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 
+/**Frame para configurar la técnica de reutilización Combine query and cases.
+ * Esta técnica copia los atributos del query en el problema de cada caso encontrado.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class CombineQueryConfigFrame extends FrameEstandar {
 
+	/**
+	 * Contentpane del frame.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Referencia al frame.
+	 */
 	private JFrame me;
 
+	/**
+	 * Panel que indica si se debe realizar post-adaptación (Recombinación) al
+	 * final de la etapa de reutilización, y cómo ha de hacerse esto.
+	 */
 	private PanelPostAdaptacion panelPostAdaptacion;
 	
 	/** Constructor del frame.
 	 * @param t La técnica a configurar.
-	 * @param tc
-	 * @param padre
+	 * @param padre Padre del frame al que pertenece este panel.
 	 */
 	public CombineQueryConfigFrame(final Tecnica t, final MainFrame padre) {
 		super(padre);me=this;

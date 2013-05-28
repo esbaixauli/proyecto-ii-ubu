@@ -1,11 +1,8 @@
 package vista.tipos.configtecnicas;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -15,16 +12,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.NumberFormatter;
 
@@ -35,27 +32,48 @@ import servidorcbr.modelo.TipoCaso;
 import vista.MainFrame;
 import vista.componentesGenericos.FrameEstandar;
 
-import javax.swing.BoxLayout;
-import javax.swing.border.EtchedBorder;
-import java.awt.Color;
-import java.awt.GridLayout;
-import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
+/**Frame para configurar la técnica de recuperación
+ * Diverse by median (Expert clerk). Esta técnica se
+ * caracteriza por buscar casos que no se salgan de la mediana de casos, según
+ * umbrales definidos por el usuario para cada atributo.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class DiverseByMedianConfigFrame extends FrameEstandar {
 
+	/**
+	 * Contentpane del frame.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Lista de textfields de umbral para cada atributo.
+	 */
 	private List<JTextField> textFields;
+	/**
+	 * Lista de nombres de los atributos.
+	 */
 	private List<String> atbos;
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
 	
+	/**
+	 * Formateador de números dependiente del lenguaje (locale).
+	 */
 	private final NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
 
-	/**
-	 * Create the frame.
+
+	/** Crea el frame.
+	 * @param t Objeto Técnica correspondiente al frame, que se actualizará.
+	 * @param tc Tipo de caso al que pertenece la técnica.
+	 * @param padre Frame padre de este.
 	 */
 	public DiverseByMedianConfigFrame(final Tecnica t, TipoCaso tc, final MainFrame padre) {
 		super(padre);me=this;
@@ -118,8 +136,7 @@ public class DiverseByMedianConfigFrame extends FrameEstandar {
 		panel_1.add(btnCancel);
 		
 
-		
-		int i=0;
+		//int i=0;
 		textFields = new ArrayList<JTextField>(tc.getAtbos().values().size());
 		atbos = new ArrayList<String>(tc.getAtbos().values().size());
 		for (Atributo a : tc.getAtbos().values()) {
@@ -136,8 +153,6 @@ public class DiverseByMedianConfigFrame extends FrameEstandar {
 						ColumnSpec.decode("164px"),},
 					new RowSpec[] {
 						RowSpec.decode("50px"),}));
-				i++;
-
 				JLabel lblAtbo = new JLabel(a.getNombre()+": ");
 			
 				panelAt.add(lblAtbo, "1, 1, right, fill");
@@ -162,8 +177,6 @@ public class DiverseByMedianConfigFrame extends FrameEstandar {
 						tff.setText("1");
 					}
 				}
-
-				i++;
 			}
 		}
 		setLocationRelativeTo(padre);

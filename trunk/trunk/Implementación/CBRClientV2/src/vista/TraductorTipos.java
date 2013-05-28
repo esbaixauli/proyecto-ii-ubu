@@ -67,7 +67,7 @@ public class TraductorTipos {
 	 * @param i Índice de métrica. Por convención 0 es igualdad. Los siguientes
 	 * varían según el tipo de datos.
 	 * @param tipo 1 para cadenas, 0 para el resto de tipos de datos.
-	 * @return nombre de la métrica.
+	 * @return Nombre de la métrica.
 	 */
 	public static String indiceAMétrica(int i, int tipo){
 			

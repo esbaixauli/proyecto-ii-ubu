@@ -1,5 +1,6 @@
 package vista.tipos.configtecnicas;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -8,12 +9,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
 import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
@@ -24,18 +25,30 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.border.EtchedBorder;
-import java.awt.Color;
 
+/**Frame para configurar la recuperación K-NN. Esta técnica evalúa
+ * según su metrica cada atributo en cada caso de la base y devuelve
+ * los K más similares, donde K está configurado por el usuario.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class NNConfigFrame extends FrameEstandar {
 
+	/**
+	 * Contentpane de la clase.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Bundle de internacionalización.
+	 */
 	private ResourceBundle b = ResourceBundle.getBundle(
             "vista.internacionalizacion.Recursos", Locale.getDefault());
 
-	/**
-	 * Create the frame.
+
+	/** Crea el frame.
+	 * @param t Objeto Técnica correspondiente al frame, que se actualizará.
+	 * @param padre Frame padre de este.
 	 */
 	public NNConfigFrame(final Tecnica t, final MainFrame padre) {
 		super(padre);me=this;
@@ -57,7 +70,7 @@ public class NNConfigFrame extends FrameEstandar {
 		
 		JLabel lblNmeroDeCasos = new JLabel(b.getString("casestoretrieve")+":");
 		contentPane.add(lblNmeroDeCasos, "2, 2");
-		
+		//spinner para determinar la k en k-NN
 		final JSpinner spinner = new JSpinner(new SpinnerNumberModel(5, 1, 500, 1));
 		if (t.getParams() != null && ! (t.getParams().isEmpty())) {
 			spinner.setValue((int) t.getParams().get(0).getValor());

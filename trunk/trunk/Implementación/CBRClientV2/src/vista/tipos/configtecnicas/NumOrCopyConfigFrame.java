@@ -26,27 +26,53 @@ import java.awt.Insets;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 
+/**Frame para configurar las técnicas de reutilización numeric proportion
+ * o directcopy. Numeric proportion calcula una proporción numérica entre
+ * un atributo problema de la consulta del usuario y uno destino de la solución dada.
+ * Direct copy copia un atributo
+ * de la consulta en el caso encontrado.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class NumOrCopyConfigFrame extends FrameEstandar {
 
+	/**
+	 * Contentpane del frame.
+	 */
 	private JPanel contentPane;
+	/**
+	 * Referencia al propio frame.
+	 */
 	private JFrame me;
-	@SuppressWarnings("unused")
+	/**
+	 * Tipo de caso asociado a la técnica. Necesario para saber los 
+	 * atributos a configurar.
+	 */
 	private TipoCaso tc;
+	/**
+	 * Desplegable de atributo origen.
+	 */
 	private JComboBox<String> comboBoxOrigen; 
+	/**
+	 * Desplegable de atributo destino.
+	 */
 	private JComboBox<String> comboBoxDestino; 
+	/**
+	 * Panel para permitir o no post-adaptación.
+	 */
 	private PanelPostAdaptacion panelPostAdaptacion;
 	
 	/** Constructor del frame.
 	 * @param esCopyMethod Especifica si este frame sirve para configurar la técnica Direct Copy Method o
 	 * la técnica Numeric Proportion. Cierto si Es copy Method, falso si no.
 	 * @param t La técnica a configurar.
-	 * @param tc
-	 * @param padre
+	 * @param tic Tipo de caso asociado a la técnica.
+	 * @param padre Frame padre de este.
 	 */
-	public NumOrCopyConfigFrame(boolean esCopyMethod,final Tecnica t,TipoCaso tc, final MainFrame padre) {
+	public NumOrCopyConfigFrame(boolean esCopyMethod,final Tecnica t,TipoCaso tic, final MainFrame padre) {
 		super(padre);me=this;
-		this.tc=tc;
+		this.tc=tic;
 		setTitle(b.getString("configuremethod"));
 		setBounds(100, 100, 418, 253);
 		contentPane = new JPanel();

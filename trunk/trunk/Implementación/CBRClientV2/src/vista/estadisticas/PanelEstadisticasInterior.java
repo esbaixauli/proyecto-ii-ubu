@@ -60,7 +60,9 @@ import controlador.ControlTipos;
 import controlador.ControlUsuarios;
 
 /**Panel que muestra las estadísticas, genérico para la opción de usuario y caso o para 
- * ver las estadísticas propias.
+ * ver las estadísticas propias. Muestra datos y gráficas exportables de estadísticas.
+ * También permite generar informes de las mismas en pdf, o borrar las estadísticas
+ * registradas.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */

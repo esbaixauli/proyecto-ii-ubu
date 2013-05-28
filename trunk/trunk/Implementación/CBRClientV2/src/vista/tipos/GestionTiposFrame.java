@@ -1,5 +1,7 @@
 package vista.tipos;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -7,14 +9,12 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -25,19 +25,42 @@ import vista.MainFrame;
 import vista.componentesGenericos.FrameEstandar;
 import vista.panels.ListaCasos;
 import controlador.ControlTipos;
-import java.awt.BorderLayout;
-import java.awt.Color;
 
+/**Frame para gestionar los tipos de caso. Muestra la lista
+ * de tipos visibles para el usuario y permite acceder
+ * a las opciones de crear, modificar y eliminar casos.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 @SuppressWarnings("serial")
 public class GestionTiposFrame extends FrameEstandar{
 
-	private JPanel contentPane;
-	private Usuario u;
-	private int ancho=250;
-	private List<TipoCaso> tipos=null;
-	private ListaCasos list;
 	/**
-	 * Crea el frame.
+	 * Contentpane del frame.
+	 */
+	private JPanel contentPane;
+	/**
+	 * Usuario que accede a la lista de tipos. No todos los usuarios
+	 * pueden ver los mismos casos, sino sus casos asociados (Salvo los administradores,
+	 * que pueden ver todos).
+	 */
+	private Usuario u;
+	/**
+	 * Ancho de la lista.
+	 */
+	private int ancho=250;
+	/**
+	 * Tipos de caso a mostrar.
+	 */
+	private List<TipoCaso> tipos=null;
+	/**
+	 * JList con los casos que se muestran.
+	 */
+	private ListaCasos list;
+
+	/**Crea el frame.
+	 * @param u Usuario que accede a la lista de tipos.
+	 * @param padre Ventana padre de esta.
 	 */
 	public GestionTiposFrame(final Usuario u,final MainFrame padre) {
 		super(padre);me=this;
@@ -63,25 +86,21 @@ public class GestionTiposFrame extends FrameEstandar{
 			me.dispose();
 		
 		}
-		 contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		 
-		 JScrollPane scrollPane = new JScrollPane();
-		 scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		 contentPane.add(scrollPane, BorderLayout.CENTER);
-		 list = new ListaCasos(tipos);
-		 scrollPane.setViewportView(list);
-		 
-		 		
-		 		list.setFixedCellWidth(ancho);
-		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		contentPane.add(scrollPane, BorderLayout.CENTER);
+		list = new ListaCasos(tipos);
+		scrollPane.setViewportView(list);
+		 	
+		list.setFixedCellWidth(ancho);
 		
 		JPanel toolBarPanel = new JPanel();
 		toolBarPanel.setBackground(Color.GRAY);
 		toolBarPanel.setBorder(BorderFactory.createEtchedBorder() );
-
-
 		
-		
+		//Nuevo tipo
 		JButton btnNuevobut = new JButton(new ImageIcon("res/document_32.png"));
 		btnNuevobut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -92,6 +111,7 @@ public class GestionTiposFrame extends FrameEstandar{
 			}
 		});
 		
+		//Opción de modificar
 		JButton btnVerbut = new JButton(new ImageIcon("res/search_32.png"));
 		btnVerbut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -112,6 +132,8 @@ public class GestionTiposFrame extends FrameEstandar{
 		btnNuevobut.setToolTipText(b.getString("newcasetype"));
 		toolBarPanel.add(btnNuevobut);
 		
+		//Se gestiona la eliminación, preguntando antes al usuario si está
+		//seguro.
 		JButton btnBorrarbut = new JButton(new ImageIcon("res/delete_32.png"));
 		btnBorrarbut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

@@ -13,8 +13,8 @@ import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.Usuario;
 
-/** Lista de usuarios. Se usa en varias partes del programa, pero
- * no es un componente totalmente independiente del contexto.
+/** Lista de usuarios. Puede usarse en varias partes del sistema, pero
+ * no es un componente totalmente independiente del contexto y por tanto 'genérico'.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */
