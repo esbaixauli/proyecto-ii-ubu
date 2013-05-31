@@ -98,22 +98,19 @@ public class ServletCBR extends HttpServlet {
 				e.printStackTrace();
 			}
 			try {
-				System.out.println("Lanzamos retain");
 				boolean result = ControladorCasos.retain(tc, caso);
-				System.out.println("Result: "+result);
 				if (result) {
 					ControladorEstadisticas.updateEstadistica(u, tc, (Integer) caso.get("META_QUALITY"));
-					System.out.println("Estadisticas guardadas");
 				}
 				oos.writeBoolean(result);
 			} catch (PersistenciaException e) {
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			}
 		}else if(tipo.equals("completo")){
-				TipoCaso tc = null;
-				HashMap<String,Serializable> query = null;
+			System.out.println("Inicia ciclo completo");
+			TipoCaso tc = null;
+			HashMap<String,Serializable> query = null;
 			try {
 				tc = (TipoCaso) ois.readObject();
 				query = (HashMap<String,Serializable>) ois.readObject();
@@ -154,8 +151,5 @@ public class ServletCBR extends HttpServlet {
 		}
 		oos.writeObject(casosH);
 	}
-
-}
-
 
 }

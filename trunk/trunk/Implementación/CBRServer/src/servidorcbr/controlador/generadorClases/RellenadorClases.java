@@ -186,10 +186,3 @@ public class RellenadorClases {
 	}
 	
 }
-o=Double.class;break;
-			default:tipo=String.class;
-		}
-		return tipo;
-	}
-	
-}

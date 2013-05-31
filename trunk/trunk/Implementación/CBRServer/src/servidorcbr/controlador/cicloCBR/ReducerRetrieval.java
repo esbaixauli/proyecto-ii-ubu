@@ -220,6 +220,4 @@ public class ReducerRetrieval extends
 		} catch (ClassNotFoundException e) { }
 		return RellenadorClases.rellenarQuery(tc, h);
 	}
-}ry(tc, h);
-	}
 }

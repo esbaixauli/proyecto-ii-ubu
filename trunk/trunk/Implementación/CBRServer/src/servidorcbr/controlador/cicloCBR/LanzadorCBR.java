@@ -271,9 +271,3 @@ public class LanzadorCBR implements StandardCBRApplication {
 		return reuse(tc, casos, query);
 	}
 }
-bject(s);
-		oos.flush();
-		oos.close();
-		outfs.close();
-	}
-}
