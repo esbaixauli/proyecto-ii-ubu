@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -193,7 +194,7 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 								JPanel panel_8 = new JPanel();
 								panel_6.add(panel_8);
 								
-								final JButton btnAnteriorpanel = new JButton("AnteriorPanel");
+								final JButton btnAnteriorpanel = new JButton(new ImageIcon("res/anterior_48.png"));
 								if (previo == null) {
 									btnAnteriorpanel.setEnabled(false);
 								}
@@ -217,7 +218,7 @@ public class ResultadosConsultaPanel extends PanelEstandar {
 								JPanel panel_11 = new JPanel();
 								panel_7.add(panel_11);
 								
-								final JButton btnSiguientepanel = new JButton("SiguientePanel");
+								final JButton btnSiguientepanel = new JButton(new ImageIcon("res/siguiente_48.png"));
 								btnSiguientepanel.setEnabled(false);
 								btnSiguientepanel.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent e) {
