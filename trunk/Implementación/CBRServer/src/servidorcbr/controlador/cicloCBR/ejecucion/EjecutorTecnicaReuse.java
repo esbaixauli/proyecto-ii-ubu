@@ -276,12 +276,3 @@ public class EjecutorTecnicaReuse {
 	
 }
 
-ncy(values, a)){
-				val=a;
-			}
-		}
-		return val;
-	}
-	
-}
-

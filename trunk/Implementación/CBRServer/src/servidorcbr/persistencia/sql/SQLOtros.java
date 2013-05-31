@@ -76,17 +76,15 @@ public class SQLOtros {
 			es.setMediaCalidad(rs.getDouble(2));
 			es.setEjecSatisfactorias(rs.getLong(3));
 			es.setEjecInusables(rs.getLong(4));
-			es.setFechaUltima(rs.getDate(5));
-			//Busco la calidad correspondiente a esa fecha
-			// ERROR: hsqldb no devuelve la fecha todo lo precisa que debería: tanto rs.getDate(5)
-			// como es.getFechaUltima() contienen la fecha correcta pero a las 2:00 am, por lo que
-			// no encuentra ninguna calidadUltima en esa fecha (está almacenada la fecha correcta)
-			PreparedStatement ps = conn.prepareStatement("SELECT calidadUltima FROM caso_usuario WHERE fechaUltima=?;");
-			ps.setDate(1, rs.getDate(5));
-			//ps.setDate(1, new java.sql.Date(es.getFechaUltima().getTime()));
-			ResultSet rs2= ps.executeQuery();
-			while(rs2.next()){
-				es.setCalidadUltima(rs2.getLong(1));
+			es.setFechaUltima(rs.getTimestamp(5));
+			if (es.getFechaUltima() != null) {
+				//Busco la calidad correspondiente a esa fecha
+				PreparedStatement ps = conn.prepareStatement("SELECT calidadUltima FROM caso_usuario WHERE fechaUltima=?;");
+				ps.setDate(1, new java.sql.Date(es.getFechaUltima().getTime()));
+				ResultSet rs2= ps.executeQuery();
+				while(rs2.next()){
+					es.setCalidadUltima(rs2.getLong(1));
+				}
 			}
 		}
 		return es;

@@ -89,13 +89,3 @@ public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 	}
 	
 }
-=7){
-			double param = valor - 7;
-			fp=new Threshold(param);
-		}
-		
-		return fp;
-	}
-	
-}
-
