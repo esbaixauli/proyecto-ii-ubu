@@ -573,14 +573,20 @@ public class IntroducirConsultaCBRPanel extends PanelEstandar {
 					a.setMetrica(p.getMetrica());
 					a.setParamMetrica(p.getParamMetrica());
 				}
-
+				
 				try {
-					ControlCBR.retrieve(tc, query);
-					// TODO: Ir al panel de resultados
-				} catch (IOException e1) {
+					lblIcon.setVisible(true);
+					WorkerCiclo we = new WorkerCiclo(me, tc, query, user);
+					padre.setEnabled(false);
+
+					we.execute();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					padre.setEnabled(true);
 					JOptionPane.showMessageDialog(null,
 							b.getString("connecterror"), "Error",
 							JOptionPane.ERROR_MESSAGE);
+
 				}
 			}
 		});
