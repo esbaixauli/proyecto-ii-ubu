@@ -16,11 +16,36 @@ import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 import servidorcbr.persistencia.sql.SQLFacade;
 
+/**
+ * Suite de test que comprueba que la gestión de tipos funciona correctamente.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class TestSQLTipos {
+	
+	/**
+	 * Tipo de caso de prueba. 
+	 */
 	private TipoCaso tc;
+	
+	/**
+	 * Lista de técnicas de recuperación de prueba. 
+	 */
 	private List<Tecnica> tRec;
+	
+	/**
+	 * Lista de técnicas de reutilización de prueba. 
+	 */
 	private List<Tecnica> tReu;
+	
+	/**
+	 * Lista de técnicas de revisión de prueba. 
+	 */
 	private List<Tecnica> tRev;
+	
+	/**
+	 * Lista de técnicas de retención de prueba. 
+	 */
 	private List<Tecnica> tRet;
 
 	/**
@@ -151,16 +176,18 @@ public class TestSQLTipos {
 	 */
 	@Test
 	public void modificarTiposAtbo(){
-	try{
-		tc.getAtbos().get("a1").setPeso(2);
-		SQLFacade.getInstance().addTipo(tc);
-		tc.getAtbos().get("a1").setPeso(3);
-		SQLFacade.getInstance().modifyTipo(tc);
-		for(TipoCaso actual : SQLFacade.getInstance().getTipos()){
-			if(tc.getNombre().equals(actual.getNombre())){
-				assertTrue("Modificar tipo: No se alteran los atributos asociados a un tipo"
-						,3 == actual.getAtbos().get("a1").getPeso() );
+		try{
+			tc.getAtbos().get("a1").setPeso(2);
+			SQLFacade.getInstance().addTipo(tc);
+			tc.getAtbos().get("a1").setPeso(3);
+			SQLFacade.getInstance().modifyTipo(tc);
+			for(TipoCaso actual : SQLFacade.getInstance().getTipos()){
+				if(tc.getNombre().equals(actual.getNombre())){
+					assertTrue("Modificar tipo: No se alteran los atributos asociados a un tipo"
+							,3 == actual.getAtbos().get("a1").getPeso() );
+				}
 			}
+		} catch(PersistenciaException ex) {
 		}
-	}catch(PersistenciaException ex){}	}
+	}
 }

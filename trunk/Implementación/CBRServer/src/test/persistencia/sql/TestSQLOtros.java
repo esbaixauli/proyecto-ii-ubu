@@ -19,12 +19,23 @@ import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 import servidorcbr.persistencia.sql.SQLFacade;
 
-
-
+/**
+ * Suite de test que comprueba que la gestión de estadísticas funciona correctamente.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class TestSQLOtros {
 
+	/**
+	 * Usuarios de prueba. 
+	 */
 	private Usuario u, u2;
+	
+	/**
+	 * Tipos de caso de prueba.
+	 */
 	private TipoCaso test, test2;
+	
 	/**
 	 * Pre-test.
 	 */
@@ -101,6 +112,7 @@ public class TestSQLOtros {
 		} catch (PersistenciaException e) {e.printStackTrace();}
 		
 	}
+
 	/**
 	 * Post-test.
 	 */

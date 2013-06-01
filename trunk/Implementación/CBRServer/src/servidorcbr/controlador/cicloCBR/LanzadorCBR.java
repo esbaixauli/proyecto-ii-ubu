@@ -32,10 +32,20 @@ import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 import servidorcbr.persistencia.hbase.HbaseFacade;
 
-public class LanzadorCBR implements StandardCBRApplication {
+/**
+ * Lanzador de las etapas del Ciclo CBR. Se encarga de lanzar cada una de las etapas.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
+public class LanzadorCBR /*implements StandardCBRApplication*/ {
 	
+	/**
+	 * Query utilizada en la recuperación, para ser utilizada en la adaptación.
+	 * (solo se utiliza al lanzar el ciclo completo desde ServletCBR)
+	 */
 	private CBRQuery query = null;
 
+	/* Estos métodos no se utilizan... dejamos de implementar StandardCBRApplication?
 	@Override
 	public void configure() throws ExecutionException {
 		// TODO Auto-generated method stub
@@ -55,8 +65,15 @@ public class LanzadorCBR implements StandardCBRApplication {
 	public CBRCaseBase preCycle() throws ExecutionException {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
+	/**
+	 * Etapa de recuperación: prepara y lanza el job de MapReduce para recuperar los casos
+	 * similares a un query.
+	 * @param tc Tipo de caso sobre el que se lanca la recuperación.
+	 * @param query Query al que se aplican las medidas de distancia del resto de casos.
+	 * @return Los casos más similares al query (de acuerdo a la técnica escogida).
+	 */
 	public Collection<CBRCase> retrieve (TipoCaso tc, HashMap<String,Serializable> query) {
 		// create a configuration
 		Configuration conf = new Configuration();
@@ -153,6 +170,13 @@ public class LanzadorCBR implements StandardCBRApplication {
 		return result;
 	}
 	
+	/**
+	 * Etapa de adaptación: adapta los casos recuperados al query introducido por el usuario.
+	 * @param tc Tipo de caso sobre el que se ejecuta el ciclo.
+	 * @param casos Salida de la etapa de recuperación, contiene los casos a adaptar.
+	 * @param query Query al que adaptar los casos.
+	 * @return Los casos (o caso, si el usuario eligió combinarlos) adaptados.
+	 */
 	public Collection<CBRCase> reuse (TipoCaso tc, Collection<CBRCase> casos, CBRQuery query) {
 		EjecutorTecnicaReuse etr = new EjecutorTecnicaReuse(tc);
 		try {
@@ -163,6 +187,13 @@ public class LanzadorCBR implements StandardCBRApplication {
 		return casos;
 	}
 	
+	/**
+	 * Etapa de adaptación: adapta los casos recuperados al query introducido por el usuario.
+	 * @param tc Tipo de caso sobre el que se ejecuta el ciclo.
+	 * @param casos Salida de la etapa de recuperación, contiene los casos a adaptar.
+	 * @param query Query al que adaptar los casos.
+	 * @return Los casos (o caso, si el usuario eligió combinarlos) adaptados.
+	 */
 	public Collection<CBRCase> reuse (TipoCaso tc, List<HashMap<String,Serializable>> casos, HashMap<String,Serializable> query) {
 		Collection<CBRCase> casosCBR = null;
 		CBRQuery queryCBR = RellenadorClases.rellenarQuery(tc, query);
@@ -249,7 +280,6 @@ public class LanzadorCBR implements StandardCBRApplication {
 
 	/**
 	 * Serializa un objeto en un fichero en HDFS.
-	 * @param nombre Nombre del fichero.
 	 * @param s Objeto a escribir.
 	 * @param fs FileSystem que representa a HDFS.
 	 * @param outFile Path que apunta al fichero a crear.
@@ -264,6 +294,15 @@ public class LanzadorCBR implements StandardCBRApplication {
 		outfs.close();
 	}
 
+	/**
+	 * Etapa de adaptación: adapta los casos recuperados al query introducido por el usuario.
+	 * Este método se utiliza cuando el usuario elige lanzar el ciclo completo, de forma que
+	 * en la misma ejecución de ServletCBR se lanza la retención (que almacena el query en la
+	 * variable de instancia query) y la adaptación (que aprovecha esa variable de instancia).
+	 * @param tc Tipo de caso sobre el que se ejecuta el ciclo.
+	 * @param casos Salida de la etapa de recuperación, contiene los casos a adaptar.
+	 * @return Los casos (o caso, si el usuario eligió combinarlos) adaptados.
+	 */
 	public Collection<CBRCase> reuse(TipoCaso tc, Collection<CBRCase> casos) {
 		if (query == null) {
 			return null;

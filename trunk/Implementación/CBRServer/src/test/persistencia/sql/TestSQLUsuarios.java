@@ -15,8 +15,18 @@ import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 import servidorcbr.persistencia.sql.SQLFacade;
 
+/**
+ * Suite de test que comprueba que la gestión de usuarios funciona correctamente.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class TestSQLUsuarios {
+	
+	/**
+	 * Usuario de prueba. 
+	 */
 	private Usuario u;
+	
 	/**
 	 * Pre-test.
 	 */
@@ -26,6 +36,7 @@ public class TestSQLUsuarios {
 		u.setNombre("test");
 		u.setTipo(TipoUsuario.UBASICO);
 	}
+	
 	/**
 	 * Post-test.
 	 */

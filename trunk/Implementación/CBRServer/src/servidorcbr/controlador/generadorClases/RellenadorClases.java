@@ -7,27 +7,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.hadoop.hbase.util.Bytes;
-
+import jcolibri.cbrcore.CBRCase;
+import jcolibri.cbrcore.CBRQuery;
+import jcolibri.cbrcore.CaseComponent;
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.Calidad;
 import servidorcbr.modelo.TipoCaso;
 
-import jcolibri.cbrcore.Attribute;
-import jcolibri.cbrcore.CBRCase;
-import jcolibri.cbrcore.CBRQuery;
-import jcolibri.cbrcore.CaseComponent;
-
-//Clase de utilleria, que permite rellenar las clases de un tipo de caso con sus valores
+/**
+ * Clase de utilería que permite rellenar las clases generadas dinámicamente con sus valores
+ * concretos. También proporciona métodos para convertir una instancia de estas clases en un
+ * HashMap.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class RellenadorClases {
 
-
-	/** Adapta varios conjuntos de atributos con valores a una lista de CBRCases de jColibri.
+	/** 
+	 * Adapta varios conjuntos de atributos con valores a una lista de CBRCases de jColibri.
 	 * @param tc El tipo de caso al que pertenecen dichos atributos.
 	 * @param c los valores a adaptar.
-	 * @return una lista de CBRCases.
-	 * @throws ClassNotFoundException Si la clase correspondiente a ese tipo de caso no se halla en el sistema de ficheros.
-	 * @see {@link CBRCase}
+	 * @return Una lista de CBRCases.
+	 * @throws ClassNotFoundException Si no encuentra la clase correspondiente a ese tipo de caso.
+	 * @see jcolibri.cbrcore.CBRCase
 	 */
 	public static List<CBRCase>	rellenarLista(TipoCaso tc,List<HashMap<String,Serializable>> c, CBRQuery q)
 			throws ClassNotFoundException{
@@ -48,12 +50,13 @@ public class RellenadorClases {
 		return lista;
 	}
 	
-	/**Adapta un conjunto de atributos con valores a un CBRCase de jColibri.
+	/**
+	 * Adapta un conjunto de atributos con valores a un CBRCase de jColibri.
 	 * @param tc  El tipo de caso al que pertenecen dichos atributos.
-	 * @param caso El valor a adaptar.
-	 * @return un CBRCase
-	 * @throws ClassNotFoundException Si la clase correspondiente a ese tipo de caso no se halla en el sistema de ficheros.
-	 * @see {@link CBRCase}
+	 * @param caso El conjunto de valores a adaptar.
+	 * @return Un CBRCase con los valores contenidos en el caso.
+	 * @throws ClassNotFoundException Si no encuentra la clase correspondiente a ese tipo de caso.
+	 * @see jcolibri.cbrcore.CBRCase
 	 */
 	public static CBRCase rellenarCaso(TipoCaso tc, HashMap<String,Serializable> caso)
 			throws ClassNotFoundException {
@@ -68,6 +71,12 @@ public class RellenadorClases {
 		return null;
 	}
 	
+	/**
+	 * Rellena un CBRQuery de jColibri con los valores contenidos en un HashMap.
+	 * @param tc El tipo de caso que define el query a rellenar.
+	 * @param query El conjunto de valores con los que rellenar el query.
+	 * @return Un objeto de tipo CBRQuery con los valores del query proporcionado.
+	 */
 	public static CBRQuery rellenarQuery(TipoCaso tc, HashMap<String,Serializable> query) {
 		CBRQuery q = new CBRQuery();
 		Class<? extends CaseComponent> desc = null;
@@ -102,11 +111,17 @@ public class RellenadorClases {
 		return q;
 	}
 	
+	/**
+	 * Rellena un HashMap (nombre de atributo -> valor del atributo) con los valores contenidos
+	 * en un CBRCase.
+	 * @param tc El tipo de caso que define la estructura del caso.
+	 * @param caso El CBRCase a convertir a HashMap.
+	 * @return El HashMap que contiene los valores contenidos en el CBRCase.
+	 */
 	public static HashMap<String,Serializable> rellenarHash(TipoCaso tc, CBRCase caso) {
 		HashMap<String,Serializable> campos = new HashMap<String,Serializable>();
 		for (Atributo a : tc.getAtbos().values()) {
 			CaseComponent cc = null;
-			Class<?> cclass = null;
 			if (a.getEsProblema()) {
 				cc = caso.getDescription();
 			} else {
@@ -132,7 +147,16 @@ public class RellenadorClases {
 		return campos;
 	}
 	
-	private static CBRCase obtenerCaso(TipoCaso tc, HashMap<String, Serializable> caso, Class<? extends CaseComponent>desc, Class<? extends CaseComponent>sol) {
+	/**
+	 * Rellena un objeto de tipo CBRCase con los valores contenidos en un HashMap.
+	 * @param tc El tipo de caso que define la estructura del caso.
+	 * @param caso El HashMap con los valores del caso concreto.
+	 * @param desc La clase que implementa CaseComponent y define la Description del caso.
+	 * @param sol La clase que implementa CaseComponent y define la Solution del caso.
+	 * @return El CBRCase con los valores contenidos en el HashMap.
+	 */
+	private static CBRCase obtenerCaso(TipoCaso tc, HashMap<String, Serializable> caso,
+			Class<? extends CaseComponent> desc, Class<? extends CaseComponent> sol) {
 		//Creo una instancia del problema y de la solucion
 		CaseComponent instanciaDesc = null;
 		CaseComponent instanciaSol = null;
@@ -174,6 +198,11 @@ public class RellenadorClases {
 		return cbrCase;
 	}
 
+	/**
+	 * Obtiene la clase que envuelve el tipo de datos del atributo a.
+	 * @param a El atributo del que se quiere obtener el tipo.
+	 * @return La clase que envuelve el tipo de datos.
+	 */
 	private static Class<?> getTipoClass(Atributo a) {
 		Class<?> tipo;
 		switch(a.getTipo()){

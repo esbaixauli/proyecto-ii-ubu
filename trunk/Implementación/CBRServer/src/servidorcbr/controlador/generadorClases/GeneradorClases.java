@@ -1,22 +1,10 @@
 package servidorcbr.controlador.generadorClases;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.HashMap;
 import java.util.ArrayList;
-
-import jcolibri.cbrcore.Attribute;
-import jcolibri.cbrcore.CaseComponent;
+import java.util.HashMap;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -26,10 +14,19 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+/**
+ * Clase estática que genera dos clases por cada tipo de caso. Una de las clases contiene los
+ * atributos del problema y la otra los de la solución. Ambas implementan CaseComponent.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class GeneradorClases {
 
-	
-	// Auxiliar, establece los tipos permitidos para un atributo de la clase
+	/**
+	 * Establece los tipos permitidos para un atributo de la clase. De momento, son String,
+	 * Integer o Double.
+	 * @return Una lista con las iniciales de los tipos permitidos.
+	 */
 	public static ArrayList<String> establecerTipos() {
 		ArrayList<String> tiposAtbo = new ArrayList<String>();
 		tiposAtbo.add("S");
@@ -38,9 +35,11 @@ public class GeneradorClases {
 		return tiposAtbo;
 	}
 
-	// Auxiliar, permite obtener el descriptor de una clase a partir de la
-	// cadena
-	// que identifica a su tipo
+	/**
+	 * Obtiene el descriptor de la clase, dada una cadena que identifica su tipo.
+	 * @param entrada Puede ser "S", "D" o "I".
+	 * @return El descriptor correspondiente a String, Double o Integer, respectivamente.
+	 */
 	private static String getDescriptor(String entrada) {
 		String descriptor = null;
 		if (entrada.equals("S")) {
@@ -52,10 +51,16 @@ public class GeneradorClases {
 		}
 		return descriptor;
 	}
-	/* Permite crear una clase-
-	/* @param at Hashmap cuya clave es el tipo de datos. p.ej: String y cuyo valor es una
-	 * lista con los nombres de atributos de ese tipo de datos.
-	 * @param nombre nombre de la clase.*/
+	
+	/**
+	 * Crea dinámicamente una clase dados una serie de atributos y un nombre. Una vez creada,
+	 * escribe el fichero .class en HDFS para que CargadorClases sea capaz de encontrarlo.
+	 * Las clases se guardan en la ruta /classes/generadas/ del sistema de ficheros HDFS.
+	 * @param at Un HashMap que mapea un tipo de datos a una lista de nombres de atributos
+	 * de ese tipo.
+	 * @param nombre El nombre deseado para la clase.
+	 * @return Si la operación ha tenido éxito o no.
+	 */
 	public static boolean crearClase(HashMap<String, ArrayList<String>> at,
 			String nombre) {
 		ClassWriter cw = new ClassWriter(0);
@@ -104,6 +109,13 @@ public class GeneradorClases {
 		return true;
 	}
 
+	/**
+	 * Escribe el array de bytes que representa un fichero .class en HDFS.
+	 * @param nombre El nombre de la clase.
+	 * @param clase El array de bytes que representa el fichero a escribir.
+	 * @param conf El objeto de configuración que premite acceder a HDFS.
+	 * @throws IOException Si hay algún error de comunicación con HDFS.
+	 */
 	private static void escribirClaseHDFS(String nombre, byte[] clase,
 			Configuration conf) throws IOException {
 		FileSystem fs = FileSystem.get(conf);
@@ -117,25 +129,13 @@ public class GeneradorClases {
 		out.close();
 	}
 
-	/*private static Class<?> crearClass(String nombre, byte[] clase)
-			throws IOException, ClassNotFoundException {
-		File folder = new File("classes/generadas/");
-		if (!folder.exists())
-			folder.mkdir();
-		
-		FileOutputStream f = new FileOutputStream(folder.getCanonicalPath()+"/"+nombre+ ".class");
-		f.write(clase);
-		f.close();
-		
-		String path = "file:"+folder.getAbsoluteFile().getParent()+"/";
-		URL[] url = { new URL(path) };
-		URLClassLoader classLoader = new URLClassLoader(url, Thread.currentThread().getContextClassLoader());
-		Class<?> claseClass = classLoader.loadClass("generadas."
-				+ nombre);
-		classLoader.close();
-		return claseClass;
-	}*/
-
+	/**
+	 * Añade un atributo a una clase a medio construir.
+	 * @param nombre El nombre de la clase.
+	 * @param cw El ClassWriter que se encarga de generar el código dinámicamente.
+	 * @param tipo El tipo de datos del atributo.
+	 * @param atbo El nombre del atributo.
+	 */
 	private static void crearAtbo(String nombre, ClassWriter cw, String tipo,
 			String atbo) {
 		String descriptor;
@@ -161,7 +161,13 @@ public class GeneradorClases {
 		crearSetter(mv, nombre, atbo, descriptor);
 	}
 
-	// Implementa atbos y m�todos para el interfaz CaseComponent
+	/**
+	 * Hace que la clase implemente CaseComponent e implementa el método getIdAttribute() con
+	 * código dinámico que devuelve en cada caso un nuevo Attribute (sin tenerlo como variable
+	 * de instancia).
+	 * @param cw El ClassWriter que está generando el código.
+	 * @param nombre El nombre de la clase.
+	 */
 	private static void implementarCaseComponent(ClassWriter cw, String nombre) {
 		String desc = Type.getDescriptor(jcolibri.cbrcore.Attribute.class);
 		
@@ -204,7 +210,10 @@ public class GeneradorClases {
 		
 	}
 
-	// Crea un constructor vac�o para la clase
+	/**
+	 * Crea un constructor vacío para la clase.
+	 * @param cw El ClassWriter que está generando el código.
+	 */
 	private static void crearConstructor(ClassWriter cw) {
 		MethodVisitor mv = cw.visitMethod(Opcodes.ACC_PUBLIC, "<init>", "()V",
 				null, null);
@@ -217,8 +226,13 @@ public class GeneradorClases {
 		mv.visitEnd();
 	}
 
-	// Visitante para el m�todo, nombre completo de la clase, nombre del atbo,
-	// tipo del atbo
+	/**
+	 * Crea un getter para un atributo dado.
+	 * @param mv El visitante para el método.
+	 * @param clase El nombre de la clase.
+	 * @param nombre El nombre del atributo.
+	 * @param tipo El tipo de datos del atributo.
+	 */
 	private static void crearGetter(MethodVisitor mv, String clase,
 			String nombre, String tipo) {
 		mv.visitCode();
@@ -229,6 +243,13 @@ public class GeneradorClases {
 		mv.visitEnd();
 	}
 
+	/**
+	 * Crea un setter para un atributo dado.
+	 * @param mv El visitante para el método.
+	 * @param clase El nombre de la clase.
+	 * @param nombre El nombre del atributo.
+	 * @param tipo El tipo de datos del atributo.
+	 */
 	private static void crearSetter(MethodVisitor mv, String clase,
 			String nombre, String tipo) {
 		mv.visitCode();

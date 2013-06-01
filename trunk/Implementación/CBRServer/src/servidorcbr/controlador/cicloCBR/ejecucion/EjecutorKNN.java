@@ -12,13 +12,25 @@ import jcolibri.method.retrieve.selection.SelectCases;
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.TipoCaso;
 
+/**
+ * Ejecutor concreto de la técnica de recuperación "K-vecinos más cercanos". Sirve de fachada
+ * para las clases de jcolibri desde servidorcbr.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class EjecutorKNN extends EjecutorTecnicaRetrieval {
 
-
+	/**
+	 * Constructor de la clase. Recibe el tipo de caso sobre el que se va a aplicar.
+	 * @param tic El tipo de caso.
+	 */
 	public EjecutorKNN(TipoCaso tic) {
 		super(tic);
 	}
 
+	/* (non-Javadoc)
+	 * @see servidorcbr.controlador.cicloCBR.ejecucion.EjecutorTecnicaRetrieval#ejecutar(java.util.Collection, jcolibri.cbrcore.CBRQuery)
+	 */
 	@Override
 	public Collection<CBRCase> ejecutar(Collection<CBRCase> casos, CBRQuery query) throws ClassNotFoundException {
 		NNConfig simConfig = getSimilaridadGlobalConfig();

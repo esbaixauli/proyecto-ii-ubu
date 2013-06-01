@@ -17,17 +17,29 @@ import jcolibri.method.retrieve.FilterBasedRetrieval.predicates.QueryLessOrEqual
 import jcolibri.method.retrieve.FilterBasedRetrieval.predicates.QueryMore;
 import jcolibri.method.retrieve.FilterBasedRetrieval.predicates.QueryMoreOrEqual;
 import jcolibri.method.retrieve.FilterBasedRetrieval.predicates.Threshold;
-import servidorcbr.controlador.generadorClases.CargadorClases;
 import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.TipoCaso;
 
+/**
+ * Ejecutor concreto de la técnica de recuperación "FilterBased". Sirve de fachada para
+ * las clases de jcolibri desde servidorcbr.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 
+	/**
+	 * Constructor de la clase. Recibe el tipo de caso sobre el que se va a aplicar.
+	 * @param tc El tipo de caso.
+	 */
 	public EjecutorFilterBased(TipoCaso tc) {
 		super(tc);
 	}
 
+	/* (non-Javadoc)
+	 * @see servidorcbr.controlador.cicloCBR.ejecucion.EjecutorTecnicaRetrieval#ejecutar(java.util.Collection, jcolibri.cbrcore.CBRQuery)
+	 */
 	@Override
 	public Collection<CBRCase> ejecutar(Collection<CBRCase> casos,
 			CBRQuery query) throws ClassNotFoundException {
@@ -36,6 +48,12 @@ public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 		return FilterBasedRetrievalMethod.filterCases(casos, query, simConfig);
 	}
 	
+	/**
+	 * Construye un objeto de tipo FilterConfig, que contiene información sobre el filtro a
+	 * aplicar sobre cada atributo.
+	 * @param query Query introducido por el usuario.
+	 * @return El FilterConfig que mapea Attribute -> filtro a utilizar.
+	 */
 	private FilterConfig getFiltros(CBRQuery query) {
 		FilterConfig config = new FilterConfig();
 		Class<?> clase = query.getDescription().getClass();
@@ -44,7 +62,7 @@ public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 			Field f = null;
 			if(actual.getEsProblema()){
 				try {
-					f = query.getDescription().getClass().getDeclaredField(actual.getNombre());
+					f = clase.getDeclaredField(actual.getNombre());
 				} catch (NoSuchFieldException e) {
 					e.printStackTrace();
 				} catch (SecurityException e) {
@@ -57,7 +75,8 @@ public class EjecutorFilterBased extends EjecutorTecnicaRetrieval {
 		return config;
 	}
 
-	/** Auxiliar. Traduce un predicado de su representación interna a su clase correspondiente.
+	/** 
+	 * Traduce un predicado de su representación interna a su clase correspondiente.
 	 * 0: Equal
 	 * 1: NotEqual
 	 * 2: OntologyCompatible

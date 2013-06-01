@@ -15,14 +15,34 @@ import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 
+/**
+ * Clase que gestiona el acceso a la base de datos relacional (HSQLDB) para la gestión de
+ * tipos de caso.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class SQLTipos {
 	
+	/**
+	 * Conexión a la base de datos.
+	 */
 	private Connection conn;
 	
+	/**
+	 * Constructor de la clase. Visibilidad protected para que solo se pueda instanciar desde
+	 * la clase SQLFacade.
+	 * @param conn Conexión a la base de datos.
+	 */
 	protected SQLTipos (Connection conn) {
 		this.conn = conn;
 	}
 	
+	/**
+	 * Recupera todos los tipos de caso a los que está asociado un usuario.
+	 * @param usuario El nombre del usuario.
+	 * @return La lista de tipos de caso asociados al usuario.
+	 * @throws PersistenciaException Si se produjo algún error en la operación.
+	 */
 	public List<TipoCaso> getTipos(String usuario) throws PersistenciaException{
 		try {
 			PreparedStatement ps = conn.prepareStatement("select caso.* from caso join " +
@@ -36,6 +56,11 @@ public class SQLTipos {
 		}
 	}
 	
+	/**
+	 * Recupera todos los tipos de caso almacenados en la base de datos.
+	 * @return Una lista con todos los tipos de caso.
+	 * @throws PersistenciaException Si se produjo algún error en la operación.
+	 */
 	public List<TipoCaso> getTipos() throws PersistenciaException{
 		PreparedStatement ps;
 		try {
@@ -47,6 +72,14 @@ public class SQLTipos {
 		return getTipos(ps);
 	}
 	
+	/**
+	 * Busca el id de un objeto del modelo en la base de datos, dado su nombre.
+	 * @param tabla El tipo de objeto buscado. Puede ser "caso", "usuario" o "tecnica".
+	 * @param nombre El nombre del objeto del que se quiere el id.
+	 * @return El id del objeto buscado.
+	 * @throws SQLException Si se produjo algún error en la operación.
+	 * @throws PersistenciaException Si no encuentra el objeto buscado.
+	 */
 	private int buscarId(String tabla, String nombre) throws SQLException, PersistenciaException {
 		PreparedStatement ps = conn.prepareStatement("SELECT id FROM "+tabla+" WHERE nombre=?;");
 		ps.setString(1, nombre);
@@ -60,8 +93,11 @@ public class SQLTipos {
 		}
 		return id;	
 	}
-	/*Auxiliar. Borra los parametros asociados a la metrica de un tipo.
-	/*@param idCaso id del tipo del que se quieren borrar los parámetros.
+
+	/**
+	 * Borra los parámetros asociados a las técnicas de un tipo de caso.
+	 * @param idCaso Id del tipo de caso del que se quieren borrar los parámetros.
+	 * @throws SQLException Si se produjo algún error en la operación.
 	 */
 	private void removeParamTipo(int idCaso) throws SQLException{
 		PreparedStatement ps;
@@ -76,6 +112,12 @@ public class SQLTipos {
 		}
 	}
 	
+	/**
+	 * Elimina un tipo de caso de la base de datos.
+	 * @param nombre El nombre del tipo de caso a eliminar.
+	 * @return Si la operación tuvo éxito o no.
+	 * @throws PersistenciaException Si se produjo algún error durante la operación.
+	 */
 	public boolean removeTipo (String nombre) throws PersistenciaException {
 		boolean exito = false;
 		try {
@@ -96,6 +138,12 @@ public class SQLTipos {
 		return exito;
 	}
 	
+	/**
+	 * Añade un nuevo tipo de caso a la base de datos.
+	 * @param tc El tipo de caso a añadir.
+	 * @return Si la operación tuvo éxito o no.
+	 * @throws PersistenciaException Si se produjo algún error durante la operación.
+	 */
 	public boolean addTipo (TipoCaso tc) throws PersistenciaException {
 		int exito = 0; 
 		
@@ -117,8 +165,15 @@ public class SQLTipos {
 		return (exito == tc.getAtbos().size()+1);
 	}
 
-	private int terminaAddTipo(int id, TipoCaso tc)
-					throws SQLException, PersistenciaException {
+	/**
+	 * Inserta en la base de datos los atributos y técnicas que forman parte de un tipo de caso.
+	 * @param id El id del tipo de caso.
+	 * @param tc El tipo de caso (que contiene la información sobre los atributos).
+	 * @return El número de atributos insertados.
+	 * @throws SQLException Si se produjo algún error durante la operación.
+	 * @throws PersistenciaException Si no encuentra en la base de datos algo que debería estar.
+	 */
+	private int terminaAddTipo(int id, TipoCaso tc)	throws SQLException, PersistenciaException {
 		int exito = 0;
 		for (Atributo a : tc.getAtbos().values()) {
 			PreparedStatement psA = conn
@@ -142,6 +197,14 @@ public class SQLTipos {
 		return exito;
 	}
 	
+	/**
+	 * Almacena en la base de datos las técnicas por defecto de cada una de las etapas para un
+	 * tipo de caso dado.
+	 * @param id El id del tipo de caso.
+	 * @param tc El tipo de caso que contiene la información a guardar en la base de datos.
+	 * @throws SQLException Si se produjo algún error durante la operación.
+	 * @throws PersistenciaException Si no encuentra alguna de las técnicas en la base de datos.
+	 */
 	private void addTecnicasDefault(int id, TipoCaso tc) throws SQLException, PersistenciaException {
 		int[] ids = new int[4];
 		
@@ -159,6 +222,13 @@ public class SQLTipos {
 		ps.executeUpdate();
 	}
 
+	/**
+	 * Rellena una lista de tipos de caso dado un PreparedStatement (método en el que delegan
+	 * los otros métodos de recuperación de tipos de caso).
+	 * @param ps El PreparedStatement que contiene la consulta sql que devuelve los tipos requeridos.
+	 * @return La lista de tipos de caso ya rellenados.
+	 * @throws PersistenciaException Si se produjo algún error durante la operación.
+	 */
 	private List<TipoCaso> getTipos(PreparedStatement ps) throws PersistenciaException {
 		List<TipoCaso> lista = null;
 		try {
@@ -175,7 +245,7 @@ public class SQLTipos {
 				
 				ps2 = conn.prepareStatement("SELECT * FROM caso_tecnica_parametro JOIN tecnica ON caso_tecnica_parametro.id_tecnica=tecnica.id WHERE caso_tecnica_parametro.id_caso="+rs.getInt("id")+";");
 				rs2 = ps2.executeQuery();
-				getTecnicasCaso(tc, rs, rs2, rs.getInt("id"), -1);
+				getTecnicasCaso(tc, rs, rs2, rs.getInt("id"));
 				
 				lista.add(tc);
 			}
@@ -188,7 +258,12 @@ public class SQLTipos {
 		return lista;
 	}
 	
-	/*Auxiliar. Recoge los atributos del caso.*/
+	/**
+	 * Rellena un tipo de caso con los atributos que lo componen.
+	 * @param tc El tipo de caso a rellenar.
+	 * @param rs2 El ResultSet que contiene la información de los atributos.
+	 * @throws SQLException Si se produjo algún error durante la operación.
+	 */
 	private void getAtbosCaso(TipoCaso tc, ResultSet rs2) throws SQLException{
 		HashMap<String, Atributo> atbos = new HashMap<String, Atributo> ();
 		while (rs2.next()) {
@@ -204,8 +279,15 @@ public class SQLTipos {
 		tc.setAtbos(atbos);
 	}
 	
-	/*Auxiliar. Recoge las tecnicas asociadas al caso.*/
-	private void getTecnicasCaso(TipoCaso tc, ResultSet rsCaso, ResultSet rsTec, int idCaso, int defaultTec) throws SQLException {
+	/**
+	 * Rellena un objeto de tipo TipoCaso con las técnicas asignadas a él en la base de datos.
+	 * @param tc El tipo de caso a rellenar.
+	 * @param rsCaso El ResultSet con la información del caso.
+	 * @param rsTec El ResultSet con la información de las técnicas.
+	 * @param idCaso El id del caso en la base de datos.
+	 * @throws SQLException Si se produjo algún error durante la operación.
+	 */
+	private void getTecnicasCaso(TipoCaso tc, ResultSet rsCaso, ResultSet rsTec, int idCaso) throws SQLException {
 		ArrayList<Tecnica> lRec = new ArrayList<Tecnica>();
 		ArrayList<Tecnica> lReu = new ArrayList<Tecnica>();
 		ArrayList<Tecnica> lRev = new ArrayList<Tecnica>();
@@ -222,7 +304,7 @@ public class SQLTipos {
 					}
 				}
 				if (!repe) {
-					t = addTecnicaParametros(lRec, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRec"));
+					t = addTecnicaParametros(lRec, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"));
 					if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRec")) {
 						tc.setDefaultRec(t);
 					}
@@ -238,7 +320,7 @@ public class SQLTipos {
 					}
 				}
 				if (!repe) {
-					t = addTecnicaParametros(lReu, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultReu"));
+					t = addTecnicaParametros(lReu, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"));
 					if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultReu")) {
 						tc.setDefaultReu(t);
 					}
@@ -254,7 +336,7 @@ public class SQLTipos {
 					}
 				}
 				if (!repe) {
-					t = addTecnicaParametros(lRev, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRev"));
+					t = addTecnicaParametros(lRev, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"));
 					if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRev")) {
 						tc.setDefaultRev(t);
 					}
@@ -270,7 +352,7 @@ public class SQLTipos {
 					}
 				}
 				if (!repe) {
-					t = addTecnicaParametros(lRet, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"), rsCaso.getInt("caso.defaultRet"));
+					t = addTecnicaParametros(lRet, idCaso, rsTec.getInt("tecnica.id"), rsTec.getString("tecnica.nombre"));
 					if (rsTec.getInt("tecnica.id") == rsCaso.getInt("caso.defaultRet")) {
 						tc.setDefaultRet(t);
 					}
@@ -305,8 +387,18 @@ public class SQLTipos {
 		}
 	}
 
-	// Auxiliar. Añade una tecnica con todos sus parámetros a la lista de técnicas de su tipo
-	private Tecnica addTecnicaParametros(List<Tecnica> lista, int idCaso, int idTecnica, String nomTecnica, int defaultTec) throws SQLException {
+	/**
+	 * Recupera de la base de datos una técnica con todos sus parámetros y la añade a la lista
+	 * de técnicas de su tipo.
+	 * @param lista La lista a la que se añade la técnica.
+	 * @param idCaso El id del tipo de caso al que se asocian las técnicas.
+	 * @param idTecnica El id de la técnica a recuperar.
+	 * @param nomTecnica El nombre de la técnica a recuperar.
+	 * @return La técnica recuperada.
+	 * @throws SQLException Si se produce algún error durante la operación.
+	 */
+	private Tecnica addTecnicaParametros(List<Tecnica> lista, int idCaso, int idTecnica,
+			String nomTecnica) throws SQLException {
 		Tecnica t = new Tecnica();
 		t.setNombre(nomTecnica);
 		List<Parametro> listaP = new ArrayList<Parametro>(2);
@@ -327,7 +419,16 @@ public class SQLTipos {
 		return t;
 	}
 
-	// Auxiliar: guarda en la BD la relación de técnicas y parámetros asociados a un caso
+	/**
+	 * Guarda en la base de datos la relación de técnicas de un determinado tipo y parámetros
+	 * de configuración asociados a un tipo de caso. 
+	 * @param idCaso El id del tipo de caso.
+	 * @param lista La lista de técnicas a asociar.
+	 * @param tipo La etapa a la que corresponden las técnicas. Puede ser "rec", "reu", "rev" o "ret".
+	 * @throws SQLException Si se produjo algún error en la operación.
+	 * @throws PersistenciaException Si añade una técnica o parámetro nuevos y no los encuentra
+	 * después de insertarlos.
+	 */
 	private void addTecnicasCaso (int idCaso, List<Tecnica> lista, String tipo) throws SQLException, PersistenciaException {
 		for (Tecnica t : lista) {
 			if (t.getEnabled()) {
@@ -358,6 +459,13 @@ public class SQLTipos {
 		}
 	}
 
+	/**
+	 * Inserta un parámetro (para configurar una técnica) en la base de datos.
+	 * @param p El parámetro a insertar.
+	 * @return El id del nuevo parámetro.
+	 * @throws SQLException Si se produjo algún error en la operación.
+	 * @throws PersistenciaException Si no encuentra el id del parámetro una vez insertado.
+	 */
 	private int addParametro(Parametro p) throws SQLException,
 			PersistenciaException {
 		ResultSet rs;
@@ -379,6 +487,14 @@ public class SQLTipos {
 		return idp;
 	}
 
+	/**
+	 * Inserta en la base de datos una técnica que anteriormente no estaba.
+	 * @param t La técnica a añadir.
+	 * @param tipo La etapa a la que corresponde. Puede ser "rec", "reu", "rev" o "ret".
+	 * @return El Id de la técnica insertada.
+	 * @throws SQLException Si se produce algún error en la operación.
+	 * @throws PersistenciaException Si no encuentra la técnica una vez insertada.
+	 */
 	private int addTecnica(Tecnica t, String tipo) throws SQLException,
 			PersistenciaException {
 		PreparedStatement pst = conn.prepareStatement("INSERT INTO tecnica(nombre,tipo) VALUES (?,?);");
@@ -388,6 +504,13 @@ public class SQLTipos {
 		return buscarId("tecnica", t.getNombre());
 	}
 
+	/**
+	 * Modifica un tipo de caso en la base de datos. Mantiene los usuarios asignados a él y
+	 * las estadísticas generadas hasta el momento.
+	 * @param tc El tipo de caso modificado.
+	 * @return Si la operación tuvo éxito o no.
+	 * @throws PersistenciaException Si se produjo algún error en la operación.
+	 */
 	public boolean updateTipoCaso(TipoCaso tc) throws PersistenciaException{
 		int exito = 0;
 		try {
