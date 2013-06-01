@@ -1,0 +1,10 @@
+servidorcbr.controlador
+servidorcbr.controlador.cicloCBR
+servidorcbr.controlador.cicloCBR.ejecucion
+servidorcbr.controlador.generadorClases
+servidorcbr.modelo
+servidorcbr.modelo.excepciones
+servidorcbr.persistencia.hbase
+servidorcbr.persistencia.sql
+servidorcbr.servlets
+test.persistencia.sql
