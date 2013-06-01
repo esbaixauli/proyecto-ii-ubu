@@ -1,0 +1,13 @@
+controlador
+controlador.util
+vista
+vista.ayuda
+vista.cicloCBR
+vista.componentesGenericos
+vista.estadisticas
+vista.internacionalizacion
+vista.panels
+vista.tablas
+vista.tipos
+vista.tipos.configtecnicas
+vista.usuarios
