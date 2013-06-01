@@ -31,11 +31,21 @@ import servidorcbr.persistencia.sql.SQLFacade;
 
 
 /**
- * Servlet implementation class ServletCBR
+ * Servlet implementation class ServletCBR. Se encarga de gestionar las peticiones del cliente
+ * relacionadas con el ciclo CBR.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
  */
 @WebServlet("/ServletCBR")
 public class ServletCBR extends HttpServlet {
+	
+	/**
+	 * Requerido por la interfaz Serializable (implementada por HttpServlet).
+	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Instancia de LanzadorCBR para lanzar las distintas etapas del ciclo. 
+	 */
 	private LanzadorCBR lanzador = new LanzadorCBR();
 
 	/**
@@ -70,63 +80,99 @@ public class ServletCBR extends HttpServlet {
 		if (tipo.equals("retrieve")) {
 			iniciaRetrieval(oos, ois);
 		} else if (tipo.equals("reuse")) {
-			TipoCaso tc = null;
-			HashMap<String,Serializable> query = null;
-			List<HashMap<String,Serializable>> casos = null;
-			try {
-				tc = (TipoCaso) ois.readObject();
-				query = (HashMap<String,Serializable>) ois.readObject();
-				casos = (List<HashMap<String,Serializable>>) ois.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			Collection<CBRCase> result = lanzador.reuse(tc, casos, query);
-			List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
-			for (CBRCase caso : result) {
-				casosH.add(RellenadorClases.rellenarHash(tc, caso));
-			}
-			oos.writeObject(casosH);
+			iniciaReuse(oos, ois);
 		} else if (tipo.equals("retain")) {
-			TipoCaso tc = null;
-			HashMap<String,Serializable> caso = null;
-			Usuario u = null;
-			try {
-				tc = (TipoCaso) ois.readObject();
-				caso = (HashMap<String,Serializable>) ois.readObject();
-				u = (Usuario) ois.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			try {
-				boolean result = ControladorCasos.retain(tc, caso);
-				if (result) {
-					ControladorEstadisticas.updateEstadistica(u, tc, (Integer) caso.get("META_QUALITY"));
-				}
-				oos.writeBoolean(result);
-			} catch (PersistenciaException e) {
-				e.printStackTrace();
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			}
+			iniciaRetain(response, oos, ois);
 		}else if(tipo.equals("completo")){
-			System.out.println("Inicia ciclo completo");
-			TipoCaso tc = null;
-			HashMap<String,Serializable> query = null;
-			try {
-				tc = (TipoCaso) ois.readObject();
-				query = (HashMap<String,Serializable>) ois.readObject();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			
-			Collection<CBRCase> casos = lanzador.reuse(tc,lanzador.retrieve(tc, query));
-			List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
-			for (CBRCase caso : casos) {
-				casosH.add(RellenadorClases.rellenarHash(tc, caso));
-			}
-			oos.writeObject(casosH);
+			cicloCompleto(oos, ois);
 		}
 		oos.close();
 		sos.close();
+	}
+
+	/**
+	 * Inicia una ejecución del ciclo completo. Para ello, recibe el tipo de caso y el query
+	 * del cliente, lanza la recuperación y con el resultado lanza la reutilización. Como la 
+	 * revisión es manual, devuelve la salida de la reutilización al cliente.
+	 * @param oos ObjectOutputStream al que escribir la salida de la reutilización.
+	 * @param ois ObjectInputStream del que leer el tipo de caso y el query.
+	 * @throws IOException Si se produce un error de conexión.
+	 */
+	private void cicloCompleto(ObjectOutputStream oos, ObjectInputStream ois)
+			throws IOException {
+		TipoCaso tc = null;
+		HashMap<String,Serializable> query = null;
+		try {
+			tc = (TipoCaso) ois.readObject();
+			query = (HashMap<String,Serializable>) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		Collection<CBRCase> casos = lanzador.reuse(tc,lanzador.retrieve(tc, query));
+		List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
+		for (CBRCase caso : casos) {
+			casosH.add(RellenadorClases.rellenarHash(tc, caso));
+		}
+		oos.writeObject(casosH);
+	}
+
+	/**
+	 * Lanza la etapa de retención, es decir, almacena el caso nuevo en Hbase.
+	 * @param response Respuesta del servlet, por si hay que escribir un error.
+	 * @param oos ObjectOutputStream al que escribir si la operación ha tenido éxito o no.
+	 * @param ois ObjectInputStream del que leer el tipo de caso, el caso y el usuario.
+	 * @throws IOException Si se produce un error de conexión.
+	 */
+	private void iniciaRetain(HttpServletResponse response,
+			ObjectOutputStream oos, ObjectInputStream ois) throws IOException {
+		TipoCaso tc = null;
+		HashMap<String,Serializable> caso = null;
+		Usuario u = null;
+		try {
+			tc = (TipoCaso) ois.readObject();
+			caso = (HashMap<String,Serializable>) ois.readObject();
+			u = (Usuario) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			boolean result = ControladorCasos.retain(tc, caso);
+			if (result) {
+				ControladorEstadisticas.updateEstadistica(u, tc, (Integer) caso.get("META_QUALITY"));
+			}
+			oos.writeBoolean(result);
+		} catch (PersistenciaException e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Inicia la reutilización de un conjunto de casos. Después envía al cliente los casos
+	 * adaptados.
+	 * @param oos ObjectOutputStream al que escrir los casos adaptados.
+	 * @param ois ObjectInputStream del que leer el tipo de caso, el query y los casos sin adaptar.
+	 * @throws IOException Si se produce un error de conexión.
+	 */
+	private void iniciaReuse(ObjectOutputStream oos, ObjectInputStream ois)
+			throws IOException {
+		TipoCaso tc = null;
+		HashMap<String,Serializable> query = null;
+		List<HashMap<String,Serializable>> casos = null;
+		try {
+			tc = (TipoCaso) ois.readObject();
+			query = (HashMap<String,Serializable>) ois.readObject();
+			casos = (List<HashMap<String,Serializable>>) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		Collection<CBRCase> result = lanzador.reuse(tc, casos, query);
+		List<HashMap<String,Serializable>> casosH = new ArrayList<HashMap<String,Serializable>>(casos.size());
+		for (CBRCase caso : result) {
+			casosH.add(RellenadorClases.rellenarHash(tc, caso));
+		}
+		oos.writeObject(casosH);
 	}
 
 	/**Inicia la fase de retrieval a petición del cliente.

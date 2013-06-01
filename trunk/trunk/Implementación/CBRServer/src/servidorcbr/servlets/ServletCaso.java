@@ -23,10 +23,16 @@ import servidorcbr.modelo.excepciones.PersistenciaException;
 
 
 /**
- * Servlet implementation class ServletTipo
+ * Servlet implementation class ServletCaso. Se encarga de gestionar las peticiones del cliente
+ * relacionadas con inserción o recuperación de casos.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
  */
 @WebServlet("/ServletCaso")
 public class ServletCaso extends HttpServlet {
+	
+	/**
+	 * Requerido por la interfaz Serializable (implementada por HttpServlet).
+	 */
 	private static final long serialVersionUID = 1L;
        
     /**
@@ -60,24 +66,9 @@ public class ServletCaso extends HttpServlet {
 				e1.printStackTrace();
 			}
 			if (tipo.equals("putCasos")) {
-				TipoCaso tc = null;
-				List<HashMap<String,Serializable>> casos = null;
-				try {
-					tc = (TipoCaso) ois.readObject();
-					casos = (List<HashMap<String,Serializable>>) ois.readObject();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-				oos.writeBoolean(ControladorCasos.putCasos(tc, casos));
+				putCasos(oos, ois);
 			} else if (tipo.equals("getCasos")) {
-				Usuario u = null;
-				try {
-					u = (Usuario) ois.readObject();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-				List<TipoCaso> l = ControladorTipos.getTipos(u);
-				oos.writeObject(l);
+				getCasos(oos, ois);
 			}
 		} catch (PersistenciaException ex) {
 			ex.printStackTrace();
@@ -85,6 +76,45 @@ public class ServletCaso extends HttpServlet {
 		}
 		oos.close();
 		sos.close();
+	}
+
+	/**
+	 * Recupera los tipos de caso asociados a un usuario. 
+	 * @param oos El ObjectOutputStream al que escribir la lista de casos.
+	 * @param ois El ObjectInputStream del que leer el usuario.
+	 * @throws IOException Si hay un error de conexión.
+	 * @throws PersistenciaException Si hay un error en la capa de persistencia.
+	 */
+	private void getCasos(ObjectOutputStream oos, ObjectInputStream ois)
+			throws IOException, PersistenciaException {
+		Usuario u = null;
+		try {
+			u = (Usuario) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		List<TipoCaso> l = ControladorTipos.getTipos(u);
+		oos.writeObject(l);
+	}
+
+	/**
+	 * Almacena una lista de casos en Hbase.
+	 * @param oos ObjectOutputStream al que escribir si la operación ha tenido éxito o no.
+	 * @param ois ObjectInputStream del que leer el tipo de caso y la lista de casos.
+	 * @throws IOException Si hay un error de conexión.
+	 * @throws PersistenciaException Si hay un error de persistencia.
+	 */
+	private void putCasos(ObjectOutputStream oos, ObjectInputStream ois)
+			throws IOException, PersistenciaException {
+		TipoCaso tc = null;
+		List<HashMap<String,Serializable>> casos = null;
+		try {
+			tc = (TipoCaso) ois.readObject();
+			casos = (List<HashMap<String,Serializable>>) ois.readObject();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		oos.writeBoolean(ControladorCasos.putCasos(tc, casos));
 	}
 
 }

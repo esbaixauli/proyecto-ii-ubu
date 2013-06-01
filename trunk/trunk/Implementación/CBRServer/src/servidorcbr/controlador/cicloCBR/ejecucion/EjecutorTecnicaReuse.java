@@ -23,15 +23,39 @@ import servidorcbr.modelo.Parametro;
 import servidorcbr.modelo.Tecnica;
 import servidorcbr.modelo.TipoCaso;
 
+/**
+ * Ejecutor de las técnicas de reutilización. Hace de fachada de las clases de jColibri para
+ * utilizarlas desde servidorcbr.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class EjecutorTecnicaReuse {
+	
+	/**
+	 * El tipo de caso sobre el que se va a aplicar la reutilización.
+	 */
 	private TipoCaso tc;
+	
+	/**
+	 * Constructor de la clase. Recibe el tipo de caso.
+	 * @param tc El tipo de caso sobre el que se va a aplicar la reutilización.
+	 */
 	public EjecutorTecnicaReuse(TipoCaso tc){
 		this.tc=tc;
 	}
 	
-	private String origen, destino;
+	/**
+	 * Para las técnicas que requieren copiar un atributo sobre otro, éste es el origen.
+	 */
+	private String origen;
 	
-	/** Ejecuta la técnica de adaptación por defecto para este tipo de caso.
+	/**
+	 * Para las técnicas que requieren copiar un atributo sobre otro, éste es el destino.
+	 */
+	private String destino;
+	
+	/** 
+	 * Ejecuta la técnica de adaptación por defecto para este tipo de caso.
 	 * @param casos La lista de casos para los que se ejecuta la técnica.
 	 * @param query La consulta a realizar.
 	 * @return resultado de la adaptación
@@ -73,8 +97,9 @@ public class EjecutorTecnicaReuse {
 	}
 
 	
-	/** Auxiliar. Para las técnicas que requieren copiar un atributo a otro,
-	 *  busca qué atributo se debe copiar a cual.
+	/**
+	 * Auxiliar. Para las técnicas que requieren copiar un atributo a otro,
+	 * busca qué atributo se debe copiar a cual.
 	 */
 	private void setOrigenYDestino() {
 		Parametro p1 = tc.getDefaultReu().getParams().get(0);	
@@ -96,7 +121,8 @@ public class EjecutorTecnicaReuse {
 		}
 	}
 
-	/** Auxiliar. Devuelve el primer atributo del problema o de la solución que encuentre en el tipo de caso.
+	/** 
+	 * Auxiliar. Devuelve el primer atributo del problema o de la solución que encuentre en el tipo de caso.
 	 * Este método se emplea si no existen valores
 	 * configuración para la técnica de adaptación, en cuyo caso toma
 	 * valores de atributos aleatorios.
@@ -113,8 +139,10 @@ public class EjecutorTecnicaReuse {
 	}
 
 	
-	/** Realiza una combinación de los resultados, si la técnica así lo indica en sus parámetros.
-	 * @return
+	/** 
+	 * Realiza una combinación de los resultados, si la técnica así lo indica en sus parámetros.
+	 * @param casos La colección de casos a combinar (o no).
+	 * @return El caso resultado de combinarlos si había que hacerlo, o la colección completa si no.
 	 */
 	private Collection<CBRCase> combinar(Collection<CBRCase> casos){
 		Tecnica t = tc.getDefaultReu();
@@ -133,8 +161,11 @@ public class EjecutorTecnicaReuse {
 		
 	}
 	
-	/**Auxiliar. Realiza la combinación de los casos según el modo pedido.
-	 * @return
+	/**
+	 * Realiza la combinación de los casos según el modo pedido.
+	 * @param combinacion El tipo de combinación requerida, puede ser "MEDIA" o "MODA".
+	 * @param casos La colección de casos a combinar.
+	 * @return Una collection con un solo CBRCase, el resultado de combinar los existentes.
 	 */
 	private Collection<CBRCase> combinar(String combinacion,Collection<CBRCase> casos){
 		try{

@@ -22,7 +22,9 @@ import servidorcbr.modelo.excepciones.PersistenciaException;
 
 
 /**
- * Servlet implementation class ServletEstadisticas
+ * Servlet implementation class ServletEstadisticas. Se encarga de gestionar las peticiones del cliente
+ * relacionadas con la gestión de estadísticas.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
  */
 @WebServlet("/ServletEstadisticas")
 public class ServletEstadisticas extends HttpServlet {

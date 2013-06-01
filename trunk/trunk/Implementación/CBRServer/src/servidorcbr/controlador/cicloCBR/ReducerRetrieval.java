@@ -38,11 +38,24 @@ import servidorcbr.modelo.Atributo;
 import servidorcbr.modelo.Calidad;
 import servidorcbr.modelo.TipoCaso;
 
+/**
+ * Reducer de la etapa de recuperación: recibe los casos almacenados en su región, los convierte
+ * a CBRCase, les aplica la técnica de recuperación elegida por el usuario y guarda los restantes
+ * en una tabla temporal de Hbase creada por LanzadorCBR.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class ReducerRetrieval extends
 		TableReducer<ImmutableBytesWritable, Result, ImmutableBytesWritable> {
 	
+	/**
+	 * ColumnFamily en la que están almacenados todos los campos del caso.
+	 */
 	private final byte[] cf = Bytes.toBytes("campos");
 
+	/* (non-Javadoc)
+	 * @see org.apache.hadoop.mapreduce.Reducer#reduce(KEYIN, java.lang.Iterable, org.apache.hadoop.mapreduce.Reducer.Context)
+	 */
 	@Override
 	public void reduce(ImmutableBytesWritable key, Iterable<Result> values, Context context) {
 		// Convierte los values a objetos del problema y se los manda a ejecutar
@@ -105,6 +118,16 @@ public class ReducerRetrieval extends
 		}
 	}
 
+	/**
+	 * Lee la fila de la tabla en Hbase y la convierte en un CBRCase.
+	 * @param tc El tipo de caso correspondiente.
+	 * @param key Id de la fila en Hbase.
+	 * @param row La fila de Hbase.
+	 * @param cdesc La clase que representa la descripción del caso (implementa CaseComponent). 
+	 * @param csol La clase que representa la solución del caso (implementa CaseComponent).
+	 * @return El caso en forma de objeto CBRCase.
+	 * @throws ClassNotFoundException Si no encuentra alguna de las clases.
+	 */
 	private CBRCase obtenerCaso(TipoCaso tc, ImmutableBytesWritable key, Result row, Class<? extends CaseComponent> cdesc, Class<? extends CaseComponent> csol)
 			throws ClassNotFoundException {
 		CaseComponent desc = null, solution = null;

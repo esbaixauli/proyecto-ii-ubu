@@ -12,18 +12,46 @@ import jcolibri.method.retrieve.RetrievalResult;
 import jcolibri.method.retrieve.NNretrieval.NNConfig;
 import jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
 
+/**
+ * Clase abstracta que describe cómo deben ser los ejecutores de técnicas de recuperación.
+ * Para implementar nuevas técnicas de recuperación habría que heredar de esta clase.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public abstract class EjecutorTecnicaRetrieval {
+	
+	/**
+	 * El tipo de caso sobre el que se aplica la recuperación. 
+	 */
 	protected TipoCaso tc;
 	
+	/**
+	 * Constructor de la clase. Recibe el tipo de caso sobre el que se va a aplicar.
+	 * @param tc El tipo de caso.
+	 */
 	public EjecutorTecnicaRetrieval(TipoCaso tc) {
 		super();
 		this.tc = tc;
 	}
 	
-	public abstract Collection<CBRCase> 
-	ejecutar(Collection<CBRCase> casos, CBRQuery query) throws ClassNotFoundException;
+	/**
+	 * Método que deben implementar las subclases. Aplica la técnica de recuperación a un
+	 * conjunto de casos, dado un query introducido por el usuario.
+	 * @param casos El conjunto de casos sobre el que se aplica.
+	 * @param query El query introducido por el usuario.
+	 * @return Los casos más similares al query (de acuerdo a la técnica).
+	 * @throws ClassNotFoundException Si no encuentra las clases que implementan CaseComponent.
+	 */
+	public abstract Collection<CBRCase>	ejecutar(Collection<CBRCase> casos, CBRQuery query)
+			throws ClassNotFoundException;
 	
-	protected NNConfig getSimilaridadGlobalConfig() throws ClassNotFoundException{
+	/**
+	 * Crea un objeto de configuración NNConfig, que almacena mapeos entre cada atributo del
+	 * caso y la métrica con la que hay que compararlo.
+	 * @return El objeto NNConfig.
+	 * @throws ClassNotFoundException Si no encuentra la clase de descripción del problema.
+	 */
+	protected NNConfig getSimilaridadGlobalConfig() throws ClassNotFoundException {
 		NNConfig config = new NNConfig();
 		Attribute at;
 		Class<?> clase;
@@ -46,6 +74,14 @@ public abstract class EjecutorTecnicaRetrieval {
 		return config;
 	}
 	
+	/**
+	 * Método fachada que instancia la subclase que corresponde a la técnica de recuperación
+	 * configurada en el tipo de caso y llama a su método ejecutar.
+	 * @param casos Los casos sobre los que hay que ejecutar la recuperación.
+	 * @param query El query introducido por el usuario.
+	 * @param tc El tipo de caso con su configuración.
+	 * @return Los casos más similares al query (de acuerdo a la técnica de recuperación).
+	 */
 	public static Collection<CBRCase> ejecutarRetrieval(Collection<CBRCase> casos,
 			CBRQuery query, TipoCaso tc) {
 		EjecutorTecnicaRetrieval ejecutor = null;

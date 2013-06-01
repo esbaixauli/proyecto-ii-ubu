@@ -12,10 +12,24 @@ import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 
+/**
+ * Clase que gestiona el acceso a la base de datos relacional (HSQLDB) para la gestión de
+ * estadísticas.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class SQLOtros {
 
+	/**
+	 * Conexión a la base de datos.
+	 */
 	private Connection conn;
 	
+	/**
+	 * Constructor de la clase. Visibilidad protected para que solo se pueda instanciar desde
+	 * la clase SQLFacade.
+	 * @param conn Conexión a la base de datos.
+	 */
 	protected SQLOtros (Connection conn) {
 		this.conn = conn;
 	}
@@ -63,7 +77,8 @@ public class SQLOtros {
 		return es;
 	}
 	
-	/**Rellena un objeto Estadística con los resultados de un resultset.
+	/**
+	 * Rellena un objeto Estadística con los resultados de un resultset.
 	 * @param rs el resultset con la estadistica.
 	 * @return el objeto Estadística.
 	 * @throws SQLException si hay un error en el resultset.
@@ -90,7 +105,8 @@ public class SQLOtros {
 		return es;
 	}
 	
-	/**Auxiliar.Busca el id por nombre de una tabla.
+	/**
+	 * Auxiliar.Busca el id por nombre de una tabla.
 	 * @param tabla La tabla en la que buscar.
 	 * @param nombre del elemento a buscar.
 	 * @return el id del elemento.
@@ -111,7 +127,8 @@ public class SQLOtros {
 		return id;	
 	}
 	
-	/**Limpia las estadisticas para un tipo de caso y/o un usuario concretos
+	/**
+	 * Limpia las estadisticas para un tipo de caso y/o un usuario concretos
 	 * @param u El usuario. Puede ser el valor "ver todos" si se desea borrar para todos los usuarios del caso.
 	 * @param tc El tipo de caso. Puede ser el valor "ver todos" si se desea borrar para todos los casos del usuario .
 	 * @throws PersistenciaException si ha habido un error en la operación 
@@ -141,7 +158,8 @@ public class SQLOtros {
 
 	}
 	
-	/** Actualiza las estadísticas de un usuario tras una ejecución del ciclo CBR.
+	/** 
+	 * Actualiza las estadísticas de un usuario tras una ejecución del ciclo CBR.
 	 * @param u Usuario que realizó la ejecución.
 	 * @param tc Tipo de caso de la consulta.
 	 * @param calidad Calidad de la solución dada, evaluada por el usuario.

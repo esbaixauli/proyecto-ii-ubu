@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,14 +12,35 @@ import servidorcbr.modelo.TipoUsuario;
 import servidorcbr.modelo.Usuario;
 import servidorcbr.modelo.excepciones.PersistenciaException;
 
+/**
+ * Clase que gestiona el acceso a la base de datos relacional (HSQLDB) para la gestión de
+ * usuarios.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class SQLUsuarios {
 
+	/**
+	 * Conexión a la base de datos.
+	 */
 	private Connection conn;
 
+	/**
+	 * Constructor de la clase. Visibilidad protected para que solo se pueda instanciar desde
+	 * la clase SQLFacade.
+	 * @param conn Conexión a la base de datos.
+	 */
 	protected SQLUsuarios(Connection conn) {
 		this.conn = conn;
 	}
 
+	/**
+	 * Añade un nuevo usuario a la base de datos.
+	 * @param u El usuario a añadir.
+	 * @param casos La lista de tipos de caso a los que está asignado inicialmente.
+	 * @return Si la operación tuvo éxito o no.
+	 * @throws PersistenciaException Si se produjo algún error en la operación.
+	 */
 	public boolean addUsuario(Usuario u, List<String> casos)
 			throws PersistenciaException {
 		boolean exito = false;
@@ -40,6 +60,12 @@ public class SQLUsuarios {
 		return exito;
 	}
 
+	/**
+	 * Devuelve un HashMap que contiene todos los usuarios del sistema. Mapea el nombre de
+	 * cada usuario con el objeto de tipo Usuario correspondiente.
+	 * @return El HashMap con todos los usuarios del sistema.
+	 * @throws PersistenciaException Si se produjo algún error en la operación.
+	 */
 	public HashMap<String, Usuario> getUsuarios() throws PersistenciaException {
 
 		HashMap<String, Usuario> usuarios = new HashMap<String, Usuario>();
@@ -62,7 +88,13 @@ public class SQLUsuarios {
 		return usuarios;
 	}
 
-	// Auxiliar. Obtiene el id de un nombre de usuario.
+	/**
+	 * Obtiene el Id en base de datos de un usuario, dado su nombre.
+	 * @param u El nombre del usuario cuyo id se necesita.
+	 * @return El id del usuario.
+	 * @throws SQLException Si se produjo algún error en las sentencias SQL.
+	 * @throws PersistenciaException Si el usuario no se pudo encontrar.
+	 */
 	private int obtenerId(String u) throws SQLException, PersistenciaException {
 		int id = -1;
 		PreparedStatement ps = conn
@@ -79,6 +111,12 @@ public class SQLUsuarios {
 		return id;
 	}
 
+	/**
+	 * Elimina un usuario de la base de datos.
+	 * @param u El usuario a eliminar.
+	 * @return Si la operación tuvo éxito o no.
+	 * @throws PersistenciaException Si se produjo algún error durante la operación.
+	 */
 	public boolean removeUsuario(Usuario u) throws PersistenciaException {
 		int exito = 0;
 		try {
@@ -97,6 +135,14 @@ public class SQLUsuarios {
 		return (exito == 1);
 	}
 
+	/**
+	 * Modifica un usuario, cambiando su contraseña, su tipo o los tipos de caso a los que 
+	 * está asociado.
+	 * @param u El usuario modificado.
+	 * @param casos La lista de casos a los que está asociado.
+	 * @return Si la operación tuvo éxito o no.
+	 * @throws PersistenciaException Si se produjo algún error durante la operación.
+	 */
 	public boolean modUsuario(Usuario u, List<String> casos)
 			throws PersistenciaException {
 		int count = 0;
@@ -119,7 +165,8 @@ public class SQLUsuarios {
 	}
 
 	
-	/** Auxiliar. Establece la relación usuario-n-----n-casos.
+	/**
+	 * Auxiliar. Establece la relación usuario-n-----n-casos.
 	 * @param u El usuario para establecer sus relaciones.
 	 * @param casos Los casos con los que se relaciona.
 	 * @throws PersistenciaException Si se produce un error de conexión.
@@ -184,7 +231,8 @@ public class SQLUsuarios {
 	
 
 	
-	/**Auxiliar. Traduce un tipo de usuario a la notación de la aplicación.
+	/**
+	 * Auxiliar. Traduce un tipo de usuario a la notación de la aplicación.
 	 * @param t el tipo de usuario "A","UA","UB"
 	 * @return el tipo de usuario en forma de enum
 	 */
@@ -201,7 +249,8 @@ public class SQLUsuarios {
 	}
 
 	
-	/** Auxiliar. Traduce un tipo de usuario a la notación de la BD.
+	/**
+	 * Auxiliar. Traduce un tipo de usuario a la notación de la BD.
 	 * @param t Enum del tipo de usuario
 	 * @return cadena con el tipo de usuario. "A", "UA" o "UB"
 	 */
@@ -217,7 +266,8 @@ public class SQLUsuarios {
 		return res;
 	}
 	
-	/** Obtiene las estadisticas de un usuario.
+	/**
+	 * Obtiene las estadisticas de un usuario.
 	 * @param id Id del usuario.
 	 * @return Mapa cuya clave es el id de cada caso con las estadísticas de los casos del usuario.
 	 * @throws SQLException en caso de usuario no encontrado.
