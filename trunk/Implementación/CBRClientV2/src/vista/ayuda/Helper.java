@@ -7,13 +7,15 @@ import javax.help.JHelp;
 import javax.swing.JFrame;
 
 
-/**Helper para la ayuda.
+/**
+ * Helper para la ayuda.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */
 public class Helper {
     
-    /**Constructor del helper.
+    /**
+     * Constructor del helper.
      * @param topicID Cadena con el nombre del panel del que se mostrará ayuda.
      */
     public static void getHelp (String topicID) {

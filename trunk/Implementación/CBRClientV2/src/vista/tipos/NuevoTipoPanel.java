@@ -26,12 +26,9 @@ import vista.componentesGenericos.PanelEstandar;
 import vista.panels.PanelAtributos;
 import vista.panels.ScrollPanelAtbo;
 
-/**Panel general de nuevo tipo de caso. Contiene todos los subcomponentes
- * necesarios para gestionar la creación de un nuevo tipo.
- * @author Rubén Antón García, Enrique Sainz Baixauli
- *
- */
 /**
+ * Panel general de nuevo tipo de caso. Contiene todos los subcomponentes
+ * necesarios para gestionar la creación de un nuevo tipo.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */
