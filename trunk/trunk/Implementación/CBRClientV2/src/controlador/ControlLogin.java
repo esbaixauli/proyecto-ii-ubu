@@ -9,6 +9,13 @@ import java.net.URLConnection;
 
 import servidorcbr.modelo.Usuario;
 
+/**
+ * Controlador de Login. Únicamente contiene un método estático que se comunica con el servidor
+ * para comprobar que un nombre de usuario y una contraseña se corresponden con un usuario
+ * del sistema.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ *
+ */
 public class ControlLogin {
 
 	

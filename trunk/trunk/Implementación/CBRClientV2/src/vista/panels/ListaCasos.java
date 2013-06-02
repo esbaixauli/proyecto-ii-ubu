@@ -11,7 +11,8 @@ import javax.swing.border.TitledBorder;
 
 import servidorcbr.modelo.TipoCaso;
 
-/** Lista de usuarios. Puede usarse en varias partes del sistema, pero
+/** 
+ * Lista de tipos de caso. Puede usarse en varias partes del sistema, pero
  * no es un componente totalmente independiente del contexto y por tanto 'genérico'.
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *

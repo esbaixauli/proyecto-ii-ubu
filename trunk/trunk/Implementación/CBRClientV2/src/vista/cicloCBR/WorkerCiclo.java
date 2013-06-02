@@ -11,6 +11,12 @@ import servidorcbr.modelo.Usuario;
 import vista.componentesGenericos.PanelEstandar;
 import controlador.ControlCBR;
 
+/**
+ * Swingworker que realiza el ciclo CBR completo. Esta consulta se realiza en un hilo
+ * separado por ser muy pesada y bloquear el interfaz si se hiciera en el hilo del GUI.
+ * @author Rubén Antón García, Enrique Sainz Baixauli
+ * @see javax.swing.SwingWorker
+ */
 public class WorkerCiclo extends SwingWorker<List<HashMap<String,Serializable>>, String> {
 	
 	/**
