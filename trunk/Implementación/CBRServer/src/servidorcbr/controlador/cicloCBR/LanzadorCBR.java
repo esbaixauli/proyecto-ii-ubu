@@ -37,35 +37,13 @@ import servidorcbr.persistencia.hbase.HbaseFacade;
  * @author Rubén Antón García, Enrique Sainz Baixauli
  *
  */
-public class LanzadorCBR /*implements StandardCBRApplication*/ {
+public class LanzadorCBR {
 	
 	/**
 	 * Query utilizada en la recuperación, para ser utilizada en la adaptación.
 	 * (solo se utiliza al lanzar el ciclo completo desde ServletCBR)
 	 */
 	private CBRQuery query = null;
-
-	/* Estos métodos no se utilizan... dejamos de implementar StandardCBRApplication?
-	@Override
-	public void configure() throws ExecutionException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void cycle(CBRQuery arg0) throws ExecutionException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void postCycle() throws ExecutionException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public CBRCaseBase preCycle() throws ExecutionException {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
 
 	/**
 	 * Etapa de recuperación: prepara y lanza el job de MapReduce para recuperar los casos
