@@ -2,9 +2,11 @@ package vista.usuarios;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -158,6 +161,7 @@ public class VerCrearUsuarioPanel extends PanelEstandar {
 		panel.add(comboBox, gbc_comboBox);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridheight = 2;
 		gbc_scrollPane.gridwidth = 2;
@@ -190,6 +194,9 @@ public class VerCrearUsuarioPanel extends PanelEstandar {
 		}catch(IOException ex){
 			panelTipos.add(new JLabel(b.getString("connecterror")));
 		}
+
+		scrollPane.setPreferredSize(new Dimension(panelTipos.getWidth(), 240));
+		
 		if (u != null) {
 
 			nombreTextField.setText(u.getNombre());

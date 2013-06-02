@@ -415,6 +415,7 @@ public class PanelEstadisticasInterior extends JPanel {
 		try {
 			est = ControlEstadisticas.getEstadistica(u, vertodostc);
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		refrescarEstadisticas(est);
 		refrescarGraficos(est);
