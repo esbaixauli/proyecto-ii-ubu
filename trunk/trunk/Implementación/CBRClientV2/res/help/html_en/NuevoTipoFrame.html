@@ -1,49 +1,51 @@
 ﻿<html>
 <head>
-	<title>Crear un nuevo tipo de caso</title>
+	<title>Create a new case type</title>
 </head>
 <body>
-	<h1>Crear un nuevo tipo de caso</h1>
-	<h2>Componentes de un tipo de caso</h2>
-	<p>Un tipo de caso se compone de los siguientes elementos:<br/>
-	-Un conjunto de <b>atributos del problema</b>. Cada atributo posee un <b>peso</b> y una <b>métrica</b> de evaluación por defecto,
-	 que se emplearán en las consultas CBR si el usuario no introduce valores para estos campos.<br/>
-	-Un conjunto de <b>atributos de la solución</b>.<br/>
-	-Una serie de <b>técnicas</b> permitidas para cada etapa del ciclo. Entre ellas habrá una que será la empleada por defecto si el usuario ejecuta una
-	 consulta básica o no escoge una técnica en una consulta configurada <A HREF="IntroducirConsultaCBRFrame.html">(Ver apartado de la ayuda sobre consultas).</A><br/>
-	-La configuración de cada una de esas técnicas permitidas.
+	<h1>Create a new case type</h1>
+	<h2>Case type components</h2>
+	<p>A case type is composed of the following:<br/>
+	-A set of <b>problem attributes</b>. Each attribute has a <b>weight</b> and a default evaluation <b>metric</b>.
+	which will be used in a query if the user doesn't/can't specify a value for those fields.<br/>
+	-A set of<b>solution attributes</b>.<br/>
+	-A list of <b>method</b> allowed in each cycle step. Out of those there will be one which will be used as the default in a basic cycle or if the user doesn't
+	 pick one while performing a query.<A HREF="IntroducirConsultaCBRFrame.html">(See help section about queries).</A><br/>
+	-The configuration of each allowed method.
 	</p>
-	<h2>Añadir/borrar atributos</h2><br/>
+	<h2>Add/delete attributes</h2><br/>
 	<img src="img/nuevotipo.jpg"/><br/>
-	<p>Para añadir un atributo, tanto al problema como a la solución se ha de pulsar el botón <img src="img/mas.png"/>.
-		Para borrarlo, pulse el botón <img src="img/borrar.png"/>. Nótese que debe existir al menos un atributo para el problema y uno para la solución.
+	<p>To add an attribute to the problem or solution, click the '+' button:<img src="img/mas.png"/>.
+		To delete it, click the button: <img src="img/borrar.png"/>. Please note there must be an attribute for the problem and one for the solution.
 	</p>
-	<h2>Rellenar atributos</h2>
-	<p>Es obligatorio rellenar todos los campos de cada atributos. Para ello, rellene el nombre de cada atributo (Que ha de ser único).
-	 Después ha de escoger el tipo del atributo. Los tipos permitidos son:<br/>
-	 -Cadena de texto. P.ej:"Prueba"<br/>
-	 -Número entero. P.ej:2<br/>
-	 -Número decimal. P.ej:2,3<br/>
-	 Finalmente, ha de escoger la métrica por defecto. Las métricas disponibles dependen del tipo de atributo. Por ejemplo, la comparación 
-	 por subcadena más larga no está disponible para Numeros enteros o decimales. Algunas métricas requieren un parámetro que la configure 
-	 <A HREF="ConceptosBasicos.html">(Ver apartado sobre conceptos básicos, sección Métricas)</p>
-	 <h2>Establecer técnicas</h2>
+	<h2>Fill out attributes</h2>
+	<p>Its mandatory to fill out every field from each attribute. To do that, fill the name of each attribute (It must be unique).
+	 After that, you must pick the attribute type. The allowed types are:<br/>
+	 -Character string For example:"Test"<br/>
+	 -Integer number. For example:2<br/>
+	 -Decimal number.For example:2.3<br/>
+	 Finally, you must pick a default metric. The default metrics depend on the attribute type. For example, the longest substring comparison isn't available
+	 for Integer numbers or decimals. Some metrics require a configurating parameter.
+	 <A HREF="ConceptosBasicos.html">(See the metrics section in the basic concepts page)</A></p>
+	 <h2>Setting methods</h2>
 	 <br/>
 	<img src="img/tecnicas.jpg"/><br/>
-	 <p>Para establecer las técnicas, pulse el botón "Configurar técnicas". Se comprobará la validez de los atributos introducidos y se mostrará el recuadro
-	 de técnicas, que posee un panel por cada etapa del ciclo CBR. Al lado de cada técnica existe una casilla de verificación
-	 que indica si esta técnica estará disponible para los usuarios (Siempre debe haber al menos una). En el desplegable de cada panel se permite escoger qué técnica se usará por defecto
-	 si el usuario no escoge ninguna cuando realiza una consulta.
+	
+	 <p>To set the methods, click the 'Next' (Arrow) button. The program will check the following:<br/>
+	 -That each attribute has been filled out and that there are no repeated attribute names.<br/>
+	 -That the case type name has not been picked yet and doesn't contain spaces or special characters.<br/>
+	 Then the methods panel will be shown,
+	 including a subpanel for each CBR cycle step. To the left of each method is a checkbox which indicates if that method will be available for the users 
+	 (At least one will always be picked). The dropdown list of each panel allows you to pick which method will be used if the user can't/won't pick one when performing
+	 a query.
 	 </p>
 	 <p>
-	 Algunas técnicas se pueden configurar. Para ello, pulse en el botón "Configurar" al lado de cada técnica. Si escoge no configurar una técnica esta
-	 tomará valores por defecto.
+	 Some techniques can be configured. To do that, click the "Configure" button to the side of each method. If you choose not to configure it, it will take
+	 default values.
 	 </p>
-	 <h2>Últimos pasos</h2>
-	 <p>Finalmente, pulse el botón Disquete para guardar el nuevo tipo de caso. Se comprobará:<br/>
-	 -Que se hayan establecido las técnicas.<br/>
-	 -Que se hayan rellenado los atributos y no contengan nombres repetidos.<br/>
-	 -Que el nombre del tipo de caso no exista ya y no contenga espacios ni caracteres especiales.
+	 <h2>Last steps</h2>
+	 <p>To finish, click the Save button to save the case type, which from now on can be viewed and modified. Now you will also be able to perform all the
+	 other actions related to case types with the new case.
 	 </p>
 </body>
 </html>
