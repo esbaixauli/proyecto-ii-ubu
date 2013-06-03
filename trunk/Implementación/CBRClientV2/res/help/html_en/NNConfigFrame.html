@@ -1,25 +1,25 @@
 ﻿<html>
 <head>
-	<title>Recuperación: K-NN</title>
+	<title>Retrieval: K-NN</title>
 </head>
 <body>
-	<h1>Recuperación K-NN</h1>
-	<p>En este tipo de recuperación se escogen los N-Vecinos más cercanos a la consulta suministrada por el usuario. Esto es, para cada caso almacenado en
-	 el programa se mide la distancia parcial de cada uno de sus atributos (Da) respecto a su equivalente en la consulta (según la métrica del atributo). 
-	 Entonces, en cada caso se suman estos resultados (Da1 + Da2+ ... DaN, donde N es el número de atributos del tipo de caso.), obteniéndose
-	 una Puntuación del Caso (Pc), de dicho caso con la consulta.
-	 Finalmente, se obtienen los K (valor especificado en la configuración de la técnica) Casos que hayan obtenido <b>mejor</b> Pc.</p>
-	 <h1>Ejemplo de recuperación K-NN</h1>
-	 <p> Tenemos definido en el programa un tipo de caso cuyos atributos del problema son A(número),B(número),C(texto) y cuya solución es D(texto).
-	 Los atributos numéricos tienen definida como su métrica <A HREF="ConceptosBasicos.html">(Ver apartado sobre conceptos básicos, sección Métricas)</p>
-	 'Igualdad', y el atributo C tiene definida como su métrica 'Subcadena más larga'.
-	 Para él, existen 2 casos almacenados:<br/>
-	 <b>Caso x:</b>Problema:[2,2,'test'] Solución:['solución X'] <br/>
-	 <b>Caso y:</b>Problema:[3,5,'testear'] Solución:['solución Y']<br/>
-	 Entonces, para la consulta del usuario: [3,2,'testear'], si pedimos una recuperación K-NN <b>con parámetro 1</b>:<br/>
-	 Puntuación del caso x: 0+1+(4/7) = 11/7<br/>
-	 Puntuación del caso y: 1+0+(7/7) = 14/7<br/>
-	 Por tanto, se escogerá como caso más similar el caso y, que tiene mejor puntuación, y la solución mostrada será 'Solución Y'.
+	<h1>K-NN Retrieval</h1>
+	<p>In this kind of retrieval, the N Nearest Neighbours to the user query are chosen. That is, for each case stored in the program the partial distance
+	of each attribute (Da) to its equivalent in the query (calculated by the attribute metric) is measured.
+	Then, in each case those results are added, obtaining a case score (Cs) of that case relative to the query.
+	Finally, the K (A value specified in the method configuration ) cases that have scored a <b>better</b> Cs are chosen.</p>
+	 <h1>K-NN retrieval example</h1>
+	 <p> We have defined in our program a case type whose problema attributes are A(number),B(number), C(text) and whose solution is D(text).
+	 Numeric attributes have its metric defined <A HREF="ConceptosBasicos.html">(See basic concepts, Metrics section)</A></p>
+	  as 'Equality', and the attribute C has its metric defined as 'longest substring'.
+	  For it, there are 2 stored cases:<br/>
+
+	 <b>Case x:</b>Problem:[2,2,'test'] Solution:['solution X'] <br/>
+	 <b>Case y:</b>Problem:[3,5,'testing'] Solution:['solution Y']<br/>
+	 Then, for the user query: [3,2,'testing'], if we request a K-NN retrieval<b>with a parameter of 1</b>:<br/>
+	 Case x score: 0+1+(4/7) = 11/7<br/>
+	 Case y score: 1+0+(7/7) = 14/7<br/>
+	 As such, the case selected will be y, since it has a better score, and the solution displayed will be 'Solution Y'.
 	 </p>
 </body>
 </html>
