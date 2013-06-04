@@ -1,0 +1,29 @@
+﻿<html>
+<head>
+	<title>Reuse: Methods</title>
+</head>
+<body>
+	<h1>Numeric Proportion</h1>
+
+	 <p>The Numeric proportion method performs a proportion between a pair of problem and solution attributes (Only for numeric attributes).
+	 It calculates the difference between the query attribute and the attribute found in a retrieved case and alters the original query in that
+	 proportion. For example, suppose there is a query of a case type which has number attributes A,B,C and SOLUTION. Suppose as well that a retrieved
+	 case (from the retrieval step) is {{2,2,3},SOLUTION = 8} and the method is numeric proportion between A and SOLUTION.
+	 The user query is {1,2,3}. Then, since in the user query A had a value of 1 and the retrieved case shows a value of 2, we calculate
+	 (Query A/Retrieved case A) = 1/2. SOLUTION will, then, multiplied by 1/2, and the retrieved adapted case will be {{2,2,3},SOLUTION = 4}
+	 </p>
+	<h1>Direct Copy</h1>
+	 <p>Direct Copy method simply copies an attribute from a query performed by the user in the case returned by the retrieval.
+	 For example, suppose a query of a case type which has number attributes A,B,C and SOLUTION.
+	 The user query is {1,2,3}.  Suppose as well that a retrieved case (from the retrieval step) is {{2,2,3},SOLUTION = 8} and
+	 the adaptation method is Direct Copy for the A attribute. Then, the attribute A from the query (1) is copied into the retrieved case's attribute A,
+	 and the adapted case will be {{1,2,3},SOLUTION = 8}.</p>
+	 <h1>Combine Query and Cases </h1>
+	 <p>This method does not require configuration. It simply copies the attributes from a user query over its equivalents in the retrieved case.<br/>
+	 For example, suppose a query of a case type which has number attributes A,B,C and SOLUTION.
+	 The user query is {1,7,7}.<br/>
+	 Suppose as well that a retrieved case (from the retrieval step) is {{2,2,3},SOLUTION = 8} and the selected method is Combine Query and Cases.
+	 Then, the adapted case will be {{1,7,7},SOLUTION=8}. 
+	 </p>
+</body>
+</html>
