@@ -1,0 +1,49 @@
+﻿<html>
+<head>
+	<title>Crear un nuevo tipo de caso</title>
+</head>
+<body>
+	<h1>Crear un nuevo tipo de caso</h1>
+	<h2>Componentes de un tipo de caso</h2>
+	<p>Un tipo de caso se compone de los siguientes elementos:<br/>
+	-Un conjunto de <b>atributos del problema</b>. Cada atributo posee un <b>peso</b> y una <b>métrica</b> de evaluación por defecto,
+	 que se emplearán en las consultas CBR si el usuario no introduce valores para estos campos.<br/>
+	-Un conjunto de <b>atributos de la solución</b>.<br/>
+	-Una serie de <b>técnicas</b> permitidas para cada etapa del ciclo. Entre ellas habrá una que será la empleada por defecto si el usuario ejecuta una
+	 consulta básica o no escoge una técnica en una consulta configurada <A HREF="IntroducirConsultaCBRFrame.html">(Ver apartado de la ayuda sobre consultas).</A><br/>
+	-La configuración de cada una de esas técnicas permitidas.
+	</p>
+	<h2>Añadir/borrar atributos</h2><br/>
+	<img src="img/nuevotipo.jpg"/><br/>
+	<p>Para añadir un atributo, tanto al problema como a la solución se ha de pulsar el botón <img src="img/mas.png"/>.
+		Para borrarlo, pulse el botón <img src="img/borrar.png"/>. Nótese que debe existir al menos un atributo para el problema y uno para la solución.
+	</p>
+	<h2>Rellenar atributos</h2>
+	<p>Es obligatorio rellenar todos los campos de cada atributos. Para ello, rellene el nombre de cada atributo (Que ha de ser único).
+	 Después ha de escoger el tipo del atributo. Los tipos permitidos son:<br/>
+	 -Cadena de texto. P.ej:"Prueba"<br/>
+	 -Número entero. P.ej:2<br/>
+	 -Número decimal. P.ej:2,3<br/>
+	 Finalmente, ha de escoger la métrica por defecto. Las métricas disponibles dependen del tipo de atributo. Por ejemplo, la comparación 
+	 por subcadena más larga no está disponible para Numeros enteros o decimales. Algunas métricas requieren un parámetro que la configure 
+	 <A HREF="ConceptosBasicos.html">(Ver apartado sobre conceptos básicos, sección Métricas)</A></p>
+	 <h2>Establecer técnicas</h2>
+	 <br/>
+	<img src="img/tecnicas.jpg"/><br/>
+	 <p>Para establecer las técnicas, pulse el botón "Configurar técnicas". Se comprobará la validez de los atributos introducidos y se mostrará el recuadro
+	 de técnicas, que posee un panel por cada etapa del ciclo CBR. Al lado de cada técnica existe una casilla de verificación
+	 que indica si esta técnica estará disponible para los usuarios (Siempre debe haber al menos una). En el desplegable de cada panel se permite escoger qué técnica se usará por defecto
+	 si el usuario no escoge ninguna cuando realiza una consulta.
+	 </p>
+	 <p>
+	 Algunas técnicas se pueden configurar. Para ello, pulse en el botón "Configurar" al lado de cada técnica. Si escoge no configurar una técnica esta
+	 tomará valores por defecto.
+	 </p>
+	 <h2>Últimos pasos</h2>
+	 <p>Finalmente, pulse el botón Disquete para guardar el nuevo tipo de caso. Se comprobará:<br/>
+	 -Que se hayan establecido las técnicas.<br/>
+	 -Que se hayan rellenado los atributos y no contengan nombres repetidos.<br/>
+	 -Que el nombre del tipo de caso no exista ya y no contenga espacios ni caracteres especiales.
+	 </p>
+</body>
+</html>

@@ -1,0 +1,51 @@
+﻿<html>
+<head>
+	<title>Create a new case type</title>
+</head>
+<body>
+	<h1>Create a new case type</h1>
+	<h2>Case type components</h2>
+	<p>A case type is composed of the following:<br/>
+	-A set of <b>problem attributes</b>. Each attribute has a <b>weight</b> and a default evaluation <b>metric</b>.
+	which will be used in a query if the user doesn't/can't specify a value for those fields.<br/>
+	-A set of<b>solution attributes</b>.<br/>
+	-A list of <b>method</b> allowed in each cycle step. Out of those there will be one which will be used as the default in a basic cycle or if the user doesn't
+	 pick one while performing a query.<A HREF="IntroducirConsultaCBRFrame.html">(See help section about queries).</A><br/>
+	-The configuration of each allowed method.
+	</p>
+	<h2>Add/delete attributes</h2><br/>
+	<img src="img/nuevotipo.jpg"/><br/>
+	<p>To add an attribute to the problem or solution, click the '+' button:<img src="img/mas.png"/>.
+		To delete it, click the button: <img src="img/borrar.png"/>. Please note there must be an attribute for the problem and one for the solution.
+	</p>
+	<h2>Fill out attributes</h2>
+	<p>Its mandatory to fill out every field from each attribute. To do that, fill the name of each attribute (It must be unique).
+	 After that, you must pick the attribute type. The allowed types are:<br/>
+	 -Character string For example:"Test"<br/>
+	 -Integer number. For example:2<br/>
+	 -Decimal number.For example:2.3<br/>
+	 Finally, you must pick a default metric. The default metrics depend on the attribute type. For example, the longest substring comparison isn't available
+	 for Integer numbers or decimals. Some metrics require a configurating parameter.
+	 <A HREF="ConceptosBasicos.html">(See the metrics section in the basic concepts page)</A></p>
+	 <h2>Setting methods</h2>
+	 <br/>
+	<img src="img/tecnicas.jpg"/><br/>
+	
+	 <p>To set the methods, click the 'Next' (Arrow) button. The program will check the following:<br/>
+	 -That each attribute has been filled out and that there are no repeated attribute names.<br/>
+	 -That the case type name has not been picked yet and doesn't contain spaces or special characters.<br/>
+	 Then the methods panel will be shown,
+	 including a subpanel for each CBR cycle step. To the left of each method is a checkbox which indicates if that method will be available for the users 
+	 (At least one will always be picked). The dropdown list of each panel allows you to pick which method will be used if the user can't/won't pick one when performing
+	 a query.
+	 </p>
+	 <p>
+	 Some techniques can be configured. To do that, click the "Configure" button to the side of each method. If you choose not to configure it, it will take
+	 default values.
+	 </p>
+	 <h2>Last steps</h2>
+	 <p>To finish, click the Save button to save the case type, which from now on can be viewed and modified. Now you will also be able to perform all the
+	 other actions related to case types with the new case.
+	 </p>
+</body>
+</html>
