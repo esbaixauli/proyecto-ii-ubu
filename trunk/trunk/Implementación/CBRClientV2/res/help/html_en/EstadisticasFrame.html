@@ -1,69 +1,34 @@
 ﻿<html>
 <head>
-	<title>CBR basics</title>
+	<title>Statistics</title>
 </head>
 <body>
-	<h1>CBR basics</h1>
-	<h2>What is CBR?</h2>
-	<p> In the field of Artificial Intelligence, Case-Based Reasoning (CBR) is a problem resolution paradigm based on the reutilization 
-	 and adaptation of solutions given to similar previous problems, being a field that has experienced a great growth since the 90s decade in the
-	 academic field as well as in commertial applications.
-	 This paradigm represents in many aspects a fundamentally different vision to other AI approximations relative to problem resolution.
-	 Instead of being based exclusively in general knowledge of the problem's domain, or making associations through existing relationships between problems
-	 and conclusions, CBR is able to use the specific knowledge of concrete situations previously experienced (solved cases) to solve a problem (case). A new
-	 case is solved searching for a similar solved case and reusing it in the new problem's situation.
-	</p>
-	 <h2>What does this application allow you to do?</h2>
-	 <p>This application allows you to connect to a cloud-computing CBR service. It puts to use the power of many remote computers to give solutions
-	 to problems. Its users define the problem and solution's characteristics and initially introduce situations in which the problem has appeared and which
-	 solution was given. Later on the CBR will generate solutions to problems similar to those introduced by its users and store how good they've been.
-	 The more situations introduced and the bigger the amount of application executions, the more effective the system will be.
-	 </p>
-	 <h2>Steps in a CBR cycle</h2>
-	 <p>In a CBR cycle, the user inputs a problem and is shown similar problems stored in the application and its solutions.
-	  As a general rule, the four steps are:<br/>
-	 <b>Retrieve</b>: Obtain from the case base the most similar ones<br/>
-	 <b>Reuse</b>: Use the information of the most similar case/s to create a new solution<br/>
-	 <b>Revise</b>: Check that the solution given is appropiate and modify its data if the user deems so.<br/>
-	 <b>Retain</b>: Introduce the new solved case (Failed solutins may be included) to the case base.
-	 </p>
-	 <h2>Common terms</h2>
-	 <p><b>Case type</b> -A problem-solution set. It has many attributes, which define the structure of said problem and its solution.
-	 For example:<br/>
-	 Case type:Car malfunction<br/>
- 	 Problem attributes:Engine temperature, noise level, oil levels<br/>
-	 Solution attributes:Type of malfunction, repair cost, estimated hours<br/>
-	 </p>
-	 <p><b>Case</b> -A concrete instance of a case type. For example, for the previous case type, a case would be:<br/>
-	 Problem: 80º,120 dBA, 'low' ---> Solution:Engine failure,450€,4 hours.
-	 </p>
-	 <p><b>Metric</b> -Mean to compare whether an attribute for a given case is similar to its equivalent in another case. For example, consider the
-	 following cases, of the Car malfunction case type:<br/>
-		 80º,120 dBA,'low' -> Engine failure, 450€,4 hours.<br/>
-		 132º,90 dBA,'very low' ->Overheating,100€,2 hours.<br/>
-	 For the Oil levels attribute, whose values are 'low' and 'very low' if we use an Exact Equality metric, 'low' will not be considered to be similar	 
-	 to 'very low' at all (0% similarity). Searches that require a 'low' oil level will undervalue or outright ignore the previous cases in which 
-	 the level is 'very low'. In contrast, with the Metric 'longest substring' (Higher text match), 'low' does have some similarity, and will be considered
-	 in problems with 'low' oil level.<br/><br/>
-	 The metrics available in this version of the application are:<br/>
-	 Equality: Exact equality between 2 elements. Will be considered maximum (100%) if the 2 attributes are exactly the same and minimal (0%) if they aren't.<br/>
-	 Ex:Exact equality between 'low' and 'very low' = 0%, Exact equality between 'low' and 'Low'=0%, Exact equality between 80 and 80 = 100%<br/><br/>
-	 Equality Ignoring upper/lower case (Only for text strings): It behaves like Equality for text strings, but ignoring upper/lower case.<br/>
-	 Ex: Equality ignoring case between 'low' and 'LoW' = 100%.<br/><br/>
-	 Longest substring (Only for text strings):Compares the amount of letters in the text string that are identical.<br/>
-	 Ex:Longest substring between 'low' and 'very low' = 3/8 = 37.5%
-	 Interval (Only for numerics): Requires an 'interval' parameter  determined by the user. It uses the following formulae:
-	 1-(|attribute1 - attribute2|/interval).<br/>
-	 Ex:Interval [ 80 ] between 35 and 75 = 1 - (40/80) = 1/2 = 50 % <br/><br/>
-	 Threshold (Only for numerics): Requires a 'threshold' parameter determined by the user. Returns 100% similarity if the difference (ignoring sign) between
-	 the 2 attributes is less than said threshold, and 0% if it isn't.
-	 Ex:Threshold[ 0.25 ] between 40 and 39.8 = 100%. Threshold [ 0.25 ] between 40 and 39.7 = 0%. Threshold [ 0.25 ] between 40 and 40.2 = 100%<br/>
-	 </p>
-	 <p><b>Method</b> -The way in which each step in the CBR cycle is performed. For example, a retrieval method can be based on retrieving
-	 the cases whose attributes are more similar to the given problem(according to each attribute's metric), or could decide which cases are
-	 retrieved by ignoring or including those who satisfy a specific condition.
-	 (For example, in a Car malfunction case, it could search those cases that show higher engine temperatures than those in the given query).
-	 </p>
+	<h1>Statistics</h1>
+	<h2>See your own statistics</h2>
+ Administrators can see statistics for each user and each case, as well as see global statistics for each case or user and delete sets of statistics.
+ The rest of the users are restricted to see their own statistics, in a global manner for each case type.
+ In this panel you are shown a case type list, in which the -Global-- option is also included. Pick a case from the list and you'll be shown a stats report to your
+ right, with visual graphs of the data. You can alternate between graphics choosing their corresponding tab, generate a report in .pdf format with the 
+ 'Generate Report' or export the graph (By clicking on it and selecting Export or in the bottom menu).<br/><br/>
+The following are the generated stats:<br/>
+Total CBR executions: Times the cycle has been executed for that case type. (Sum of executed queries amount if the Global option has been picked)<br/>
+Average quality of solution:Average quality for that case type. (Average of all cases if the Global option has been picked)<br/>
+Latest execution date: Latest execution of this case. (Latest execution of any type if the Global option has been picked)<br/>
+Latest execution quality: Quality of the lates execution of this case. (Quality of the latest of any type if the Global option has been picked)<br/>
+Successful solutions: Solutions to user executions for that case type whose success rate given by the user surpasses 50%. (Successful solutions for any case type if the Global option has been picked)<br/>
+Percentage of successful: Percentage of successful solutions relative to the totals for that case type. (For any case type if the Global option has been picked)<br/>
+Useless solutions: Solutions to user executions for that case type whose success rate is 0%. (Unusable solutions for any case type if the Global option has been picked)<br/>
+Useless percentage: Percentage of unusable solutions relative to the totals for that case type. (For any case type if the Global option has been picked)<br/>
 
+ <h2>Statistics by user and case</h2>
+ To see the statistics by user and case:<br/>
+ If you are an administrator below the 'own stats' option, the tab to see stats by user and case will appear. Pick this tab.
+ You will be shown the same stats a user is shown when he sees his own statistics, with the difference that you can see them for any user in any case type, 
+ the globals for a case type or the user globals.
+ In addition, you can delete all the stats of a user, a case or those of a specific user and case.
+ To choose the stats for a user and case, pick from the user list the one you want (or -Global-- if you wish to see all the users'). In the same fashion,
+ pick from the list of cases the one you want, or the -Global option for all cases. You will automatically be shown the requested stats.
+ You can delete the selected set of statistics by picking the 'Trashcan' option in the button panel below.
+<img src="img/botoneralimpiar.jpg" /><br/>
 </body>
 </html>
