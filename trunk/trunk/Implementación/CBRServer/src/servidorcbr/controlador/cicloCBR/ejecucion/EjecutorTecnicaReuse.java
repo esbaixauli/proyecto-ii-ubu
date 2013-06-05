@@ -89,7 +89,7 @@ public class EjecutorTecnicaReuse {
 						query, casos);
 			}
 			if (tc.getDefaultReu().getParams().size() > 2
-					&& !tc.getDefaultReu().getParams().get(2).equals("NOCOMBINAR")) {
+					&& !tc.getDefaultReu().getParams().get(2).getNombre().equals("NOCOMBINAR")) {
 				return combinar(casos);
 			}
 		}
