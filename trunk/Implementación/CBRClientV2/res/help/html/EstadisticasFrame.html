@@ -1,67 +1,35 @@
 ﻿<html>
 <head>
-	<title>Conceptos básicos</title>
+	<title>Estadisticas</title>
 </head>
 <body>
-	<h1>Conceptos básicos</h1>
-	<h2>¿Qué es CBR?</h2>
-	<p>Dentro del ámbito de la Inteligencia Artificial, el Razonamiento Basado en Casos (CBR) es un paradigma de resolución de problemas
-	 basado en la reutilización y adaptación de soluciones dadas a problemas anteriores similares, siendo un campo de gran crecimiento desde la década
-	 de los 90 tanto en el ámbito académico como en aplicaciones comerciales.  
-	 Este paradigma representa en muchos aspectos una visión fundamentalmente distinta a otras aproximaciones de la IA en cuanto a la resolución de problemas.
-	 En lugar de basarse exclusivamente en conocimiento general del dominio del problema, o de realizar asociaciones a través de relaciones existentes
-	 entre problemas y conclusiones, CBR es capaz de usar el conocimiento específico de situaciones concretas previamente
-	 experimentadas (casos resueltos) para resolver un problema (caso). Un nuevo caso es resuelto buscando un caso resuelto similar
-	 y reusándolo en la nueva situación del problema.</p>
-	 <h2>¿Qué permite esta aplicación?</h2>
-	 <p>Esta aplicación permite conectarse a un servicio en la nube de CBR. Aprovecha la potencia de varios ordenadores remotos para dar soluciones a problemas.
-	 Sus usuarios definen las características del problema y la solución e inicialmente introducen situaciones en las que se ha dado el problema y qué
-	 solución se dió. Posteriormente el CBR generará soluciones a problemas similares a los introducidos por los usuarios y almacenará cómo de buenas han sido.
-	 A más situaciones que se introduzcan y más veces que se use la aplicación, más efectivo será el sistema</p>
-	 <h2>Etapas de un ciclo CBR</h2>
-	 <p>En el ciclo CBR, el usuario introduce un problema y se le presentan problemas similares almacenados en la aplicación y sus soluciones.
-	 De forma general, las cuatro etapas son:<br/>
-	 <b>Recordar (Retrieve)</b>: Obtener de la base de casos aquellos que sean más similares.<br/>
-	 <b>Reutilizar (Reuse)</b>: Emplear la información del caso/casos más similares para crear una nueva solución.<br/>
-	 <b>Revisar (Revise)</b>: Comprobar que la solución obtenida es apropiada y modificar sus datos si el usuario lo cree conveniente.<br/>
-	 <b>Retener (Retain)</b>: Introducir el nuevo caso resuelto (Pueden incluirse soluciones fallidas) a la base de casos.
-	 </p>
-	 <h2>Términos comunes</h2>
-	 <p><b>Tipo de caso</b> -Un conjunto problema-solución. Consta de varios atributos, que definen la estructura dedicho problema y su solución.
-	 Por ejemplo:<br/>
-	 Tipo de caso:Avería en coche<br/>
-	 Atributos del problema: Temperatura del motor, nivel de ruido, niveles de aceite<br/>
-	 Atributos de la solución: Tipo de avería, coste de la reparación, horas estimadas<br/>
-	 </p>
-	 <p><b>Caso</b> -Instancia concreta de un tipo de caso. Por ejemplo, para el tipo de caso anterior, un caso sería:<br/>
-	 Problema: 80º,120 dBA, 'bajo' ---> Solución:Rotura de motor,450€,4 horas.
-	 </p>
-	 <p><b>Métrica</b> -Forma en la que se compara si un atributo de un caso es parecido al mismo atributo para otro caso. Por ejemplo, consideremos los casos
-	 siguientes, del tipo de caso Avería en coche:<br/>
-		 80º,120 dBA,'bajo' -> Rotura de motor, 450€,4 horas.<br/>
-		 132º,90 dBA,'muy bajo' ->Sobrecalentamiento,100€,2 horas.<br/>
-	 Para el atributo Niveles de aceite, con valores 'bajo' y 'muy bajo', si usamos una métrica de Igualdad exacta, 'bajo' no se considerará que bajo
-	 se parezca a 'muy bajo' en nada (0% de similitud). Búsquedas que requieran un nivel de aceite 'bajo' valorarán en menor medida o
-	 ignorarán los casos anteriores en los que el nivel sea 'muy bajo'.
-	 Sin embargo, con la métrica Subcadena más larga (Mayor parecido en el texto), 'bajo' si guarda cierta similitud, y se considerarán en la búsqueda
-	 para problemas con niveles de aceite 'bajo'.<br/><br/>
-	 Las métricas disponibles en esta versión de la aplicación son:<br/>
-	 Igualdad: Igualdad exacta entre 2 elementos. Se considerará máxima (100%) si los 2 atributos son exactamente iguales y mínima (0%) si no lo son.<br/>
-	 Ej:Igualdad exacta entre 'bajo' y 'muy bajo' = 0%, Igualdad exacta entre 'bajo' y 'Bajo' = 0%, Igualdad exacta entre 80 y 80 = 100%.<br/><br/>
-	 Igualdad Ignorando mayúsculas (Sólo para cadenas de texto): Se comporta como Igualdad para cadenas de texto, pero ignora las mayúsculas.<br/>
-	 Ej:Igualdad Ignorando Mayúsculas entre 'bajo' y 'BaJO' = 100%.<br/><br/>
-	 Subcadena más larga (Sólo para cadenas de texto):Compara la cantidad de la cadena de texto que resulta idéntica. <br/>
-	 Ej:Subcadena más larga entre 'bajo' y 'muy bajo' = 4/8 = 50%.<br/><br/>
-	 Intervalo (Sólo para numéricos): Requiere un parámetro 'intervalo', establecido por el usuario. Emplea la siguiente fórmula: 1-(|atbo1-atbo2|/intervalo).<br/>
-	 Ej:Intervalo[ 80 ] entre 35 y 75 = 1 - (40/80) = 1/2 = 50 % <br/><br/>
-	 Umbral (Sólo para numéricos): Requiere un parámetro 'umbral', establecido por el usuario. Devuelve 100% si la diferencia (ignorando signo) entre los 2 atributos
-	 es menor que dicho umbral, y 0% si no.<br/>
-	 Ej:Umbral[ 0,25 ] entre 40 y 39,8 = 100%. Umbral[ 0,25 ] entre 40 y 39,7 = 0%. Umbral [ 0,25 ] entre 40 y 40,2 = 100%.<br/>
-	 </p>
-	 <p><b>Técnica</b> -La forma en que se realiza cada etapa del ciclo CBR. Por ejemplo, una técnica de recuperación puede basarse 
-	 en obtener los casos cuyos atributos sean más similares al problema dado (según la métrica de cada atributo), o podría decidir qué casos
-	 se obtienen ignorando o incluyendo los que satisfagan una condición concreta (Por ejemplo, en un caso de Avería en coche podría buscarse
-	 aquellos casos que presenten temperaturas de motor mayores al problema propuesto).
-	 </p>
+	<h1>Estadisticas</h1>
+	<h2>Ver estadisticas propias</h2>
+ Los administradores pueden ver las estadísticas de cada usuario para cada caso,
+ así como ver estadísticas globales para cada caso o usuario y borrar conjuntos de estadísticas.
+ El resto de usuarios están restringidos a ver sus estadísticas propias, de forma global para cada tipo de caso.
+ En este panel se le muestra una lista de tipos de caso, en la que también se incluye la opción –Global--.
+ Escoja un caso de la lista y se le mostrará un informe de estadísticas a su derecha, con gráficos visuales de los datos.
+ Puede alternar entre gráficos escogiendo su pestaña correspondiente, generar un informe en formato .pdf con el botón 'Generar Informe'
+ o exportar el gráfico (Pinchando en el gráfico y seleccionando Exportar o con el menú inferior).<br/><br/>
+Las estadísticas generadas son las siguientes:<br/>
+Ejecuciones CBR Totales: Veces que se ha ejecutado el ciclo para ese tipo de caso. (Suma de veces que se han ejecutado consultas si se ha escogido la opción Global)<br/>
+Calidad media de la solución: Media de calidades para ese tipo de caso. (Media de todos los casos si se ha escogido la opción Global)<br/>
+Fecha de la última ejecución: Última ejecución de ese caso. (Ultima ejecución de cualquier tipo si se ha escogido la opción Global)<br/>
+Calidad de la última ejecución: Calidad de la última ejecución de ese tipo. (Calidad de la última de cualquier tipo si se ha escogido la opción Global)<br/>
+Soluciones exitosas: Soluciones a ejecuciones del usuario para ese tipo de caso cuya tasa de éxito dada por el usuario supera el 50%. (Soluciones exitosas para cualquier tipo de caso si se ha escogido la opción Global)<br/>
+Porcentaje de exitosas:  Porcentaje de soluciones con éxito respecto a las totales para este tipo de caso. (Para cualquier tipo de caso si se ha escogido la opción Global)<br/>
+Soluciones inusables: Soluciones a ejecuciones del usuario para ese tipo de caso cuya tasa de éxito es de 0%. (Soluciones inusables para cualquier tipo de caso si se ha escogido la opción Global)<br/>
+Porcentaje de inusables:  Porcentaje de soluciones inusables respecto a las totales para este tipo de caso. (Para cualquier tipo de caso si se ha escogido la opción Global)<br/>
+ 
+ <h2>Estadisticas por usuario y caso</h2>
+ Para ver las estadísticas por usuario y caso:<br/>
+ Si es administrador, aparecerá, bajo la opción de estadísticas propias, la opción de ver estadísticas por usuario y caso. Seleccione esta pestaña.
+ Le aparecen las mismas estadísticas que a un usuario cuando ve sus estadísticas propias, solo que usted puede ver la de cualquier usuario para cualquier tipo de caso, las globales para un tipo de caso o las globales de un usuario. Asimismo, puede borrar las estadísticas de un usuario, las de un caso o las de un usuario para un caso. 
+Para escoger las estadísticas de un usuario y un caso, seleccione de la lista de usuarios el que desee
+ (o –Global-- si desea escoger las de todos los usuarios). Del mismo modo, seleccione de la lista de casos el que desee,
+ o la opción –Global-- para todos los casos. Automáticamente se le mostrarán las estadísticas pedidas. 
+Puede borrar el conjunto de estadísticas seleccionado escogiendo la opción 'Papelera' en la botonera inferior.
+<img src="img/botoneralimpiar.jpg" /><br/>
 </body>
 </html>
