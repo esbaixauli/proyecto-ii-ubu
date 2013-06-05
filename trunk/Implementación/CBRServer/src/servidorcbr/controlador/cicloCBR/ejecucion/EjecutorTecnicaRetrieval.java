@@ -67,7 +67,6 @@ public abstract class EjecutorTecnicaRetrieval {
 				config.addMapping(at,ConversorMetricas.obtenerMetrica(actual));
 				config.setWeight(at, actual.getPeso());
 				Attribute a = new Attribute(actual.getNombre(), clase);
-				System.out.println("Sim function(etr): "+a.hashCode()+", "+config.getLocalSimilFunction(a));
 			}
 		}
 		config.setDescriptionSimFunction(new Average());
@@ -98,6 +97,14 @@ public abstract class EjecutorTecnicaRetrieval {
 		}
 		try {
 			casos = ejecutor.ejecutar(casos, query);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return casos;
+	}
+
+}
+
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}

@@ -75,7 +75,6 @@ public class LanzadorCBR {
 		} catch (PersistenciaException e2) {
 			e2.printStackTrace();
 		}
-		System.out.println("Tabla de salida del reducer: "+outputTable);
 		
 		// create a new job based on the configuration
 		Job job = null;
@@ -283,6 +282,12 @@ public class LanzadorCBR {
 	 */
 	public Collection<CBRCase> reuse(TipoCaso tc, Collection<CBRCase> casos) {
 		if (query == null) {
+			return null;
+		}
+		return reuse(tc, casos, query);
+	}
+}
+ {
 			return null;
 		}
 		return reuse(tc, casos, query);
