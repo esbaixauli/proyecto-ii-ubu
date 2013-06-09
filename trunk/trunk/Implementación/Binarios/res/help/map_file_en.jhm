@@ -19,7 +19,8 @@ PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Map Version 2.0//EN"
 		<mapID target="NNConfigFrame" url="html_en/NNConfigFrame.html"/>
 		<mapID target="NumOrCopyConfigFrame" url="html_en/NumOrCopyConfigFrame.html"/>
 		<mapID target="CombineQueryConfigFrame" url="html_en/NumOrCopyConfigFrame.html"/>
-		<mapID target="EstadisticasPanel" url="html_en/EstadisticasFrame.html"/>			
+		<mapID target="EstadisticasPanel" url="html_en/EstadisticasFrame.html"/>	
+		<mapID target="ResultadosConsultaPanel" url="html_en/ConceptosBasicos.html"/>		
 </map>
 
 	
