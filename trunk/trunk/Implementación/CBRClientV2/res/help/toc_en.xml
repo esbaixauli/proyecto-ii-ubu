@@ -4,17 +4,17 @@ topicimage="ItemIco"-->
         <tocitem text="Help topics">
 			<tocitem text="CBR Basics"    target="ConceptosBasicos"/>	
 			<tocitem text="Main window actions"    target="MainFrame"/>
-			<tocitem text="Choosing a case type"    target="ElegirTipoCasoPanel"/>
+			<tocitem text="Choosing a case type"    target="ElegirTipoCasoFrame"/>
 			<tocitem text="Methods of a case type"    target="GestionTecnicasPanel">
-				<tocitem text="Retrieval:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigPanel"/>	
-				<tocitem text="Retrieval:Filter Based (By predicates)"    target="FilterBasedConfigPanel"/>	
-				<tocitem text="Retrieval:K-NN (K nearest neighbors)"    target="NNConfigPanel"/>
-				<tocitem text="Revisión:Direct copy (Attribute copy)"  target="NumOrCopyConfigPanel"/>	
-				<tocitem text="Revisión:Numeric proportion"  target="NumOrCopyConfigPanel"/>
-				<toc text="Revision:Combine Query and Cases" target="NumOrCopyConfigPanel"/>					
+				<tocitem text="Retrieval:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigFrame"/>	
+				<tocitem text="Retrieval:Filter Based (By predicates)"    target="FilterBasedConfigFrame"/>	
+				<tocitem text="Retrieval:K-NN (K nearest neighbors)"    target="NNConfigFrame"/>
+				<tocitem text="Retrieval:Direct copy (Attribute copy)"  target="NumOrCopyConfigFrame"/>	
+				<tocitem text="Retrieval:Numeric proportion"  target="NumOrCopyConfigFrame"/>
+				<tocitem text="Retrieval:Combine Query and Cases" target="NumOrCopyConfigFrame"/>					
 			</tocitem>
-			<tocitem text="Case types"    target="GestionTiposPanel"/>
-			<tocitem text="Users"    target="GestionUsuariosPanel">
+			<tocitem text="Case types"    target="GestionTiposFrame"/>
+			<tocitem text="Users"    target="GestionUsuariosFrame">
 				<tocitem text="Adding and modifying users"    target="VerCrearUsuarioPanel"/>
 			</tocitem>
 			<tocitem text="Importing cases"    target="InsertarCasoPanel"/>

@@ -3,24 +3,24 @@
   PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
          "http://java.sun.com/products/javahelp/index_1_0.dtd">
 <index version="1.0">
-		<indexitem text="Basic concepts"    target="ConceptosBasicos"/>	
+		<indexitem text="CBR Basics"    target="ConceptosBasicos"/>	
 		<indexitem text="Main window actions"    target="MainFrame"/>
-		<indexitem text="Choosing a case type"    target="ElegirTipoCasoPanel"/>
+		<indexitem text="Choosing a case type"    target="ElegirTipoCasoFrame"/>
 		<indexitem text="Methods of a case type"    target="GestionTecnicasPanel"/>
-		<indexitem text="Case types"    target="GestionTiposPanel"/>
-		<indexitem text="Users"    target="GestionUsuariosPanel"/>
+		<indexitem text="Retrieval:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigFrame"/>	
+		<indexitem text="Retrieval:Filter Based (By predicates)"    target="FilterBasedConfigFrame"/>	
+		<indexitem text="Retrieval:K-NN (K nearest neighbors)"    target="NNConfigFrame"/>
+		<indexitem text="Retrieval:Direct copy (Attribute copy)"  target="NumOrCopyConfigFrame"/>	
+		<indexitem text="Retrieval:Numeric proportion"  target="NumOrCopyConfigFrame"/>
+		<indexitem text="Retrieval:Combine Query and Cases" target="NumOrCopyConfigFrame"/>					
+		<indexitem text="Case types"    target="GestionTiposFrame"/>
+		<indexitem text="Users"    target="GestionUsuariosFrame"/>
+		<indexitem text="Adding and modifying users"    target="VerCrearUsuarioPanel"/>
 		<indexitem text="Importing cases"    target="InsertarCasoPanel"/>
 		<indexitem text="Making a query"    target="IntroducirConsultaCBRPanel"/>
 		<indexitem text="Creating a new case type"    target="NuevoTipoPanel"/>
-		<indexitem text="Adding and modifying users"    target="VerCrearUsuarioPanel"/>
 		<indexitem text="Modifying case types"    target="VerTipoPanel"/>	
-		<indexitem text="Retrieval:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigPanel"/>	
-		<indexitem text="Retrieval:Filter Based (By predicates)"    target="FilterBasedConfigPanel"/>	
-		<indexitem text="Retrieval:K-NN (K nearest neighbors)"    target="NNConfigPanel"/>	
-		<indexitem text="Revision:Direct copy (Attribute copy)"  target="NumOrCopyConfigPanel"/>	
-		<indexitem text="Revision:Numeric proportion" target="NumOrCopyConfigPanel"/>
-		<indexitem text="Revision:Combine Query and Cases" target="NumOrCopyConfigPanel"/>	
-		<indexitem text="Statistics"    target="EstadisticasPanel"/>			
+		<indexitem text="Statistics"    target="EstadisticasPanel"/>				
 </index>
 
 

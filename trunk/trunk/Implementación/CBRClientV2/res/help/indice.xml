@@ -3,24 +3,24 @@
   PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp Index Version 1.0//EN"
          "http://java.sun.com/products/javahelp/index_1_0.dtd">
 <index version="1.0">
-		<indexitem text="Conceptos Básicos"    target="ConceptosBasicos"/>	
-		<indexitem text="Acciones en la ventana principal"    target="MainFrame"/>
-		<indexitem text="Escogiendo un tipo de caso"    target="ElegirTipoCasoPanel"/>
-		<indexitem text="Técnicas de un tipo de caso"    target="GestionTecnicasPanel"/>
-		<indexitem text="Tipos de caso"    target="GestionTiposPanel"/>
-		<indexitem text="Usuarios"    target="GestionUsuariosPanel"/>
-		<indexitem text="Importación de casos"    target="InsertarCasoPanel"/>
-		<indexitem text="Realizar una consulta"    target="IntroducirConsultaCBRPanel"/>
-		<indexitem text="Crear un nuevo tipo de caso"    target="NuevoTipoPanel"/>
-		<indexitem text="Crear y modificar usuarios"    target="VerCrearUsuarioPanel"/>
-		<indexitem text="Modificar tipos de caso"    target="VerTipoPanel"/>	
-		<indexitem text="Recuperación:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigPanel"/>	
-		<indexitem text="Recuperación:Filter Based (Por predicados)"    target="FilterBasedConfigPanel"/>	
-		<indexitem text="Recuperación:K-NN (K vecinos más cercanos)"    target="NNConfigPanel"/>
-		<indexitem text="Revisión:Direct copy (Copia de atributos)"  target="NumOrCopyConfigPanel"/>	
-		<indexitem text="Revisión:Numeric proportion" target="NumOrCopyConfigPanel"/>
-		<indexitem text="Revisión:Combine Query and Cases" target="NumOrCopyConfigPanel"/>
-		<indexitem text="Estadísticas"    target="EstadisticasPanel"/>			
+			<indexitem text="Conceptos Basicos"    target="ConceptosBasicos"/>	
+			<indexitem text="Acciones en la ventana principal"    target="MainFrame"/>
+			<indexitem text="Escogiendo un tipo de caso"    target="ElegirTipoCasoFrame"/>
+			<indexitem text="Técnicas de un tipo de caso"    target="GestionTecnicasPanel"/>
+			<indexitem text="Recuperación:Diverse By Median (Expert Clerk median)"    target="DiverseByMedianConfigFrame"/>	
+			<indexitem text="Recuperación:Filter Based (Por predicados)"    target="FilterBasedConfigFrame"/>	
+			<indexitem text="Recuperación:K-NN (K vecinos más cercanos)"    target="NNConfigFrame"/>
+			<indexitem text="Revisión:Direct copy (Copia de atributos)" target="NumOrCopyConfigFrame"/>	
+			<indexitem text="Revisión:Numeric proportion" target="NumOrCopyConfigFrame"/>	
+			<indexitem text="Revisión:Combine Query and Cases" target="NumOrCopyConfigFrame"/>	
+			<indexitem text="Tipos de caso"    target="GestionTiposFrame"/>
+			<indexitem text="Usuarios"    target="GestionUsuariosFrame"/>
+			<indexitem text="Crear y modificar usuarios"    target="VerCrearUsuarioPanel"/>
+			<indexitem text="Importación de casos"    target="InsertarCasoPanel"/>
+			<indexitem text="Realizar una consulta"    target="IntroducirConsultaCBRPanel"/>
+			<indexitem text="Crear un nuevo tipo de caso"    target="NuevoTipoPanel"/>
+			<indexitem text="Modificar tipos de caso"    target="VerTipoPanel"/>
+			<indexitem text="Estadísticas"    target="EstadisticasPanel"/>				
 </index>
 
 
