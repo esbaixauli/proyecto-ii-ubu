@@ -1,10 +1,12 @@
 package vista.panels;
 
 import java.awt.FlowLayout;
+import java.text.NumberFormat;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+import javax.swing.text.NumberFormatter;
 
 /**Panel para mostrar un atributo y su valor como sólo lectura.
  * @author Rubén Antón García, Enrique Sainz Baixauli
@@ -24,7 +26,13 @@ public class PanelMostrarAtbo extends JPanel {
 		JLabel lblNombreatbo = new JLabel(nombre+":");
 		add(lblNombreatbo);
 		
-		JLabel lblNewLabel = new JLabel(valor+"");
+		JLabel lblNewLabel = null;
+		if (valor.getClass().isAssignableFrom(Double.class)) {
+			NumberFormat nf = NumberFormat.getNumberInstance();
+			lblNewLabel = new JLabel(nf.format((double) valor));
+		} else {
+			lblNewLabel = new JLabel(valor+"");
+		}
 		add(lblNewLabel);
 	}
 
