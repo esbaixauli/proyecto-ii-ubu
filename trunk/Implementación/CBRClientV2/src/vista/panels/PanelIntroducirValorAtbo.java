@@ -298,8 +298,12 @@ public class PanelIntroducirValorAtbo extends JPanel {
 		if(valor!=null){
 			textField.setText(valor+"");
 			if(!a.getTipo().equals("S")){//Si no es una cadena de texto
-				try {			
-					textField.setText(NumberFormat.getNumberInstance().parse(valor+"")+"");
+				try {
+					if (valor.getClass().isAssignableFrom(Double.class)) {
+						textField.setText(NumberFormat.getNumberInstance().format((double) valor));
+					} else {
+						textField.setText(NumberFormat.getNumberInstance().parse(valor+"")+"");
+					}
 					((JFormattedTextField) textField).commitEdit();
 					//Si falla el parseo el textfield queda a 0.
 				} catch (ParseException e) {
