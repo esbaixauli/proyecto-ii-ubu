@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Plan de proyecto" company="ubu" webLink="http://" view-date="2012-10-01" view-index="0" gantt-divider-location="516" resource-divider-location="300" version="2.0">
+<?xml version="1.0" encoding="UTF-8"?><project name="Plan de proyecto" company="ubu" webLink="http://" view-date="2012-09-01" view-index="0" gantt-divider-location="495" resource-divider-location="300" version="2.0">
     <description><![CDATA[Sistemas Informáticos]]></description>
     <view zooming-state="default:9" id="gantt-chart"/>
     <view id="resource-table">
@@ -58,7 +58,7 @@
             <task id="66" name="Pruebas de integración" color="#00ff00" meeting="false" start="2013-05-21" duration="4" complete="0" expand="true"/>
             <task id="67" name="Pruebas de sistema" color="#00ff00" meeting="false" start="2013-05-27" duration="5" complete="0" expand="true"/>
         </task>
-        <task id="88" name="Documentación" color="#8cb6ce" meeting="false" start="2012-10-17" duration="232" complete="0" expand="true">
+        <task id="88" name="Documentación" color="#8cb6ce" meeting="false" start="2012-10-17" duration="239" complete="0" expand="true">
             <task id="89" name="Tecnologías y conceptos" color="#8cb6ce" meeting="false" start="2012-10-17" duration="21" complete="0" expand="true"/>
             <task id="91" name="Objetivos y trabajos similares" color="#8cb6ce" meeting="false" start="2012-11-07" duration="23" complete="0" expand="true"/>
             <task id="100" name="Documentos de planificación" color="#8cb6ce" meeting="false" start="2012-11-29" duration="7" complete="0" expand="true"/>
@@ -67,9 +67,9 @@
             <task id="99" name="Documentos de diseño" color="#8cb6ce" meeting="false" start="2012-12-19" duration="57" complete="0" expand="true"/>
             <task id="102" name="Aspectos relevantes del desarrollo" color="#8cb6ce" meeting="false" start="2013-03-14" duration="49" complete="0" expand="true"/>
             <task id="103" name="Manual del programador" color="#8cb6ce" meeting="false" start="2013-05-01" duration="31" complete="0" expand="true"/>
-            <task id="107" name="Correcciones finales" color="#8cb6ce" meeting="false" start="2013-05-19" duration="18" complete="0" expand="true"/>
+            <task id="107" name="Correcciones finales" color="#8cb6ce" meeting="false" start="2013-05-19" duration="25" complete="0" expand="true"/>
         </task>
-        <task id="85" name="Finalización" color="#8cb6ce" meeting="false" start="2013-06-01" duration="10" complete="0" expand="true"/>
+        <task id="85" name="Finalización" color="#8cb6ce" meeting="false" start="2013-06-01" duration="14" complete="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
@@ -83,8 +83,8 @@
         <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd7" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd3" order="0" width="311" visible="true"/>
-        <displaycolumn property-id="tpd4" order="1" width="102" visible="true"/>
+        <displaycolumn property-id="tpd3" order="0" width="291" visible="true"/>
+        <displaycolumn property-id="tpd4" order="1" width="101" visible="true"/>
         <displaycolumn property-id="tpd5" order="2" width="84" visible="true"/>
     </taskdisplaycolumns>
     <previous/>
